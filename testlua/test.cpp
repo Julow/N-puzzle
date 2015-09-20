@@ -10,24 +10,23 @@ extern "C"
 int main (void)
 {
 	std::cout << "hello world" << std::endl;
-	char		buff[256];
 	int			error;
 	lua_State	*L = luaL_newstate();
+	std::string	buf;
 
 	luaL_openlibs(L);
-	/*
-	while (fgets(buff, sizeof(buff), stdin) != NULL)
+	while (!std::cin.eof())
 	{
-		error = luaL_loadbuffer(L, buff, strlen(buff), "line") ||
+		std::getline(std::cin, buf);
+		error = luaL_loadbuffer(L, buf.c_str(), buf.length(), "line") ||
 			lua_pcall(L, 0, 0, 0);
 		if (error)
 		{
-
-			fprintf(stderr, "%s", lua_tostring(L, -1));
+			std::cout << "lol ERROR:" << lua_tostring(L, -1) << std::endl;
 			lua_pop(L, 1); 
 		}
 	}
-	*/
+	
 	lua_close(L);
 	std::cout << "done" << std::endl;
 	return 0;
