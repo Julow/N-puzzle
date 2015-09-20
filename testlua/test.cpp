@@ -1,12 +1,40 @@
 
 #include <iostream>
+#include <functional>
 extern "C"
 {
 #include <lua.h>
 #include <lauxlib.h>
 #include <lualib.h>
 }
+
+void		print_stack(lua_State *L)
+{
+	int			i;
+	std::function<void()> funcs[] =
+	{
+		[&](){std::cout << "none" << "\n";},
+		[&](){std::cout << "nil" << "\n";},
+		[&](){std::cout << "bool: " << lua_toboolean(L, i) << "\n";},
+		[&](){std::cout << "lusrd" << "\n";},
+		[&](){std::cout << "nbr: " << lua_tonumber(L, i) <<  "\n";},
+		[&](){std::cout << "str" << lua_tostring(L, i) << "\n";},
+		[&](){std::cout << "tab" << "\n";},
+		[&](){std::cout << "func" << "\n";},
+		[&](){std::cout << "usrd" << "\n";},
+		[&](){std::cout << "thread" << "\n";},
+	};
+	int const	top = lua_gettop(L);
+
+	std::cout << top << "elements" << std::endl;
 	
+	for (i = 1; i <= top; i++)
+	{
+		funcs[lua_type(L, i) + 1]();
+		}
+	return ;
+}
+
 int main (void)
 {
 	std::cout << "hello world" << std::endl;
@@ -14,6 +42,11 @@ int main (void)
 	lua_State	*L = luaL_newstate();
 	std::string	buf;
 
+	lua_pushnil(L);
+	lua_pushboolean(L, 42);
+	lua_pushnumber(L, 42.);
+	print_stack(L);
+	print_stack(L);
 	luaL_openlibs(L);
 	while (!std::cin.eof())
 	{
