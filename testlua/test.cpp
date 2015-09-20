@@ -1,15 +1,18 @@
 
-#include <stdio.h>
-#include <string.h>
+#include <iostream>
+extern "C"
+{
 #include <lua.h>
 #include <lauxlib.h>
 #include <lualib.h>
-
+}
+	
 int main (void)
 {
-	char buff[256];
-	int error;
-	lua_State *L = luaL_newstate();
+	std::cout << "hello world" << std::endl;
+	char		buff[256];
+	int			error;
+	lua_State	*L = luaL_newstate();
 
 	luaL_openlibs(L);
 	/*
@@ -26,6 +29,6 @@ int main (void)
 	}
 	*/
 	lua_close(L);
-	printf("done!\n");
+	std::cout << "done" << std::endl;
 	return 0;
 }
