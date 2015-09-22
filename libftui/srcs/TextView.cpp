@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AView.cpp                                          :+:      :+:    :+:   */
+/*   TextView.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/22 13:14:20 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/09/22 13:14:15 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/09/22 13:14:15 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "AView.hpp"
+#include "TextView.hpp"
 
-AView::AView(void)
+TextView::TextView(void)
 {
 }
 
-AView::~AView(void)
+TextView::~TextView(void)
 {
 }
 
-// AView::AView(AView const &src)
+// TextView::TextView(TextView const &src)
 // {
 // 	*this = src;
 // }
 
-// AView			&AView::operator=(AView const &rhs)
+// TextView			&TextView::operator=(TextView const &rhs)
 // {
 // 	// *this = rhs;
 // 	return (*this);

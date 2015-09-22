@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AView.cpp                                          :+:      :+:    :+:   */
+/*   VerticalLayout.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/22 13:14:20 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/09/22 13:13:47 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "AView.hpp"
+#include "VerticalLayout.hpp"
 
-AView::AView(void)
+VerticalLayout::VerticalLayout(void)
 {
 }
 
-AView::~AView(void)
+VerticalLayout::~VerticalLayout(void)
 {
 }
 
-// AView::AView(AView const &src)
+// VerticalLayout::VerticalLayout(VerticalLayout const &src)
 // {
 // 	*this = src;
 // }
 
-// AView			&AView::operator=(AView const &rhs)
+// VerticalLayout			&VerticalLayout::operator=(VerticalLayout const &rhs)
 // {
 // 	// *this = rhs;
 // 	return (*this);

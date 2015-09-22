@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AView.cpp                                          :+:      :+:    :+:   */
+/*   SliderView.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/22 13:14:20 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/09/22 13:14:12 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/09/22 13:14:12 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "AView.hpp"
+#include "SliderView.hpp"
 
-AView::AView(void)
+SliderView::SliderView(void)
 {
 }
 
-AView::~AView(void)
+SliderView::~SliderView(void)
 {
 }
 
-// AView::AView(AView const &src)
+// SliderView::SliderView(SliderView const &src)
 // {
 // 	*this = src;
 // }
 
-// AView			&AView::operator=(AView const &rhs)
+// SliderView			&SliderView::operator=(SliderView const &rhs)
 // {
 // 	// *this = rhs;
 // 	return (*this);

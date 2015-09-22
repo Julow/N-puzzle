@@ -1,32 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AView.cpp                                          :+:      :+:    :+:   */
+/*   IViewHolder.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/22 13:14:20 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/09/22 13:56:47 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/09/22 15:20:43 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "AView.hpp"
+#ifndef IVIEWHOLDER_HPP
+# define IVIEWHOLDER_HPP
 
-AView::AView(void)
+# include "Vec.hpp"
+
+class	IViewHolder
 {
-}
+public:
+	virtual ~IViewHolder(void){}
 
-AView::~AView(void)
-{
-}
+	virtual Vec2<int>		getPos(void) = 0;
+	virtual Vec2<int>		getSize(void) = 0;
 
-// AView::AView(AView const &src)
-// {
-// 	*this = src;
-// }
+protected:
+private:
+};
 
-// AView			&AView::operator=(AView const &rhs)
-// {
-// 	// *this = rhs;
-// 	return (*this);
-// }
+#endif

@@ -1,32 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AView.cpp                                          :+:      :+:    :+:   */
+/*   RelativeLayout.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/22 13:14:20 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/09/22 13:12:47 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/09/22 13:12:48 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "AView.hpp"
+#ifndef RELATIVELAYOUT_HPP
+# define RELATIVELAYOUT_HPP
 
-AView::AView(void)
+class	RelativeLayout
 {
-}
+public:
+	RelativeLayout(void);
+	virtual ~RelativeLayout(void);
 
-AView::~AView(void)
-{
-}
+protected:
 
-// AView::AView(AView const &src)
-// {
-// 	*this = src;
-// }
+private:
+	RelativeLayout(RelativeLayout const &src);
+	RelativeLayout			&operator=(RelativeLayout const &rhs);
+};
 
-// AView			&AView::operator=(AView const &rhs)
-// {
-// 	// *this = rhs;
-// 	return (*this);
-// }
+#endif

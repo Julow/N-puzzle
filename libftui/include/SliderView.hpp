@@ -1,32 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AView.cpp                                          :+:      :+:    :+:   */
+/*   SliderView.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/22 13:14:20 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/09/22 13:13:30 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/09/22 13:13:30 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "AView.hpp"
+#ifndef SLIDERVIEW_HPP
+# define SLIDERVIEW_HPP
 
-AView::AView(void)
+class	SliderView
 {
-}
+public:
+	SliderView(void);
+	virtual ~SliderView(void);
 
-AView::~AView(void)
-{
-}
+protected:
 
-// AView::AView(AView const &src)
-// {
-// 	*this = src;
-// }
+private:
+	SliderView(SliderView const &src);
+	SliderView			&operator=(SliderView const &rhs);
+};
 
-// AView			&AView::operator=(AView const &rhs)
-// {
-// 	// *this = rhs;
-// 	return (*this);
-// }
+#endif

@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AView.cpp                                          :+:      :+:    :+:   */
+/*   ViewFactory.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/22 13:14:20 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/09/22 13:14:03 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/09/22 13:14:03 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "AView.hpp"
+#include "ViewFactory.hpp"
 
-AView::AView(void)
+ViewFactory::ViewFactory(void)
 {
 }
 
-AView::~AView(void)
+ViewFactory::~ViewFactory(void)
 {
 }
 
-// AView::AView(AView const &src)
+// ViewFactory::ViewFactory(ViewFactory const &src)
 // {
 // 	*this = src;
 // }
 
-// AView			&AView::operator=(AView const &rhs)
+// ViewFactory			&ViewFactory::operator=(ViewFactory const &rhs)
 // {
 // 	// *this = rhs;
 // 	return (*this);

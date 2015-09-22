@@ -1,32 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AView.cpp                                          :+:      :+:    :+:   */
+/*   ACanvas.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/22 13:14:20 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/09/22 13:16:40 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "AView.hpp"
+#ifndef ACANVAS_HPP
+# define ACANVAS_HPP
 
-AView::AView(void)
+class	ACanvas
 {
-}
+public:
+	ACanvas(void);
+	virtual ~ACanvas(void);
 
-AView::~AView(void)
-{
-}
+protected:
 
-// AView::AView(AView const &src)
-// {
-// 	*this = src;
-// }
+private:
+	ACanvas(ACanvas const &src);
+	ACanvas			&operator=(ACanvas const &rhs);
+};
 
-// AView			&AView::operator=(AView const &rhs)
-// {
-// 	// *this = rhs;
-// 	return (*this);
-// }
+#endif

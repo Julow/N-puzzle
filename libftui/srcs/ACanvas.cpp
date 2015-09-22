@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AView.cpp                                          :+:      :+:    :+:   */
+/*   ACanvas.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/22 13:14:20 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/09/22 13:14:23 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "AView.hpp"
+#include "ACanvas.hpp"
 
-AView::AView(void)
+ACanvas::ACanvas(void)
 {
 }
 
-AView::~AView(void)
+ACanvas::~ACanvas(void)
 {
 }
 
-// AView::AView(AView const &src)
+// ACanvas::ACanvas(ACanvas const &src)
 // {
 // 	*this = src;
 // }
 
-// AView			&AView::operator=(AView const &rhs)
+// ACanvas			&ACanvas::operator=(ACanvas const &rhs)
 // {
 // 	// *this = rhs;
 // 	return (*this);

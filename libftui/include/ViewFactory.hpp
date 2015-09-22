@@ -1,32 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AView.cpp                                          :+:      :+:    :+:   */
+/*   ViewFactory.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/22 13:14:20 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/09/22 13:12:54 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/09/22 13:12:54 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "AView.hpp"
+#ifndef VIEWFACTORY_HPP
+# define VIEWFACTORY_HPP
 
-AView::AView(void)
+class	ViewFactory
 {
-}
+public:
+	ViewFactory(void);
+	virtual ~ViewFactory(void);
 
-AView::~AView(void)
-{
-}
+protected:
 
-// AView::AView(AView const &src)
-// {
-// 	*this = src;
-// }
+private:
+	ViewFactory(ViewFactory const &src);
+	ViewFactory			&operator=(ViewFactory const &rhs);
+};
 
-// AView			&AView::operator=(AView const &rhs)
-// {
-// 	// *this = rhs;
-// 	return (*this);
-// }
+#endif

@@ -1,32 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AView.cpp                                          :+:      :+:    :+:   */
+/*   AbsoluteLayout.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/22 13:14:20 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/09/22 13:12:51 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/09/22 13:12:51 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "AView.hpp"
+#ifndef ABSOLUTELAYOUT_HPP
+# define ABSOLUTELAYOUT_HPP
 
-AView::AView(void)
+class	AbsoluteLayout
 {
-}
+public:
+	AbsoluteLayout(void);
+	virtual ~AbsoluteLayout(void);
 
-AView::~AView(void)
-{
-}
+protected:
 
-// AView::AView(AView const &src)
-// {
-// 	*this = src;
-// }
+private:
+	AbsoluteLayout(AbsoluteLayout const &src);
+	AbsoluteLayout			&operator=(AbsoluteLayout const &rhs);
+};
 
-// AView			&AView::operator=(AView const &rhs)
-// {
-// 	// *this = rhs;
-// 	return (*this);
-// }
+#endif

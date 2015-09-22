@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AView.cpp                                          :+:      :+:    :+:   */
+/*   AbsoluteLayout.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/22 13:14:20 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/09/22 13:14:01 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/09/22 13:14:01 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "AView.hpp"
+#include "AbsoluteLayout.hpp"
 
-AView::AView(void)
+AbsoluteLayout::AbsoluteLayout(void)
 {
 }
 
-AView::~AView(void)
+AbsoluteLayout::~AbsoluteLayout(void)
 {
 }
 
-// AView::AView(AView const &src)
+// AbsoluteLayout::AbsoluteLayout(AbsoluteLayout const &src)
 // {
 // 	*this = src;
 // }
 
-// AView			&AView::operator=(AView const &rhs)
+// AbsoluteLayout			&AbsoluteLayout::operator=(AbsoluteLayout const &rhs)
 // {
 // 	// *this = rhs;
 // 	return (*this);

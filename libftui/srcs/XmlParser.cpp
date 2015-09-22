@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AView.cpp                                          :+:      :+:    :+:   */
+/*   XmlParser.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/22 13:14:20 by jaguillo         ###   ########.fr       */
+/*   Created: 2015/09/22 13:13:45 by jaguillo          #+#    #+#             */
+/*   Updated: 2015/09/22 13:13:45 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "AView.hpp"
+#include "XmlParser.hpp"
 
-AView::AView(void)
+XmlParser::XmlParser(void)
 {
 }
 
-AView::~AView(void)
+XmlParser::~XmlParser(void)
 {
 }
 
-// AView::AView(AView const &src)
+// XmlParser::XmlParser(XmlParser const &src)
 // {
 // 	*this = src;
 // }
 
-// AView			&AView::operator=(AView const &rhs)
+// XmlParser			&XmlParser::operator=(XmlParser const &rhs)
 // {
 // 	// *this = rhs;
 // 	return (*this);
