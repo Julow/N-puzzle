@@ -11,11 +11,12 @@ libs:
 o/srcs/ACanvas.o: srcs/ACanvas.cpp include/ACanvas.hpp | o/srcs/
 o/srcs/ALayout.o: srcs/ALayout.cpp include/ALayout.hpp | o/srcs/
 o/srcs/AView.o: srcs/AView.cpp include/AView.hpp include/IViewHolder.hpp \
-	| o/srcs/
+	include/Vec.hpp include/ACanvas.hpp include/ALayout.hpp | o/srcs/
 o/srcs/AbsoluteLayout.o: srcs/AbsoluteLayout.cpp include/AbsoluteLayout.hpp \
 	| o/srcs/
 o/srcs/Activity.o: srcs/Activity.cpp include/Activity.hpp include/ACanvas.hpp \
-	| o/srcs/
+	include/AView.hpp include/IViewHolder.hpp include/Vec.hpp \
+	include/ACanvas.hpp include/ALayout.hpp | o/srcs/
 o/srcs/RelativeLayout.o: srcs/RelativeLayout.cpp include/RelativeLayout.hpp \
 	| o/srcs/
 o/srcs/SliderView.o: srcs/SliderView.cpp include/SliderView.hpp | o/srcs/

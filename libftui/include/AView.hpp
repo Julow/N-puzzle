@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/09/22 15:26:07 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/22 16:10:34 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ public:
 		REQUEST_MEASURE = (1 << 3),
 		REQUEST_UPDATE = (1 << 4),
 		ENABLED_MOUSE = (1 << 5),
-		ENABLED_KEYBOARD = (1 << 6),
+		ENABLED_KEYBOARD = (1 << 7),
+		MOUSE_DOWN = (1 << 8),
 	};
 
 	AView();
@@ -40,36 +41,39 @@ public:
 /*
 ** High level callbacks
 */
-	void				onMouseEnter(void);
-	void				onMouseLeave(void);
+	virtual void		onMouseEnter(void);
+	virtual void		onMouseLeave(void);
 
-	void				onClick(void);
+	virtual void		onClick(void);
 
-	void				onKeyPress(int key_code);
+	virtual void		onKeyPress(int key_code);
+
+	virtual void		onEvent(std::string const &event);
 
 /*
 ** Low level callbacks
 */
-	Vec2<int>			onMeasure(void);
-	void				onUpdate(void); // ENABLED_*
+	virtual Vec2<int>	onMeasure(void);
+	virtual void		onUpdate(void); // ENABLED_*
 
-	void				onDraw(ACanvas &canvas);
+	virtual void		onDraw(ACanvas &canvas);
 
-	void				onMouseMove(int x, int y);
+	virtual void		onMouseMove(int x, int y);
+	virtual void		onMouseWheel(float delta);
 
-	void				onMouseUp(void);
-	bool				onMouseDown(int x, int y);
+	virtual void		onMouseUp(void);
+	virtual bool		onMouseDown(int x, int y);
 
-	void				onKeyUp(int key_code);
-	bool				onKeyDown(int key_code);
+	virtual void		onKeyUp(int key_code);
+	virtual bool		onKeyDown(int key_code);
 
 /*
 ** Useless
 */
-	void				show(void);
-	void				hide(void);
+	virtual void		setVisibility(bool visi);
 
 	bool				isVisible(void);
+	bool				isMouseDown(void);
 
 /*
 ** Request
