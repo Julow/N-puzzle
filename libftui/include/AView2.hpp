@@ -166,12 +166,12 @@ protected:
 	virtual void		setMouseOver(bool state);
 
 	// * LOW LEVEL GETTERS ********** //
-	template <typename LAYOUT_TYPE>
-	typename LAYOUT_TYPE::ViewHolder	*getHolder(void) const
-		{return dynamic_cast<typename LAYOUT_TYPE::ViewHolder const*>(this->_holder);}
-	template <typename LAYOUT_TYPE>
-	typename LAYOUT_TYPE::ViewHolder	*getHolder(void)
-		{return dynamic_cast<typename LAYOUT_TYPE::ViewHolder*>(this->_holder);}
+	template <typename LAYOUT>
+	typename LAYOUT::ViewHolder	*getHolder(void) const;
+	{return dynamic_cast<typename LAYOUT::ViewHolder const*>(this->_holder);}
+	template <typename LAYOUT>
+	typename LAYOUT::ViewHolder	*getHolder(void)
+	{return dynamic_cast<typename LAYOUT::ViewHolder*>(this->_holder);}
 	
 
 private:
