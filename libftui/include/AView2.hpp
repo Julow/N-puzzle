@@ -16,10 +16,14 @@
 # include <string>
 //# include <iostream>
 //# include <stdexcept>
-
+/*
 # include "IViewHolder.hpp"
 # include "ACanvas.hpp"
 # include "ALayout.hpp"
+*/
+class ALayout;		//debug
+class ACanvas;		//debug
+class IViewHolder;	//debug
 
 /**
  **	AView handles it's spacial attributes through.
@@ -49,8 +53,7 @@ public:
 		MOUSE_SCROLL_TARGET = (1 << 8),
 		MOUSE_CLICK_TARGET = (1 << 9),
 		MOUSE_POSITION_TARGET = (1 << 10),
-		MOUSE_CAPTURE_TARGET = (1 << 11),
-		KEYBOARD_TARGET = (1 << 12),
+		KEYBOARD_TARGET = (1 << 11),
 	};
 
 	/** Custom behaviours */
@@ -82,9 +85,9 @@ public:
 	virtual void		onMouseScroll(int x, int y, float delta);
 	/** Called if (isMouseClickSensivite && isMouseOver) */
 	virtual bool		onMouseDown(int x, int y, int button);
-	/** Called if (isMouseClickSensivite && isMouseOver) || (isMouseCaptured) */
+	/** Called if (isMouseClickSensivite && isMouseOver)*/
 	virtual bool		onMouseUp(int x, int y, int button);
-	/** Called if (isMousePositionSensivite && isMouseOver) || isMo0useCaptured*/
+	/** Called if (isMousePositionSensivite && isMouseOver) */
 	virtual void		onMouseMove(int x, int y);
 	/** Called if (isKeyboardSensitive) */
 	virtual bool		onKeyDown(int key_code);
@@ -96,7 +99,6 @@ protected:
 	void				registerMouseScrollTarget(bool state);
 	void				registerMouseClickTarget(bool state);
 	void				registerMousePositionTarget(bool state);
-	void				registerMouseCaptureTarget(bool state);
 	void				registerKeyboardTarget(bool state);
 
 public:
@@ -105,7 +107,6 @@ public:
 	bool				isMouseScollTarget(void) const;
 	bool				isMouseClickTarget(void) const;
 	bool				isMousePositionTarget(void) const;
-	bool				isMouseCapturedTarget(void) const;
 	bool				isKeyboardTarget(void) const;
 
 /*
@@ -126,22 +127,26 @@ protected:
 public:
 	// * SETTERS ******************** //
 	// * GETTERS ******************** //
-	bool				needsRedraw(void) const;
-	bool				needsMeasure(void) const;
-	bool				needsUpdate(void) const;
+	bool				flaggedRedraw(void) const;
+	bool				flaggedMeasure(void) const;
+	bool				flaggedUpdate(void) const;
 
 /*
 ** * Misc ******************************************************************** *
 */
 public:
-	/** Called by parent before (onMouseMove) & after setMouseOver(true) */
+	// * CALLBACKS ****************** //
+	/** Called by this->onMouseMove() */
 	virtual void		onMouseEnter(void);
-	/** Called by parent instead of (onMouseMove) & after setMouseOver(false) */
+	/** Called by this->onMouseMove() */
 	virtual void		onMouseLeave(void);
 	/** Called by activity */
 	virtual void		onEvent(std::string const &event);
+	/** Called by parent */
 	virtual void		onPositionChange(void);
+	/** Called by parent */
 	virtual void		onSizeChange(void);
+	/** Called by this->setVisibility() */
 	virtual void		onVisibilityChange(bool state);
 
 public:
@@ -155,8 +160,19 @@ public:
 	void				setAlpha(float value);
 	void				setVisibility(bool state);
 
-	/** Called by parent before a potential onMouseMove */
+protected:
+	// * LOW LEVEL SETTERS ********** //
+	/** Called by this->onMouseMove() */
 	virtual void		setMouseOver(bool state);
+
+	// * LOW LEVEL GETTERS ********** //
+	template <typename LAYOUT_TYPE>
+	typename LAYOUT_TYPE::ViewHolder	*getHolder(void) const
+		{return dynamic_cast<typename LAYOUT_TYPE::ViewHolder const*>(this->_holder);}
+	template <typename LAYOUT_TYPE>
+	typename LAYOUT_TYPE::ViewHolder	*getHolder(void)
+		{return dynamic_cast<typename LAYOUT_TYPE::ViewHolder*>(this->_holder);}
+	
 
 private:
 	AView(AView const &src);
