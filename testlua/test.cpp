@@ -1,6 +1,20 @@
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   test.cpp                                           :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/09/24 07:31:01 by ngoguey           #+#    #+#             //
+//   Updated: 2015/09/24 12:00:06 by ngoguey          ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #include <iostream>
 #include <functional>
+#include <cmath>
+#include <stdexcept>
+
 extern "C"
 {
 #include <lua.h>
@@ -8,56 +22,95 @@ extern "C"
 #include <lualib.h>
 }
 
-void		print_stack(lua_State *L)
+/*
+envdump
+for k,v in pairs(_G) do print(string.format("%20s: (%3.3s){%s}", tostring(k), type(v), tostring(v))) end
+for k,v in ipairs(_G) do print(string.format("%20s: (%3.3s){%s}", tostring(k), type(v), tostring(v))) end
+*/
+namespace ftui
 {
-	int			i;
-	std::function<void()> funcs[] =
+void		luaFT_stackdump(lua_State *L)
+{
+	int const				top = lua_gettop(L);
+	int						i;
+	std::function<void()>	funcs[] =
 	{
-		[&](){std::cout << "none" << "\n";},
-		[&](){std::cout << "nil" << "\n";},
-		[&](){std::cout << "bool: " << lua_toboolean(L, i) << "\n";},
-		[&](){std::cout << "lusrd" << "\n";},
-		[&](){std::cout << "nbr: " << lua_tonumber(L, i) <<  "\n";},
-		[&](){std::cout << "str" << lua_tostring(L, i) << "\n";},
-		[&](){std::cout << "tab" << "\n";},
-		[&](){std::cout << "func" << "\n";},
-		[&](){std::cout << "usrd" << "\n";},
-		[&](){std::cout << "thread" << "\n";},
+		[=, &i](){std::cout << "  none" << "\n";},
+		[=, &i](){std::cout << "   nil" << "\n";},
+		[=, &i](){std::cout << "  bool: " << lua_toboolean(L, i) << "\n";},
+		[=, &i](){std::cout << " lusrd" << "\n";},
+		[=, &i](){std::cout << "   nbr: " << lua_tonumber(L, i) <<  "\n";},
+		[=, &i](){std::cout << "   str: " << lua_tostring(L, i) << "\n";},
+		[=, &i](){std::cout << "   tab" << "\n";},
+		[=, &i](){std::cout << "  func: " << (void*)lua_tocfunction(L, i) << "\n";},
+		[=, &i](){std::cout << "  usrd" << "\n";},
+		[=, &i](){std::cout << "thread" << "\n";},
 	};
-	int const	top = lua_gettop(L);
-
-	std::cout << top << "elements" << std::endl;
-	
+	std::cout << "Stack dump: " << top << " Elements" << std::endl;	
 	for (i = 1; i <= top; i++)
 	{
+		std::cout << "[" << i << "]";
 		funcs[lua_type(L, i) + 1]();
-		}
+	}
 	return ;
+}
+}
+
+static	int l_sin (lua_State *L)
+{
+	std::cout << "\nMYSIN BEGIN" << std::endl;
+	ftui::luaFT_stackdump(L);
+	double const	d = luaL_checknumber(L, -1);
+	// double const	d = lua_tonumber(L, 1);
+	ftui::luaFT_stackdump(L);
+	std::cout << "l_sin got: " << d << std::endl;
+	lua_pushnumber(L, sin(d));
+	ftui::luaFT_stackdump(L);
+	// throw (std::exception());
+	std::cout << "MYSIN END\n" << std::endl;
+	return 1;
 }
 
 int main (void)
 {
-	std::cout << "hello world" << std::endl;
 	int			error;
 	lua_State	*L = luaL_newstate();
 	std::string	buf;
 
+	luaL_openlibs(L);
+	lua_pushcfunction(L, l_sin);
+	ftui::luaFT_stackdump(L);
+	lua_setglobal(L, "mysin");
+	ftui::luaFT_stackdump(L);
 	lua_pushnil(L);
 	lua_pushboolean(L, 42);
+	lua_pushboolean(L, 1);
+	lua_pushstring(L, "hello");
 	lua_pushnumber(L, 42.);
-	print_stack(L);
-	print_stack(L);
-	luaL_openlibs(L);
+	ftui::luaFT_stackdump(L);
+	
 	while (!std::cin.eof())
 	{
 		std::getline(std::cin, buf);
+		try
+		{
 		error = luaL_loadbuffer(L, buf.c_str(), buf.length(), "line") ||
 			lua_pcall(L, 0, 0, 0);
+		}
+		catch (std::exception &e)
+		{
+			std::cout << "BEGIN OF CATCH" << std::endl;
+			ftui::luaFT_stackdump(L);
+			std::cout << "END OF CATCH" << std::endl;
+			
+		}
+		
 		if (error)
 		{
 			std::cout << "lol ERROR(" << error << "): " << lua_tostring(L, -1) << std::endl;
 			lua_pop(L, 1); 
 		}
+		ftui::luaFT_stackdump(L);
 	}
 
 	std::cout << "LUA_ERRERR" << " " <<LUA_ERRERR<< "\n";
@@ -98,10 +151,12 @@ int main (void)
 	std::cout << "LUA_OPSHR" << " " <<LUA_OPSHR<< "\n";
 	std::cout << "LUA_OPSUB" << " " <<LUA_OPSUB<< "\n";
 	std::cout << "LUA_OPUNM" << " " <<LUA_OPUNM<< "\n";
+	
 	std::cout << "LUA_REFNIL" << " " <<LUA_REFNIL<< "\n";
 	std::cout << "LUA_REGISTRYINDEX" << " " <<LUA_REGISTRYINDEX<< "\n";
 	std::cout << "LUA_RIDX_GLOBALS" << " " <<LUA_RIDX_GLOBALS<< "\n";
 	std::cout << "LUA_RIDX_MAINTHREAD" << " " <<LUA_RIDX_MAINTHREAD<< "\n";
+	
 	std::cout << "LUA_TBOOLEAN" << " " <<LUA_TBOOLEAN<< "\n";
 	std::cout << "LUA_TFUNCTION" << " " <<LUA_TFUNCTION<< "\n";
 	std::cout << "LUA_TLIGHTUSERDATA" << " " <<LUA_TLIGHTUSERDATA<< "\n";
@@ -112,6 +167,7 @@ int main (void)
 	std::cout << "LUA_TTABLE" << " " <<LUA_TTABLE<< "\n";
 	std::cout << "LUA_TTHREAD" << " " <<LUA_TTHREAD<< "\n";
 	std::cout << "LUA_TUSERDATA" << " " <<LUA_TUSERDATA<< "\n";
+
 //	std::cout << "LUA_USE_APICHECK" << " " <<LUA_USE_APICHECK<< "\n";
 	std::cout << "LUA_YIELD" << " " <<LUA_YIELD<< "\n";
 	std::cout << "LUAL_BUFFERSIZE" << " " <<LUAL_BUFFERSIZE<< "\n";
