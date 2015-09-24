@@ -6,11 +6,12 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:12:32 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/24 19:11:12 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/24 21:38:48 by juloo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef XMLPARSER_HPP
+#ifdef XMLPARSER_HPP
+// #ifndef XMLPARSER_HPP
 # define XMLPARSER_HPP
 
 # include "libftui.h"

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 11:55:01 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/24 15:06:05 by ngoguey          ###   ########.fr       */
+/*   Updated: 2015/09/24 21:39:57 by juloo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ class	AbsoluteLayout;
 class	RelativeLayout;
 class	VerticalLayout;
 
+class	XmlTokenizer;
 class	XmlParser;
 
 template <typename T> class	Vec2;
