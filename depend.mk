@@ -6,4 +6,4 @@ libs:
 	make -C libftui
 .PHONY: libs
 
-o/srcs/main.o: srcs/main.c | o/srcs/
+o/srcs/main.o: srcs/main.cpp | o/srcs/

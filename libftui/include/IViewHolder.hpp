@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:56:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/22 15:20:43 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/09/24 07:12:34 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ class	IViewHolder
 public:
 	virtual ~IViewHolder(void){}
 
-	virtual Vec2<int>		getPos(void) = 0;
-	virtual Vec2<int>		getSize(void) = 0;
+	virtual Vec2<int>		getPos(void) const = 0;
+	virtual Vec2<int>		getSize(void) const = 0;
 
 protected:
 private:

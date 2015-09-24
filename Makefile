@@ -12,7 +12,7 @@ MODULES :=
 LIBS := libftui
 
 # Compilation and linking flags
-FLAGS := -str=c++14 -Wall -Wextra -O2
+FLAGS := -std=c++14 -Wall -Wextra -O2
 # Compilation flags
 HEADS := $(addprefix -I,$(DIRS))
 # Linking flags

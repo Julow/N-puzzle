@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/09/24 06:57:40 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/24 07:19:28 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ class IViewHolder;	//debug
  **		 'onSizeChange' callback
  */
 
-class AView
+class	AView
 {
 public:
 	// * NESTED OBJECTS ************* //
