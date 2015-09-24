@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:12:32 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/24 12:01:18 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/24 19:11:12 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,35 +18,79 @@
 # include <istream>
 # include <unordered_map>
 
+/*
+** Simple XML parser
+** -
+** MARKUP		= MARKUP_START '<' SPACE* MARKUP_NAME PARAMS SPACE* MARKUP_END
+** MARKUP_START	= SPACE MARKUP_START | "<!--" .* "-->" | '<'
+** SPACE		= ' ' | '\n' | '\t'
+** MARKUP_NAME	= \w
+** PARAMS		= SPACE+ PARAM_NAME SPACE* '=' SPACE* PARAM_DEF? PARAMS?
+** PARAM_NAME	= \w
+** PARAM_DEF	= '"' ( '\' '"' | !'"' )* '"'
+** MARKUP_END	= '>' MARKUP* MARKUP_START '/' SPACE* ${STACKED_NAME} SPACE* '>' | "/>"
+*/
+
 namespace ftui
 {
 
 class	XmlParser
 {
 public:
+	/*
+	** Tokens
+	*/
 	enum	Token
 	{
+		TOKEN_ERROR,
+		TOKEN_EOF,
 		MARKUP_START,
 		MARKUP_END
 	};
 
+	typedef std::unordered_map<std::string, std::string>	params_map_t;
+
 	XmlParser(std::istream &stream);
 	virtual ~XmlParser(void);
 
-	bool				next(void);
-	Token				getToken(void) const { return (_token); }
+	/*
+	** Return false on error of at the EOF
+	** true otherwise
+	** -
+	** 'token' is set to the corresponding token
+	*/
+	bool				next(Token &token);
 
-	std::string const	&getMarkupName(void) const { return (_markupName); }
+	/*
+	** Return current markup name
+	*/
+	std::string const	&getMarkupName(void) const;
 
-	std::unordered_map<std::string, std::string> const	&getParams(void) const;
+	/*
+	** Return current markup params
+	*/
+	params_map_t const	&getParams(void) const;
 
 protected:
 
 	std::istream		&_stream;
 
-	Token											_token;
-	std::string										_markupName;
-	std::unordered_map<std::string, std::string>	_params;
+	std::string			_markupName;
+	params_map_t		_params;
+
+	Token				_token;
+	int					_line;
+
+	bool				parseMarkup(void);
+	bool				parseMarkupStart(void);
+	bool				parseMarkupEnd(void);
+	bool				parseMarkupName(void);
+	bool				parseParams(void);
+	bool				parseParamName(std::string &out);
+	bool				parseParamDef(std::string &out);
+	bool				parseSpace(void);
+	bool				parseEqu(char const *equ);
+	bool				parseTo(char const *to);
 
 private:
 	XmlParser(void) = delete;

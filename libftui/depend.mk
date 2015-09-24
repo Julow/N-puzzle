@@ -16,7 +16,8 @@ o/srcs/AView.o: srcs/AView.cpp include/AView.hpp include/libftui.h | o/srcs/
 o/srcs/AbsoluteLayout.o: srcs/AbsoluteLayout.cpp include/AbsoluteLayout.hpp \
 	include/libftui.h | o/srcs/
 o/srcs/Activity.o: srcs/Activity.cpp include/Activity.hpp include/libftui.h \
-	| o/srcs/
+	include/IViewHolder.hpp include/libftui.h include/Vec.hpp \
+	include/libftui.h | o/srcs/
 o/srcs/RelativeLayout.o: srcs/RelativeLayout.cpp include/RelativeLayout.hpp \
 	include/libftui.h | o/srcs/
 o/srcs/SliderView.o: srcs/SliderView.cpp include/SliderView.hpp \
