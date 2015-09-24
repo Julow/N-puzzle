@@ -6,11 +6,14 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/22 13:14:23 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/24 11:44:01 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ACanvas.hpp"
+
+namespace ftui
+{
 
 ACanvas::ACanvas(void)
 {
@@ -30,3 +33,5 @@ ACanvas::~ACanvas(void)
 // 	// *this = rhs;
 // 	return (*this);
 // }
+
+};

@@ -6,12 +6,17 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 15:04:00 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/22 15:25:26 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/24 12:01:16 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VEC_HPP
 # define VEC_HPP
+
+# include "libftui.h"
+
+namespace ftui
+{
 
 template <typename T>
 class	Vec2
@@ -118,6 +123,8 @@ public:
 
 protected:
 private:
+};
+
 };
 
 #endif

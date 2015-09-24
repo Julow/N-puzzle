@@ -6,15 +6,14 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/22 13:14:10 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/24 11:44:02 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ALayout.hpp"
 
-ALayout::ALayout(void)
+namespace ftui
 {
-}
 
 ALayout::~ALayout(void)
 {
@@ -30,3 +29,5 @@ ALayout::~ALayout(void)
 // 	// *this = rhs;
 // 	return (*this);
 // }
+
+};

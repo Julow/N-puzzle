@@ -39,7 +39,7 @@ $(NAME): $(LIBS_DEPEND) $(O_FILES)
 
 # Compiling
 $(O_DIR)/%.o:
-	clang++ $(FLAGS) $(HEADS) -c $< -o $@ && printf '\033[32m$<\033[0m\n'
+	clang++ $(FLAGS) $(HEADS) -c $< -o $@ && printf '\033[32m$(NAME)/$<\033[0m\n'
 
 bindings/%:
 	make -C $@

@@ -6,18 +6,21 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/22 15:26:18 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/24 12:01:08 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ACTIVITY_HPP
 # define ACTIVITY_HPP
 
+# include "libftui.h"
+
 # include <vector>
 # include <unordered_map>
 # include <string>
-# include "ACanvas.hpp"
-# include "AView.hpp"
+
+namespace ftui
+{
 
 class	Activity
 {
@@ -51,6 +54,8 @@ protected:
 private:
 	Activity(Activity const &src);
 	Activity		&operator=(Activity const &rhs);
+};
+
 };
 
 #endif
