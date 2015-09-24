@@ -6,128 +6,188 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/09/22 18:57:07 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/09/24 06:57:40 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef AVIEW_HPP
 # define AVIEW_HPP
 
-//# include <string>
+# include <string>
 //# include <iostream>
 //# include <stdexcept>
-
+/*
 # include "IViewHolder.hpp"
 # include "ACanvas.hpp"
 # include "ALayout.hpp"
+*/
+class ALayout;		//debug
+class ACanvas;		//debug
+class IViewHolder;	//debug
+
+/**
+ **	AView handles it's spacial attributes through.
+ **		'_holder' functions
+ **		 'onPositionChange' callback
+ **		 'onSizeChange' callback
+ */
 
 class AView
 {
 public:
-	enum		Flags
-	{
-		HIDDEN = (1 << 1),
-		MOUSE_DOWN = (1 << 2),
-	};
+	// * NESTED OBJECTS ************* //
+
+	/** A query is spread to parent (flag to 1 everwhere)
+		A query callback is spread from parent (flag to 0 everwhere) */
 	enum		Query
 	{
-		QUERY_REDRAW = (1 << 1),
-		QUERY_MEASURE = (1 << 2),
-		QUERY_UPDATE = (1 << 3),
-	};
-	enum		ActivationsDeMerde
-	{
-		ENABLED_MOUSE = (1 << 1),
-		ENABLED_KEYBOARD = (1 << 2),
+		REDRAW_QUERY = (1 << 1),
+		MEASURE_QUERY = (1 << 2),
+		UPDATE_QUERY = (1 << 3),
 	};
 
+	/** A target registering is spread to parent (parent has different flags)
+		A target callback is spread from parent */
+	enum		Target
+	{
+		MOUSE_SCROLL_TARGET = (1 << 8),
+		MOUSE_CLICK_TARGET = (1 << 9),
+		MOUSE_POSITION_TARGET = (1 << 10),
+		KEYBOARD_TARGET = (1 << 11),
+	};
+
+	/** Custom behaviours */
+	enum		Misc
+	{
+		MOUSE_OVER = (1 << 16),
+		HIDDEN = (1 << 17),
+	};
+
+	// * CTORS / DTORS ************** //
 	AView();
 	virtual ~AView();
 
-	std::string const	*getId(void) const;
-
-	virtual void		setVisibility(bool visi);
-
-	bool				isVisible(void);
-	bool				isMouseDown(void);
-
-	bool				isMouseEnabled(void);
-	bool				isKeyboardEnabled(void);
-
-/*
-** Request
-*/
-	void				requestDimension(Vec2<int> d);
-
 protected:
-
-	std::string const * const	_id;
-
+	// * ATTRIBUTES ***************** //
 	ALayout				*_parent;
 	IViewHolder			*_holder;
 
-	long				_flags;
-	long				_queries;
-	long				_active;
+	std::string const *const	_id;
+	unsigned long				_flags;
+	float						_alpha;
 
 /*
-** High level callbacks
+** * Targetings ************************************************************** *
 */
-	virtual void		onMouseEnter(void);
-	virtual void		onMouseLeave(void);
-
-	virtual void		onClick(void);
-
-	virtual void		onKeyPress(int key_code);
-
-	virtual void		onEvent(std::string const &event);
-
-/*
-** Low level callbacks
-*/
+public:
+	// * FROM PARENT **************** //
+	/** Called if (isMouseScrollSensivite && isMouseOver) */
+	virtual void		onMouseScroll(int x, int y, float delta);
+	/** Called if (isMouseClickSensivite && isMouseOver) */
+	virtual bool		onMouseDown(int x, int y, int button);
+	/** Called if (isMouseClickSensivite && isMouseOver)*/
+	virtual bool		onMouseUp(int x, int y, int button);
+	/** Called if (isMousePositionSensivite && isMouseOver) */
 	virtual void		onMouseMove(int x, int y);
-	virtual void		onMouseWheel(float delta);
-
-	virtual void		onMouseUp(void);
-	virtual bool		onMouseDown(int x, int y);
-
-	virtual void		onKeyUp(int key_code);
+	/** Called if (isKeyboardSensitive) */
 	virtual bool		onKeyDown(int key_code);
+	/** Called if (isKeyboardSensitive) */
+	virtual void		onKeyUp(int key_code);
 
+protected:
+	// * TO PARENT ****************** //
+	void				registerMouseScrollTarget(bool state);
+	void				registerMouseClickTarget(bool state);
+	void				registerMousePositionTarget(bool state);
+	void				registerKeyboardTarget(bool state);
+
+public:
+	// * SETTERS ******************** //
+	// * GETTERS ******************** //
+	bool				isMouseScollTarget(void) const
+		{return this->_flags & AView::MOUSE_SCROLL_TARGET;}
+	bool				isMouseClickTarget(void) const
+		{return this->_flags & AView::MOUSE_CLICK_TARGET;}
+	bool				isMousePositionTarget(void) const
+		{return this->_flags & AView::MOUSE_POSITION_TARGET;}
+	bool				isKeyboardTarget(void) const
+		{return this->_flags & AView::KEYBOARD_TARGET;}
+		
 /*
-** Recursive callbacks
+** * Queries ***************************************************************** *
 */
+public:
+	// * FROM PARENT **************** //
+	virtual void		onUpdate(void);
+	virtual void		onMeasure(void);
 	virtual void		onDraw(ACanvas &canvas);
 
-	virtual void		onSizeChange(void);
-	virtual void		onMeasure(void){return _holder.setRequestedDimension();}
-
-	virtual void		onUpdate(void); // ENABLED_*
-
-/*
-** Query
-*/
-/*
-	void				setFlagHidden(bool b);		//set que lui, call setflagredraw			util, state, pas important, a moi
-	void				setFlagsMouseDown(bool b);	//set que lui, ses parents se sont deja actives
-
-	void				setFlagsRedraw(void);		//set lui, et ses parents	query
-	void				setFlagsMeasure(void);		//set lui, et ses parents
-	void				setFlagsUpdate(void);		//set lui, et ses parents
-
-	void				setFlagsEnableMouse(bool b);//set lui, et ses parents, set son activity		activer une feature enable
-	void				setFlagsKeyboard(bool b);	//set lui, et ses parents, set son activity		activer une feature	enable
-*/
+protected:
+	// * TO PARENT ****************** //
 	void				queryRedraw(void);
 	void				queryMeasure(void);
 	void				queryUpdate(void);
 
-	void				enableMouse(bool e);
-	void				enableKeyboard(bool e);
+public:
+	// * SETTERS ******************** //
+	// * GETTERS ******************** //
+	bool				flaggedRedraw(void) const
+		{return this->_flags & AView::REDRAW_QUERY;}
+	bool				flaggedMeasure(void) const
+		{return this->_flags & AView::MEASURE_QUERY;}
+	bool				flaggedUpdate(void) const
+		{return this->_flags & AView::UPDATE_QUERY;}
+	
+/*
+** * Misc ******************************************************************** *
+*/
+public:
+	// * CALLBACKS ****************** //
+	/** Called by this->onMouseMove() */
+	virtual void		onMouseEnter(void);
+	/** Called by this->onMouseMove() */
+	virtual void		onMouseLeave(void);
+	/** Called by activity */
+	virtual void		onEvent(std::string const &event);
+	/** Called by parent */
+	virtual void		onPositionChange(void);
+	/** Called by parent */
+	virtual void		onSizeChange(void);
+	/** Called by this->setVisibility() */
+	virtual void		onVisibilityChange(bool state);
+
+public:
+	// * GETTERS ******************** //
+	std::string const	*getId(void) const
+		{return this->_id;}
+	float				getAlpha(void) const
+		{return this->_alpha;}
+	bool				isVisible(void) const
+		{return this->_flags & AView::HIDDEN;}
+	bool				isMouseOver(void) const
+		{return this->_flags & AView::MOUSE_OVER;}
+		
+	// * SETTERS ******************** //
+	void				setAlpha(float value);
+	void				setVisibility(bool state);
+
+protected:
+	// * LOW LEVEL SETTERS ********** //
+	/** Called by this->onMouseMove() */
+	virtual void		setMouseOver(bool state);
+
+	// * LOW LEVEL GETTERS ********** //
+	template <typename LAYOUT>
+	typename LAYOUT::ViewHolder	*getHolder(void) const
+	{return dynamic_cast<typename LAYOUT::ViewHolder const*>(this->_holder);}
+	template <typename LAYOUT>
+	typename LAYOUT::ViewHolder	*getHolder(void)
+	{return dynamic_cast<typename LAYOUT::ViewHolder*>(this->_holder);}
+	
 
 private:
-	AView(AView const &src);
-	AView				&operator=(AView const &rhs);
+	AView(AView const &src) = delete;
+	AView				&operator=(AView const &rhs) = delete;
 };
 
 #endif // ********************************************************* AVIEW_HPP //
