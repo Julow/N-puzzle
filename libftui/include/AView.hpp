@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/09/24 12:01:04 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/09/24 14:05:19 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ namespace ftui
 {
 
 /*
-** Represent an UI component
+** Represents an UI component
 ** -
 ** This is the base class for any UI component
 */
@@ -30,26 +30,25 @@ namespace ftui
 class	AView
 {
 public:
-	enum		Query
+	enum	Query
 	{
 		REDRAW_QUERY = (1 << 1),
 		MEASURE_QUERY = (1 << 2),
 		UPDATE_QUERY = (1 << 3),
 	};
-	enum		Target
+	enum	Target
 	{
 		MOUSE_SCROLL_TARGET = (1 << 8),
 		MOUSE_CLICK_TARGET = (1 << 9),
 		MOUSE_POSITION_TARGET = (1 << 10),
 		KEYBOARD_TARGET = (1 << 11),
 	};
-	enum		Misc
+	enum	Misc
 	{
 		MOUSE_OVER = (1 << 16),
 		HIDDEN = (1 << 17),
 	};
 
-	AView(XmlParser const &xml);
 	virtual ~AView(void);
 
 /*
@@ -94,7 +93,7 @@ public:
 	virtual void				onKeyUp(int key_code);
 
 	/*
-	** Hight level callbacks
+	** High level callbacks
 	*/
 	virtual void				onMouseEnter(void);
 	virtual void				onMouseLeave(void);
@@ -109,10 +108,10 @@ public:
 	/*
 	** Targets
 	*/
-	bool						isMouseScollTargeted(void) const { return (this->_flags & AView::MOUSE_SCROLL_TARGET); }
-	bool						isMouseClickTargeted(void) const { return (this->_flags & AView::MOUSE_CLICK_TARGET); }
-	bool						isMousePositionTargeted(void) const { return (this->_flags & AView::MOUSE_POSITION_TARGET); }
-	bool						isKeyboardTargeted(void) const { return (this->_flags & AView::KEYBOARD_TARGET); }
+	virtual bool				isMouseScollTargeted(void) const { return (this->_flags & AView::MOUSE_SCROLL_TARGET); }
+	virtual bool				isMouseClickTargeted(void) const { return (this->_flags & AView::MOUSE_CLICK_TARGET); }
+	virtual bool				isMousePositionTargeted(void) const { return (this->_flags & AView::MOUSE_POSITION_TARGET); }
+	virtual bool				isKeyboardTargeted(void) const { return (this->_flags & AView::KEYBOARD_TARGET); }
 
 	/*
 	** Queries
@@ -122,6 +121,8 @@ public:
 	bool						isUpdateQueried(void) const { return (this->_flags & AView::UPDATE_QUERY); }
 
 protected:
+
+	AView(XmlParser const &xml);
 
 /*
 ** View core
@@ -135,39 +136,43 @@ protected:
 
 	void						setMouseOver(bool state);
 
-	template <typename T> typename T::ViewHolder	*getHolder(void) const { return (dynamic_cast<typename T::ViewHolder const*>(this->_holder)); }
-	template <typename T> typename T::ViewHolder	*getHolder(void) { return (dynamic_cast<typename T::ViewHolder*>(this->_holder)); }
+	template <typename T>
+	typename T::ViewHolder		*getHolder(void) const { return (dynamic_cast<typename T::ViewHolder const*>(this->_holder)); }
+	template <typename T>
+	typename T::ViewHolder		*getHolder(void) { return (dynamic_cast<typename T::ViewHolder*>(this->_holder)); }
 
 /*
 ** Register target
-** Some low level callbacks are not enable by default
+** Some low level callbacks are not enabled by default
 */
-	void						registerTargetMouseScroll(bool state);
-	void						registerTargetMouseClick(bool state);
-	void						registerTargetMousePosition(bool state);
-	void						registerTargetKeyboard(bool state);
+	virtual void				registerTargetMouseScroll(bool state);
+	virtual void				registerTargetMouseClick(bool state);
+	virtual void				registerTargetMousePosition(bool state);
+	virtual void				registerTargetKeyboard(bool state);
 
 /*
-** Queries
-** Query a callback for the next frame
+** Query
+** Queries a callback for the next frame
 */
-	void						queryRedraw(void);
-	void						queryMeasure(void);
-	void						queryUpdate(void);
+	virtual void				queryRedraw(void);
+	virtual void				queryMeasure(void);
+	virtual void				queryUpdate(void);
 
 /*
 ** Static
 */
 public:
 
-	typedef AView			*(*factory_t)(XmlParser&);
+	typedef AView				*(*factory_t)(XmlParser&);
+	typedef std::unordered_map<std::string, factory_t>	factory_map_t;
 
-	static factory_t		getFactory(std::string const &name);
-	static void				registerFactory(std::string const &name, factory_t factory);
+	static factory_t			getFactory(std::string const &name);
+	static void					registerFactory(std::string const &name,
+									factory_t factory);
 
 private:
 
-	static std::unordered_map<std::string, factory_t>	_factories;
+	static factory_map_t	_factories;
 
 /*
 ** Disable
