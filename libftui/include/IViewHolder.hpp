@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/24 08:37:05 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/24 11:42:04 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/09/24 15:25:09 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define IVIEWHOLDER_HPP
 
 # include "libftui.h"
+
 # include "Vec.hpp"
 
 namespace ftui
@@ -32,6 +33,8 @@ public:
 
 	virtual Vec2<int>		getPos(void) const = 0;
 	virtual Vec2<int>		getSize(void) const = 0;
+
+	virtual void			setView(AView *view) = 0;
 };
 
 };

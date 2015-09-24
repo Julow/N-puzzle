@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:12:43 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/24 11:42:28 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/09/24 15:45:19 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,15 @@ class	VerticalLayout : public ALayout
 public:
 	virtual ~VerticalLayout(void);
 
+	virtual void			inflate(XmlParser &xml);
+
 	AView					*createChild(std::string const &type, ...);
 
 	static AView			*createView(XmlParser &xml);
 
 protected:
 
-	VerticalLayout(XmlParser &xml);
+	VerticalLayout(XmlParser const &xml);
 
 private:
 	VerticalLayout(void) = delete;
@@ -54,9 +56,11 @@ public:
 		virtual Vec2<int>		getPos(void) const;
 		virtual Vec2<int>		getSize(void) const;
 
+		virtual void			setView(AView *view);
+
 	protected:
 
-		ViewHolder(XmlParser &xml);
+		ViewHolder(XmlParser const &xml);
 
 		AView				*_view;
 

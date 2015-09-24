@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/09/24 14:05:19 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/24 15:45:03 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ public:
 	ALayout						*getParent(void);
 
 	void						setViewHolder(IViewHolder *holder);
+	virtual void				inflate(XmlParser &xml);
 
 	/*
 	** View properties
