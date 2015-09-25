@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/09/24 15:45:03 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/25 15:53:12 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ class	AView
 public:
 	enum	Query
 	{
-		REDRAW_QUERY = (1 << 1),
+		UPDATE_QUERY = (1 << 1),
 		MEASURE_QUERY = (1 << 2),
-		UPDATE_QUERY = (1 << 3),
+		REDRAW_QUERY = (1 << 3),
 	};
 	enum	Target
 	{
@@ -50,29 +50,32 @@ public:
 	};
 
 	virtual ~AView(void);
-
+	AView(XmlParser const &xml);
 /*
 ** View core
 */
-	std::string const			*getId(void) const { return (this->_id); }
-
+	std::string const			*getId(void) const;
 	ALayout						*getParent(void);
 
+	IViewHolder					*getViewHolder(void);
+	IViewHolder const			*getViewHolder(void) const;
 	void						setViewHolder(IViewHolder *holder);
 	virtual void				inflate(XmlParser &xml);
 
 	/*
 	** View properties
 	*/
-	float						getAlpha(void) const { return (this->_alpha); }
-
-	bool						isVisible(void) const { return (this->_flags & AView::HIDDEN); }
-	bool						isMouseOver(void) const { return (this->_flags & AView::MOUSE_OVER); }
-
+	float						getAlpha(void) const;
+	bool						isVisible(void) const;
+	
 	void						setAlpha(float value);
+	void						setVisibility(bool hidden);
 
-	void						setVisibility(bool state);
+	bool						isMouseOver(void) const;
 
+	virtual void				setParam(std::string const &k,
+										 std::string const &v);
+	
 /*
 ** Callbacks
 */
@@ -86,12 +89,12 @@ public:
 	/*
 	** Low level callbacks
 	*/
-	virtual void				onMouseScroll(int x, int y, float delta);
+	virtual bool				onMouseScroll(int x, int y, float delta);
 	virtual bool				onMouseDown(int x, int y, int button);
 	virtual bool				onMouseUp(int x, int y, int button);
-	virtual void				onMouseMove(int x, int y);
+	virtual bool				onMouseMove(int x, int y);
 	virtual bool				onKeyDown(int key_code);
-	virtual void				onKeyUp(int key_code);
+	virtual bool				onKeyUp(int key_code);
 
 	/*
 	** High level callbacks
@@ -101,7 +104,7 @@ public:
 	virtual void				onEvent(std::string const &event);
 	virtual void				onPositionChange(void);
 	virtual void				onSizeChange(void);
-	virtual void				onVisibilityChange(bool state);
+	virtual void				onVisibilityChange(bool hidden);
 
 /*
 ** Layout system
@@ -109,22 +112,19 @@ public:
 	/*
 	** Targets
 	*/
-	virtual bool				isMouseScollTargeted(void) const { return (this->_flags & AView::MOUSE_SCROLL_TARGET); }
-	virtual bool				isMouseClickTargeted(void) const { return (this->_flags & AView::MOUSE_CLICK_TARGET); }
-	virtual bool				isMousePositionTargeted(void) const { return (this->_flags & AView::MOUSE_POSITION_TARGET); }
-	virtual bool				isKeyboardTargeted(void) const { return (this->_flags & AView::KEYBOARD_TARGET); }
+	virtual bool				isMouseScollTargeted(void) const;
+	virtual bool				isMouseClickTargeted(void) const;
+	virtual bool				isMousePositionTargeted(void) const;
+	virtual bool				isKeyboardTargeted(void) const;
 
 	/*
 	** Queries
 	*/
-	bool						isRedrawQueried(void) const { return (this->_flags & AView::REDRAW_QUERY); }
-	bool						isMeasureQueried(void) const { return (this->_flags & AView::MEASURE_QUERY); }
-	bool						isUpdateQueried(void) const { return (this->_flags & AView::UPDATE_QUERY); }
+	bool						isUpdateQueried(void) const;
+	bool						isMeasureQueried(void) const;
+	bool						isRedrawQueried(void) const;
 
 protected:
-
-	AView(XmlParser const &xml);
-
 /*
 ** View core
 */
@@ -132,32 +132,32 @@ protected:
 
 	std::string const *const	_id;
 	unsigned long				_flags;
-
 	float						_alpha;
 
 	void						setMouseOver(bool state);
 
 	template <typename T>
-	typename T::ViewHolder		*getHolder(void) const { return (dynamic_cast<typename T::ViewHolder const*>(this->_holder)); }
+	typename T::ViewHolder		*castHolder(void) const;
 	template <typename T>
-	typename T::ViewHolder		*getHolder(void) { return (dynamic_cast<typename T::ViewHolder*>(this->_holder)); }
+	typename T::ViewHolder		*castHolder(void);
+
 
 /*
 ** Register target
 ** Some low level callbacks are not enabled by default
 */
-	virtual void				registerTargetMouseScroll(bool state);
-	virtual void				registerTargetMouseClick(bool state);
-	virtual void				registerTargetMousePosition(bool state);
-	virtual void				registerTargetKeyboard(bool state);
+	void						registerTargetMouseScroll(bool state);
+	void						registerTargetMouseClick(bool state);
+	void						registerTargetMousePosition(bool state);
+	void						registerTargetKeyboard(bool state);
 
 /*
 ** Query
 ** Queries a callback for the next frame
 */
-	virtual void				queryRedraw(void);
-	virtual void				queryMeasure(void);
-	virtual void				queryUpdate(void);
+	void						queryUpdate(void);
+	void						queryMeasure(void);
+	void						queryRedraw(void);
 
 /*
 ** Static

@@ -53,13 +53,14 @@ public:
 	** -
 	** 'state' is set to the corresponding state
 	*/
-	void				next(State &token);
+	bool				next();
 
 	/*
 	** Return current markup name
 	*/
 	std::string const	&getMarkupName(void) const;
-
+	Token				getToken(void) const;
+	
 	/*
 	** Return current markup params
 	*/
