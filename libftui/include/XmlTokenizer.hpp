@@ -6,7 +6,7 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/24 21:39:37 by juloo             #+#    #+#             */
-/*   Updated: 2015/09/24 23:16:17 by juloo            ###   ########.fr       */
+/*   Updated: 2015/09/25 14:59:31 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,12 @@ public:
 
 	std::string const	&next(Token &t);
 
+	int					getLine(void) const;
+
 protected:
 
 	std::istream		&_is;
-	std::ostringstream	&_oss;
+	std::ostringstream	_oss;
 	int					_line;
 
 	struct		tokenDef_s
@@ -51,6 +53,8 @@ protected:
 		bool		(*f)(tokenDef_s const &);
 		Token		token;
 	};
+
+	void				parse_spaces(void);
 
 	bool				token_char(tokenDef_s const &def);
 	bool				token_name(tokenDef_s const &def);
@@ -63,27 +67,6 @@ private:
 	XmlTokenizer(XmlTokenizer const &src) = delete;
 	XmlTokenizer		&operator=(XmlTokenizer const &rhs) = delete;
 };
-
-// template<typename ... Args>
-// std::string		std::string::operator%(std::string const &str, ...)
-// {
-// }
-
-template<typename HEAD, typename ... TAIL>
-void			f_util(std::ostringstream &out, HEAD&& arg, TAIL&& ...tail)
-{
-	out << arg;
-	f_util(out, std::forward<Tail>(tail)...);
-}
-
-template<typename ... ARGS>
-std::string		f(ARGS ...args)
-{
-	ostringstream	out();
-
-	f_util(out, std::forward(args)...);
-	return (out.str());
-}
 
 };
 

@@ -6,12 +6,11 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:12:32 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/24 21:38:48 by juloo            ###   ########.fr       */
+/*   Updated: 2015/09/25 15:29:21 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifdef XMLPARSER_HPP
-// #ifndef XMLPARSER_HPP
+#ifndef XMLPARSER_HPP
 # define XMLPARSER_HPP
 
 # include "libftui.h"
@@ -19,17 +18,12 @@
 # include <istream>
 # include <unordered_map>
 
+# include "XmlTokenizer.hpp"
+
 /*
 ** Simple XML parser
 ** -
-** MARKUP		= MARKUP_START '<' SPACE* MARKUP_NAME PARAMS SPACE* MARKUP_END
-** MARKUP_START	= SPACE MARKUP_START | "<!--" .* "-->" | '<'
-** SPACE		= ' ' | '\n' | '\t'
-** MARKUP_NAME	= \w
-** PARAMS		= SPACE+ PARAM_NAME SPACE* '=' SPACE* PARAM_DEF? PARAMS?
-** PARAM_NAME	= \w
-** PARAM_DEF	= '"' ( '\' '"' | !'"' )* '"'
-** MARKUP_END	= '>' MARKUP* MARKUP_START '/' SPACE* ${STACKED_NAME} SPACE* '>' | "/>"
+** throw a domain_error on error
 */
 
 namespace ftui
@@ -41,12 +35,12 @@ public:
 	/*
 	** Tokens
 	*/
-	enum	Token
+	enum class	State
 	{
-		TOKEN_ERROR,
-		TOKEN_EOF,
-		MARKUP_START,
-		MARKUP_END
+		ERROR,
+		EOF,
+		START,
+		END,
 	};
 
 	typedef std::unordered_map<std::string, std::string>	params_map_t;
@@ -55,12 +49,11 @@ public:
 	virtual ~XmlParser(void);
 
 	/*
-	** Return false on error of at the EOF
-	** true otherwise
+	** Parse
 	** -
-	** 'token' is set to the corresponding token
+	** 'state' is set to the corresponding state
 	*/
-	bool				next(Token &token);
+	void				next(State &token);
 
 	/*
 	** Return current markup name
@@ -74,24 +67,12 @@ public:
 
 protected:
 
-	std::istream		&_stream;
+	XmlTokenizer		_tokenizer;
+
+	XmlTokenizer::Token	_token;
 
 	std::string			_markupName;
 	params_map_t		_params;
-
-	Token				_token;
-	int					_line;
-
-	bool				parseMarkup(void);
-	bool				parseMarkupStart(void);
-	bool				parseMarkupEnd(void);
-	bool				parseMarkupName(void);
-	bool				parseParams(void);
-	bool				parseParamName(std::string &out);
-	bool				parseParamDef(std::string &out);
-	bool				parseSpace(void);
-	bool				parseEqu(char const *equ);
-	bool				parseTo(char const *to);
 
 private:
 	XmlParser(void) = delete;

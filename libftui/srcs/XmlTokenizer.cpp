@@ -6,11 +6,13 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/24 21:50:50 by juloo             #+#    #+#             */
-/*   Updated: 2015/09/24 23:17:03 by juloo            ###   ########.fr       */
+/*   Updated: 2015/09/25 14:58:44 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "XmlTokenizer.hpp"
+#include "ft/utils.hpp"
+#include <exception>
 
 XmlTokenizer::XmlTokenizer(std::istream &stream)
 	: _is(stream), _oss(), _line(0)
@@ -25,6 +27,7 @@ std::string const	&XmlTokenizer::next(Token &t)
 {
 	int					i;
 
+	parse_spaces();
 	i = -1;
 	while (++i < G_ARRAY_LEN(g_tokens))
 	{
@@ -32,10 +35,31 @@ std::string const	&XmlTokenizer::next(Token &t)
 		if (this->*(g_tokens[i].f)(g_tokens + i))
 		{
 			t = g_tokens[i].token;
+			parse_spaces();
 			return (_oss.str());
 		}
 	}
-	// throw invalid_token;
+	throw domain_error(ftutils::f("Unknown token '%' at line %", _oss.peek(), _line));
+}
+
+int					XmlTokenizer::getLine(void) const
+{
+	return (_line);
+}
+
+void				XmlTokenizer::parse_spaces(void)
+{
+	char				c;
+
+	while (true)
+	{
+		c = _is.peek();
+		if (c == '\n')
+			_line++;
+		else if (!isspace(c))
+			break ;
+		_is.get();
+	}
 }
 
 bool				XmlTokenizer::token_char(tokenDef_s const &def)
@@ -92,7 +116,7 @@ bool				XmlTokenizer::token_str(tokenDef_s const &def)
 			_oss.put(c);
 		}
 	}
-	// throw "Invalid string"
+	throw domain_error(ftutils::f("Missing '\"' at line %", _line));
 	(void)def;
 }
 
