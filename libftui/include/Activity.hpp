@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/25 09:08:21 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/25 10:08:41 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,36 +25,19 @@
 namespace ftui
 {
 
+/*
+** Activity
+** -
+** TODO comment
+*/
 class	Activity
 {
 public:
-	class	RootViewHolder : public IViewHolder
-	{
-	public:
-		virtual ~RootViewHolder(void);
-		RootViewHolder(XmlParser const &xml, ALayout *p, AView *v);
-		
-		virtual ALayout			*getParent(void);
-		virtual ALayout const	*getParent(void) const;
-
-		virtual AView			*getView(void);
-		virtual AView const		*getView(void) const;
-
-		virtual Vec2<int>		getPos(void) const;
-		virtual Vec2<int>		getSize(void) const;
-	protected:
-
-		AView					*_view;
-
-	private:
-		RootViewHolder(void) = delete;
-		RootViewHolder(RootViewHolder const &src) = delete;
-		RootViewHolder			&operator=(RootViewHolder const &rhs) = delete;
-	};
+	class	RootViewHolder;
 
 	typedef std::unordered_multimap<std::string, AView*>	event_map_t;
 
-	Activity(void);
+	Activity(Vec2<int> size);
 	virtual ~Activity(void);
 
 	virtual void		inflate(std::istream &stream);
@@ -75,12 +58,43 @@ public:
 protected:
 
 	RootViewHolder		*_rootView;
-
 	event_map_t			_eventMap;
-
+	Vec2<int>			_size;
+	
 private:
+	Activity(void);
 	Activity(Activity const &src);
 	Activity			&operator=(Activity const &rhs);
+};
+
+/*
+** Activity::RootViewHolder
+** -
+** TODO comment
+*/
+class	Activity::RootViewHolder : public IViewHolder
+{
+public:
+	RootViewHolder(XmlParser const &xml, AView *v, Vec2<int> s);
+	virtual ~RootViewHolder(void);
+		
+	virtual ALayout			*getParent(void);
+	virtual ALayout const	*getParent(void) const;
+
+	virtual AView			*getView(void);
+	virtual AView const		*getView(void) const;
+
+	virtual Vec2<int>		getPos(void) const;
+	virtual Vec2<int>		getSize(void) const;
+
+protected:
+	AView					*_view;
+	Vec2<int>				_size;
+		
+private:
+	RootViewHolder(void) = delete;
+	RootViewHolder(RootViewHolder const &src) = delete;
+	RootViewHolder			&operator=(RootViewHolder const &rhs) = delete;
 };
 
 };
