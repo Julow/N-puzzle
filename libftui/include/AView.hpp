@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/09/25 13:12:13 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/25 15:53:12 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ public:
 	std::string const			*getId(void) const;
 	ALayout						*getParent(void);
 
+	IViewHolder					*getViewHolder(void);
+	IViewHolder const			*getViewHolder(void) const;
 	void						setViewHolder(IViewHolder *holder);
 	virtual void				inflate(XmlParser &xml);
 
@@ -65,10 +67,15 @@ public:
 	*/
 	float						getAlpha(void) const;
 	bool						isVisible(void) const;
-	bool						isMouseOver(void) const;
+	
 	void						setAlpha(float value);
 	void						setVisibility(bool hidden);
 
+	bool						isMouseOver(void) const;
+
+	virtual void				setParam(std::string const &k,
+										 std::string const &v);
+	
 /*
 ** Callbacks
 */
@@ -122,6 +129,7 @@ protected:
 ** View core
 */
 	IViewHolder					*_holder;
+
 	std::string const *const	_id;
 	unsigned long				_flags;
 	float						_alpha;
@@ -129,9 +137,10 @@ protected:
 	void						setMouseOver(bool state);
 
 	template <typename T>
-	typename T::ViewHolder		*getHolder(void) const;
+	typename T::ViewHolder		*castHolder(void) const;
 	template <typename T>
-	typename T::ViewHolder		*getHolder(void);
+	typename T::ViewHolder		*castHolder(void);
+
 
 /*
 ** Register target

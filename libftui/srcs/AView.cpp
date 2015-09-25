@@ -6,12 +6,14 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/25 13:14:03 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/25 15:56:59 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <exception>
+#include <stdlib.h> //atof
+
 #include "AView.hpp"
 #include "ALayout.hpp"
 #include "IViewHolder.hpp"
@@ -21,7 +23,7 @@ namespace ftui
 {
 
 AView::AView(XmlParser const &xml)
-	: _holder(NULL), _id(NULL), _flags(0), _alpha(0.f)
+	: _holder(nullptr), _id(nullptr), _flags(0), _alpha(0.f)
 {
 	XmlParser::params_map_t const	&params = xml.getParams();
 
@@ -40,10 +42,17 @@ AView::~AView(void)
 std::string const	*AView::getId(void) const
 { return (this->_id); }
 ALayout				*AView::getParent(void)
-{ return (this->_holder->getParent()); }
+{ return (this->_holder == nullptr ? nullptr : this->_holder->getParent()); }
+
+IViewHolder			*AView::getViewHolder(void)
+{ return (this->_holder); }
+IViewHolder const	*AView::getViewHolder(void) const
+{ return (this->_holder); }
 
 void				AView::setViewHolder(IViewHolder *holder)
 {
+	if (this->_holder != nullptr)
+		std::cerr << "Erasing previous holder" << std::endl;
 	this->_holder = holder;
 	return ;
 }
@@ -91,6 +100,27 @@ void				AView::setVisibility(bool hidden)
 		}
 		//TODO finish AView::setVisibility
 	}
+	return ;
+}
+void				AView::setParam(std::string const &k,
+									std::string const &v)
+{
+	if (k == "alpha")
+		this->setAlpha(::atof(v.c_str())); //TODO parser float
+	else if (k == "visibility")
+		this->setVisibility(v == "true"); //TODO parser bool
+	else if (k == "mouse_scroll_target")
+		this->registerTargetMouseScroll(v == "true"); //TODO parser bool
+	else if (k == "mouse_click_target")
+		this->registerTargetMouseClick(v == "true"); //TODO parser bool
+	else if (k == "mouse_position_target")
+		this->registerTargetMousePosition(v == "true"); //TODO parser bool
+	else if (k == "keyboard_target")
+		this->registerTargetKeyboard(v == "true"); //TODO parser bool
+	else if (this->_holder != nullptr)
+		this->_holder->setParam(k, v);
+	else
+		;// unknown param (no _holder)
 	return ;
 }
 
@@ -251,11 +281,15 @@ void				AView::setMouseOver(bool state)
 }
 
 template <typename T>
-typename T::ViewHolder	*AView::getHolder(void) const
-{ return (dynamic_cast<typename T::ViewHolder const*>(this->_holder)); }
+typename T::ViewHolder	*AView::castHolder(void) const
+{
+	return (dynamic_cast<typename T::ViewHolder const*>(this->_holder));
+}
 template <typename T>
-typename T::ViewHolder	*AView::getHolder(void)
-{ return (dynamic_cast<typename T::ViewHolder*>(this->_holder)); }
+typename T::ViewHolder	*AView::castHolder(void)
+{
+	return (dynamic_cast<typename T::ViewHolder*>(this->_holder));
+}
 
 /*
 ** Register target
@@ -275,8 +309,8 @@ void			AView::registerTargetMouseScroll(bool state)
 		{
 			this->_flags &= ~AView::MOUSE_SCROLL_TARGET;
 		}
-		p = this->_holder->getParent();
-		if (p != NULL)
+		p = this->_holder == nullptr ? nullptr : this->_holder->getParent();
+		if (p != nullptr)
 			p->spreadTargetMouseScroll(state);
 	}
 	return ;
@@ -297,7 +331,7 @@ void			AView::registerTargetMouseClick(bool state)
 			this->_flags &= ~AView::MOUSE_CLICK_TARGET;
 		}
 		p = this->_holder->getParent();
-		if (p != NULL)
+		if (p != nullptr)
 			p->spreadTargetMouseClick(state);
 	}
 	return ;
@@ -317,8 +351,8 @@ void			AView::registerTargetMousePosition(bool state)
 		{
 			this->_flags &= ~AView::MOUSE_POSITION_TARGET;
 		}
-		p = this->_holder->getParent();
-		if (p != NULL)
+		p = this->_holder == nullptr ? nullptr : this->_holder->getParent();
+		if (p != nullptr)
 			p->spreadTargetMousePosition(state);
 	}
 	return ;
@@ -338,8 +372,8 @@ void			AView::registerTargetKeyboard(bool state)
 		{
 			this->_flags &= ~AView::KEYBOARD_TARGET;
 		}
-		p = this->_holder->getParent();
-		if (p != NULL)
+		p = this->_holder == nullptr ? nullptr : this->_holder->getParent();
+		if (p != nullptr)
 			p->spreadTargetKeyboard(state);
 	}
 	return ;
@@ -357,8 +391,8 @@ void			AView::queryUpdate(void)
 	if ((this->_flags & AView::UPDATE_QUERY) != AView::UPDATE_QUERY)
 	{
 		this->_flags |= AView::UPDATE_QUERY;
-		p = this->_holder->getParent();
-		if (p != NULL)
+		p = this->_holder == nullptr ? nullptr : this->_holder->getParent();
+		if (p != nullptr)
 			p->queryUpdate();
 	}	
 	return ;
@@ -371,8 +405,8 @@ void			AView::queryMeasure(void)
 	if ((this->_flags & AView::MEASURE_QUERY) != AView::MEASURE_QUERY)
 	{
 		this->_flags |= AView::MEASURE_QUERY;
-		p = this->_holder->getParent();
-		if (p != NULL)
+		p = this->_holder == nullptr ? nullptr : this->_holder->getParent();
+		if (p != nullptr)
 			p->queryMeasure();
 	}	
 	return ;
@@ -385,8 +419,8 @@ void			AView::queryRedraw(void)
 	if ((this->_flags & AView::REDRAW_QUERY) != AView::REDRAW_QUERY)
 	{
 		this->_flags |= AView::REDRAW_QUERY;
-		p = this->_holder->getParent();
-		if (p != NULL)
+		p = this->_holder == nullptr ? nullptr : this->_holder->getParent();
+		if (p != nullptr)
 			p->queryRedraw();
 	}	
 	return ;

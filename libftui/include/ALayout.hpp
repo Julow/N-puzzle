@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/25 11:52:27 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/25 15:47:18 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,34 +19,23 @@
 # include <vector>
 
 # include "AView.hpp"
-
 namespace ftui
 {
 
-class	ALayout : public AView, private std::vector<AView*>
+class	ALayout : public AView, private std::vector<IViewHolder*>
 {
 public:
-	virtual ~ALayout(void);
 
-	virtual void				addView(AView *view);
-	virtual AView				*popView(std::vector<AView*>::iterator view);
-
-	virtual void				inflate(XmlParser &xml);
-
-	using std::vector<AView*>::begin;
-	using std::vector<AView*>::end;
-	using std::vector<AView*>::cbegin;
-	using std::vector<AView*>::cend;
-
-	using std::vector<AView*>::at;
-	using std::vector<AView*>::operator[];
-
-	using std::vector<AView*>::empty;
-	using std::vector<AView*>::size;
+	typedef std::vector<IViewHolder*>	child_container_t;
 
 /*
-** Callbacks override
+** * AView legacy *********************************************************** **
 */
+	virtual void				inflate(XmlParser &xml);
+
+	virtual void				setParam(std::string const &k,
+										 std::string const &v);
+	
 	virtual void				onUpdate(void) = 0;
 	virtual void				onMeasure(void) = 0;
 	virtual void				onDraw(ACanvas &canvas) = 0;
@@ -64,6 +53,29 @@ public:
 	virtual bool				isKeyboardTargeted(void) const;
 
 /*
+** * ALayout new functions ************************************************** **
+*/
+	ALayout(XmlParser const &xml);
+	virtual ~ALayout(void);
+
+	virtual void				addView(AView *v);
+	virtual AView				*popView(AView *v);
+
+/*
+** std::vector visibility management
+*/
+	using child_container_t::begin;
+	using child_container_t::end;
+	using child_container_t::cbegin;
+	using child_container_t::cend;
+
+	using child_container_t::at;
+	using child_container_t::operator[];
+
+	using child_container_t::empty;
+	using child_container_t::size;
+
+/*
 ** Target spread
 */
 	void						spreadTargetMouseScroll(bool state);
@@ -71,19 +83,16 @@ public:
 	void						spreadTargetMousePosition(bool state);
 	void						spreadTargetKeyboard(bool state);
 
-
 protected:
-
-	ALayout(XmlParser const &xml);
 
 	unsigned long				_layoutFlags;
 
-	using std::vector<AView*>::push_back;
-	using std::vector<AView*>::erase;
+	// using child_container_t::push_back;
+	// using child_container_t::erase;
 
 	virtual IViewHolder			*createHolder(XmlParser const &xml
 											  , ALayout *p, AView *v) = 0;
-public:
+	virtual IViewHolder			*createHolder(ALayout *p, AView *v) = 0;
 
 private:
 

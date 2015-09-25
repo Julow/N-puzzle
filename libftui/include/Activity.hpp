@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/25 10:08:41 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/25 15:26:33 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ public:
 	virtual Vec2<int>		getPos(void) const;
 	virtual Vec2<int>		getSize(void) const;
 
+	virtual void			 setParam(std::string const &k
+									  , std::string const &v);
 protected:
 	AView					*_view;
 	Vec2<int>				_size;
