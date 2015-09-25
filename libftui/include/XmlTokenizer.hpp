@@ -6,7 +6,7 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/24 21:39:37 by juloo             #+#    #+#             */
-/*   Updated: 2015/09/25 14:59:31 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/25 18:08:13 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "libftui.h"
 
-# include <iostream>
+# include <sstream>
 # include <string>
 
 namespace ftui
@@ -37,7 +37,7 @@ public:
 	XmlTokenizer(std::istream &stream);
 	virtual ~XmlTokenizer(void);
 
-	std::string const	&next(Token &t);
+	std::string const	next(Token &t);
 
 	int					getLine(void) const;
 
@@ -50,7 +50,7 @@ protected:
 	struct		tokenDef_s
 	{
 		char const	*str;
-		bool		(*f)(tokenDef_s const &);
+		bool		(XmlTokenizer::*f)(tokenDef_s const &);
 		Token		token;
 	};
 
@@ -59,8 +59,6 @@ protected:
 	bool				token_char(tokenDef_s const &def);
 	bool				token_name(tokenDef_s const &def);
 	bool				token_str(tokenDef_s const &def);
-
-	static tokenDef_s	g_tokens[];
 
 private:
 	XmlTokenizer(void) = delete;

@@ -14,7 +14,7 @@ MODULES :=
 LIBS := 
 
 # Compilation and linking flags
-FLAGS := -std=c++14 -Wall -Wextra -O2
+FLAGS := -std=c++14 -Wall -Wextra -O2 -g
 # Compilation flags
 HEADS := $(addprefix -I,$(DIRS))
 
@@ -76,7 +76,7 @@ $(DEPEND): Makefile
 
 # Set debug flags
 _debug:
-	$(eval FLAGS := $(DEBUG_FLAGS))
+	$(eval FLAGS += $(DEBUG_FLAGS))
 
 .SILENT:
 .PHONY: all $(LIBS) clean fclean re debug rebug _debug

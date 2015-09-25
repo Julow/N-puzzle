@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/25 13:42:20 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/25 13:52:35 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/25 18:17:09 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,31 +26,31 @@ namespace ft
 ** std::ostream::operator<< is used for convertions
 */
 template<typename ... ARGS>
-std::string		f(char const *format, ARGS ...args);
+std::string			f(char const *format, ARGS ...args);
 
 /*
 ** Same but write into 'out'
 */
 template<typename ... ARGS>
-void			f(std::ostream &out, char const *format, ARGS ...args);
+void				f(std::ostream &out, char const *format, ARGS ...args);
 
 /*
 ** Impl
 */
-char const		*f_print(std::ostream &out, char const *format)
+static char const	*f_print(std::ostream &out, char const *format)
 {
 	while (*format != '\0' && *format != '%')
 		out << *(format++);
 	return (format);
 }
 
-void			f_loop(std::ostream &out, char const *format)
+static void			f_loop(std::ostream &out, char const *format)
 {
 	out << format;
 }
 
 template<typename HEAD, typename ... TAIL>
-void			f_loop(std::ostream &out, char const *format, HEAD&& arg, TAIL&& ...tail)
+void				f_loop(std::ostream &out, char const *format, HEAD&& arg, TAIL&& ...tail)
 {
 	if (*format != '%')
 	{
@@ -62,7 +62,7 @@ void			f_loop(std::ostream &out, char const *format, HEAD&& arg, TAIL&& ...tail)
 }
 
 template<typename ... ARGS>
-std::string		f(char const *format, ARGS ...args)
+std::string			f(char const *format, ARGS ...args)
 {
 	std::ostringstream	out;
 
@@ -71,7 +71,7 @@ std::string		f(char const *format, ARGS ...args)
 }
 
 template<typename ... ARGS>
-void			f(std::ostream &out, char const *format, ARGS ...args)
+void				f(std::ostream &out, char const *format, ARGS ...args)
 {
 	f_loop(out, f_print(out, format), std::forward<ARGS>(args)...);
 }

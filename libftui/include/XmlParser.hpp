@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:12:32 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/25 15:29:21 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/25 17:11:08 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ public:
 	enum class	State
 	{
 		ERROR,
-		EOF,
+		END_OF_FILE,
 		START,
 		END,
 	};
@@ -53,13 +53,12 @@ public:
 	** -
 	** 'state' is set to the corresponding state
 	*/
-	bool				next();
+	bool				next(State &state);
 
 	/*
 	** Return current markup name
 	*/
 	std::string const	&getMarkupName(void) const;
-	Token				getToken(void) const;
 	
 	/*
 	** Return current markup params
