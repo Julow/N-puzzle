@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/25 09:10:36 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/25 10:22:22 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,5 @@ void				ALayout::inflate(XmlParser &xml)
 	// TODO throw because noway
 	return ;
 }
-
 
 };

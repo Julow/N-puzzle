@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/25 09:19:47 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/25 11:01:40 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@ public:
 	virtual void				onMeasure(void);
 	virtual void				onDraw(ACanvas &canvas);
 
-	virtual void				onMouseScroll(int x, int y, float delta);
+	virtual bool				onMouseScroll(int x, int y, float delta);
 	virtual bool				onMouseDown(int x, int y, int button);
 	virtual bool				onMouseUp(int x, int y, int button);
-	virtual void				onMouseMove(int x, int y);
+	virtual bool				onMouseMove(int x, int y);
 	virtual bool				onKeyDown(int key_code);
-	virtual void				onKeyUp(int key_code);
+	virtual bool				onKeyUp(int key_code);
 
 	virtual bool				isMouseScollTargeted(void) const;
 	virtual bool				isMouseClickTargeted(void) const;

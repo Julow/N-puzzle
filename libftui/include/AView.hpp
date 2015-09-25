@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/09/25 07:55:44 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/25 11:09:20 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ class	AView
 public:
 	enum	Query
 	{
-		REDRAW_QUERY = (1 << 1),
+		UPDATE_QUERY = (1 << 1),
 		MEASURE_QUERY = (1 << 2),
-		UPDATE_QUERY = (1 << 3),
+		REDRAW_QUERY = (1 << 3),
 	};
 	enum	Target
 	{
@@ -67,7 +67,7 @@ public:
 	bool						isVisible(void) const;
 	bool						isMouseOver(void) const;
 	void						setAlpha(float value);
-	void						setVisibility(bool state);
+	void						setVisibility(bool hidden);
 
 /*
 ** Callbacks
@@ -82,12 +82,12 @@ public:
 	/*
 	** Low level callbacks
 	*/
-	virtual void				onMouseScroll(int x, int y, float delta);
+	virtual bool				onMouseScroll(int x, int y, float delta);
 	virtual bool				onMouseDown(int x, int y, int button);
 	virtual bool				onMouseUp(int x, int y, int button);
-	virtual void				onMouseMove(int x, int y);
+	virtual bool				onMouseMove(int x, int y);
 	virtual bool				onKeyDown(int key_code);
-	virtual void				onKeyUp(int key_code);
+	virtual bool				onKeyUp(int key_code);
 
 	/*
 	** High level callbacks
@@ -97,7 +97,7 @@ public:
 	virtual void				onEvent(std::string const &event);
 	virtual void				onPositionChange(void);
 	virtual void				onSizeChange(void);
-	virtual void				onVisibilityChange(bool state);
+	virtual void				onVisibilityChange(bool hidden);
 
 /*
 ** Layout system
@@ -131,7 +131,7 @@ protected:
 
 	float						_alpha;
 
-	void						setMouseOver(bool state);
+	void						setMouseOver(bool over);
 
 	template <typename T>
 	typename T::ViewHolder		*getHolder(void) const;
