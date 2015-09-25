@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:12:43 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/24 15:45:19 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/25 09:10:59 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ public:
 	{
 	public:
 		virtual ~ViewHolder(void);
-
+		ViewHolder(XmlParser const &xml, ALayout *p, AView *v);
+		
 		virtual ALayout			*getParent(void);
 		virtual ALayout const	*getParent(void) const;
 
@@ -56,13 +57,10 @@ public:
 		virtual Vec2<int>		getPos(void) const;
 		virtual Vec2<int>		getSize(void) const;
 
-		virtual void			setView(AView *view);
-
 	protected:
 
-		ViewHolder(XmlParser const &xml);
-
 		AView				*_view;
+		ALayout				*_parent;
 
 	private:
 		ViewHolder(void) = delete;

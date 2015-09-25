@@ -1,7 +1,6 @@
 O_FILES :=	o/srcs/ACanvas.o o/srcs/ALayout.o o/srcs/AView.o \
 			o/srcs/AbsoluteLayout.o o/srcs/Activity.o o/srcs/RelativeLayout.o \
-			o/srcs/SliderView.o o/srcs/TextView.o o/srcs/VerticalLayout.o \
-			o/srcs/XmlParser.o
+			o/srcs/SliderView.o o/srcs/TextView.o o/srcs/VerticalLayout.o
 
 LIBS_DEPEND := 
 
@@ -28,5 +27,3 @@ o/srcs/VerticalLayout.o: srcs/VerticalLayout.cpp include/VerticalLayout.hpp \
 	include/ALayout.hpp include/libftui.h include/AView.hpp include/libftui.h \
 	include/IViewHolder.hpp include/libftui.h include/Vec.hpp \
 	include/libftui.h | o/srcs/
-o/srcs/XmlParser.o: srcs/XmlParser.cpp include/XmlParser.hpp include/libftui.h \
-	| o/srcs/

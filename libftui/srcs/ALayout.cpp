@@ -6,28 +6,51 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/24 11:44:02 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/09/25 09:10:36 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ALayout.hpp"
+#include "XmlParser.hpp"
 
 namespace ftui
 {
+
+ALayout::ALayout(XmlParser const &xml)
+	: AView(xml)
+{
+	XmlParser::params_map_t const	&params = xml.getParams();
+
+	(void)params;
+	// TODO, retreive some ALayout data from xml
+	return ;
+}
 
 ALayout::~ALayout(void)
 {
 }
 
-// ALayout::ALayout(ALayout const &src)
-// {
-// 	*this = src;
-// }
+void				ALayout::inflate(XmlParser &xml)
+{
+	AView				*v;
+	IViewHolder			*vh;
 
-// ALayout			&ALayout::operator=(ALayout const &rhs)
-// {
-// 	// *this = rhs;
-// 	return (*this);
-// }
+	// TODO xml parser v2
+	while (!xml.next())
+	{
+		if (xml.getToken() == XmlParser::MARKUP_START)
+		{
+			v = AView::getFactory(xml.getMarkupName())(xml);
+			vh = this->createHolder(xml, this, v);
+			v->inflate(xml);
+			v->setViewHolder(vh);
+		}
+	}
+	if (xml.getToken() == XmlParser::MARKUP_END)
+		return ;
+	// TODO throw because noway
+	return ;
+}
+
 
 };

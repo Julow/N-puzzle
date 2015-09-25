@@ -6,12 +6,12 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:12:32 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/24 21:38:48 by juloo            ###   ########.fr       */
+//   Updated: 2015/09/25 08:36:38 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifdef XMLPARSER_HPP
-// #ifndef XMLPARSER_HPP
+// #ifdef XMLPARSER_HPP
+#ifndef XMLPARSER_HPP
 # define XMLPARSER_HPP
 
 # include "libftui.h"
@@ -60,13 +60,14 @@ public:
 	** -
 	** 'token' is set to the corresponding token
 	*/
-	bool				next(Token &token);
+	bool				next();
 
 	/*
 	** Return current markup name
 	*/
 	std::string const	&getMarkupName(void) const;
-
+	Token				getToken(void) const;
+	
 	/*
 	** Return current markup params
 	*/

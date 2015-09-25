@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/09/24 15:45:03 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/25 07:55:44 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,7 @@ public:
 /*
 ** View core
 */
-	std::string const			*getId(void) const { return (this->_id); }
-
+	std::string const			*getId(void) const;
 	ALayout						*getParent(void);
 
 	void						setViewHolder(IViewHolder *holder);
@@ -64,13 +63,10 @@ public:
 	/*
 	** View properties
 	*/
-	float						getAlpha(void) const { return (this->_alpha); }
-
-	bool						isVisible(void) const { return (this->_flags & AView::HIDDEN); }
-	bool						isMouseOver(void) const { return (this->_flags & AView::MOUSE_OVER); }
-
+	float						getAlpha(void) const;
+	bool						isVisible(void) const;
+	bool						isMouseOver(void) const;
 	void						setAlpha(float value);
-
 	void						setVisibility(bool state);
 
 /*
@@ -109,17 +105,17 @@ public:
 	/*
 	** Targets
 	*/
-	virtual bool				isMouseScollTargeted(void) const { return (this->_flags & AView::MOUSE_SCROLL_TARGET); }
-	virtual bool				isMouseClickTargeted(void) const { return (this->_flags & AView::MOUSE_CLICK_TARGET); }
-	virtual bool				isMousePositionTargeted(void) const { return (this->_flags & AView::MOUSE_POSITION_TARGET); }
-	virtual bool				isKeyboardTargeted(void) const { return (this->_flags & AView::KEYBOARD_TARGET); }
+	virtual bool				isMouseScollTargeted(void) const;
+	virtual bool				isMouseClickTargeted(void) const;
+	virtual bool				isMousePositionTargeted(void) const;
+	virtual bool				isKeyboardTargeted(void) const;
 
 	/*
 	** Queries
 	*/
-	bool						isRedrawQueried(void) const { return (this->_flags & AView::REDRAW_QUERY); }
-	bool						isMeasureQueried(void) const { return (this->_flags & AView::MEASURE_QUERY); }
-	bool						isUpdateQueried(void) const { return (this->_flags & AView::UPDATE_QUERY); }
+	bool						isRedrawQueried(void) const;
+	bool						isMeasureQueried(void) const;
+	bool						isUpdateQueried(void) const;
 
 protected:
 
@@ -138,9 +134,9 @@ protected:
 	void						setMouseOver(bool state);
 
 	template <typename T>
-	typename T::ViewHolder		*getHolder(void) const { return (dynamic_cast<typename T::ViewHolder const*>(this->_holder)); }
+	typename T::ViewHolder		*getHolder(void) const;
 	template <typename T>
-	typename T::ViewHolder		*getHolder(void) { return (dynamic_cast<typename T::ViewHolder*>(this->_holder)); }
+	typename T::ViewHolder		*getHolder(void);
 
 /*
 ** Register target

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/24 15:13:35 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/25 09:19:47 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ public:
 
 	virtual void				addView(AView *view);
 	virtual AView				*popView(std::vector<AView*>::iterator view);
+
+	virtual void				inflate(XmlParser &xml);
 
 	using std::vector<AView*>::begin;
 	using std::vector<AView*>::end;
@@ -69,6 +71,9 @@ protected:
 
 	using std::vector<AView*>::push_back;
 	using std::vector<AView*>::erase;
+
+	virtual IViewHolder			*createHolder(XmlParser const &xml
+											  , ALayout *p, AView *v) = 0;
 	
 /*
 ** Target and query override

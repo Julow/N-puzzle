@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/24 16:55:13 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/09/25 09:08:21 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ public:
 	{
 	public:
 		virtual ~RootViewHolder(void);
-
+		RootViewHolder(XmlParser const &xml, ALayout *p, AView *v);
+		
 		virtual ALayout			*getParent(void);
 		virtual ALayout const	*getParent(void) const;
 
@@ -41,12 +42,7 @@ public:
 
 		virtual Vec2<int>		getPos(void) const;
 		virtual Vec2<int>		getSize(void) const;
-
-		virtual void			setView(AView *view);
-
 	protected:
-
-		RootViewHolder(XmlParser const &xml);
 
 		AView					*_view;
 
@@ -61,7 +57,7 @@ public:
 	Activity(void);
 	virtual ~Activity(void);
 
-	void				inflate(std::istream &stream);
+	virtual void		inflate(std::istream &stream);
 	// void				loadScripts(std::vector<std::istream> &scripts);
 
 	bool				onDraw(ACanvas &canvas);
