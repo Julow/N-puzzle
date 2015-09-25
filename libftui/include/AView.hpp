@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/09/25 15:53:12 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/25 18:56:18 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ public:
 		MOUSE_SCROLL_TARGET = (1 << 8),
 		MOUSE_CLICK_TARGET = (1 << 9),
 		MOUSE_POSITION_TARGET = (1 << 10),
+		MOUSE_CAPTURE_TARGET = (1 << 10),
 		KEYBOARD_TARGET = (1 << 11),
 	};
 	enum	Misc
@@ -103,6 +104,7 @@ public:
 	virtual void				onMouseLeave(void);
 	virtual void				onEvent(std::string const &event);
 	virtual void				onPositionChange(void);
+	// virtual void				onCaptureChange(bool status); //TODO ??
 	virtual void				onSizeChange(void);
 	virtual void				onVisibilityChange(bool hidden);
 
@@ -115,6 +117,7 @@ public:
 	virtual bool				isMouseScollTargeted(void) const;
 	virtual bool				isMouseClickTargeted(void) const;
 	virtual bool				isMousePositionTargeted(void) const;
+	virtual bool				isMouseCaptureTargeted(void) const; //TODO
 	virtual bool				isKeyboardTargeted(void) const;
 
 	/*
@@ -146,9 +149,11 @@ protected:
 ** Register target
 ** Some low level callbacks are not enabled by default
 */
+
 	void						registerTargetMouseScroll(bool state);
 	void						registerTargetMouseClick(bool state);
 	void						registerTargetMousePosition(bool state);
+	void						registerTargetMouseCapture(bool state); //capture
 	void						registerTargetKeyboard(bool state);
 
 /*

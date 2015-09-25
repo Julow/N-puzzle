@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/25 15:47:18 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/25 18:56:46 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ public:
 
 	virtual bool				isMouseScollTargeted(void) const;
 	virtual bool				isMouseClickTargeted(void) const;
-	virtual bool				isMousePositionTargeted(void) const;
+	virtual bool				isMousePositionTargeted(void) const;// TODO
 	virtual bool				isKeyboardTargeted(void) const;
 
 /*
@@ -80,15 +80,12 @@ public:
 */
 	void						spreadTargetMouseScroll(bool state);
 	void						spreadTargetMouseClick(bool state);
-	void						spreadTargetMousePosition(bool state);
+	void						spreadTargetMousePosition(bool state); //TODO
 	void						spreadTargetKeyboard(bool state);
 
 protected:
 
 	unsigned long				_layoutFlags;
-
-	// using child_container_t::push_back;
-	// using child_container_t::erase;
 
 	virtual IViewHolder			*createHolder(XmlParser const &xml
 											  , ALayout *p, AView *v) = 0;

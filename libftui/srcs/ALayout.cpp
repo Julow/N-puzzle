@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/25 16:04:25 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/25 19:12:34 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ ALayout::~ALayout(void)
 {
 }
 
-void				ALayout::addView(AView *v)
+void			ALayout::addView(AView *v)
 {
 	if (v->getViewHolder() != nullptr)
 		; //TODO: throw view with two parents
@@ -40,9 +40,9 @@ void				ALayout::addView(AView *v)
 	return ;
 }
 
-AView				*ALayout::popView(AView *v)
+AView			*ALayout::popView(AView *v)
 {
-	IViewHolder					*vh;
+	IViewHolder				*vh;
 	child_container_t::iterator	it;
 
 	vh = v->getViewHolder();
@@ -58,27 +58,118 @@ AView				*ALayout::popView(AView *v)
 	return (v);
 }
 
+void			ALayout::spreadTargetMouseScroll(bool state)
+{
+	ALayout			*p;
+ 
+	if (static_cast<bool>(this->_layoutFlags & AView::MOUSE_SCROLL_TARGET)
+		!= state)
+	{
+		if (state)
+			this->_layoutFlags |= AView::MOUSE_SCROLL_TARGET;
+		else
+		{
+			this->_layoutFlags &= ~AView::MOUSE_SCROLL_TARGET;
+			for (auto const &it : *this)
+				if (it->getView()->isMouseScollTargeted())
+					return ;
+		}
+		p = this->getParent();
+		if (p != nullptr)
+			p->spreadTargetMouseScroll(state);
+	}
+	return ;
+}
 
+void				ALayout::spreadTargetMouseClick(bool state)
+{
+	ALayout			*p;
+ 
+	if (static_cast<bool>(this->_layoutFlags & AView::MOUSE_CLICK_TARGET)
+		!= state)
+	{
+		if (state)
+			this->_layoutFlags |= AView::MOUSE_CLICK_TARGET;
+		else
+		{
+			this->_layoutFlags &= ~AView::MOUSE_CLICK_TARGET;
+			for (auto const &it : *this)
+				if (it->getView()->isMouseScollTargeted())
+					return ;
+		}
+		p = this->getParent();
+		if (p != nullptr)
+			p->spreadTargetMouseClick(state);
+	}
+
+	return ;
+}
+void				ALayout::spreadTargetMousePosition(bool state)
+{
+	ALayout			*p;
+ 
+	if (static_cast<bool>(this->_layoutFlags & AView::MOUSE_POSITION_TARGET)
+		!= state)
+	{
+		if (state)
+			this->_layoutFlags |= AView::MOUSE_POSITION_TARGET;
+		else
+		{
+			this->_layoutFlags &= ~AView::MOUSE_POSITION_TARGET;
+			for (auto const &it : *this)
+				if (it->getView()->isMouseScollTargeted())
+					return ;
+		}
+		p = this->getParent();
+		if (p != nullptr)
+			p->spreadTargetMousePosition(state);
+	}
+
+	return ;
+}
+void				ALayout::spreadTargetKeyboard(bool state)
+{
+	ALayout			*p;
+ 
+	if (static_cast<bool>(this->_layoutFlags & AView::KEYBOARD_TARGET)
+		!= state)
+	{
+		if (state)
+			this->_layoutFlags |= AView::KEYBOARD_TARGET;
+		else
+		{
+			this->_layoutFlags &= ~AView::KEYBOARD_TARGET;
+			for (auto const &it : *this)
+				if (it->getView()->isMouseScollTargeted())
+					return ;
+		}
+		p = this->getParent();
+		if (p != nullptr)
+			p->spreadTargetKeyboard(state);
+	}
+
+	return ;
+}
 
 /*
 ** * AView legacy *********************************************************** **
 */
 
-void				ALayout::inflate(XmlParser &xml)
+void			ALayout::inflate(XmlParser &xml)
 {
-	AView				*v;
-	IViewHolder			*vh; 
+	AView			*v;
+	IViewHolder		*vh; 
 
 	// TODO xml parser v2
 	while (!xml.next())
 	{
 		if (xml.getToken() == XmlParser::MARKUP_START)
 		{
-			v = AView::getFactory(xml.getMarkupName())(xml);
-			vh = this->createHolder(xml, this, v);
-			v->inflate(xml);
-			v->setViewHolder(vh);
-			this->addView(v);
+		v = AView::getFactory(xml.getMarkupName())(xml);
+		vh = this->createHolder(xml, this, v);
+		v->inflate(xml);
+		v->setViewHolder(vh);
+		this->addView(v);
 		}
 	}
 	if (xml.getToken() == XmlParser::MARKUP_END)
@@ -87,13 +178,86 @@ void				ALayout::inflate(XmlParser &xml)
 	return ;
 }
 
-void				ALayout::setParam(std::string const &k, std::string const &v)
+void			ALayout::setParam(std::string const &k, std::string const &v)
 {
 	if (0)
-		; //no param yet
+		; //no param yet in ALayout
 	else
 		AView::setParam(k, v);
 	return ;
+}
+/*
+bool                ALayout::onMouseScroll(int x, int y, float delta)
+{
+	
+	if (AView::isMouseScollTargeted())
+		return (AView::onMouseScroll(x, y, delta));
+	return (false);
+}
+bool                ALayout::onMouseDown(int x, int y, int button)
+{
+	// for (auto const &it : *this)
+	// if (it->getView()->isMouseScollTargeted())
+	// TODO call lua
+	(void)x;
+	(void)y;
+	(void)button;
+	return (false);
+}
+bool                ALayout::onMouseUp(int x, int y, int button)
+{
+	// TODO call lua
+	(void)x;
+	(void)y;
+	(void)button;
+	return (false);
+}
+bool                ALayout::onMouseMove(int x, int y)
+{
+	for (auto const &it : *this)
+	{
+		if (it->getView()->isMouseMoveTargeted())
+		{
+			it->onMouseMove(x, y);
+		}
+	}
+	(void)x;
+	(void)y;
+	return (false);
+}
+bool                ALayout::onKeyDown(int key_code)
+{
+	// TODO call lua
+	(void)key_code;
+	return (false);
+}
+bool                ALayout::onKeyUp(int key_code)
+{
+	// TODO call lua
+	(void)key_code;
+	return (false);
+}
+*/
+
+bool                ALayout::isMouseScollTargeted(void) const
+{
+	return ((this->_layoutFlags & AView::MOUSE_SCROLL_TARGET)
+			|| AView::isMouseScollTargeted());
+}
+bool                ALayout::isMouseClickTargeted(void) const
+{
+	return ((this->_layoutFlags & AView::MOUSE_CLICK_TARGET)
+			|| AView::isMouseClickTargeted());
+}
+bool                ALayout::isMousePositionTargeted(void) const
+{
+	return ((this->_layoutFlags & AView::MOUSE_POSITION_TARGET)
+			|| AView::isMousePositionTargeted());
+}
+bool                ALayout::isKeyboardTargeted(void) const
+{
+	return ((this->_layoutFlags & AView::KEYBOARD_TARGET)
+			|| AView::isKeyboardTargeted());
 }
 
 };

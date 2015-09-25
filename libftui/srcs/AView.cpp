@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/25 15:56:59 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/25 17:46:45 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -309,7 +309,7 @@ void			AView::registerTargetMouseScroll(bool state)
 		{
 			this->_flags &= ~AView::MOUSE_SCROLL_TARGET;
 		}
-		p = this->_holder == nullptr ? nullptr : this->_holder->getParent();
+		p = this->getParent();
 		if (p != nullptr)
 			p->spreadTargetMouseScroll(state);
 	}
@@ -330,7 +330,7 @@ void			AView::registerTargetMouseClick(bool state)
 		{
 			this->_flags &= ~AView::MOUSE_CLICK_TARGET;
 		}
-		p = this->_holder->getParent();
+		p = this->getParent();
 		if (p != nullptr)
 			p->spreadTargetMouseClick(state);
 	}
@@ -351,7 +351,7 @@ void			AView::registerTargetMousePosition(bool state)
 		{
 			this->_flags &= ~AView::MOUSE_POSITION_TARGET;
 		}
-		p = this->_holder == nullptr ? nullptr : this->_holder->getParent();
+		p = this->getParent();
 		if (p != nullptr)
 			p->spreadTargetMousePosition(state);
 	}
@@ -372,7 +372,7 @@ void			AView::registerTargetKeyboard(bool state)
 		{
 			this->_flags &= ~AView::KEYBOARD_TARGET;
 		}
-		p = this->_holder == nullptr ? nullptr : this->_holder->getParent();
+		p = this->getParent();
 		if (p != nullptr)
 			p->spreadTargetKeyboard(state);
 	}
@@ -391,7 +391,7 @@ void			AView::queryUpdate(void)
 	if ((this->_flags & AView::UPDATE_QUERY) != AView::UPDATE_QUERY)
 	{
 		this->_flags |= AView::UPDATE_QUERY;
-		p = this->_holder == nullptr ? nullptr : this->_holder->getParent();
+		p = this->getParent();
 		if (p != nullptr)
 			p->queryUpdate();
 	}	
@@ -405,7 +405,7 @@ void			AView::queryMeasure(void)
 	if ((this->_flags & AView::MEASURE_QUERY) != AView::MEASURE_QUERY)
 	{
 		this->_flags |= AView::MEASURE_QUERY;
-		p = this->_holder == nullptr ? nullptr : this->_holder->getParent();
+		p = this->getParent();
 		if (p != nullptr)
 			p->queryMeasure();
 	}	
@@ -419,7 +419,7 @@ void			AView::queryRedraw(void)
 	if ((this->_flags & AView::REDRAW_QUERY) != AView::REDRAW_QUERY)
 	{
 		this->_flags |= AView::REDRAW_QUERY;
-		p = this->_holder == nullptr ? nullptr : this->_holder->getParent();
+		p = this->getParent();
 		if (p != nullptr)
 			p->queryRedraw();
 	}	
