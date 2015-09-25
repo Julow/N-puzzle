@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/09/25 11:09:20 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/25 13:12:13 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ public:
 	};
 
 	virtual ~AView(void);
-
+	AView(XmlParser const &xml);
 /*
 ** View core
 */
@@ -113,25 +113,20 @@ public:
 	/*
 	** Queries
 	*/
-	bool						isRedrawQueried(void) const;
-	bool						isMeasureQueried(void) const;
 	bool						isUpdateQueried(void) const;
+	bool						isMeasureQueried(void) const;
+	bool						isRedrawQueried(void) const;
 
 protected:
-
-	AView(XmlParser const &xml);
-
 /*
 ** View core
 */
 	IViewHolder					*_holder;
-
 	std::string const *const	_id;
 	unsigned long				_flags;
-
 	float						_alpha;
 
-	void						setMouseOver(bool over);
+	void						setMouseOver(bool state);
 
 	template <typename T>
 	typename T::ViewHolder		*getHolder(void) const;
@@ -142,18 +137,18 @@ protected:
 ** Register target
 ** Some low level callbacks are not enabled by default
 */
-	virtual void				registerTargetMouseScroll(bool state);
-	virtual void				registerTargetMouseClick(bool state);
-	virtual void				registerTargetMousePosition(bool state);
-	virtual void				registerTargetKeyboard(bool state);
+	void						registerTargetMouseScroll(bool state);
+	void						registerTargetMouseClick(bool state);
+	void						registerTargetMousePosition(bool state);
+	void						registerTargetKeyboard(bool state);
 
 /*
 ** Query
 ** Queries a callback for the next frame
 */
-	virtual void				queryRedraw(void);
-	virtual void				queryMeasure(void);
-	virtual void				queryUpdate(void);
+	void						queryUpdate(void);
+	void						queryMeasure(void);
+	void						queryRedraw(void);
 
 /*
 ** Static

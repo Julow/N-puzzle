@@ -6,13 +6,14 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/25 11:09:43 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/25 13:14:03 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <exception>
 #include "AView.hpp"
+#include "ALayout.hpp"
 #include "IViewHolder.hpp"
 #include "XmlParser.hpp"
 
@@ -39,7 +40,13 @@ AView::~AView(void)
 std::string const	*AView::getId(void) const
 { return (this->_id); }
 ALayout				*AView::getParent(void)
-{ return (this->_holder == NULL ? NULL : this->_holder->getParent()); }
+{ return (this->_holder->getParent()); }
+
+void				AView::setViewHolder(IViewHolder *holder)
+{
+	this->_holder = holder;
+	return ;
+}
 
 void				AView::inflate(XmlParser &xml)
 {
@@ -48,9 +55,10 @@ void				AView::inflate(XmlParser &xml)
 	{
 		// TODO throw because noway
 	}
-	if (xml.getToken() == XmlParser::MARKUP_END)
-		return ;
-	// TODO throw because noway
+	if (xml.getToken() != XmlParser::MARKUP_END)
+	{
+		// TODO throw because noway
+	}
 	return ;
 }
 
@@ -67,20 +75,22 @@ void				AView::setAlpha(float value)
 {
 	this->_alpha = value;
 	//TODO finish AView::setAlpha
-	(void)value;
 	return ;
 }
 void				AView::setVisibility(bool hidden)
 {
-	if (hidden && !(this->_flags & AView::HIDDEN))
+	if (static_cast<bool>(this->_flags & AView::HIDDEN) != hidden)
 	{
-		this->_flags &= ~AView::HIDDEN;
+		if (hidden == true)
+		{
+			this->_flags |= AView::HIDDEN;
+		}
+		else
+		{
+			this->_flags &= ~AView::HIDDEN;
+		}
+		//TODO finish AView::setVisibility
 	}
-	else if (!hidden && (this->_flags & AView::HIDDEN))
-	{
-		this->_flags |= AView::HIDDEN;
-	}
-	//TODO finish AView::setVisibility
 	return ;
 }
 
@@ -193,7 +203,6 @@ void				AView::onVisibilityChange(bool hidden)
 	return ;
 }
 
-
 /*
 ** Layout system
 */
@@ -212,28 +221,32 @@ bool				AView::isKeyboardTargeted(void) const
 /*
 ** Queries
 */
-bool				AView::isRedrawQueried(void) const
-{ return (this->_flags & AView::REDRAW_QUERY); }
-bool				AView::isMeasureQueried(void) const
-{ return (this->_flags & AView::MEASURE_QUERY); }
 bool				AView::isUpdateQueried(void) const
 { return (this->_flags & AView::UPDATE_QUERY); }
-
+bool				AView::isMeasureQueried(void) const
+{ return (this->_flags & AView::MEASURE_QUERY); }
+bool				AView::isRedrawQueried(void) const
+{ return (this->_flags & AView::REDRAW_QUERY); }
 
 /*
 ** View core
 */
-void				AView::setMouseOver(bool over)
+void				AView::setMouseOver(bool state)
 {
-	if (over && !(this->_flags & AView::MOUSE_OVER))
+	if (static_cast<bool>(this->_flags & AView::MOUSE_OVER) != state)
 	{
-		this->_flags &= ~AView::MOUSE_OVER;
+		if (state == true)
+		{
+			this->_flags |= AView::MOUSE_OVER;
+			this->onMouseEnter();
+		}
+		else
+		{
+			this->_flags &= ~AView::MOUSE_OVER;
+			this->onMouseLeave();
+		}
+		// TODO more AView::setMouseOver
 	}
-	else if (!over && (this->_flags & AView::MOUSE_OVER))
-	{
-		this->_flags |= AView::MOUSE_OVER;
-	}
-	// TODO more AView::setMouseOver
 	return ;
 }
 
@@ -243,6 +256,141 @@ typename T::ViewHolder	*AView::getHolder(void) const
 template <typename T>
 typename T::ViewHolder	*AView::getHolder(void)
 { return (dynamic_cast<typename T::ViewHolder*>(this->_holder)); }
+
+/*
+** Register target
+** Some low level callbacks are not enabled by default
+*/
+void			AView::registerTargetMouseScroll(bool state)
+{
+	ALayout			*p;
+
+	if (static_cast<bool>(this->_flags & AView::MOUSE_SCROLL_TARGET) != state)
+	{
+		if (state == true)
+		{
+			this->_flags |= AView::MOUSE_SCROLL_TARGET;
+		}
+		else
+		{
+			this->_flags &= ~AView::MOUSE_SCROLL_TARGET;
+		}
+		p = this->_holder->getParent();
+		if (p != NULL)
+			p->spreadTargetMouseScroll(state);
+	}
+	return ;
+}
+
+void			AView::registerTargetMouseClick(bool state)
+{
+	ALayout			*p;
+
+	if (static_cast<bool>(this->_flags & AView::MOUSE_CLICK_TARGET) != state)
+	{
+		if (state == true)
+		{
+			this->_flags |= AView::MOUSE_CLICK_TARGET;
+		}
+		else
+		{
+			this->_flags &= ~AView::MOUSE_CLICK_TARGET;
+		}
+		p = this->_holder->getParent();
+		if (p != NULL)
+			p->spreadTargetMouseClick(state);
+	}
+	return ;
+}
+
+void			AView::registerTargetMousePosition(bool state)
+{
+	ALayout			*p;
+
+	if (static_cast<bool>(this->_flags & AView::MOUSE_POSITION_TARGET) != state)
+	{
+		if (state == true)
+		{
+			this->_flags |= AView::MOUSE_POSITION_TARGET;
+		}
+		else
+		{
+			this->_flags &= ~AView::MOUSE_POSITION_TARGET;
+		}
+		p = this->_holder->getParent();
+		if (p != NULL)
+			p->spreadTargetMousePosition(state);
+	}
+	return ;
+}
+
+void			AView::registerTargetKeyboard(bool state)
+{
+	ALayout			*p;
+
+	if (static_cast<bool>(this->_flags & AView::KEYBOARD_TARGET) != state)
+	{
+		if (state == true)
+		{
+			this->_flags |= AView::KEYBOARD_TARGET;
+		}
+		else
+		{
+			this->_flags &= ~AView::KEYBOARD_TARGET;
+		}
+		p = this->_holder->getParent();
+		if (p != NULL)
+			p->spreadTargetKeyboard(state);
+	}
+	return ;
+}
+
+
+/*
+** Query
+** Queries a callback for the next frame
+*/
+void			AView::queryUpdate(void)
+{
+	ALayout		*p;
+
+	if ((this->_flags & AView::UPDATE_QUERY) != AView::UPDATE_QUERY)
+	{
+		this->_flags |= AView::UPDATE_QUERY;
+		p = this->_holder->getParent();
+		if (p != NULL)
+			p->queryUpdate();
+	}	
+	return ;
+}
+
+void			AView::queryMeasure(void)
+{
+	ALayout		*p;
+
+	if ((this->_flags & AView::MEASURE_QUERY) != AView::MEASURE_QUERY)
+	{
+		this->_flags |= AView::MEASURE_QUERY;
+		p = this->_holder->getParent();
+		if (p != NULL)
+			p->queryMeasure();
+	}	
+	return ;
+}
+
+void			AView::queryRedraw(void)
+{
+	ALayout		*p;
+
+	if ((this->_flags & AView::REDRAW_QUERY) != AView::REDRAW_QUERY)
+	{
+		this->_flags |= AView::REDRAW_QUERY;
+		p = this->_holder->getParent();
+		if (p != NULL)
+			p->queryRedraw();
+	}	
+	return ;
+}
 
 /*
 ** Static
@@ -259,7 +407,7 @@ AView::factory_t		AView::getFactory(std::string const &name)
 	catch (std::out_of_range &e)
 	{
 		std::cerr << "Factory not found" << std::endl;
-		// TODO throw
+		// TODO throw in static AView::getFactory
 	}
 	return (f);
 }
@@ -269,7 +417,7 @@ void					AView::registerFactory(std::string const &name,
 	if (!AView::_factories.insert(std::make_pair(name, factory)).second)
 	{
 		std::cerr << "Factory, already exists" << std::endl;
-		// TODO ??
+		// TODO throw? static AView::registerFactory
 	}
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/25 11:01:40 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/25 11:52:27 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ public:
 /*
 ** Callbacks override
 */
-	virtual void				onUpdate(void);
-	virtual void				onMeasure(void);
-	virtual void				onDraw(ACanvas &canvas);
+	virtual void				onUpdate(void) = 0;
+	virtual void				onMeasure(void) = 0;
+	virtual void				onDraw(ACanvas &canvas) = 0;
 
 	virtual bool				onMouseScroll(int x, int y, float delta);
 	virtual bool				onMouseDown(int x, int y, int button);
@@ -63,6 +63,15 @@ public:
 	virtual bool				isMousePositionTargeted(void) const;
 	virtual bool				isKeyboardTargeted(void) const;
 
+/*
+** Target spread
+*/
+	void						spreadTargetMouseScroll(bool state);
+	void						spreadTargetMouseClick(bool state);
+	void						spreadTargetMousePosition(bool state);
+	void						spreadTargetKeyboard(bool state);
+
+
 protected:
 
 	ALayout(XmlParser const &xml);
@@ -74,18 +83,7 @@ protected:
 
 	virtual IViewHolder			*createHolder(XmlParser const &xml
 											  , ALayout *p, AView *v) = 0;
-	
-/*
-** Target and query override
-*/
-	virtual void				registerTargetMouseScroll(bool state);
-	virtual void				registerTargetMouseClick(bool state);
-	virtual void				registerTargetMousePosition(bool state);
-	virtual void				registerTargetKeyboard(bool state);
-
-	virtual void				queryRedraw(void);
-	virtual void				queryMeasure(void);
-	virtual void				queryUpdate(void);
+public:
 
 private:
 
