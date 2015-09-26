@@ -6,13 +6,13 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/25 17:46:45 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/09/26 14:11:11 by juloo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <exception>
-#include <stdlib.h> //atof
+#include <cstdlib>
 
 #include "AView.hpp"
 #include "ALayout.hpp"
@@ -59,15 +59,10 @@ void				AView::setViewHolder(IViewHolder *holder)
 
 void				AView::inflate(XmlParser &xml)
 {
-	// TODO xml parser v2
-	if (!xml.next())
-	{
-		// TODO throw because noway
-	}
-	if (xml.getToken() != XmlParser::MARKUP_END)
-	{
-		// TODO throw because noway
-	}
+	XmlParser::State	state;
+
+	if (!xml.next(state) || state != XmlParser::State::END)
+		; // TODO throw because noway
 	return ;
 }
 

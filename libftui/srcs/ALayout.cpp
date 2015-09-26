@@ -6,13 +6,15 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/25 19:12:34 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/09/26 14:10:50 by juloo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ALayout.hpp"
 #include "XmlParser.hpp"
 #include "IViewHolder.hpp"
+
+#include <algorithm>
 
 namespace ftui
 {
@@ -31,7 +33,7 @@ ALayout::~ALayout(void)
 {
 }
 
-void			ALayout::addView(AView *v)
+void				ALayout::addView(AView *v)
 {
 	if (v->getViewHolder() != nullptr)
 		; //TODO: throw view with two parents
@@ -40,9 +42,9 @@ void			ALayout::addView(AView *v)
 	return ;
 }
 
-AView			*ALayout::popView(AView *v)
+AView				*ALayout::popView(AView *v)
 {
-	IViewHolder				*vh;
+	IViewHolder					*vh;
 	child_container_t::iterator	it;
 
 	vh = v->getViewHolder();
@@ -50,7 +52,7 @@ AView			*ALayout::popView(AView *v)
 		|| vh->getParent() != this
 		|| vh->getView() != v)
 		; // TODO: throw, (view, viewholder) pair invalid before pop
-	it = find(this->begin(), this->end(), vh);
+	it = std::find(this->begin(), this->end(), vh);
 	if (it == this->end())
 		; // TODO; throw, trying to remove element not in vector
 	this->erase(it);
@@ -58,10 +60,10 @@ AView			*ALayout::popView(AView *v)
 	return (v);
 }
 
-void			ALayout::spreadTargetMouseScroll(bool state)
+void				ALayout::spreadTargetMouseScroll(bool state)
 {
 	ALayout			*p;
- 
+
 	if (static_cast<bool>(this->_layoutFlags & AView::MOUSE_SCROLL_TARGET)
 		!= state)
 	{
@@ -84,7 +86,7 @@ void			ALayout::spreadTargetMouseScroll(bool state)
 void				ALayout::spreadTargetMouseClick(bool state)
 {
 	ALayout			*p;
- 
+
 	if (static_cast<bool>(this->_layoutFlags & AView::MOUSE_CLICK_TARGET)
 		!= state)
 	{
@@ -107,7 +109,7 @@ void				ALayout::spreadTargetMouseClick(bool state)
 void				ALayout::spreadTargetMousePosition(bool state)
 {
 	ALayout			*p;
- 
+
 	if (static_cast<bool>(this->_layoutFlags & AView::MOUSE_POSITION_TARGET)
 		!= state)
 	{
@@ -130,7 +132,7 @@ void				ALayout::spreadTargetMousePosition(bool state)
 void				ALayout::spreadTargetKeyboard(bool state)
 {
 	ALayout			*p;
- 
+
 	if (static_cast<bool>(this->_layoutFlags & AView::KEYBOARD_TARGET)
 		!= state)
 	{
@@ -155,30 +157,31 @@ void				ALayout::spreadTargetKeyboard(bool state)
 ** * AView legacy *********************************************************** **
 */
 
-void			ALayout::inflate(XmlParser &xml)
+void				ALayout::inflate(XmlParser &xml)
 {
-	AView			*v;
-	IViewHolder		*vh; 
+	AView				*v;
+	IViewHolder			*vh;
+	XmlParser::State	state;
 
-	// TODO xml parser v2
-	while (!xml.next())
+	while (xml.next(state))
 	{
-		if (xml.getToken() == XmlParser::MARKUP_START)
+		if (state == XmlParser::State::START)
 		{
-		v = AView::getFactory(xml.getMarkupName())(xml);
-		vh = this->createHolder(xml, this, v);
-		v->inflate(xml);
-		v->setViewHolder(vh);
-		this->addView(v);
+			v = AView::getFactory(xml.getMarkupName())(xml);
+			vh = this->createHolder(xml, this, v);
+			v->inflate(xml);
+			v->setViewHolder(vh);
+			this->addView(v);
 		}
+		else if (state == XmlParser::State::END)
+			return ;
+		else
+			break ;
 	}
-	if (xml.getToken() == XmlParser::MARKUP_END)
-		return ;
 	// TODO throw because noway
-	return ;
 }
 
-void			ALayout::setParam(std::string const &k, std::string const &v)
+void				ALayout::setParam(std::string const &k, std::string const &v)
 {
 	if (0)
 		; //no param yet in ALayout
@@ -239,22 +242,22 @@ bool                ALayout::onKeyUp(int key_code)
 }
 */
 
-bool                ALayout::isMouseScollTargeted(void) const
+bool				ALayout::isMouseScollTargeted(void) const
 {
 	return ((this->_layoutFlags & AView::MOUSE_SCROLL_TARGET)
 			|| AView::isMouseScollTargeted());
 }
-bool                ALayout::isMouseClickTargeted(void) const
+bool				ALayout::isMouseClickTargeted(void) const
 {
 	return ((this->_layoutFlags & AView::MOUSE_CLICK_TARGET)
 			|| AView::isMouseClickTargeted());
 }
-bool                ALayout::isMousePositionTargeted(void) const
+bool				ALayout::isMousePositionTargeted(void) const
 {
 	return ((this->_layoutFlags & AView::MOUSE_POSITION_TARGET)
 			|| AView::isMousePositionTargeted());
 }
-bool                ALayout::isKeyboardTargeted(void) const
+bool				ALayout::isKeyboardTargeted(void) const
 {
 	return ((this->_layoutFlags & AView::KEYBOARD_TARGET)
 			|| AView::isKeyboardTargeted());
