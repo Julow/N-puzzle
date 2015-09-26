@@ -6,7 +6,7 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/24 21:50:50 by juloo             #+#    #+#             */
-/*   Updated: 2015/09/26 13:24:18 by juloo            ###   ########.fr       */
+/*   Updated: 2015/09/26 13:58:47 by juloo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "ft/utils.hpp"
 #include <stdexcept>
 #include <cstring>
-#include <iostream> // DEBUG
 
 namespace ftui
 {
@@ -40,7 +39,6 @@ std::string const	XmlTokenizer::next(Token &t)
 		{NULL, &XmlTokenizer::token_eof, Token::END_OF_FILE},
 	};
 
-	// ft::f(std::cout, "next...\n");
 	parse_spaces();
 	for (auto const &def : tokens_def)
 	{
@@ -49,7 +47,6 @@ std::string const	XmlTokenizer::next(Token &t)
 		{
 			t = def.token;
 			parse_spaces();
-			// ft::f(std::cout, "stop at '%' %\n", _oss.str(), def.str);
 			return (_oss.str());
 		}
 	}

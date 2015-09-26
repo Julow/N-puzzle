@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:45 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/26 13:30:28 by juloo            ###   ########.fr       */
+/*   Updated: 2015/09/26 13:59:27 by juloo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,10 @@ namespace ftui
 
 XmlParser::XmlParser(std::istream &stream) :
 	_tokenizer(stream),
-	_markupName(),
-	_params()
+	_params(),
+	_marks()
 {
-	// ft::f(std::cout, "LOL\n");
 	_tokenizer.next(_token);
-	// ft::f(std::cout, "LOL\n");
 }
 
 XmlParser::~XmlParser(void)
@@ -40,23 +38,25 @@ bool							XmlParser::next(State &state)
 	if (_token == XmlTokenizer::Token::MARK_START)
 	{
 // ft::f(std::cout, "<\n");
-		// < ...
 		token_str = _tokenizer.next(_token);
 		if (_token == XmlTokenizer::Token::MARK_CLOSE)
 		{
 // ft::f(std::cout, "</\n");
-			// </ ...
 			token_str = _tokenizer.next(_token);
 			if (_token == XmlTokenizer::Token::NAME)
 			{
 // ft::f(std::cout, "</%\n", token_str);
-				// </name
-				_markupName = token_str;
+				if (_marks.size() == 0)
+					throw std::domain_error(ft::f("Unexpected '</%>' at line %",
+						token_str, _tokenizer.getLine()));
+				if (_marks.top() != token_str)
+					throw std::domain_error(ft::f("Expected '</%>' instead of '</%>' at line %",
+						_marks.top(), token_str, _tokenizer.getLine()));
+				_marks.pop();
 				_tokenizer.next(_token);
 				if (_token == XmlTokenizer::Token::MARK_END)
 				{
 // ft::f(std::cout, "</%>\n", token_str);
-					// </name>
 					state = State::END;
 					return (true);
 				}
@@ -65,8 +65,7 @@ bool							XmlParser::next(State &state)
 		else if (_token == XmlTokenizer::Token::NAME)
 		{
 // ft::f(std::cout, "<%\n", token_str);
-			// <name
-			_markupName = token_str;
+			_marks.push(token_str);
 			_params.clear();
 			while (true)
 			{
@@ -96,12 +95,10 @@ bool							XmlParser::next(State &state)
 	else if (_token == XmlTokenizer::Token::MARK_END)
 	{
 // ft::f(std::cout, ">\n");
-		// >
 		_tokenizer.next(_token);
 		if (_token == XmlTokenizer::Token::MARK_START)
 		{
 // ft::f(std::cout, "> <\n");
-			// > <
 			return (next(state));
 		}
 		else if (_token == XmlTokenizer::Token::END_OF_FILE)
@@ -116,7 +113,7 @@ bool							XmlParser::next(State &state)
 		if (_token == XmlTokenizer::Token::MARK_END)
 		{
 // ft::f(std::cout, "/>\n");
-			// />
+			_marks.pop();
 			state = State::END;
 			return (true);
 		}
@@ -127,7 +124,7 @@ bool							XmlParser::next(State &state)
 
 std::string const				&XmlParser::getMarkupName(void) const
 {
-	return (_markupName);
+	return (_marks.top());
 }
 
 XmlParser::params_map_t const	&XmlParser::getParams(void) const

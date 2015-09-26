@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:12:32 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/25 17:11:08 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/26 13:56:20 by juloo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 # include <istream>
 # include <unordered_map>
+# include <stack>
 
 # include "XmlTokenizer.hpp"
 
@@ -67,12 +68,13 @@ public:
 
 protected:
 
-	XmlTokenizer		_tokenizer;
+	XmlTokenizer			_tokenizer;
 
-	XmlTokenizer::Token	_token;
+	XmlTokenizer::Token		_token;
 
-	std::string			_markupName;
-	params_map_t		_params;
+	params_map_t			_params;
+
+	std::stack<std::string>	_marks;
 
 private:
 	XmlParser(void) = delete;

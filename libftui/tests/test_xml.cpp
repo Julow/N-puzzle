@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/24 16:53:39 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/26 13:26:54 by juloo            ###   ########.fr       */
+/*   Updated: 2015/09/26 13:58:05 by juloo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void		xml_test(ftui::XmlParser &xml, int indent)
 		else if (state == ftui::XmlParser::State::END)
 		{
 			std::cout << std::setfill('	') << std::setw(indent);
-			ft::f(std::cout, "</%>\n", xml.getMarkupName());
+			ft::f(std::cout, "</>\n");
 			return ;
 		}
 	std::cout << std::setfill('\t') << std::setw(indent) << "NEXT FAIL" << std::endl;
