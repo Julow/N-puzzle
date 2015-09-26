@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/25 18:56:46 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/09/26 14:26:34 by juloo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ public:
 
 	virtual void				setParam(std::string const &k,
 										 std::string const &v);
-	
+
 	virtual void				onUpdate(void) = 0;
 	virtual void				onMeasure(void) = 0;
 	virtual void				onDraw(ACanvas &canvas) = 0;

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/26 14:11:11 by juloo            ###   ########.fr       */
+/*   Updated: 2015/09/26 14:25:59 by juloo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "ALayout.hpp"
 #include "IViewHolder.hpp"
 #include "XmlParser.hpp"
+#include "VerticalLayout.hpp"
 
 namespace ftui
 {
@@ -424,22 +425,27 @@ void			AView::queryRedraw(void)
 /*
 ** Static
 */
-AView::factory_map_t	AView::_factories;
+AView::factory_map_t	AView::_factories{
+	{"VerticalLayout", &VerticalLayout::createView}
+};
+
 AView::factory_t		AView::getFactory(std::string const &name)
 {
 	AView::factory_t	f;
 
-	try
-	{
+	// try
+	// {
 		f = AView::_factories.at(name);
-	}
-	catch (std::out_of_range &e)
-	{
-		std::cerr << "Factory not found" << std::endl;
-		// TODO throw in static AView::getFactory
-	}
+		// Let the [] throw ?
+	// }
+	// catch (std::out_of_range &e)
+	// {
+	// 	std::cerr << "Factory not found" << std::endl;
+	// 	// TODO throw in static AView::getFactory
+	// }
 	return (f);
 }
+
 void					AView::registerFactory(std::string const &name,
 	factory_t factory)
 {

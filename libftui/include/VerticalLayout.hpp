@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:12:43 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/25 10:16:35 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/09/26 14:38:13 by juloo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,31 @@ public:
 
 	virtual void			inflate(XmlParser &xml);
 
-	AView					*createChild(std::string const &type, ...);
+	virtual void			onUpdate(void);
+	virtual void			onMeasure(void);
+	virtual void			onDraw(ACanvas &canvas);
 
-	static AView			*createView(XmlParser &xml);
+	AView					*createChild(std::string const &type, ...);
 
 protected:
 
 	VerticalLayout(XmlParser const &xml);
+
+	virtual IViewHolder			*createHolder(XmlParser const &xml,
+									ALayout *p, AView *v);
+	virtual IViewHolder			*createHolder(ALayout *p, AView *v);
 
 private:
 	VerticalLayout(void) = delete;
 	VerticalLayout(VerticalLayout const &src) = delete;
 	VerticalLayout			&operator=(VerticalLayout const &rhs) = delete;
 
+/*
+** Static
+*/
 public:
+
+	static AView			*createView(XmlParser const &xml);
 };
 
 /*
@@ -59,8 +70,8 @@ class	VerticalLayout::ViewHolder : public IViewHolder
 {
 public:
 	virtual ~ViewHolder(void);
-	ViewHolder(XmlParser const &xml, ALayout *p, AView *v);
-		
+	ViewHolder(ALayout *p, AView *v);
+
 	virtual AView			*getView(void);
 	virtual AView const		*getView(void) const;
 
@@ -70,15 +81,18 @@ public:
 	virtual Vec2<int>		getPos(void) const;
 	virtual Vec2<int>		getSize(void) const;
 
+	virtual void			setParam(std::string const &k,
+								std::string const &v);
+
 protected:
 
-	AView				*_view;
-	ALayout				*_parent;
+	AView					*_view;
+	ALayout					*_parent;
 
 private:
 	ViewHolder(void) = delete;
 	ViewHolder(ViewHolder const &src) = delete;
-	ViewHolder			&operator=(ViewHolder const &rhs) = delete;
+	ViewHolder				&operator=(ViewHolder const &rhs) = delete;
 };
 
 };

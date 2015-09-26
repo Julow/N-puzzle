@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/09/25 18:56:18 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/09/26 14:29:58 by juloo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ protected:
 */
 public:
 
-	typedef AView				*(*factory_t)(XmlParser&);
+	typedef AView				*(*factory_t)(XmlParser const &);
 	typedef std::unordered_map<std::string, factory_t>	factory_map_t;
 
 	static factory_t			getFactory(std::string const &name);

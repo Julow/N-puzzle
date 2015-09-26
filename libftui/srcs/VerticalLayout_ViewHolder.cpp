@@ -1,14 +1,14 @@
-// ************************************************************************** //
-//                                                                            //
-//                                                        :::      ::::::::   //
-//   VerticalLayout_ViewHolder.cpp                      :+:      :+:    :+:   //
-//                                                    +:+ +:+         +:+     //
-//   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
-//                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/09/25 10:11:27 by ngoguey           #+#    #+#             //
-//   Updated: 2015/09/25 10:20:08 by ngoguey          ###   ########.fr       //
-//                                                                            //
-// ************************************************************************** //
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   VerticalLayout_ViewHolder.cpp                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/09/25 10:11:27 by ngoguey           #+#    #+#             */
+/*   Updated: 2015/09/26 14:38:10 by juloo            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "VerticalLayout.hpp"
 #include "XmlParser.hpp"
@@ -18,13 +18,9 @@
 namespace ftui
 {
 
-VerticalLayout::ViewHolder::ViewHolder(XmlParser const &xml,
-										   ALayout *p, AView *v)
+VerticalLayout::ViewHolder::ViewHolder(ALayout *p, AView *v)
 	: _view(v), _parent(p)
 {
-	XmlParser::params_map_t const	&params = xml.getParams();
-
-	(void)params;
 }
 
 VerticalLayout::ViewHolder::~ViewHolder(void)
