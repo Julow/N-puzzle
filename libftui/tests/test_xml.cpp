@@ -6,47 +6,42 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/24 16:53:39 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/25 18:19:51 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/26 13:26:54 by juloo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "XmlParser.hpp"
 #include "ft/utils.hpp"
 #include <iostream>
+#include <iomanip>
+
+static void		xml_test(ftui::XmlParser &xml, int indent)
+{
+	ftui::XmlParser::State	state;
+
+	while (xml.next(state))
+		if (state == ftui::XmlParser::State::START)
+		{
+			std::cout << std::setfill('\t') << std::setw(indent + 1);
+			ft::f(std::cout, "<%", xml.getMarkupName());
+			for (auto p : xml.getParams())
+				ft::f(std::cout, " %=\"%\"", p.first, p.second);
+			std::cout << ">" << std::endl;
+			xml_test(xml, indent + 1);
+		}
+		else if (state == ftui::XmlParser::State::END)
+		{
+			std::cout << std::setfill('	') << std::setw(indent);
+			ft::f(std::cout, "</%>\n", xml.getMarkupName());
+			return ;
+		}
+	std::cout << std::setfill('\t') << std::setw(indent) << "NEXT FAIL" << std::endl;
+}
 
 int				main(void)
 {
 	ftui::XmlParser			xml(std::cin);
-	ftui::XmlParser::State	state;
 
-	if (!xml.next(state))
-		return (1);
-	if (state == ftui::XmlParser::State::START)
-	{
-		ft::f(std::cout, "START\n");
-	}
-	else
-	{
-		ft::f(std::cout, "END\n");
-	}
-	// while (xml.next(state))
-	// {
-	// 	if (state == ftui::XmlParser::State::START)
-	// 	{
-	// 		std::cout << "MARKUP_START <" << xml.getMarkupName() << ">" << std::endl;
-	// 		for (auto p : xml.getParams())
-	// 			std::cout << "\tPARAMS " << p.first << "=\"" << p.second << "\"" << std::endl;
-	// 	}
-	// 	else if (state == ftui::XmlParser::State::END)
-	// 	{
-	// 		std::cout << "MARKUP_START <" << xml.getMarkupName() << ">" << std::endl;
-	// 	}
-	// 	else
-	// 	{
-	// 		std::cout << "LOL" << std::endl;
-	// 		return (1);
-	// 	}
-	// }
-	// std::cout << "END" << std::endl;
+	xml_test(xml, 0);
 	return (0);
 }

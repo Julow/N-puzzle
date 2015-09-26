@@ -6,7 +6,7 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/24 21:39:37 by juloo             #+#    #+#             */
-/*   Updated: 2015/09/25 18:08:13 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/26 13:22:00 by juloo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ public:
 		MARK_CLOSE,
 		NAME,
 		EQUAL,
-		STRING
+		STRING,
+		END_OF_FILE
 	};
 
 	XmlTokenizer(std::istream &stream);
@@ -56,6 +57,7 @@ protected:
 
 	void				parse_spaces(void);
 
+	bool				token_eof(tokenDef_s const &def);
 	bool				token_char(tokenDef_s const &def);
 	bool				token_name(tokenDef_s const &def);
 	bool				token_str(tokenDef_s const &def);

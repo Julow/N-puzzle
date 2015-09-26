@@ -6,19 +6,21 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/24 21:50:50 by juloo             #+#    #+#             */
-/*   Updated: 2015/09/25 19:07:45 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/26 13:24:18 by juloo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "XmlTokenizer.hpp"
 #include "ft/utils.hpp"
-#include <exception>
+#include <stdexcept>
+#include <cstring>
+#include <iostream> // DEBUG
 
 namespace ftui
 {
 
 XmlTokenizer::XmlTokenizer(std::istream &stream)
-	: _is(stream), _oss(), _line(0)
+	: _is(stream), _oss(), _line(1)
 {
 }
 
@@ -32,24 +34,26 @@ std::string const	XmlTokenizer::next(Token &t)
 		{"<", &XmlTokenizer::token_char, Token::MARK_START},
 		{">", &XmlTokenizer::token_char, Token::MARK_END},
 		{"/", &XmlTokenizer::token_char, Token::MARK_CLOSE},
-		{NULL, &XmlTokenizer::token_name, Token::NAME},
+		{"_-:.", &XmlTokenizer::token_name, Token::NAME},
 		{"=", &XmlTokenizer::token_char, Token::EQUAL},
-		{NULL, &XmlTokenizer::token_str, Token::STRING},
-		{NULL, NULL, Token::MARK_END},
+		{"\"", &XmlTokenizer::token_str, Token::STRING},
+		{NULL, &XmlTokenizer::token_eof, Token::END_OF_FILE},
 	};
 
+	// ft::f(std::cout, "next...\n");
 	parse_spaces();
 	for (auto const &def : tokens_def)
 	{
-		_oss.clear();
+		_oss.str("");
 		if ((this->*def.f)(def))
 		{
 			t = def.token;
 			parse_spaces();
+			// ft::f(std::cout, "stop at '%' %\n", _oss.str(), def.str);
 			return (_oss.str());
 		}
 	}
-	throw std::domain_error(ft::f("Unknown token '%' at line %", _is.peek(), _line));
+	throw std::domain_error(ft::f("Unknown token '%' at line %", (char)_is.peek(), _line));
 }
 
 int					XmlTokenizer::getLine(void) const
@@ -70,6 +74,14 @@ void				XmlTokenizer::parse_spaces(void)
 			break ;
 		_is.get();
 	}
+}
+
+bool				XmlTokenizer::token_eof(tokenDef_s const &def)
+{
+	if (_is.peek() == EOF)
+		return (true);
+	return (false);
+	(void)def;
 }
 
 bool				XmlTokenizer::token_char(tokenDef_s const &def)
@@ -95,14 +107,13 @@ bool				XmlTokenizer::token_name(tokenDef_s const &def)
 	while (true)
 	{
 		c = _is.peek();
-		if (!std::isspace(c) && std::strchr("_-:.", c) == NULL)
+		if (!std::isalnum(c) && std::strchr(def.str, c) == NULL)
 			break ;
 		_is.get();
 		_oss.put(c);
 		ok = true;
 	}
 	return (ok);
-	(void)def;
 }
 
 bool				XmlTokenizer::token_str(tokenDef_s const &def)
@@ -111,12 +122,13 @@ bool				XmlTokenizer::token_str(tokenDef_s const &def)
 	bool				escape;
 
 	c = _is.peek();
-	if (c != '"')
+	if (c != def.str[0])
 		return (false);
 	escape = false;
+	_is.get(c);
 	while (_is.get(c))
 	{
-		if (!escape && c == '"')
+		if (!escape && c == def.str[0])
 			return (true);
 		if (!escape && c == '\\')
 			escape = true;
@@ -126,8 +138,7 @@ bool				XmlTokenizer::token_str(tokenDef_s const &def)
 			_oss.put(c);
 		}
 	}
-	throw std::domain_error(ft::f("Missing '\"' at line %", _line));
-	(void)def;
+	throw std::domain_error(ft::f("Missing '%' at line %", def.str, _line));
 }
 
 };

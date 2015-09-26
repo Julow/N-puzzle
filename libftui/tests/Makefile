@@ -6,7 +6,7 @@
 #    By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/09/24 16:50:26 by jaguillo          #+#    #+#              #
-#    Updated: 2015/09/24 16:57:41 by jaguillo         ###   ########.fr        #
+#    Updated: 2015/09/26 12:27:48 by juloo            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,3 +39,6 @@ fclean: clean
 
 .PHONY: all clean fclean libft
 .SILENT:
+
+xml:
+	cat test.xml | ./out_xml
