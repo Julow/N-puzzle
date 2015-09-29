@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/26 14:25:59 by juloo            ###   ########.fr       */
+//   Updated: 2015/09/29 08:15:43 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ IViewHolder const	*AView::getViewHolder(void) const
 
 void				AView::setViewHolder(IViewHolder *holder)
 {
-	if (this->_holder != nullptr)
-		std::cerr << "Erasing previous holder" << std::endl;
+	FTASSERT(this->_holder == nullptr);
 	this->_holder = holder;
 	return ;
 }
@@ -62,8 +61,9 @@ void				AView::inflate(XmlParser &xml)
 {
 	XmlParser::State	state;
 
-	if (!xml.next(state) || state != XmlParser::State::END)
-		; // TODO throw because noway
+	if (!xml.next(state))
+		FTASSERT(false);
+	FTASSERT(state == XmlParser::State::END);
 	return ;
 }
 
@@ -116,7 +116,7 @@ void				AView::setParam(std::string const &k,
 	else if (this->_holder != nullptr)
 		this->_holder->setParam(k, v);
 	else
-		;// unknown param (no _holder)
+		FTASSERT(false, "Unknown param (no holder atached)");
 	return ;
 }
 

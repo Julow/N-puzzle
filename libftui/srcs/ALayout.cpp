@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/26 14:10:50 by juloo            ###   ########.fr       */
+//   Updated: 2015/09/29 08:23:48 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ ALayout::~ALayout(void)
 
 void				ALayout::addView(AView *v)
 {
-	if (v->getViewHolder() != nullptr)
-		; //TODO: throw view with two parents
+	FTASSERT(v->getViewHolder() == nullptr);
 	v->setViewHolder(this->createHolder(this, v));
 	this->push_back(v->getViewHolder());
 	return ;
@@ -48,13 +47,11 @@ AView				*ALayout::popView(AView *v)
 	child_container_t::iterator	it;
 
 	vh = v->getViewHolder();
-	if (vh == nullptr
-		|| vh->getParent() != this
-		|| vh->getView() != v)
-		; // TODO: throw, (view, viewholder) pair invalid before pop
+	FTASSERT(vh != nullptr
+			 && vh->getParent() == this
+			 &&  vh->getView() == v);
 	it = std::find(this->begin(), this->end(), vh);
-	if (it == this->end())
-		; // TODO; throw, trying to remove element not in vector
+	FTASSERT(it != this->end());
 	this->erase(it);
 	delete vh;
 	return (v);
@@ -178,7 +175,7 @@ void				ALayout::inflate(XmlParser &xml)
 		else
 			break ;
 	}
-	// TODO throw because noway
+	FTASSERT(false, "Should not be reached");
 }
 
 void				ALayout::setParam(std::string const &k, std::string const &v)

@@ -6,12 +6,14 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 11:55:01 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/29 06:45:34 by ngoguey          ###   ########.fr       */
+/*   Updated: 2015/09/29 08:06:09 by ngoguey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFTUI_H
 # define LIBFTUI_H
+
+#include "ft/assert.hpp"
 
 namespace ftui
 {

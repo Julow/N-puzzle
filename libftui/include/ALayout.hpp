@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/26 14:26:34 by juloo            ###   ########.fr       */
+//   Updated: 2015/09/29 08:20:15 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ public:
 
 	virtual bool				isMouseScollTargeted(void) const;
 	virtual bool				isMouseClickTargeted(void) const;
-	virtual bool				isMousePositionTargeted(void) const;// TODO
+	virtual bool				isMousePositionTargeted(void) const;
+	virtual bool				isMouseCaptureTargeted(void) const;// TODO
 	virtual bool				isKeyboardTargeted(void) const;
 
 /*
@@ -80,7 +81,8 @@ public:
 */
 	void						spreadTargetMouseScroll(bool state);
 	void						spreadTargetMouseClick(bool state);
-	void						spreadTargetMousePosition(bool state); //TODO
+	void						spreadTargetMousePosition(bool state);
+	void						spreadTargetMouseCapture(bool state); //TODO
 	void						spreadTargetKeyboard(bool state);
 
 protected:

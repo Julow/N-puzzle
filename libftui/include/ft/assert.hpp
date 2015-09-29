@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/29 07:32:08 by ngoguey           #+#    #+#             //
-//   Updated: 2015/09/29 08:02:47 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/29 08:07:39 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -26,11 +26,9 @@ namespace Assert
 # if (defined(FTASSERT_IGNORE) &&							\
 	  (defined(FTASSERT_REPORT) || defined(FTASSERT_HALT)))
 static_assert(false, "Too many FTASSERT options");
-
 # elif !defined(FTASSERT_IGNORE) && !defined(FTASSERT_REPORT) &&	\
 	!defined(FTASSERT_HALT)
 static_assert(false, "Not enough FTASSERT options");
-
 # endif
 
 # ifdef FTASSERT_HALT
