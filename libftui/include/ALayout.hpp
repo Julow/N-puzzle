@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/29 08:20:15 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/29 09:14:37 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ public:
 	virtual bool				onKeyDown(int key_code);
 	virtual bool				onKeyUp(int key_code);
 
-	virtual bool				isMouseScollTargeted(void) const;
+	virtual bool				isMouseScrollTargeted(void) const;
 	virtual bool				isMouseClickTargeted(void) const;
-	virtual bool				isMousePositionTargeted(void) const;
-	virtual bool				isMouseCaptureTargeted(void) const;// TODO
+	virtual bool				isMouseMoveTargeted(void) const;
+	virtual bool				isMouseCaptureTargeted(void) const;
 	virtual bool				isKeyboardTargeted(void) const;
 
 /*
@@ -81,8 +81,8 @@ public:
 */
 	void						spreadTargetMouseScroll(bool state);
 	void						spreadTargetMouseClick(bool state);
-	void						spreadTargetMousePosition(bool state);
-	void						spreadTargetMouseCapture(bool state); //TODO
+	void						spreadTargetMove(bool state);
+	void						spreadTargetMouseCapture(bool state);
 	void						spreadTargetKeyboard(bool state);
 
 protected:

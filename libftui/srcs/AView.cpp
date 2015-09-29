@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/29 08:15:43 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/29 09:17:51 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #include "IViewHolder.hpp"
 #include "XmlParser.hpp"
 #include "VerticalLayout.hpp"
+
+using std::string;
 
 namespace ftui
 {
@@ -74,8 +76,6 @@ float				AView::getAlpha(void) const
 { return (this->_alpha); }
 bool				AView::isVisible(void) const
 { return (this->_flags & AView::HIDDEN); }
-bool				AView::isMouseOver(void) const
-{ return (this->_flags & AView::MOUSE_OVER); }
 void				AView::setAlpha(float value)
 {
 	this->_alpha = value;
@@ -98,8 +98,9 @@ void				AView::setVisibility(bool hidden)
 	}
 	return ;
 }
-void				AView::setParam(std::string const &k,
-									std::string const &v)
+bool				AView::isMouseOver(void) const
+{ return (this->_flags & AView::MOUSE_OVER); }
+void				AView::setParam(string const &k, string const &v)
 {
 	if (k == "alpha")
 		this->setAlpha(::atof(v.c_str())); //TODO parser float
@@ -109,8 +110,8 @@ void				AView::setParam(std::string const &k,
 		this->registerTargetMouseScroll(v == "true"); //TODO parser bool
 	else if (k == "mouse_click_target")
 		this->registerTargetMouseClick(v == "true"); //TODO parser bool
-	else if (k == "mouse_position_target")
-		this->registerTargetMousePosition(v == "true"); //TODO parser bool
+	else if (k == "mouse_move_target")
+		this->registerTargetMove(v == "true"); //TODO parser bool
 	else if (k == "keyboard_target")
 		this->registerTargetKeyboard(v == "true"); //TODO parser bool
 	else if (this->_holder != nullptr)
@@ -235,12 +236,14 @@ void				AView::onVisibilityChange(bool hidden)
 /*
 ** Targets
 */
-bool				AView::isMouseScollTargeted(void) const
+bool				AView::isMouseScrollTargeted(void) const
 { return (this->_flags & AView::MOUSE_SCROLL_TARGET); }
 bool				AView::isMouseClickTargeted(void) const
 { return (this->_flags & AView::MOUSE_CLICK_TARGET); }
-bool				AView::isMousePositionTargeted(void) const
-{ return (this->_flags & AView::MOUSE_POSITION_TARGET); }
+bool				AView::isMouseMoveTargeted(void) const
+{ return (this->_flags & AView::MOUSE_MOVE_TARGET); }
+bool				AView::isMouseCaptureTargeted(void) const
+{ return (this->_flags & AView::MOUSE_CAPTURE_TARGET); }
 bool				AView::isKeyboardTargeted(void) const
 { return (this->_flags & AView::KEYBOARD_TARGET); }
 
@@ -333,23 +336,44 @@ void			AView::registerTargetMouseClick(bool state)
 	return ;
 }
 
-void			AView::registerTargetMousePosition(bool state)
+void			AView::registerTargetMove(bool state)
 {
 	ALayout			*p;
 
-	if (static_cast<bool>(this->_flags & AView::MOUSE_POSITION_TARGET) != state)
+	if (static_cast<bool>(this->_flags & AView::MOUSE_MOVE_TARGET) != state)
 	{
 		if (state == true)
 		{
-			this->_flags |= AView::MOUSE_POSITION_TARGET;
+			this->_flags |= AView::MOUSE_MOVE_TARGET;
 		}
 		else
 		{
-			this->_flags &= ~AView::MOUSE_POSITION_TARGET;
+			this->_flags &= ~AView::MOUSE_MOVE_TARGET;
 		}
 		p = this->getParent();
 		if (p != nullptr)
-			p->spreadTargetMousePosition(state);
+			p->spreadTargetMove(state);
+	}
+	return ;
+}
+
+void			AView::registerTargetMouseCapture(bool state)
+{
+	ALayout			*p;
+
+	if (static_cast<bool>(this->_flags & AView::MOUSE_CAPTURE_TARGET) != state)
+	{
+		if (state == true)
+		{
+			this->_flags |= AView::MOUSE_CAPTURE_TARGET;
+		}
+		else
+		{
+			this->_flags &= ~AView::MOUSE_CAPTURE_TARGET;
+		}
+		p = this->getParent();
+		if (p != nullptr)
+			p->spreadTargetMouseCapture(state);
 	}
 	return ;
 }
