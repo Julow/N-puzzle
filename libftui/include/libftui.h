@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 11:55:01 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/24 21:39:57 by juloo            ###   ########.fr       */
+/*   Updated: 2015/09/29 06:45:34 by ngoguey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 namespace ftui
 {
-
+	
 class	Activity;
 class	ACanvas;
 

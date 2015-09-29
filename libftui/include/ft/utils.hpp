@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/25 13:42:20 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/25 18:17:09 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/09/29 07:38:19 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ void				f(std::ostream &out, char const *format, ARGS ...args);
 /*
 ** Impl
 */
-static char const	*f_print(std::ostream &out, char const *format)
+static inline char const	*f_print(std::ostream &out, char const *format)
 {
 	while (*format != '\0' && *format != '%')
 		out << *(format++);
 	return (format);
 }
 
-static void			f_loop(std::ostream &out, char const *format)
+static inline void			f_loop(std::ostream &out, char const *format)
 {
 	out << format;
 }
