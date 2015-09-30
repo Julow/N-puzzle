@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/30 09:01:50 by ngoguey           #+#    #+#             //
-//   Updated: 2015/09/30 10:01:00 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/30 10:41:09 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,9 +16,20 @@
 namespace ftui
 {
 
+void		Activity::registerEvent(std::string const &event, AView *v)
+{
+	// IEventBox               *ab;
+
+	// ab = new EventBox<T, Args...>(v, callback_);
+	// this->_eventMap.insert(std::make_pair(event, ab));
+	(void)event;
+	(void)v;
+	return ;
+}
+
 template<class T, typename... Args>
-void		Activity::storeEvent(std::string const &event, AView *v
-							   , void (T::*callback_)(Args...))
+void		Activity::registerEvent(std::string const &event, AView *v
+									  , bool (T::*callback_)(Args...))
 {
 	IEventBox               *ab;
 
@@ -28,18 +39,20 @@ void		Activity::storeEvent(std::string const &event, AView *v
 }
 
 template<typename... Args>
-bool		Activity::fireEvent(std::string const &event, Args... args)
+bool		Activity::fireEvent(std::string const &event, Args... args) const
 {
 	auto                	it = this->_eventMap.find(event);
 	auto const				ite = this->_eventMap.cend();
 	EventParams<Args...>	ar[1];
+	bool					ret;
 
+	ret = false;
 	ar->tup = std::make_tuple(args...);
 	for (; it != ite; it++)
 	{
-		it->second->call(ar);
+		ret |= it->second->call(ar);
 	}
-	return (true);
+	return (ret);
 }
 
 };

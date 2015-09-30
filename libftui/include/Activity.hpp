@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/30 09:58:22 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/30 10:40:13 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,14 @@ public:
 	void				onMouseUp(void);
 	bool				onMouseDown(int x, int y);
 
+	void				registerEvent(std::string const &event, AView *v);
 	template<class T, typename... Args>
-	void				storeEvent(std::string const &event, AView *v
-								   , void (T::*callback_)(Args...));
+	void				registerEvent(std::string const &event, AView *v
+									  , bool (T::*callback_)(Args...));
 	template<typename... Args>
-	bool				fireEvent(std::string const &event, Args... args);
+	bool				fireEvent(std::string const &event, Args... args) const;
+
+	// void				unregisterEvent(std::string const &event, AView *v);
 
 protected:
 

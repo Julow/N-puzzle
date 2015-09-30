@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/30 09:44:31 by ngoguey           #+#    #+#             //
-//   Updated: 2015/09/30 09:57:58 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/30 10:45:06 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,7 +19,7 @@ template<class T, typename... ARGS>
 class ftui::EventBox : public IEventBox
 {
 private:
-	typedef void					(T::*fun_t)(ARGS...);
+	typedef bool					(T::*fun_t)(ARGS...);
 	typedef std::tuple<ARGS...>		tuple_t;
 
 	T					*_v;
@@ -27,29 +27,26 @@ private:
 
 public:
 
-	EventBox(AView *v, fun_t f) : _v(static_cast<T*>(v)) , _f(f) {}
+	EventBox(AView *v, fun_t f) : _v(reinterpret_cast<T*>(v)) , _f(f) {}
 	virtual ~EventBox(){};
 
-	void				call(IEventParams *a_)
+	bool				call(IEventParams *a_)
 		{
 			EventParams<ARGS...>	 *a;
 
 			a = reinterpret_cast<EventParams<ARGS...>*>(a_);
-			delayed_dispatch(a->tup);
-			return ;
+			return delayed_dispatch(a->tup);
 		}
 
 private:
 	template<std::size_t ...I>
-	void				call_func(tuple_t params, std::index_sequence<I...>)
+	bool				call_func(tuple_t params, std::index_sequence<I...>)
 		{
-			((this->_v)->*(this->_f))(std::get<I>(params)...);
-			return ;
+			return ((this->_v)->*(this->_f))(std::get<I>(params)...);
 		}
-	void				delayed_dispatch(tuple_t params)
+	bool				delayed_dispatch(tuple_t params)
 		{
-			call_func(params, std::index_sequence_for<ARGS...>{});
-			return ;
+			return call_func(params, std::index_sequence_for<ARGS...>{});
 		}
 
 	EventBox() = delete;

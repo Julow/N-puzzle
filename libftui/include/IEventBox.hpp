@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/30 09:49:28 by ngoguey           #+#    #+#             //
-//   Updated: 2015/09/30 09:56:19 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/30 10:02:58 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,7 +21,7 @@ public:
 	IEventBox(){}
 	virtual ~IEventBox(){}
 
-	virtual void			call(IEventParams *a_) = 0;
+	virtual bool			call(IEventParams *a_) = 0;
 	
 private:
 	IEventBox(IEventBox const &src) = delete;
