@@ -4,7 +4,7 @@
 NAME := libftui.a
 
 # Project directories
-DIRS := srcs include
+DIRS := srcs include include/ftui
 
 # Bindings
 BINDINGS ?=
