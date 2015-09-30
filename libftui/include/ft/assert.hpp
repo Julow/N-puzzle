@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/29 07:32:08 by ngoguey           #+#    #+#             //
-//   Updated: 2015/09/29 08:07:39 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/30 08:17:34 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -38,26 +38,26 @@ static_assert(false, "Not enough FTASSERT options");
 # endif
 
 # ifdef FTASSERT_IGNORE
-#  define FTASSERT(X, ...) do { (void)sizeof((size_t)(X)); } while (0)
+#  define FTASSERT(X, ...) do{(void)sizeof(static_cast<size_t>(X));}while(0)
 # else
 #  define FTAARGS(X, ...) #X, __LINE__, __FILE__, __FUNCTION__, #__VA_ARGS__
 #  define FTASSERT(X, ...)											\
 	do {															\
 		if (!(X))													\
 		{															\
-			ft::Assert::Report(FTAARGS(X, ##__VA_ARGS__));			\
+			ft::Assert::report(FTAARGS(X, ##__VA_ARGS__));			\
 			FTASSERT_HALT_IMPL(										\
-				ft::Assert::ReportStr(FTAARGS(X, ##__VA_ARGS__)));	\
+				ft::Assert::reportStr(FTAARGS(X, ##__VA_ARGS__)));	\
 		}															\
 	} while (0)
 # endif
 
-void		Report(std::string const &condition,
+void		report(std::string const &condition,
 				   int line,
 				   std::string const &file,
 				   std::string const &function,
 				   std::string const &msg = "");
-std::string	ReportStr(std::string const &condition,
+std::string	reportStr(std::string const &condition,
 					  int line,
 					  std::string const &file,
 					  std::string const &function,

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/29 07:10:26 by ngoguey           #+#    #+#             //
-//   Updated: 2015/09/29 08:01:40 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/30 08:17:05 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,7 +18,7 @@ namespace ft
 {
 namespace Assert
 {
-void			Report(std::string const &condition,
+void			report(std::string const &condition,
 						  int line,
 						  std::string const &file,
 						  std::string const &function,
@@ -34,7 +34,7 @@ void			Report(std::string const &condition,
 	(void)function;
 }
 
-std::string			ReportStr(std::string const &condition,
+std::string			reportStr(std::string const &condition,
 							  int line,
 							  std::string const &file,
 							  std::string const &function,

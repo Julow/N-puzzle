@@ -21,14 +21,16 @@ o/srcs/AView.o: srcs/AView.cpp include/AView.hpp include/ft/assert.hpp \
 	include/VerticalLayout.hpp | o/srcs/
 o/srcs/AbsoluteLayout.o: srcs/AbsoluteLayout.cpp include/AbsoluteLayout.hpp \
 	include/ft/assert.hpp include/libftui.h | o/srcs/
-o/srcs/Activity.o: srcs/Activity.cpp include/Activity.hpp \
+o/srcs/Activity.o: srcs/Activity.cpp include/Activity.hpp include/EventBox.hpp \
+	include/EventParams.hpp include/IEventBox.hpp include/IEventParams.hpp \
 	include/IViewHolder.hpp include/Vec.hpp include/ft/assert.hpp \
-	include/libftui.h include/AView.hpp include/XmlParser.hpp \
-	include/XmlTokenizer.hpp | o/srcs/
-o/srcs/Activity_RootViewHolder.o: srcs/Activity_RootViewHolder.cpp \
-	include/Activity.hpp include/IViewHolder.hpp include/Vec.hpp \
-	include/ft/assert.hpp include/libftui.h include/AView.hpp \
+	include/libftui.h srcs/Activity.tpp include/AView.hpp \
 	include/XmlParser.hpp include/XmlTokenizer.hpp | o/srcs/
+o/srcs/Activity_RootViewHolder.o: srcs/Activity_RootViewHolder.cpp \
+	include/Activity.hpp include/EventBox.hpp include/EventParams.hpp \
+	include/IEventBox.hpp include/IEventParams.hpp include/IViewHolder.hpp \
+	include/Vec.hpp include/ft/assert.hpp include/libftui.h srcs/Activity.tpp \
+	include/AView.hpp include/XmlParser.hpp include/XmlTokenizer.hpp | o/srcs/
 o/srcs/RelativeLayout.o: srcs/RelativeLayout.cpp include/RelativeLayout.hpp \
 	include/ft/assert.hpp include/libftui.h | o/srcs/
 o/srcs/SliderView.o: srcs/SliderView.cpp include/SliderView.hpp \
@@ -43,7 +45,8 @@ o/srcs/VerticalLayout_ViewHolder.o: srcs/VerticalLayout_ViewHolder.cpp \
 	include/ALayout.hpp include/AView.hpp include/IViewHolder.hpp \
 	include/Vec.hpp include/VerticalLayout.hpp include/ft/assert.hpp \
 	include/libftui.h include/XmlParser.hpp include/XmlTokenizer.hpp \
-	include/Activity.hpp | o/srcs/
+	include/Activity.hpp include/EventBox.hpp include/EventParams.hpp \
+	include/IEventBox.hpp include/IEventParams.hpp srcs/Activity.tpp | o/srcs/
 o/srcs/XmlParser.o: srcs/XmlParser.cpp include/XmlParser.hpp \
 	include/XmlTokenizer.hpp include/ft/assert.hpp include/libftui.h \
 	include/ft/utils.hpp | o/srcs/

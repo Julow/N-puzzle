@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/25 15:26:33 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/30 09:58:22 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <istream>
 
 # include "IViewHolder.hpp"
+// # include "EventBox.hpp"
+// # include "EventParams.hpp"
 
 namespace ftui
 {
@@ -35,7 +37,7 @@ class	Activity
 public:
 	class	RootViewHolder;
 
-	typedef std::unordered_multimap<std::string, AView*>	event_map_t;
+	typedef std::unordered_multimap<std::string, IEventBox*>	event_map_t;
 
 	Activity(Vec2<int> size);
 	virtual ~Activity(void);
@@ -53,7 +55,11 @@ public:
 	void				onMouseUp(void);
 	bool				onMouseDown(int x, int y);
 
-	bool				fireEvent(std::string const &event);
+	template<class T, typename... Args>
+	void				storeEvent(std::string const &event, AView *v
+								   , void (T::*callback_)(Args...));
+	template<typename... Args>
+	bool				fireEvent(std::string const &event, Args... args);
 
 protected:
 
@@ -100,5 +106,7 @@ private:
 };
 
 };
+
+# include "Activity.tpp"
 
 #endif
