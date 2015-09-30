@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/09/30 18:05:16 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/30 18:24:30 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@ namespace ftui
 ** Represents an UI component
 ** -
 ** This is the base class for any UI component
+** -
+** TODO: Call lua callbacks
 */
-
 class	AView
 {
 public:
@@ -52,6 +53,7 @@ public:
 
 	virtual ~AView(void);
 	AView(XmlParser const &xml);
+
 /*
 ** View core
 */
@@ -76,7 +78,7 @@ public:
 
 	virtual void				setParam(std::string const &k,
 										 std::string const &v);
-	
+
 /*
 ** Callbacks
 */

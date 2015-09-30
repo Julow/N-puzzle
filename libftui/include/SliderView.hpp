@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:30 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/30 18:06:48 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/30 18:21:35 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@
 namespace ftui
 {
 
+/*
+** SliderView
+** -
+** Represent a slider that the cursor can be moved by the user
+** -
+** TODO: Implement SliderView
+*/
 class	SliderView
 {
 public:

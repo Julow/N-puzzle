@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/24 08:37:05 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/30 18:05:59 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/30 18:15:40 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 namespace ftui
 {
 
+/*
+** Base class used to store a view in a layout
+*/
 class	IViewHolder
 {
 public:

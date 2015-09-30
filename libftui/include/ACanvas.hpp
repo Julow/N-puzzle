@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/30 18:04:47 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/30 18:23:23 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@
 namespace ftui
 {
 
+/*
+** ACanvas
+** -
+** Base class for a drawing canvas
+** -
+** TODO: Think about ACanvas and implement one
+*/
 class	ACanvas
 {
 public:

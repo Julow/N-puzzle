@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:31 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/30 18:06:54 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/30 18:22:44 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@
 namespace ftui
 {
 
+/*
+** TextView
+** -
+** Represent a text
+** Automatically request enougth size onMeasure
+** -
+** TODO: Implement TextView
+*/
 class	TextView
 {
 public:

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:12:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/30 18:06:42 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/30 18:20:26 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,16 @@
 namespace ftui
 {
 
+/*
+** RelativeLayout
+** -
+** Childs:
+** * Are placed relatively to a point of the layout
+** * Cannot go outside layout's bounds (shrinked)
+** * Cannot set position or size
+** -
+** TODO: Implement RelativeLayout
+*/
 class	RelativeLayout
 {
 public:
