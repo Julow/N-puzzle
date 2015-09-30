@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/29 09:17:51 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/30 11:51:41 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "AView.hpp"
 #include "ALayout.hpp"
 #include "IViewHolder.hpp"
+#include "EventParams.hpp"
 #include "XmlParser.hpp"
 #include "VerticalLayout.hpp"
 
@@ -207,10 +208,11 @@ void				AView::onMouseLeave(void)
 	// TODO call lua
 	return ;
 }
-void				AView::onEvent(std::string const &event)
+void				AView::onEvent(std::string const &event, IEventParams *p)
 {
 	// TODO call lua
 	(void)event;
+	(void)p;
 	return ;
 }
 void				AView::onPositionChange(void)

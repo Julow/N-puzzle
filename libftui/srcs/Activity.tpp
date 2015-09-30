@@ -6,24 +6,24 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/30 09:01:50 by ngoguey           #+#    #+#             //
-//   Updated: 2015/09/30 10:41:09 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/30 11:52:10 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "EventBox.hpp"
+#include "DefaultEventBox.hpp"
 #include "EventParams.hpp"
 
 namespace ftui
 {
 
+template<typename... Args>
 void		Activity::registerEvent(std::string const &event, AView *v)
 {
-	// IEventBox               *ab;
+	IEventBox               *ab;
 
-	// ab = new EventBox<T, Args...>(v, callback_);
-	// this->_eventMap.insert(std::make_pair(event, ab));
-	(void)event;
-	(void)v;
+	ab = new DefaultEventBox<Args...>(v);
+	this->_eventMap.insert(std::make_pair(event, ab));
 	return ;
 }
 
