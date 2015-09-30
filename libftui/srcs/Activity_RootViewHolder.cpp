@@ -1,14 +1,14 @@
-// ************************************************************************** //
-//                                                                            //
-//                                                        :::      ::::::::   //
-//   Activity_RootViewHolder.cpp                        :+:      :+:    :+:   //
-//                                                    +:+ +:+         +:+     //
-//   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
-//                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/09/25 09:38:59 by ngoguey           #+#    #+#             //
-//   Updated: 2015/09/25 10:14:28 by ngoguey          ###   ########.fr       //
-//                                                                            //
-// ************************************************************************** //
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Activity_RootViewHolder.cpp                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/09/25 09:38:59 by ngoguey           #+#    #+#             */
+/*   Updated: 2015/09/30 17:58:28 by jaguillo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "Activity.hpp"
 #include "AView.hpp"
@@ -32,14 +32,26 @@ Activity::RootViewHolder::~RootViewHolder(void)
 	return ;
 }
 
-AView           *Activity::RootViewHolder::getView(void)
+AView			*Activity::RootViewHolder::getView(void)
 { return (this->_view); }
+
 AView const		*Activity::RootViewHolder::getView(void) const
 { return (this->_view); }
 
-Vec2<int>       Activity::RootViewHolder::getPos(void) const
+Vec2<int>		Activity::RootViewHolder::getPos(void) const
 { return (Vec2<int>(0, 0)); }
-Vec2<int>       Activity::RootViewHolder::getSize(void) const
+
+Vec2<int>		Activity::RootViewHolder::getSize(void) const
 { return (this->_size); }
+
+void			Activity::RootViewHolder::setRequestedSize(Vec2<int> size)
+{
+	_requestedSize = size;
+}
+
+Vec2<int>		Activity::RootViewHolder::getRequestedSize(void) const
+{
+	return (_requestedSize);
+}
 
 };

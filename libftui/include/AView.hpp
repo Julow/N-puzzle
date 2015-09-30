@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/09/30 11:51:26 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/09/30 17:19:53 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,12 +139,6 @@ protected:
 	float						_alpha;
 
 	void						setMouseOver(bool state);
-
-	template <typename T>
-	typename T::ViewHolder		*castHolder(void) const;
-	template <typename T>
-	typename T::ViewHolder		*castHolder(void);
-
 
 /*
 ** Register target

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 15:04:00 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/24 12:01:16 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/30 17:59:02 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,11 @@ public:
 	DECLARE_OPERATOR(/)
 # undef DECLARE_OPERATOR
 
+	bool		operator==(Vec2<T> const &rhs) const
+	{
+		return (rhs.x == x && rhs.y == y);
+	}
+
 protected:
 private:
 };
@@ -120,6 +125,11 @@ public:
 	DECLARE_OPERATOR(*)
 	DECLARE_OPERATOR(/)
 # undef DECLARE_OPERATOR
+
+	bool		operator==(Vec3<T> const &rhs) const
+	{
+		return (rhs.x == x && rhs.y == y && rhs.z == z);
+	}
 
 protected:
 private:

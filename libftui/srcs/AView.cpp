@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/30 11:51:41 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/09/30 17:21:19 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,12 +134,15 @@ void				AView::onUpdate(void)
 	// TODO call lua if registered AView::onUpdate
 	return ;
 }
+
 void				AView::onMeasure(void)
 {
 	this->_flags &= ~AView::MEASURE_QUERY;
 	// TODO call lua if registered AView::onMeasure
-	return ;
+	if (_holder != NULL)
+		_holder->setRequestedSize(Vec2<int>(0, 0));
 }
+
 void				AView::onDraw(ACanvas &canvas)
 {
 	this->_flags &= ~AView::REDRAW_QUERY;
@@ -279,17 +282,6 @@ void				AView::setMouseOver(bool state)
 		// TODO more AView::setMouseOver
 	}
 	return ;
-}
-
-template <typename T>
-typename T::ViewHolder	*AView::castHolder(void) const
-{
-	return (dynamic_cast<typename T::ViewHolder const*>(this->_holder));
-}
-template <typename T>
-typename T::ViewHolder	*AView::castHolder(void)
-{
-	return (dynamic_cast<typename T::ViewHolder*>(this->_holder));
 }
 
 /*

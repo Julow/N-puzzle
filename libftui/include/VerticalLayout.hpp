@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:12:43 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/26 14:38:13 by juloo            ###   ########.fr       */
+/*   Updated: 2015/09/30 17:50:32 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,27 @@ namespace ftui
 /*
 ** VerticalLayout
 ** -
-** TODO comment
+** Childs:
+** * Are ordered vertically
+** * Can be horizontally aligned
+** * Support marginTop and marginBottom
+** * Requested height is always used
+** * Requested width can be clamp to layout's width
+** * Are not shrink if height go outside layout's height
+**    but are partially hidden
 */
 class	VerticalLayout : public ALayout
 {
+protected:
 	class	ViewHolder;
 public:
+	enum class	Align
+	{
+		LEFT,
+		CENTER,
+		RIGHT
+	};
+
 	virtual ~VerticalLayout(void);
 
 	virtual void			inflate(XmlParser &xml);
@@ -38,15 +53,26 @@ public:
 	virtual void			onMeasure(void);
 	virtual void			onDraw(ACanvas &canvas);
 
-	AView					*createChild(std::string const &type, ...);
+	virtual void			onSizeChange(void);
+
+/*
+** Childs
+*/
+	virtual void				addView(AView *v);
+	virtual AView				*popView(AView *v);
+
+	virtual AView				*at(int i);
+	virtual AView const			*at(int i) const;
+
+	virtual int					size(void) const;
 
 protected:
 
+	std::vector<ViewHolder*>	_childs;
+
 	VerticalLayout(XmlParser const &xml);
 
-	virtual IViewHolder			*createHolder(XmlParser const &xml,
-									ALayout *p, AView *v);
-	virtual IViewHolder			*createHolder(ALayout *p, AView *v);
+	virtual IViewHolder			*holderAt(int i);
 
 private:
 	VerticalLayout(void) = delete;
@@ -64,14 +90,16 @@ public:
 /*
 ** VerticalLayout::ViewHolder
 ** -
-** TODO comment
 */
 class	VerticalLayout::ViewHolder : public IViewHolder
 {
 public:
 	virtual ~ViewHolder(void);
-	ViewHolder(ALayout *p, AView *v);
+	ViewHolder(VerticalLayout *p, AView *v);
 
+/*
+** Impl
+*/
 	virtual AView			*getView(void);
 	virtual AView const		*getView(void) const;
 
@@ -81,13 +109,37 @@ public:
 	virtual Vec2<int>		getPos(void) const;
 	virtual Vec2<int>		getSize(void) const;
 
+	virtual Vec2<int>		getRequestedSize(void) const;
+	virtual void			setRequestedSize(Vec2<int> size);
+
 	virtual void			setParam(std::string const &k,
 								std::string const &v);
+
+/*
+** -
+*/
+	void					setPosX(int x);
+	void					setPosY(int y);
+
+	/*
+	** Automatically call onSizeChange if size is different than actual
+	*/
+	void					setSize(Vec2<int> size);
+
+	Vec2<int>				getVerticalMargin(void) const;
+	Align					getHorizontalAlign(void) const;
 
 protected:
 
 	AView					*_view;
-	ALayout					*_parent;
+	VerticalLayout			*_parent;
+
+	Vec2<int>				_pos;
+	Vec2<int>				_size;
+	Vec2<int>				_requestedSize;
+
+	Vec2<int>				_verticalMargin;
+	Align					_horizontalAlign;
 
 private:
 	ViewHolder(void) = delete;

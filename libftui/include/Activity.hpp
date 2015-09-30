@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/30 11:01:13 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/09/30 17:57:09 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ namespace ftui
 /*
 ** Activity
 ** -
-** TODO comment
+** Hold the whole UI
+** Multiple activity can cohabit but there is no facility for that
 */
 class	Activity
 {
@@ -97,12 +98,17 @@ public:
 	virtual Vec2<int>		getPos(void) const;
 	virtual Vec2<int>		getSize(void) const;
 
-	virtual void			 setParam(std::string const &k
-									  , std::string const &v);
+	virtual void			setRequestedSize(Vec2<int> size);
+	virtual Vec2<int>		getRequestedSize(void) const;
+
+	virtual void			setParam(std::string const &k
+									, std::string const &v);
 protected:
+
 	AView					*_view;
 	Vec2<int>				_size;
-		
+	Vec2<int>				_requestedSize;
+
 private:
 	RootViewHolder(void) = delete;
 	RootViewHolder(RootViewHolder const &src) = delete;

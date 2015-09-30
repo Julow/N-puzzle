@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/29 09:17:23 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/09/30 16:02:08 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,30 +35,6 @@ ALayout::~ALayout(void)
 {
 }
 
-void				ALayout::addView(AView *v)
-{
-	FTASSERT(v->getViewHolder() == nullptr);
-	v->setViewHolder(this->createHolder(this, v));
-	this->push_back(v->getViewHolder());
-	return ;
-}
-
-AView				*ALayout::popView(AView *v)
-{
-	IViewHolder					*vh;
-	child_container_t::iterator	it;
-
-	vh = v->getViewHolder();
-	FTASSERT(vh != nullptr
-			 && vh->getParent() == this
-			 &&  vh->getView() == v);
-	it = std::find(this->begin(), this->end(), vh);
-	FTASSERT(it != this->end());
-	this->erase(it);
-	delete vh;
-	return (v);
-}
-
 void				ALayout::spreadTargetMouseScroll(bool state)
 {
 	ALayout			*p;
@@ -71,8 +47,8 @@ void				ALayout::spreadTargetMouseScroll(bool state)
 		else
 		{
 			this->_layoutFlags &= ~AView::MOUSE_SCROLL_TARGET;
-			for (auto const &it : *this)
-				if (it->getView()->isMouseScrollTargeted())
+			for (int i = 0; i < size(); i++)
+				if (at(i)->isMouseScrollTargeted())
 					return ;
 		}
 		p = this->getParent();
@@ -94,17 +70,17 @@ void				ALayout::spreadTargetMouseClick(bool state)
 		else
 		{
 			this->_layoutFlags &= ~AView::MOUSE_CLICK_TARGET;
-			for (auto const &it : *this)
-				if (it->getView()->isMouseScrollTargeted())
+			for (int i = 0; i < size(); i++)
+				if (at(i)->isMouseScrollTargeted())
 					return ;
 		}
 		p = this->getParent();
 		if (p != nullptr)
 			p->spreadTargetMouseClick(state);
 	}
-
 	return ;
 }
+
 void				ALayout::spreadTargetMove(bool state)
 {
 	ALayout			*p;
@@ -117,17 +93,17 @@ void				ALayout::spreadTargetMove(bool state)
 		else
 		{
 			this->_layoutFlags &= ~AView::MOUSE_MOVE_TARGET;
-			for (auto const &it : *this)
-				if (it->getView()->isMouseScrollTargeted())
+			for (int i = 0; i < size(); i++)
+				if (at(i)->isMouseScrollTargeted())
 					return ;
 		}
 		p = this->getParent();
 		if (p != nullptr)
 			p->spreadTargetMove(state);
 	}
-
 	return ;
 }
+
 void				ALayout::spreadTargetMouseCapture(bool state)
 {
 	ALayout			*p;
@@ -140,17 +116,17 @@ void				ALayout::spreadTargetMouseCapture(bool state)
 		else
 		{
 			this->_layoutFlags &= ~AView::MOUSE_CAPTURE_TARGET;
-			for (auto const &it : *this)
-				if (it->getView()->isMouseScrollTargeted())
+			for (int i = 0; i < size(); i++)
+				if (at(i)->isMouseScrollTargeted())
 					return ;
 		}
 		p = this->getParent();
 		if (p != nullptr)
 			p->spreadTargetMouseCapture(state);
 	}
-
 	return ;
 }
+
 void				ALayout::spreadTargetKeyboard(bool state)
 {
 	ALayout			*p;
@@ -163,8 +139,8 @@ void				ALayout::spreadTargetKeyboard(bool state)
 		else
 		{
 			this->_layoutFlags &= ~AView::KEYBOARD_TARGET;
-			for (auto const &it : *this)
-				if (it->getView()->isMouseScrollTargeted())
+			for (int i = 0; i < size(); i++)
+				if (at(i)->isMouseScrollTargeted())
 					return ;
 		}
 		p = this->getParent();
@@ -182,7 +158,6 @@ void				ALayout::spreadTargetKeyboard(bool state)
 void				ALayout::inflate(XmlParser &xml)
 {
 	AView				*v;
-	IViewHolder			*vh;
 	XmlParser::State	state;
 
 	while (xml.next(state))
@@ -190,9 +165,7 @@ void				ALayout::inflate(XmlParser &xml)
 		if (state == XmlParser::State::START)
 		{
 			v = AView::getFactory(xml.getMarkupName())(xml);
-			vh = this->createHolder(xml, this, v);
 			v->inflate(xml);
-			v->setViewHolder(vh);
 			this->addView(v);
 		}
 		else if (state == XmlParser::State::END)
@@ -212,15 +185,15 @@ void				ALayout::setParam(string const &k, string const &v)
 	return ;
 }
 
-bool                ALayout::onMouseScroll(int x, int y, float delta)
+bool				ALayout::onMouseScroll(int x, int y, float delta)
 {
 	bool		ret;
 	AView		*v;
 
 	ret = false;
-	for (auto &it : *this)
+	for (int i = 0; i < size(); i++)
 	{
-		v = it->getView();
+		v = at(i);
 		FTASSERT(v != nullptr);
 		if (v->isMouseScrollTargeted() && v->isMouseOver()) // TODO?? check x, y
 			ret |= v->onMouseScroll(x, y, delta);
@@ -229,15 +202,16 @@ bool                ALayout::onMouseScroll(int x, int y, float delta)
 		ret |= AView::onMouseScroll(x, y, delta);
 	return (ret);
 }
-bool                ALayout::onMouseDown(int x, int y, int button)
+
+bool				ALayout::onMouseDown(int x, int y, int button)
 {
 	bool		ret;
 	AView		*v;
 
 	ret = false;
-	for (auto &it : *this)
+	for (int i = 0; i < size(); i++)
 	{
-		v = it->getView();
+		v = at(i);
 		FTASSERT(v != nullptr);
 		if (v->isMouseClickTargeted() &&
 			(v->isMouseOver() || v->isMouseCaptureTargeted())) // TODO? check xy
@@ -247,15 +221,16 @@ bool                ALayout::onMouseDown(int x, int y, int button)
 		ret |= AView::onMouseDown(x, y, button);
 	return (ret);
 }
-bool                ALayout::onMouseUp(int x, int y, int button)
+
+bool				ALayout::onMouseUp(int x, int y, int button)
 {
 	bool		ret;
 	AView		*v;
 
 	ret = false;
-	for (auto &it : *this)
+	for (int i = 0; i < size(); i++)
 	{
-		v = it->getView();
+		v = at(i);
 		FTASSERT(v != nullptr);
 		if (v->isMouseClickTargeted() &&
 			(v->isMouseOver() || v->isMouseCaptureTargeted())) // TODO? check xy
@@ -265,15 +240,16 @@ bool                ALayout::onMouseUp(int x, int y, int button)
 		ret |= AView::onMouseUp(x, y, button);
 	return (ret);
 }
-bool                ALayout::onMouseMove(int x, int y)
+
+bool				ALayout::onMouseMove(int x, int y)
 {
 	bool		ret;
 	AView		*v;
 
 	ret = false;
-	for (auto &it : *this)
+	for (int i = 0; i < size(); i++)
 	{
-		v = it->getView();
+		v = at(i);
 		FTASSERT(v != nullptr);
 		// TODO for childrens: call setmouseover  (before of after onmove)
 		if (v->isMouseMoveTargeted() &&
@@ -284,15 +260,16 @@ bool                ALayout::onMouseMove(int x, int y)
 		ret |= AView::onMouseMove(x, y);
 	return (ret);
 }
-bool                ALayout::onKeyDown(int key_code)
+
+bool				ALayout::onKeyDown(int key_code)
 {
 	bool		ret;
 	AView		*v;
 
 	ret = false;
-	for (auto &it : *this)
+	for (int i = 0; i < size(); i++)
 	{
-		v = it->getView();
+		v = at(i);
 		FTASSERT(v != nullptr);
 		if (v->isKeyboardTargeted())
 			ret |= v->onKeyDown(key_code);
@@ -301,15 +278,16 @@ bool                ALayout::onKeyDown(int key_code)
 		ret |= AView::onKeyDown(key_code);
 	return (ret);
 }
-bool                ALayout::onKeyUp(int key_code)
+
+bool				ALayout::onKeyUp(int key_code)
 {
 	bool		ret;
 	AView		*v;
 
 	ret = false;
-	for (auto &it : *this)
+	for (int i = 0; i < size(); i++)
 	{
-		v = it->getView();
+		v = at(i);
 		FTASSERT(v != nullptr);
 		if (v->isKeyboardTargeted())
 			ret |= v->onKeyUp(key_code);
@@ -324,21 +302,25 @@ bool				ALayout::isMouseScrollTargeted(void) const
 	return ((this->_layoutFlags & AView::MOUSE_SCROLL_TARGET)
 			|| AView::isMouseScrollTargeted());
 }
+
 bool				ALayout::isMouseClickTargeted(void) const
 {
 	return ((this->_layoutFlags & AView::MOUSE_CLICK_TARGET)
 			|| AView::isMouseClickTargeted());
 }
+
 bool				ALayout::isMouseMoveTargeted(void) const
 {
 	return ((this->_layoutFlags & AView::MOUSE_MOVE_TARGET)
 			|| AView::isMouseMoveTargeted());
 }
+
 bool				ALayout::isMouseCaptureTargeted(void) const
 {
 	return ((this->_layoutFlags & AView::MOUSE_CAPTURE_TARGET)
 			|| AView::isMouseCaptureTargeted());
 }
+
 bool				ALayout::isKeyboardTargeted(void) const
 {
 	return ((this->_layoutFlags & AView::KEYBOARD_TARGET)

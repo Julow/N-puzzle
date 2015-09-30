@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/29 09:14:37 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/09/30 17:20:03 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,26 @@
 # include <vector>
 
 # include "AView.hpp"
+
 namespace ftui
 {
 
-class	ALayout : public AView, private std::vector<IViewHolder*>
+/*
+** ALayout
+** -
+** Base class for view container
+*/
+class	ALayout : public AView
 {
 public:
 
 	typedef std::vector<IViewHolder*>	child_container_t;
+
+	ALayout(XmlParser const &xml);
+	virtual ~ALayout(void);
+
+	virtual void				addView(AView *v) = 0;
+	virtual AView				*popView(AView *v) = 0;
 
 /*
 ** * AView legacy *********************************************************** **
@@ -34,7 +46,7 @@ public:
 	virtual void				inflate(XmlParser &xml);
 
 	virtual void				setParam(std::string const &k,
-										 std::string const &v);
+									std::string const &v);
 
 	virtual void				onUpdate(void) = 0;
 	virtual void				onMeasure(void) = 0;
@@ -54,27 +66,12 @@ public:
 	virtual bool				isKeyboardTargeted(void) const;
 
 /*
-** * ALayout new functions ************************************************** **
+** Child vector
 */
-	ALayout(XmlParser const &xml);
-	virtual ~ALayout(void);
+	virtual AView				*at(int i) = 0;
+	virtual AView const			*at(int i) const = 0;
 
-	virtual void				addView(AView *v);
-	virtual AView				*popView(AView *v);
-
-/*
-** std::vector visibility management
-*/
-	using child_container_t::begin;
-	using child_container_t::end;
-	using child_container_t::cbegin;
-	using child_container_t::cend;
-
-	using child_container_t::at;
-	using child_container_t::operator[];
-
-	using child_container_t::empty;
-	using child_container_t::size;
+	virtual int					size(void) const = 0;
 
 /*
 ** Target spread
@@ -89,9 +86,7 @@ protected:
 
 	unsigned long				_layoutFlags;
 
-	virtual IViewHolder			*createHolder(XmlParser const &xml
-											  , ALayout *p, AView *v) = 0;
-	virtual IViewHolder			*createHolder(ALayout *p, AView *v) = 0;
+	virtual IViewHolder			*holderAt(int i) = 0;
 
 private:
 
