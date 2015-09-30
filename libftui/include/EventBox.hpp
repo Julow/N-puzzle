@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/30 09:44:31 by ngoguey           #+#    #+#             //
-//   Updated: 2015/09/30 10:45:06 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/09/30 11:47:50 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -30,7 +30,7 @@ public:
 	EventBox(AView *v, fun_t f) : _v(reinterpret_cast<T*>(v)) , _f(f) {}
 	virtual ~EventBox(){};
 
-	bool				call(IEventParams *a_)
+	bool				call(std::string const &, IEventParams *a_)
 		{
 			EventParams<ARGS...>	 *a;
 

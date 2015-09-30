@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 11:55:01 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/30 09:06:07 by ngoguey          ###   ########.fr       */
+/*   Updated: 2015/09/30 11:54:46 by ngoguey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ class	IEventBox;
 template<class T, typename... ARGS> class EventBox;
 class	IEventParams;
 template<typename... ARGS>			class EventParams;
+template<typename... ARGS>			class DefaultEventBox;
 
 class	ACanvas;
 
