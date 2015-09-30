@@ -6,14 +6,14 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:12:32 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/26 13:56:20 by juloo            ###   ########.fr       */
+/*   Updated: 2015/09/30 18:05:37 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef XMLPARSER_HPP
 # define XMLPARSER_HPP
 
-# include "libftui.h"
+# include "libftui.hpp"
 
 # include <istream>
 # include <unordered_map>

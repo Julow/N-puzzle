@@ -6,14 +6,14 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/30 17:20:03 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/30 18:05:00 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ALAYOUT_HPP
 # define ALAYOUT_HPP
 
-# include "libftui.h"
+# include "libftui.hpp"
 
 # include <iterator>
 # include <vector>

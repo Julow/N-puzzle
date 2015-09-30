@@ -6,16 +6,16 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/24 08:37:05 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/30 17:50:14 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/09/30 18:05:59 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef IVIEWHOLDER_HPP
 # define IVIEWHOLDER_HPP
 
-# include "libftui.h"
+# include "libftui.hpp"
 
-# include "Vec.hpp"
+# include "ft/Vec.hpp"
 
 namespace ftui
 {

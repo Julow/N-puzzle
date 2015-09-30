@@ -11,46 +11,52 @@ libs:
 .PHONY: libs
 
 o/srcs/ACanvas.o: srcs/ACanvas.cpp include/ACanvas.hpp include/ft/assert.hpp \
-	include/libftui.h | o/srcs/
+	include/libftui.hpp | o/srcs/
 o/srcs/ALayout.o: srcs/ALayout.cpp include/ALayout.hpp include/AView.hpp \
-	include/ft/assert.hpp include/libftui.h include/XmlParser.hpp \
-	include/XmlTokenizer.hpp include/IViewHolder.hpp include/Vec.hpp | o/srcs/
+	include/ft/assert.hpp include/libftui.hpp include/XmlParser.hpp \
+	include/XmlTokenizer.hpp include/IViewHolder.hpp include/ft/Vec.hpp \
+	| o/srcs/
 o/srcs/AView.o: srcs/AView.cpp include/AView.hpp include/ft/assert.hpp \
-	include/libftui.h include/ALayout.hpp include/IViewHolder.hpp \
-	include/Vec.hpp include/XmlParser.hpp include/XmlTokenizer.hpp \
-	include/VerticalLayout.hpp | o/srcs/
+	include/libftui.hpp include/ALayout.hpp include/IViewHolder.hpp \
+	include/ft/Vec.hpp include/EventParams.hpp include/IEventParams.hpp \
+	include/XmlParser.hpp include/XmlTokenizer.hpp include/VerticalLayout.hpp \
+	| o/srcs/
 o/srcs/AbsoluteLayout.o: srcs/AbsoluteLayout.cpp include/AbsoluteLayout.hpp \
-	include/ft/assert.hpp include/libftui.h | o/srcs/
-o/srcs/Activity.o: srcs/Activity.cpp include/Activity.hpp include/EventBox.hpp \
-	include/EventParams.hpp include/IEventBox.hpp include/IEventParams.hpp \
-	include/IViewHolder.hpp include/Vec.hpp include/ft/assert.hpp \
-	include/libftui.h srcs/Activity.tpp include/AView.hpp \
-	include/XmlParser.hpp include/XmlTokenizer.hpp | o/srcs/
-o/srcs/Activity_RootViewHolder.o: srcs/Activity_RootViewHolder.cpp \
-	include/Activity.hpp include/EventBox.hpp include/EventParams.hpp \
+	include/ft/assert.hpp include/libftui.hpp | o/srcs/
+o/srcs/Activity.o: srcs/Activity.cpp include/Activity.hpp \
+	include/DefaultEventBox.hpp include/EventBox.hpp include/EventParams.hpp \
 	include/IEventBox.hpp include/IEventParams.hpp include/IViewHolder.hpp \
-	include/Vec.hpp include/ft/assert.hpp include/libftui.h srcs/Activity.tpp \
-	include/AView.hpp include/XmlParser.hpp include/XmlTokenizer.hpp | o/srcs/
-o/srcs/RelativeLayout.o: srcs/RelativeLayout.cpp include/RelativeLayout.hpp \
-	include/ft/assert.hpp include/libftui.h | o/srcs/
-o/srcs/SliderView.o: srcs/SliderView.cpp include/SliderView.hpp \
-	include/ft/assert.hpp include/libftui.h | o/srcs/
-o/srcs/TextView.o: srcs/TextView.cpp include/TextView.hpp \
-	include/ft/assert.hpp include/libftui.h | o/srcs/
-o/srcs/VerticalLayout.o: srcs/VerticalLayout.cpp include/ALayout.hpp \
-	include/AView.hpp include/IViewHolder.hpp include/Vec.hpp \
-	include/VerticalLayout.hpp include/ft/assert.hpp include/libftui.h \
+	include/ft/Vec.hpp include/ft/assert.hpp include/libftui.hpp \
+	srcs/Activity.tpp include/AView.hpp include/XmlParser.hpp \
+	include/XmlTokenizer.hpp | o/srcs/
+o/srcs/Activity_RootViewHolder.o: srcs/Activity_RootViewHolder.cpp \
+	include/Activity.hpp include/DefaultEventBox.hpp include/EventBox.hpp \
+	include/EventParams.hpp include/IEventBox.hpp include/IEventParams.hpp \
+	include/IViewHolder.hpp include/ft/Vec.hpp include/ft/assert.hpp \
+	include/libftui.hpp srcs/Activity.tpp include/AView.hpp \
 	include/XmlParser.hpp include/XmlTokenizer.hpp | o/srcs/
+o/srcs/RelativeLayout.o: srcs/RelativeLayout.cpp include/RelativeLayout.hpp \
+	include/ft/assert.hpp include/libftui.hpp | o/srcs/
+o/srcs/SliderView.o: srcs/SliderView.cpp include/SliderView.hpp \
+	include/ft/assert.hpp include/libftui.hpp | o/srcs/
+o/srcs/TextView.o: srcs/TextView.cpp include/TextView.hpp \
+	include/ft/assert.hpp include/libftui.hpp | o/srcs/
+o/srcs/VerticalLayout.o: srcs/VerticalLayout.cpp include/ALayout.hpp \
+	include/AView.hpp include/IViewHolder.hpp include/VerticalLayout.hpp \
+	include/ft/Vec.hpp include/ft/assert.hpp include/libftui.hpp \
+	include/XmlParser.hpp include/XmlTokenizer.hpp include/ft/utils.hpp \
+	| o/srcs/
 o/srcs/VerticalLayout_ViewHolder.o: srcs/VerticalLayout_ViewHolder.cpp \
 	include/ALayout.hpp include/AView.hpp include/IViewHolder.hpp \
-	include/Vec.hpp include/VerticalLayout.hpp include/ft/assert.hpp \
-	include/libftui.h include/XmlParser.hpp include/XmlTokenizer.hpp \
-	include/Activity.hpp include/EventBox.hpp include/EventParams.hpp \
-	include/IEventBox.hpp include/IEventParams.hpp srcs/Activity.tpp | o/srcs/
+	include/VerticalLayout.hpp include/ft/Vec.hpp include/ft/assert.hpp \
+	include/libftui.hpp include/XmlParser.hpp include/XmlTokenizer.hpp \
+	include/Activity.hpp include/DefaultEventBox.hpp include/EventBox.hpp \
+	include/EventParams.hpp include/IEventBox.hpp include/IEventParams.hpp \
+	srcs/Activity.tpp | o/srcs/
 o/srcs/XmlParser.o: srcs/XmlParser.cpp include/XmlParser.hpp \
-	include/XmlTokenizer.hpp include/ft/assert.hpp include/libftui.h \
+	include/XmlTokenizer.hpp include/ft/assert.hpp include/libftui.hpp \
 	include/ft/utils.hpp | o/srcs/
 o/srcs/XmlTokenizer.o: srcs/XmlTokenizer.cpp include/XmlTokenizer.hpp \
-	include/ft/assert.hpp include/libftui.h include/ft/utils.hpp | o/srcs/
+	include/ft/assert.hpp include/libftui.hpp include/ft/utils.hpp | o/srcs/
 o/srcs/ft/assert.o: srcs/ft/assert.cpp include/ft/assert.hpp \
 	include/ft/utils.hpp | o/srcs/ft/
