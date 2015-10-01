@@ -94,7 +94,7 @@ $(NAME): $(LIBS_DEPEND) $(O_FILES)
 
 # Compiling
 $(O_DIR)/%.o:
-	clang $(FLAGS) $(HEADS) -c $< -o $@ && $(PRINT_OK)
+	clang++ $(FLAGS) $(HEADS) -c $< -o $@ && $(PRINT_OK)
 
 # Init submodules
 $(MODULE_RULES):

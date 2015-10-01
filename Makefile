@@ -1,7 +1,7 @@
 #
 
 # Executable name
-NAME := N-puzzle
+NAME := npuzzle
 
 # Project directories
 DIRS := srcs include libftui/include
@@ -25,7 +25,7 @@ ifeq ($(shell uname),Darwin)
 else
 	LINKS := -lglfw -lGL -lGLEW
 endif
-LINKS += -Llibftui -lftui -lc++
+LINKS += -Llibftui -lftui
 
 # Jobs
 JOBS := 4
@@ -91,11 +91,11 @@ endif
 
 # Linking
 $(NAME): $(LIBS_DEPEND) $(O_FILES)
-	clang $(FLAGS) -o $@ $(O_FILES) $(LINKS) && $(PRINT_LINK)
+	clang++ $(FLAGS) -o $@ $(O_FILES) $(LINKS) && $(PRINT_LINK)
 
 # Compiling
 $(O_DIR)/%.o:
-	clang $(FLAGS) $(HEADS) -c $< -o $@ && $(PRINT_OK)
+	clang++ $(FLAGS) $(HEADS) -c $< -o $@ && $(PRINT_OK)
 
 # Init submodules
 $(MODULE_RULES):
