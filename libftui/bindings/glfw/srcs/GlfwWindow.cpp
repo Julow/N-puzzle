@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/30 18:32:46 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/01 14:57:06 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/01 16:05:31 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ GlfwWindow::GlfwWindow(int width, int height, char const *title,
 GlfwWindow::~GlfwWindow(void)
 {
 	glfwDestroyWindow(_window);
+	deinitGlfw();
 }
 
 void				GlfwWindow::setEventListener(IGlfwEventListener *listener)
@@ -95,16 +96,16 @@ GLFWwindow			*GlfwWindow::getWindow(void)
 ** GLFW and GLEW loaders
 */
 
-bool				GlfwWindow::_glfwInitied = false;
+int					GlfwWindow::_glfwInstances = 0;
 bool				GlfwWindow::_glewInitied = false;
 
 void				GlfwWindow::initGlfw(void)
 {
-	if (_glfwInitied)
+	_glfwInstances++;
+	if (_glfwInstances > 1)
 		return ;
 	if (glfwInit() != GL_TRUE)
 		throw std::runtime_error("Cannot load GLFW");
-	_glfwInitied = true;
 }
 
 void				GlfwWindow::initGlew(void)
@@ -116,12 +117,12 @@ void				GlfwWindow::initGlew(void)
 	_glewInitied = true;
 }
 
-void				GlfwWindow::terminateGlfw(void)
+void				GlfwWindow::deinitGlfw(void)
 {
-	if (!_glfwInitied)
+	_glfwInstances--;
+	if (_glfwInstances > 0)
 		return ;
 	glfwTerminate();
-	_glfwInitied = false;
 }
 
 /*

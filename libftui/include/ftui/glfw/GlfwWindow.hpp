@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/30 18:32:14 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/01 14:56:32 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/01 16:01:56 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ private:
 */
 protected:
 
-	static bool				_glfwInitied;
+	static int				_glfwInstances;
 	static bool				_glewInitied;
 
 /*
@@ -105,9 +105,9 @@ protected:
 	static void				initGlew(void);
 
 /*
-** Terminate glfw
+** Decrement _glfwInstances and terminate glfw if possible
 */
-	static void				terminateGlfw(void);
+	static void				deinitGlfw(void);
 };
 
 };
