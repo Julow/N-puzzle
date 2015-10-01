@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/30 18:32:46 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/01 14:53:26 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/01 14:57:06 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,7 @@ GlfwWindow::GlfwWindow(int width, int height, char const *title,
 
 GlfwWindow::~GlfwWindow(void)
 {
-	// TODO destroy window
-	// glfwSetWindowShouldClose(_window, GL_TRUE);
+	glfwDestroyWindow(_window);
 }
 
 void				GlfwWindow::setEventListener(IGlfwEventListener *listener)
@@ -115,6 +114,14 @@ void				GlfwWindow::initGlew(void)
 	if (!INIT_GLEW)
 		throw std::runtime_error("Cannot load GLEW");
 	_glewInitied = true;
+}
+
+void				GlfwWindow::terminateGlfw(void)
+{
+	if (!_glfwInitied)
+		return ;
+	glfwTerminate();
+	_glfwInitied = false;
 }
 
 /*

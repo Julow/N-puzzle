@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/30 18:32:14 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/01 14:52:47 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/01 14:56:32 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,11 @@ protected:
 */
 	static void				initGlfw(void);
 	static void				initGlew(void);
+
+/*
+** Terminate glfw
+*/
+	static void				terminateGlfw(void);
 };
 
 };
