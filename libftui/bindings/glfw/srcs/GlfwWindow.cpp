@@ -6,11 +6,12 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/30 18:32:46 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/30 19:07:07 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/01 14:53:26 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "GlfwWindow.hpp"
+#include "IGlfwEventListener.hpp"
 #include <stdexcept>
 
 namespace ftui
@@ -49,20 +50,56 @@ GlfwWindow::GlfwWindow(int width, int height, char const *title,
 		throw std::runtime_error("Cannot create GLFW window");
 	}
 	glfwMakeContextCurrent(_window);
-	glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	initGlew();
 	glViewport(0, 0, width, height);
+	glfwSetKeyCallback(_window, &GlfwWindow::_glfw_on_key);
+	glfwSetMouseButtonCallback(_window, &GlfwWindow::_glfw_on_button);
+	glfwSetScrollCallback(_window, &GlfwWindow::_glfw_on_scroll);
+	glfwSetCursorPosCallback(_window, &GlfwWindow::_glfw_on_move);
+	glfwSetCursorEnterCallback(_window, &GlfwWindow::_glfw_on_enter);
 }
 
 GlfwWindow::~GlfwWindow(void)
 {
-	glfwSetWindowShouldClose(_window, GL_TRUE);
+	// TODO destroy window
+	// glfwSetWindowShouldClose(_window, GL_TRUE);
 }
 
-bool			GlfwWindow::_glfwInitied = false;
-bool			GlfwWindow::_glewInitied = false;
+void				GlfwWindow::setEventListener(IGlfwEventListener *listener)
+{
+	glfwSetWindowUserPointer(_window, listener);
+}
 
-void			GlfwWindow::initGlfw(void)
+bool				GlfwWindow::shouldClose(void) const
+{
+	if (glfwWindowShouldClose(_window))
+		return (true);
+	return (false);
+}
+
+void				GlfwWindow::setShouldClose(bool shouldClose)
+{
+	glfwSetWindowShouldClose(_window, shouldClose);
+}
+
+GLFWwindow			*GlfwWindow::getWindow(void)
+{
+	return (_window);
+}
+
+/*
+** ========================================================================== **
+** Static
+*/
+
+/*
+** GLFW and GLEW loaders
+*/
+
+bool				GlfwWindow::_glfwInitied = false;
+bool				GlfwWindow::_glewInitied = false;
+
+void				GlfwWindow::initGlfw(void)
 {
 	if (_glfwInitied)
 		return ;
@@ -71,13 +108,80 @@ void			GlfwWindow::initGlfw(void)
 	_glfwInitied = true;
 }
 
-void			GlfwWindow::initGlew(void)
+void				GlfwWindow::initGlew(void)
 {
 	if (_glewInitied)
 		return ;
 	if (!INIT_GLEW)
 		throw std::runtime_error("Cannot load GLEW");
 	_glewInitied = true;
+}
+
+/*
+** GLFW event handling
+*/
+
+void				GlfwWindow::_glfw_on_key(GLFWwindow *window,
+	int key, int scancode, int action, int mods)
+{
+	IGlfwEventListener	*listener = reinterpret_cast<IGlfwEventListener*>
+		(glfwGetWindowUserPointer(window));
+
+	if (listener == NULL)
+		return ;
+	if (action == GLFW_PRESS)
+		listener->onKeyDown(key, scancode, mods);
+	else if (action == GLFW_RELEASE)
+		listener->onKeyUp(key, scancode, mods);
+	else if (action == GLFW_REPEAT)
+		listener->onKeyRepeat(key, scancode, mods);
+}
+
+void				GlfwWindow::_glfw_on_button(GLFWwindow *window,
+	int button, int action, int mods)
+{
+	IGlfwEventListener	*listener = reinterpret_cast<IGlfwEventListener*>
+		(glfwGetWindowUserPointer(window));
+
+	if (listener == NULL)
+		return ;
+	if (action == GLFW_PRESS)
+		listener->onMouseDown(button, mods);
+	else if (action == GLFW_RELEASE)
+		listener->onMouseUp(button, mods);
+}
+
+void				GlfwWindow::_glfw_on_scroll(GLFWwindow *window,
+	double x, double y)
+{
+	IGlfwEventListener	*listener = reinterpret_cast<IGlfwEventListener*>
+		(glfwGetWindowUserPointer(window));
+
+	if (listener != NULL)
+		listener->onMouseScroll(x, y);
+}
+
+void				GlfwWindow::_glfw_on_move(GLFWwindow *window,
+	double x, double y)
+{
+	IGlfwEventListener	*listener = reinterpret_cast<IGlfwEventListener*>
+		(glfwGetWindowUserPointer(window));
+
+	if (listener != NULL)
+		listener->onMouseMove(x, y);
+}
+
+void				GlfwWindow::_glfw_on_enter(GLFWwindow *window, int enter)
+{
+	IGlfwEventListener	*listener = reinterpret_cast<IGlfwEventListener*>
+		(glfwGetWindowUserPointer(window));
+
+	if (listener == NULL)
+		return ;
+	if (enter)
+		listener->onMouseEnter();
+	else
+		listener->onMouseLeave();
 }
 
 };
