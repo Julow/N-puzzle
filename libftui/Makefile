@@ -87,7 +87,9 @@ endif
 -include $(DEPEND)
 
 # Linking
-$(NAME): $(LIBS_DEPEND) $(O_FILES)
+$(NAME): $(LIBS_DEPEND) $(O_FILES) \
+	$(addprefix $(BINDINGS_DIR)/,\
+		$(join $(BINDINGS),$(BINDINGS:%=/libftui-%.a)))
 	BINDINGS_FILES="";													\
 	for b in $(BINDINGS);												\
 	do																	\

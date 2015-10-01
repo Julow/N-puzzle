@@ -4,12 +4,12 @@
 NAME := N-puzzle
 
 # Project directories
-DIRS := srcs include
+DIRS := srcs include libftui/include
 
 # Git submodule to init
 MODULES := 
 # Makefiles to call
-LIBS := libftui
+LIBS := libftui(BINDINGS=glfw make -C ?name?)
 
 # Compilation and linking flags
 FLAGS := -std=c++14 -Wall -Wextra -O2
@@ -18,7 +18,14 @@ DEBUG_FLAGS := -Wall -Wextra -g
 # Compilation flags
 HEADS := $(addprefix -I,$(DIRS))
 # Linking flags
-LINKS :=
+ifeq ($(shell uname),Darwin)
+	FLAGS += -DMAC_OS_MODE=1
+	DEBUG_FLAGS += -DMAC_OS_MODE=1
+	LINKS := -lglfw3 -framework OpenGL
+else
+	LINKS := -lglfw -lGL -lGLEW
+endif
+LINKS += -Llibftui -lftui -lc++
 
 # Jobs
 JOBS := 4
@@ -70,7 +77,7 @@ else
 			echo;														\
 		fi;																\
 		CURR=$$(($$CURR + 1));											\
-		printf '\033[32m%-*s\033[0m  ' $$MAX_LEN "$$l";				\
+		printf '\033[32m%-*s\033[0m  ' $$MAX_LEN "$$l";					\
 	done &																\
 	make -j$(JOBS) $(NAME);												\
 	STATUS=$$?															\
@@ -122,4 +129,4 @@ _debug:
 	$(eval FLAGS := $(DEBUG_FLAGS))
 
 .SILENT:
-.PHONY: all $(LIBS) clean fclean re debug rebug _debug
+.PHONY: all clean fclean re debug rebug _debug
