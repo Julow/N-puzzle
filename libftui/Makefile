@@ -8,6 +8,7 @@ DIRS := srcs include include/ftui
 
 # Bindings
 BINDINGS ?=
+BINDINGS_DIR := bindings
 
 # Git submodule to init
 MODULES := 
@@ -49,7 +50,7 @@ PRINT_FILE := .tmp_print
 SHELL := /bin/bash
 
 # Default rule (need to be before any include)
-all: $(MODULE_RULES) libs $(addprefix bindings/,$(BINDINGS))
+all: $(MODULE_RULES) libs bindings
 ifeq ($(COLUMN_OUTPUT),0)
 	make -j$(JOBS) $(NAME)
 else
@@ -73,7 +74,7 @@ else
 			echo;														\
 		fi;																\
 		CURR=$$(($$CURR + 1));											\
-		printf '\033[32m%-*s\033[0m  ' $$MAX_LEN "$$l";				\
+		printf '\033[32m%-*s\033[0m  ' $$MAX_LEN "$$l";					\
 	done &																\
 	make -j$(JOBS) $(NAME);												\
 	STATUS=$$?															\
@@ -87,7 +88,19 @@ endif
 
 # Linking
 $(NAME): $(LIBS_DEPEND) $(O_FILES)
-	ar rcs $@ $(O_FILES) && $(PRINT_LINK)
+	BINDINGS_FILES="";													\
+	for b in $(BINDINGS);												\
+	do																	\
+		EXTRACT_DIR="$(O_DIR)/$$b";										\
+		ARCH="`pwd`/$(BINDINGS_DIR)/$$b/libftui-$$b.a";					\
+		for f in `ar t $$ARCH | grep '\.o$$'`;							\
+		do																\
+			BINDINGS_FILES="$$BINDINGS_FILES $$EXTRACT_DIR/$$f";		\
+		done || exit 1;													\
+		mkdir -p $$EXTRACT_DIR;											\
+		(cd $$EXTRACT_DIR && ar x $$ARCH);								\
+	done;																\
+	ar rcs $@ $(O_FILES) $$BINDINGS_FILES && $(PRINT_LINK)
 
 # Compiling
 $(O_DIR)/%.o:
@@ -103,8 +116,11 @@ $(O_DIR)/%/:
 	mkdir -p $@
 
 # Bindings
-bindings/%:
-	make -C $@
+bindings:
+	for b in $(BINDINGS);												\
+	do																	\
+		make -C $(BINDINGS_DIR)/$$b;									\
+	done
 
 # Set debug mode and make
 debug: _debug all
@@ -129,4 +145,4 @@ _debug:
 	$(eval FLAGS := $(DEBUG_FLAGS))
 
 .SILENT:
-.PHONY: all $(LIBS) clean fclean re debug rebug _debug
+.PHONY: all $(LIBS) clean fclean re debug rebug _debug bindings
