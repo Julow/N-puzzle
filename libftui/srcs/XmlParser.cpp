@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:45 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/02 10:25:32 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/02 13:50:21 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,12 @@ bool							XmlParser::next(State &state)
 			{
 // ft::f(std::cout, "</%\n", token_str);
 				if (_marks.size() == 0)
-					throw std::domain_error(ft::f("Unexpected '</%>' at line %",
+					throw std::domain_error(ft::f("Unexpected "
+						"'\033[91m</%>\033[0m' at \033[97mline %\033[0m",
 						token_str, _tokenizer.getLine()));
 				if (_marks.top() != token_str)
-					throw std::domain_error(ft::f("Expected '</%>' instead of '</%>' at line %",
+					throw std::domain_error(ft::f("Expected '</%>' instead of"
+						" '</\033[91m%\033[0m>' at \033[97mline %\033[0m",
 						_marks.top(), token_str, _tokenizer.getLine()));
 				_marks.pop();
 				_tokenizer.next(_token);
@@ -118,7 +120,8 @@ bool							XmlParser::next(State &state)
 			return (true);
 		}
 	}
-	throw std::domain_error(ft::f("Unexpected token '%' (%) at line %",
+	throw std::domain_error(ft::f("Unexpected token '\033[91m%\033[0m' "
+		"(%) at \033[97mline %\033[0m",
 		token_str, (int)_token, _tokenizer.getLine()));
 }
 

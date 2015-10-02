@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 10:04:07 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/10/02 13:30:31 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -445,6 +445,9 @@ void			AView::queryRedraw(void)
 */
 AView::factory_map_t	AView::_factories{
 	{"VerticalLayout", &VerticalLayout::createView}
+	// {"VerticalLayout", &VerticalLayout::createView, {
+	// 	{"onLol", &VerticalLayout::onLol}
+	// }}
 };
 
 AView::factory_t		AView::getFactory(std::string const &name)

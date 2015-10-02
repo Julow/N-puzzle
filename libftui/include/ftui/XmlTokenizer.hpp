@@ -6,7 +6,7 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/24 21:39:37 by juloo             #+#    #+#             */
-/*   Updated: 2015/10/02 10:25:15 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/02 14:50:23 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,18 @@ protected:
 	struct		tokenDef_s
 	{
 		char const	*str;
-		bool		(XmlTokenizer::*f)(tokenDef_s const &);
+		bool		(XmlTokenizer::*f)(char const *);
 		Token		token;
 	};
 
 	void				parse_spaces(void);
 
-	bool				token_eof(tokenDef_s const &def);
-	bool				token_char(tokenDef_s const &def);
-	bool				token_name(tokenDef_s const &def);
-	bool				token_str(tokenDef_s const &def);
+	bool				token_eof(char const *str);
+	bool				token_str(char const *str);
+	int					token_str_hard(char const *str);
+	bool				token_chr(char const *str);
+	bool				token_mark_start(char const *str);
+	bool				token_literal_str(char const *str);
 
 private:
 	XmlTokenizer(void) = delete;
