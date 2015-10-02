@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:12:43 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/30 17:50:32 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/02 10:25:16 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include <vector>
 
-# include "ALayout.hpp"
-# include "IViewHolder.hpp"
+# include "ftui/ALayout.hpp"
+# include "ftui/IViewHolder.hpp"
 
 namespace ftui
 {

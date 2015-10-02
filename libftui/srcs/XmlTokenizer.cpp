@@ -6,11 +6,11 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/24 21:50:50 by juloo             #+#    #+#             */
-/*   Updated: 2015/09/26 13:58:47 by juloo            ###   ########.fr       */
+/*   Updated: 2015/10/02 10:25:30 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "XmlTokenizer.hpp"
+#include "ftui/XmlTokenizer.hpp"
 #include "ft/utils.hpp"
 #include <stdexcept>
 #include <cstring>

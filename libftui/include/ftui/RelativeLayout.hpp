@@ -6,14 +6,14 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:12:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/30 18:20:26 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/02 10:25:17 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RELATIVELAYOUT_HPP
 # define RELATIVELAYOUT_HPP
 
-# include "libftui.hpp"
+# include "ftui/libftui.hpp"
 
 namespace ftui
 {

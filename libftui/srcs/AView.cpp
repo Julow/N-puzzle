@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 07:49:10 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/10/02 10:25:13 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 #include <exception>
 #include <cstdlib>
 
-#include "AView.hpp"
-#include "ALayout.hpp"
-#include "IViewHolder.hpp"
-#include "EventParams.hpp"
-#include "XmlParser.hpp"
-#include "VerticalLayout.hpp"
+#include "ftui/AView.hpp"
+#include "ftui/ALayout.hpp"
+#include "ftui/IViewHolder.hpp"
+#include "ftui/EventParams.hpp"
+#include "ftui/XmlParser.hpp"
+#include "ftui/VerticalLayout.hpp"
 
 using std::string;
 

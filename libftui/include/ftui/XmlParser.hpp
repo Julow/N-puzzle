@@ -6,20 +6,20 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:12:32 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/30 18:12:22 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/02 10:25:16 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef XMLPARSER_HPP
 # define XMLPARSER_HPP
 
-# include "libftui.hpp"
+# include "ftui/libftui.hpp"
 
 # include <istream>
 # include <unordered_map>
 # include <stack>
 
-# include "XmlTokenizer.hpp"
+# include "ftui/XmlTokenizer.hpp"
 
 namespace ftui
 {

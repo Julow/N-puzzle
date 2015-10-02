@@ -27,16 +27,17 @@ o/srcs/Activity.o: srcs/Activity.cpp include/ft/Vec.hpp include/ft/assert.hpp \
 	include/ftui/Activity.hpp include/ftui/DefaultEventBox.hpp \
 	include/ftui/EventBox.hpp include/ftui/EventParams.hpp \
 	include/ftui/IEventBox.hpp include/ftui/IEventParams.hpp \
-	include/ftui/IViewHolder.hpp include/ftui/libftui.hpp srcs/Activity.tpp \
-	include/ftui/AView.hpp include/ftui/XmlParser.hpp \
-	include/ftui/XmlTokenizer.hpp | o/srcs/
+	include/ftui/IViewHolder.hpp include/ftui/libftui.hpp \
+	include/ftui/templates/Activity.tpp include/ftui/AView.hpp \
+	include/ftui/XmlParser.hpp include/ftui/XmlTokenizer.hpp | o/srcs/
 o/srcs/Activity_RootViewHolder.o: srcs/Activity_RootViewHolder.cpp \
 	include/ft/Vec.hpp include/ft/assert.hpp include/ftui/Activity.hpp \
 	include/ftui/DefaultEventBox.hpp include/ftui/EventBox.hpp \
 	include/ftui/EventParams.hpp include/ftui/IEventBox.hpp \
 	include/ftui/IEventParams.hpp include/ftui/IViewHolder.hpp \
-	include/ftui/libftui.hpp srcs/Activity.tpp include/ftui/AView.hpp \
-	include/ftui/XmlParser.hpp include/ftui/XmlTokenizer.hpp | o/srcs/
+	include/ftui/libftui.hpp include/ftui/templates/Activity.tpp \
+	include/ftui/AView.hpp include/ftui/XmlParser.hpp \
+	include/ftui/XmlTokenizer.hpp | o/srcs/
 o/srcs/RelativeLayout.o: srcs/RelativeLayout.cpp include/ft/assert.hpp \
 	include/ftui/RelativeLayout.hpp include/ftui/libftui.hpp | o/srcs/
 o/srcs/SliderView.o: srcs/SliderView.cpp include/ft/assert.hpp \
@@ -55,8 +56,8 @@ o/srcs/VerticalLayout_ViewHolder.o: srcs/VerticalLayout_ViewHolder.cpp \
 	include/ftui/XmlParser.hpp include/ftui/XmlTokenizer.hpp \
 	include/ftui/Activity.hpp include/ftui/DefaultEventBox.hpp \
 	include/ftui/EventBox.hpp include/ftui/EventParams.hpp \
-	include/ftui/IEventBox.hpp include/ftui/IEventParams.hpp srcs/Activity.tpp \
-	| o/srcs/
+	include/ftui/IEventBox.hpp include/ftui/IEventParams.hpp \
+	include/ftui/templates/Activity.tpp | o/srcs/
 o/srcs/XmlParser.o: srcs/XmlParser.cpp include/ft/assert.hpp \
 	include/ftui/XmlParser.hpp include/ftui/XmlTokenizer.hpp \
 	include/ftui/libftui.hpp include/ft/utils.hpp | o/srcs/

@@ -4,7 +4,7 @@
 NAME := libftui-glfw.a
 
 # Project directories
-DIRS := srcs ../../include ../../include/ftui/glfw
+DIRS := srcs ../../include
 
 # Git submodule to init
 MODULES := 

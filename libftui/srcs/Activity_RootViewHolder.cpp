@@ -6,13 +6,13 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/25 09:38:59 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/09/30 17:58:28 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/02 10:25:14 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Activity.hpp"
-#include "AView.hpp"
-#include "XmlParser.hpp"
+#include "ftui/Activity.hpp"
+#include "ftui/AView.hpp"
+#include "ftui/XmlParser.hpp"
 
 namespace ftui
 {

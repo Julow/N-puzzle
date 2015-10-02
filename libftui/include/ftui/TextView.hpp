@@ -6,14 +6,14 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:31 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/30 18:22:44 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/02 10:25:16 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TEXTVIEW_HPP
 # define TEXTVIEW_HPP
 
-# include "libftui.hpp"
+# include "ftui/libftui.hpp"
 
 namespace ftui
 {

@@ -6,13 +6,13 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/30 16:02:08 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/02 10:25:13 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ALayout.hpp"
-#include "XmlParser.hpp"
-#include "IViewHolder.hpp"
+#include "ftui/ALayout.hpp"
+#include "ftui/XmlParser.hpp"
+#include "ftui/IViewHolder.hpp"
 
 #include <algorithm>
 

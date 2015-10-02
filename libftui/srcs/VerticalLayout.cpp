@@ -6,12 +6,12 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/30 18:02:33 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/02 10:25:33 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "VerticalLayout.hpp"
-#include "XmlParser.hpp"
+#include "ftui/VerticalLayout.hpp"
+#include "ftui/XmlParser.hpp"
 #include "ft/utils.hpp"
 
 namespace ftui

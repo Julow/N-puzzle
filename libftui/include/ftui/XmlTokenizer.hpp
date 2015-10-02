@@ -6,14 +6,14 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/24 21:39:37 by juloo             #+#    #+#             */
-/*   Updated: 2015/09/30 18:05:31 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/02 10:25:15 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef XMLTOKENIZER_HPP
 # define XMLTOKENIZER_HPP
 
-# include "libftui.hpp"
+# include "ftui/libftui.hpp"
 
 # include <sstream>
 # include <string>

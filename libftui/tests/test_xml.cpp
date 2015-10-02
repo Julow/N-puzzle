@@ -6,11 +6,11 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/24 16:53:39 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/26 13:58:05 by juloo            ###   ########.fr       */
+/*   Updated: 2015/10/02 10:24:44 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "XmlParser.hpp"
+#include "ftui/XmlParser.hpp"
 #include "ft/utils.hpp"
 #include <iostream>
 #include <iomanip>

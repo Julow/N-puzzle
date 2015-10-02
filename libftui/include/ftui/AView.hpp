@@ -6,14 +6,14 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/10/02 07:48:55 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/10/02 10:25:19 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef AVIEW_HPP
 # define AVIEW_HPP
 
-# include "libftui.hpp"
+# include "ftui/libftui.hpp"
 
 # include <string>
 # include <unordered_map>

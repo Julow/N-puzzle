@@ -6,11 +6,11 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:12 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/24 11:44:11 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/02 10:25:12 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "SliderView.hpp"
+#include "ftui/SliderView.hpp"
 
 namespace ftui
 {

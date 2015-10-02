@@ -6,19 +6,19 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/30 18:23:59 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/02 10:25:19 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ALAYOUT_HPP
 # define ALAYOUT_HPP
 
-# include "libftui.hpp"
+# include "ftui/libftui.hpp"
 
 # include <iterator>
 # include <vector>
 
-# include "AView.hpp"
+# include "ftui/AView.hpp"
 
 namespace ftui
 {

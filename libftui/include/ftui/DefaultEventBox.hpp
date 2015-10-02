@@ -1,19 +1,19 @@
-// ************************************************************************** //
-//                                                                            //
-//                                                        :::      ::::::::   //
-//   DefaultEventBox.hpp                                :+:      :+:    :+:   //
-//                                                    +:+ +:+         +:+     //
-//   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
-//                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/09/30 11:09:06 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/02 07:39:05 by ngoguey          ###   ########.fr       //
-//                                                                            //
-// ************************************************************************** //
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   DefaultEventBox.hpp                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/09/30 11:09:06 by ngoguey           #+#    #+#             */
+/*   Updated: 2015/10/02 10:25:19 by jaguillo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef DEFAULTEVENTBOX_HPP
 # define DEFAULTEVENTBOX_HPP
 
-# include "IEventBox.hpp"
+# include "ftui/IEventBox.hpp"
 
 template<typename... ARGS>
 class ftui::DefaultEventBox : public IEventBox

@@ -6,23 +6,23 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 07:52:45 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/10/02 10:26:35 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ACTIVITY_HPP
 # define ACTIVITY_HPP
 
-# include "libftui.hpp"
+# include "ftui/libftui.hpp"
 
 # include <vector>
 # include <unordered_map>
 # include <string>
 # include <istream>
 
-# include "IViewHolder.hpp"
-// # include "EventBox.hpp"
-// # include "EventParams.hpp"
+# include "ftui/IViewHolder.hpp"
+// # include "ftui/EventBox.hpp"
+// # include "ftui/EventParams.hpp"
 
 namespace ftui
 {
@@ -120,6 +120,6 @@ private:
 
 };
 
-# include "Activity.tpp"
+# include "ftui/templates/Activity.tpp"
 
 #endif

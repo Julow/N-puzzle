@@ -6,12 +6,12 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/30 18:32:46 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/01 16:05:31 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/02 10:29:43 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "GlfwWindow.hpp"
-#include "IGlfwEventListener.hpp"
+#include "ftui/glfw/GlfwWindow.hpp"
+#include "ftui/glfw/IGlfwEventListener.hpp"
 #include <stdexcept>
 
 namespace ftui

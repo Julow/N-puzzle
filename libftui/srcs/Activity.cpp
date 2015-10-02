@@ -6,15 +6,15 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 07:40:42 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/10/02 10:25:14 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <algorithm>
 
-#include "Activity.hpp"
-#include "AView.hpp"
-#include "XmlParser.hpp"
+#include "ftui/Activity.hpp"
+#include "ftui/AView.hpp"
+#include "ftui/XmlParser.hpp"
 
 namespace ftui
 {

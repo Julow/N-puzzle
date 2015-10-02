@@ -6,14 +6,14 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/25 10:11:27 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/09/30 17:30:15 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/02 10:25:07 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "VerticalLayout.hpp"
-#include "XmlParser.hpp"
+#include "ftui/VerticalLayout.hpp"
+#include "ftui/XmlParser.hpp"
 
-#include "Activity.hpp"
+#include "ftui/Activity.hpp"
 
 namespace ftui
 {

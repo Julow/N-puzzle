@@ -6,14 +6,14 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/30 09:49:28 by ngoguey           #+#    #+#             */
-//   Updated: 2015/10/02 07:39:19 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/10/02 10:25:18 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef IEVENTBOX_HPP
 # define IEVENTBOX_HPP
 
-# include "libftui.hpp"
+# include "ftui/libftui.hpp"
 
 class ftui::IEventBox
 {
