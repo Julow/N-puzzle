@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/02 10:25:13 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/02 10:04:07 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ IViewHolder const	*AView::getViewHolder(void) const
 { return (this->_holder); }
 
 void				AView::setViewHolder(IViewHolder *holder)
-{
+{	
 	FTASSERT(this->_holder == nullptr);
 	this->_holder = holder;
 	return ;
@@ -451,16 +451,8 @@ AView::factory_t		AView::getFactory(std::string const &name)
 {
 	AView::factory_t	f;
 
-	// try
-	// {
-		f = AView::_factories.at(name);
-		// Let the [] throw ?
-	// }
-	// catch (std::out_of_range &e)
-	// {
-	// 	std::cerr << "Factory not found" << std::endl;
-	// 	// TODO throw in static AView::getFactory
-	// }
+	f = AView::_factories.at(name);
+	//TODO?? catch throw
 	return (f);
 }
 
@@ -474,5 +466,39 @@ void					AView::registerFactory(std::string const &name,
 	}
 	return ;
 }
+
+// void		AView::setRequestedSize(lua_State *l){(void)l;}
+
+// void		AView::setAlpha(lua_State *l){(void)l;}
+// void		AView::setVisibility(lua_State *l){(void)l;}
+// void		AView::setParam(lua_State *l){(void)l;}
+
+// void		AView::hookMouseScroll(lua_State *l){(void)l;}
+// void		AView::hookMouseClick(lua_State *l){(void)l;}
+// void		AView::hookMove(lua_State *l){(void)l;}
+// void		AView::hookMouseCapture(lua_State *l){(void)l;}
+// void		AView::hookKeyboard(lua_State *l){(void)l;}
+// void		AView::queryUpdate(lua_State *l){(void)l;}
+// void		AView::queryMeasure(lua_State *l){(void)l;}
+// void		AView::queryRedraw(lua_State *l){(void)l;}
+
+// void		AView::getRequestedSize(lua_State *l){(void)l;}
+// void		AView::getPos(lua_State *l){(void)l;}
+// void		AView::getSize(lua_State *l){(void)l;}
+
+// void		AView::getId(lua_State *l){(void)l;}
+// void		AView::getParent(lua_State *l){(void)l;}
+// void		AView::getAlpha(lua_State *l){(void)l;}
+// void		AView::isVisible(lua_State *l){(void)l;}
+// void		AView::isMouseOver(lua_State *l){(void)l;}
+
+// void		AView::isMouseScrollTargeted(lua_State *l){(void)l;}
+// void		AView::isMouseClickTargeted(lua_State *l){(void)l;}
+// void		AView::isMouseMoveTargeted(lua_State *l){(void)l;}
+// void		AView::isMouseCaptureTargeted(lua_State *l){(void)l;}
+// void		AView::isKeyboardTargeted(lua_State *l){(void)l;}
+// void		AView::isUpdateQueried(lua_State *l){(void)l;}
+// void		AView::isMeasureQueried(lua_State *l){(void)l;}
+// void		AView::isRedrawQueried(lua_State *l){(void)l;}
 
 };

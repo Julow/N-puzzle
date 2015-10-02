@@ -55,13 +55,4 @@ bool		Activity::fireEvent(std::string const &event, Args... args) const
 	return (ret);
 }
 
-template<typename T, typename... Args>
-void		Activity::registerFun(std::string const &name, T (*f)(Args...))
-{
-	(void)name;
-	(void)f;
-	// TODO push function to lua,
-	return ;
-}
-
 };

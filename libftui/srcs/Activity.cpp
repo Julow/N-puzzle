@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/02 10:25:14 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/02 08:20:24 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,14 @@ void			Activity::unregisterEvent(std::string const &event, AView *v)
 		else
 			it++;
 	}
+	return ;
+}
+
+void			Activity::registerFun(std::string const &name
+									  , void (*f)(lua_State *))
+{
+	(void)name;
+	(void)f;
 	return ;
 }
 
