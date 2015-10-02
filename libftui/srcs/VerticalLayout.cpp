@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/02 10:25:33 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/02 13:08:46 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,19 @@
 #include "ftui/XmlParser.hpp"
 #include "ft/utils.hpp"
 
+#include <algorithm>
+#include <iostream> //lol
+
 namespace ftui
 {
 
-VerticalLayout::VerticalLayout(XmlParser const &xml)
-	: ALayout(xml)
+VerticalLayout::VerticalLayout(XmlParser const &xml, Activity &act)
+	: ALayout(xml, act)
 {
 	XmlParser::params_map_t const	&params = xml.getParams();
 
 	(void)params;
+	// TODO, retreive some VerticalLayout data from xml
 }
 
 VerticalLayout::~VerticalLayout(void)
@@ -32,6 +36,19 @@ VerticalLayout::~VerticalLayout(void)
 void			VerticalLayout::onUpdate(void)
 {
 	AView::onUpdate();
+	for (ViewHolder *h : _childs)
+	{
+		if (h->getView()->isUpdateQueried())
+			h->getView()->onUpdate();
+	}
+	std::cout << "VerticalLayout onUpdate " << (void*)this << std::endl; //lol
+}
+
+void            VerticalLayout::inflate(XmlParser &xml, Activity &a)
+{
+	// TODO VerticalLayout::inflate
+	ALayout::inflate(xml, a);
+	return ;
 }
 
 /*
@@ -71,6 +88,7 @@ void			VerticalLayout::onSizeChange(void)
 	int				childPosX;
 	Vec2<int>		childSize;
 
+	AView::onSizeChange();
 	for (ViewHolder *h : _childs)
 	{
 		childPosX = h->getPos().x;
@@ -101,8 +119,8 @@ void			VerticalLayout::onDraw(ACanvas &canvas)
 	for (ViewHolder *h : _childs)
 	{
 		// Set clip rect
-		// h->getView()->onDraw(canvas);
-		(void)h;
+		if (h->getView()->isRedrawQueried())
+			h->getView()->onDraw(canvas);
 	}
 }
 
@@ -113,13 +131,33 @@ void			VerticalLayout::onDraw(ACanvas &canvas)
 void			VerticalLayout::addView(AView *view)
 {
 	ViewHolder		*holder;
-
+	
 	if (view->getViewHolder() != NULL)
 		throw std::invalid_argument(ft::f("View (#%) already has a parent",
-			view->getViewHolder()->getParent()));
+		view->getViewHolder()->getParent()));
 	holder = new ViewHolder(this, view);
 	view->setViewHolder(holder);
 	_childs.push_back(holder);
+	view->queryUpdate();
+	view->queryMeasure();
+	view->queryRedraw();
+}
+
+AView			*VerticalLayout::popView(AView *view)
+{
+	ViewHolder					*holder;
+	child_container_t::iterator	it;
+
+	holder = dynamic_cast<ViewHolder*>(view->getViewHolder());
+	if (holder == nullptr)
+		; // TODO THROW
+	it = std::find(this->_childs.begin(), this->_childs.end(), holder);
+	if (it == this->_childs.end())
+		; // TODO THROW
+	this->_childs.erase(it);
+	delete (holder);
+	view->setViewHolder(nullptr);
+	return (view);
 }
 
 AView			*VerticalLayout::at(int i)
@@ -145,9 +183,9 @@ IViewHolder		*VerticalLayout::holderAt(int i)
 /*
 ** Static
 */
-AView			*VerticalLayout::createView(XmlParser const &xml)
+AView			*VerticalLayout::createView(XmlParser const &xml, Activity &act)
 {
-	return (new VerticalLayout(xml));
+	return (new VerticalLayout(xml, act));
 }
 
 };

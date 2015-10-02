@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 08:19:42 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 12:24:13 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,8 @@ public:
 	virtual ~Activity(void);
 
 	virtual void		inflate(std::istream &stream);
-	// void				loadScripts(std::vector<std::istream> &scripts);
 
-	bool				onDraw(ACanvas &canvas);
+	void				render(ACanvas &canvas);
 
 	void				onKeyUp(int key_code);
 	bool				onKeyDown(int key_code);

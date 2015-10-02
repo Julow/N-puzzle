@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:12:43 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/02 10:25:16 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/02 13:04:44 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ class	VerticalLayout : public ALayout
 {
 protected:
 	class	ViewHolder;
+	typedef std::vector<ViewHolder*>	child_container_t;
+	
 public:
 	enum class	Align
 	{
@@ -47,7 +49,7 @@ public:
 
 	virtual ~VerticalLayout(void);
 
-	virtual void			inflate(XmlParser &xml);
+	virtual void			inflate(XmlParser &xml, Activity &a);
 
 	virtual void			onUpdate(void);
 	virtual void			onMeasure(void);
@@ -58,19 +60,19 @@ public:
 /*
 ** Childs
 */
-	virtual void				addView(AView *v);
-	virtual AView				*popView(AView *v);
+	virtual void			addView(AView *v);
+	virtual AView			*popView(AView *v);
 
-	virtual AView				*at(int i);
-	virtual AView const			*at(int i) const;
+	virtual AView			*at(int i);
+	virtual AView const		*at(int i) const;
 
-	virtual int					size(void) const;
+	virtual int				size(void) const;
 
 protected:
 
 	std::vector<ViewHolder*>	_childs;
 
-	VerticalLayout(XmlParser const &xml);
+	VerticalLayout(XmlParser const &xml, Activity &act);
 
 	virtual IViewHolder			*holderAt(int i);
 
@@ -84,7 +86,7 @@ private:
 */
 public:
 
-	static AView			*createView(XmlParser const &xml);
+	static AView			*createView(XmlParser const &xml, Activity &act);
 };
 
 /*

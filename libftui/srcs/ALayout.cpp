@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/02 10:25:13 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/02 13:08:26 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,15 @@
 #include "ftui/IViewHolder.hpp"
 
 #include <algorithm>
+#include <iostream> //lol
 
 using std::string;
 
 namespace ftui
 {
 
-ALayout::ALayout(XmlParser const &xml)
-	: AView(xml)
+ALayout::ALayout(XmlParser const &xml, Activity &act)
+	: AView(xml, act)
 {
 	XmlParser::params_map_t const	&params = xml.getParams();
 
@@ -155,17 +156,18 @@ void				ALayout::spreadTargetKeyboard(bool state)
 ** * AView legacy *********************************************************** **
 */
 
-void				ALayout::inflate(XmlParser &xml)
+void				ALayout::inflate(XmlParser &xml, Activity &a)
 {
 	AView				*v;
 	XmlParser::State	state;
 
 	while (xml.next(state))
 	{
+		std::cout << "ALayout::inflate loop" << (void*)this << std::endl; //lol
 		if (state == XmlParser::State::START)
 		{
-			v = AView::getFactory(xml.getMarkupName())(xml);
-			v->inflate(xml);
+			v = AView::getFactory(xml.getMarkupName())(xml, a);
+			v->inflate(xml, a);
 			this->addView(v);
 		}
 		else if (state == XmlParser::State::END)

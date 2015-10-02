@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/25 10:11:27 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/10/02 10:25:07 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/02 11:17:54 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,15 @@ void			VerticalLayout::ViewHolder::setSize(Vec2<int> size)
 void			VerticalLayout::ViewHolder::setRequestedSize(Vec2<int> size)
 {
 	_requestedSize = size;
+}
+
+void            VerticalLayout::ViewHolder::setParam(std::string const &k
+													 , std::string const &v)
+{
+	(void)k;
+	(void)v;
+	// TODO VerticalLayout::ViewHolder::setParam
+	return ;
 }
 
 Vec2<int>		VerticalLayout::ViewHolder::getVerticalMargin(void) const

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/24 07:31:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/09/24 12:00:06 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 09:56:19 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -88,7 +88,7 @@ int main (void)
 	lua_pushstring(L, "hello");
 	lua_pushnumber(L, 42.);
 	ftui::luaFT_stackdump(L);
-	
+
 	while (!std::cin.eof())
 	{
 		std::getline(std::cin, buf);

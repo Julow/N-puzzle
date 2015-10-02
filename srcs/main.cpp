@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/01 16:05:07 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/02 12:47:17 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,23 @@
 #include "ft/utils.hpp"
 
 #include <iostream>
+#include <fstream>
+
+#include "ftui/Activity.hpp"
 
 /*
-** everything here are examples or tests
+** everything here is example or test
 */
 
 class Main : public ftui::IGlfwEventListener
 {
 public:
 	Main(void) :
-		_window(500, 400, "lol")
+		_window(500, 400, "lol"), _act(ftui::Vec2<int>(500, 400))
 	{
+		std::ifstream			stream("res/layout/npuzzleui.xml");
+
+		_act.inflate(stream);
 		_window.setEventListener(this);
 	}
 
@@ -34,6 +40,7 @@ public:
 		while (!_window.shouldClose())
 		{
 			glfwPollEvents();
+			_act.render(*reinterpret_cast<ftui::ACanvas*>(&_act));
 		}
 	}
 
@@ -94,12 +101,13 @@ public:
 
 protected:
 	ftui::GlfwWindow	_window;
+	ftui::Activity		_act;
 };
 
 int				main(void)
 {
-	Main			main;
-
+	Main				main;
+	
 	main.loop();
 	std::cout << "main end" << std::endl;
 	return (0);
