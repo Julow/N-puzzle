@@ -6,11 +6,12 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 13:08:46 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/10/02 19:10:28 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftui/VerticalLayout.hpp"
+#include "ftui/ACanvas.hpp"
 #include "ftui/XmlParser.hpp"
 #include "ft/utils.hpp"
 
@@ -115,12 +116,19 @@ void			VerticalLayout::onSizeChange(void)
 // TODO: onDraw
 void			VerticalLayout::onDraw(ACanvas &canvas)
 {
+	float			old_alpha;
+
+	old_alpha = canvas.getAlpha();
 	AView::onDraw(canvas);
 	for (ViewHolder *h : _childs)
 	{
 		// Set clip rect
 		if (h->getView()->isRedrawQueried())
+		{
+			canvas.applyAlpha(h->getView()->getAlpha());
 			h->getView()->onDraw(canvas);
+			canvas.setAlpha(old_alpha);
+		}
 	}
 }
 
