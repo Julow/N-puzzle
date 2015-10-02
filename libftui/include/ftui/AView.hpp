@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/10/02 07:48:55 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 10:05:10 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 
 # include <string>
 # include <unordered_map>
+
+class lua_State; //debug
 
 namespace ftui
 {
@@ -120,7 +122,7 @@ public:
 	virtual bool				isMouseScrollTargeted(void) const;
 	virtual bool				isMouseClickTargeted(void) const;
 	virtual bool				isMouseMoveTargeted(void) const;
-	virtual bool				isMouseCaptureTargeted(void) const; //TODO
+	virtual bool				isMouseCaptureTargeted(void) const;
 	virtual bool				isKeyboardTargeted(void) const;
 
 	/*
@@ -150,7 +152,7 @@ protected:
 	void						hookMouseScroll(bool state);
 	void						hookMouseClick(bool state);
 	void						hookMove(bool state);
-	void						hookMouseCapture(bool state); //capture
+	void						hookMouseCapture(bool state);
 	void						hookKeyboard(bool state);
 
 /*
@@ -173,6 +175,40 @@ public:
 	static void					registerFactory(std::string const &name,
 									factory_t factory);
 
+	static void			setRequestedSize(lua_State *l);
+
+	static void			setAlpha(lua_State *l);
+	static void			setVisibility(lua_State *l);
+	static void			setParam(lua_State *l);
+
+	static void			hookMouseScroll(lua_State *l);
+	static void			hookMouseClick(lua_State *l);
+	static void			hookMove(lua_State *l);
+	static void			hookMouseCapture(lua_State *l);
+	static void			hookKeyboard(lua_State *l);
+	static void			queryUpdate(lua_State *l);
+	static void			queryMeasure(lua_State *l);
+	static void			queryRedraw(lua_State *l);
+
+	static void			getRequestedSize(lua_State *l);
+	static void			getPos(lua_State *l);
+	static void			getSize(lua_State *l);
+
+	static void			getId(lua_State *l);
+	static void			getParent(lua_State *l);
+	static void			getAlpha(lua_State *l);
+	static void			isVisible(lua_State *l);
+	static void			isMouseOver(lua_State *l);
+
+	static void			isMouseScrollTargeted(lua_State *l);
+	static void			isMouseClickTargeted(lua_State *l);
+	static void			isMouseMoveTargeted(lua_State *l);
+	static void			isMouseCaptureTargeted(lua_State *l);
+	static void			isKeyboardTargeted(lua_State *l);
+	static void			isUpdateQueried(lua_State *l);
+	static void			isMeasureQueried(lua_State *l);
+	static void			isRedrawQueried(lua_State *l);
+
 private:
 
 	static factory_map_t	_factories;
@@ -181,7 +217,7 @@ private:
 ** Disable
 */
 private:
-	AView(void) = delete;
+	AView() = delete;
 	AView(AView const &src) = delete;
 	AView				&operator=(AView const &rhs) = delete;
 };

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 07:52:45 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 08:19:42 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include "IViewHolder.hpp"
 // # include "EventBox.hpp"
 // # include "EventParams.hpp"
+
+class lua_State; //debug
 
 namespace ftui
 {
@@ -66,8 +68,8 @@ public:
 	template<typename... Args>
 	bool				fireEvent(std::string const &event, Args... args) const;
 
-	template<typename T, typename... Args>
-	void				registerFun(std::string const &name, T (*f)(Args...));	
+	void				registerFun(std::string const &name
+									, void (*f)(lua_State *));
 
 protected:
 
