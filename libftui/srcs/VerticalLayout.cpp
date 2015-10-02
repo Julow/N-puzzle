@@ -6,13 +6,15 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/02 10:25:33 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/02 11:19:40 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftui/VerticalLayout.hpp"
 #include "ftui/XmlParser.hpp"
 #include "ft/utils.hpp"
+
+#include <algorithm>
 
 namespace ftui
 {
@@ -32,6 +34,13 @@ VerticalLayout::~VerticalLayout(void)
 void			VerticalLayout::onUpdate(void)
 {
 	AView::onUpdate();
+}
+
+void            VerticalLayout::inflate(XmlParser &xml)
+{
+	// TODO VerticalLayout::inflate
+	ALayout::inflate(xml);
+	return ;
 }
 
 /*
@@ -113,13 +122,30 @@ void			VerticalLayout::onDraw(ACanvas &canvas)
 void			VerticalLayout::addView(AView *view)
 {
 	ViewHolder		*holder;
-
+	
 	if (view->getViewHolder() != NULL)
 		throw std::invalid_argument(ft::f("View (#%) already has a parent",
-			view->getViewHolder()->getParent()));
+		view->getViewHolder()->getParent()));
 	holder = new ViewHolder(this, view);
 	view->setViewHolder(holder);
 	_childs.push_back(holder);
+}
+
+AView			*VerticalLayout::popView(AView *view)
+{
+	ViewHolder					*holder;
+	child_container_t::iterator	it;
+
+	holder = dynamic_cast<ViewHolder*>(view->getViewHolder());
+	if (holder == nullptr)
+		; // TODO THROW
+	it = std::find(this->_childs.begin(), this->_childs.end(), holder);
+	if (it == this->_childs.end())
+		; // TODO THROW
+	this->_childs.erase(it);
+	delete (holder);
+	view->setViewHolder(nullptr);
+	return (view);
 }
 
 AView			*VerticalLayout::at(int i)

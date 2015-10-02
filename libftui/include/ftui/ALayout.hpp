@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/02 10:25:19 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/02 11:15:29 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ namespace ftui
 class	ALayout : public AView
 {
 public:
-
-	typedef std::vector<IViewHolder*>	child_container_t;
 
 	ALayout(XmlParser const &xml);
 	virtual ~ALayout(void);

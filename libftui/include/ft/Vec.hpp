@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 15:04:00 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/02 10:25:20 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/02 10:49:46 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ public:
 	Vec2(Vec2<T> const &src) : x(src.x), y(src.y) {}
 	Vec2(T v) : x(v), y(v) {}
 	Vec2(T x, T y) : x(x), y(y) {}
-	virtual ~Vec2(void);
+	virtual ~Vec2(void){}
 
 	T			x;
 	T			y;
@@ -83,7 +83,7 @@ public:
 	Vec3(Vec2<T> const &src, T z) : x(src.x), y(src.y), z(z) {}
 	Vec3(T v) : x(v), y(v), z(v) {}
 	Vec3(T x, T y, T z) : x(x), y(y), z(z) {}
-	virtual ~Vec3(void);
+	virtual ~Vec3(void){}
 
 	T			x;
 	T			y;

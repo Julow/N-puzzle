@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/25 09:38:59 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/10/02 10:25:14 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/02 10:56:20 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@ Activity::RootViewHolder::~RootViewHolder(void)
 	return ;
 }
 
+ALayout			*Activity::RootViewHolder::getParent(void)
+{ return (nullptr); }
+
+ALayout const	*Activity::RootViewHolder::getParent(void) const
+{ return (nullptr); }
+
 AView			*Activity::RootViewHolder::getView(void)
 { return (this->_view); }
 
@@ -53,5 +59,15 @@ Vec2<int>		Activity::RootViewHolder::getRequestedSize(void) const
 {
 	return (_requestedSize);
 }
+
+void			Activity::RootViewHolder::setParam(std::string const &k
+												   , std::string const &v)
+{
+	(void)k;
+	(void)v;
+	// TODO Activity::RootViewHolder::setParam
+	return ;
+}
+
 
 };

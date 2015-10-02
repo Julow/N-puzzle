@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/01 16:05:07 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/02 10:39:32 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 
 #include <iostream>
 
+#include "ftui/Activity.hpp"
+
 /*
 ** everything here are examples or tests
 */
@@ -24,7 +26,7 @@ class Main : public ftui::IGlfwEventListener
 {
 public:
 	Main(void) :
-		_window(500, 400, "lol")
+		_window(500, 400, "lol"), _a(ftui::Vec2<int>(500, 400))
 	{
 		_window.setEventListener(this);
 	}
@@ -94,12 +96,13 @@ public:
 
 protected:
 	ftui::GlfwWindow	_window;
+	ftui::Activity		_a;
 };
 
 int				main(void)
 {
-	Main			main;
-
+	Main				main;
+	
 	main.loop();
 	std::cout << "main end" << std::endl;
 	return (0);
