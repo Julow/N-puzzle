@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 13:04:27 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 16:56:27 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ public:
 /*
 ** * AView legacy *********************************************************** **
 */
-	virtual void				inflate(XmlParser &xml, Activity &a);
+	virtual void				inflate(XmlParser &xml, Activity &);
 
 	virtual void				setParam(std::string const &k,
 									std::string const &v);

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 13:05:21 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 16:55:15 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void				AView::setViewHolder(IViewHolder *holder)
 	return ;
 }
 
-void				AView::inflate(XmlParser &xml, Activity &a)
+void				AView::inflate(XmlParser &xml, Activity &)
 {
 	XmlParser::State	state;
 

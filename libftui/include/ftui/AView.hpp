@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/10/02 13:04:08 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 16:54:54 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ protected:
 ** View core
 */
 	IViewHolder					*_holder;
-	Activity					&_act; //tester un const ici pour loler un peu
+	Activity					&_act;
 
 	std::string const *const	_id;
 	unsigned long				_flags;
