@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/24 07:31:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/02 09:56:19 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 15:54:03 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -26,6 +26,16 @@ extern "C"
 envdump
 for k,v in pairs(_G) do print(string.format("%20s: (%3.3s){%s}", tostring(k), type(v), tostring(v))) end
 for k,v in ipairs(_G) do print(string.format("%20s: (%3.3s){%s}", tostring(k), type(v), tostring(v))) end
+
+for k,v in pairs(t) do print(string.format("%20s: (%3.3s){%s}", tostring(k), type(v), tostring(v))) end
+for k,v in ipairs(t) do print(string.format("%20s: (%3.3s){%s}", tostring(k), type(v), tostring(v))) end
+
+function pt(t) print(tostring(t).." #"..tostring(#t).." mt:"..tostring(getmetatable(t))); for k,v in pairs(t) do print(string.format("%20s(%3.3s): (%3.3s){%s}", tostring(k), type(k), type(v), tostring(v))) end; print(""); for k,v in ipairs(t) do print(string.format("%20s(%3.3s): (%3.3s){%s}", tostring(k), type(k), type(v), tostring(v))) end end
+
+base = {fun1 = function (self) print(tostring(self).." fun1") end}; base.__index = base;
+deriv = {}; setmetatable(deriv, base); deriv.__index = deriv
+
+
 */
 namespace ftui
 {
@@ -110,7 +120,7 @@ int main (void)
 			std::cout << "lol ERROR(" << error << "): " << lua_tostring(L, -1) << std::endl;
 			lua_pop(L, 1); 
 		}
-		ftui::luaFT_stackdump(L);
+		// ftui::luaFT_stackdump(L);
 	}
 
 	std::cout << "LUA_ERRERR" << " " <<LUA_ERRERR<< "\n";
