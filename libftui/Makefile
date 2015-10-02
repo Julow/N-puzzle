@@ -77,9 +77,9 @@ else
 		printf '\033[32m%-*s\033[0m  ' $$MAX_LEN "$$l";					\
 	done &																\
 	make -j$(JOBS) $(NAME);												\
-	STATUS=$$?															\
+	STATUS=$$?;															\
 	kill -9 `jobs -p`;													\
-	rm -f $(PRINT_FILE)													\
+	rm -f $(PRINT_FILE);												\
 	exit $$STATUS
 endif
 

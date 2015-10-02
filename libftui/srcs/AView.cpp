@@ -445,6 +445,9 @@ void			AView::queryRedraw(void)
 */
 AView::factory_map_t	AView::_factories{
 	{"VerticalLayout", &VerticalLayout::createView}
+	// {"VerticalLayout", &VerticalLayout::createView, {
+	// 	{"onLol", &VerticalLayout::onLol}
+	// }}
 };
 
 AView::factory_t		AView::getFactory(std::string const &name)

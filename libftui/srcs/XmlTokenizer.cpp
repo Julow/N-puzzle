@@ -6,7 +6,7 @@
 /*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/24 21:50:50 by juloo             #+#    #+#             */
-/*   Updated: 2015/10/02 10:25:30 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/02 15:12:41 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ XmlTokenizer::~XmlTokenizer(void)
 std::string const	XmlTokenizer::next(Token &t)
 {
 	static tokenDef_s	tokens_def[] = {
-		{"<", &XmlTokenizer::token_char, Token::MARK_START},
-		{">", &XmlTokenizer::token_char, Token::MARK_END},
-		{"/", &XmlTokenizer::token_char, Token::MARK_CLOSE},
-		{"_-:.", &XmlTokenizer::token_name, Token::NAME},
-		{"=", &XmlTokenizer::token_char, Token::EQUAL},
-		{"\"", &XmlTokenizer::token_str, Token::STRING},
+		{NULL, &XmlTokenizer::token_mark_start, Token::MARK_START},
+		{">", &XmlTokenizer::token_str, Token::MARK_END},
+		{"/", &XmlTokenizer::token_str, Token::MARK_CLOSE},
+		{"_-:.", &XmlTokenizer::token_chr, Token::NAME},
+		{"=", &XmlTokenizer::token_str, Token::EQUAL},
+		{"\"", &XmlTokenizer::token_literal_str, Token::STRING},
 		{NULL, &XmlTokenizer::token_eof, Token::END_OF_FILE},
 	};
 
@@ -43,14 +43,16 @@ std::string const	XmlTokenizer::next(Token &t)
 	for (auto const &def : tokens_def)
 	{
 		_oss.str("");
-		if ((this->*def.f)(def))
+		if ((this->*def.f)(def.str))
 		{
 			t = def.token;
 			parse_spaces();
 			return (_oss.str());
 		}
 	}
-	throw std::domain_error(ft::f("Unknown token '%' at line %", (char)_is.peek(), _line));
+	throw std::domain_error(ft::f("Unknown token '\033[91m%\033[0m' at "
+		"\033[97mline %\033[0m",
+		(char)_is.peek(), _line));
 }
 
 int					XmlTokenizer::getLine(void) const
@@ -73,29 +75,83 @@ void				XmlTokenizer::parse_spaces(void)
 	}
 }
 
-bool				XmlTokenizer::token_eof(tokenDef_s const &def)
+bool				XmlTokenizer::token_eof(char const *str)
 {
 	if (_is.peek() == EOF)
 		return (true);
 	return (false);
-	(void)def;
+	(void)str;
 }
 
-bool				XmlTokenizer::token_char(tokenDef_s const &def)
+bool				XmlTokenizer::token_mark_start(char const *str)
 {
 	char				c;
 
 	c = _is.peek();
-	if (c == def.str[0])
+	if (c == '<')
 	{
 		_is.get();
 		_oss.put(c);
+		c = _is.peek();
+		if (c != '!')
+			return (true);
+		_is.get();
+		if (token_str_hard("--") >= 0)
+			throw std::domain_error(ft::f("Expected '<!\033[91m--\033[0m'"
+				" at \033[97mline %\033[0m", _line));
+		while (token_str_hard("-->") >= 0)
+			continue ;
+		// TODO ?: Token::COMMENT, _oss.str()
+		parse_spaces();
+		return (token_mark_start(NULL));
+	}
+	return (false);
+	(void)str;
+}
+
+bool				XmlTokenizer::token_str(char const *str)
+{
+	char				c;
+	int					tmp;
+
+	c = _is.peek();
+	if (c == str[0])
+	{
+		_is.get();
+		if ((tmp = token_str_hard(str + 1)) >= 0)
+			throw std::domain_error(ft::f("Expected '%\033[91m%\033[0m'"
+				" at \033[97mline %\033[0m",
+				std::string(str, tmp), str + tmp, _line));
 		return (true);
 	}
 	return (false);
 }
 
-bool				XmlTokenizer::token_name(tokenDef_s const &def)
+/*
+** Return the index it stop
+** or -1 on success
+*/
+int				XmlTokenizer::token_str_hard(char const *str)
+{
+	char				c;
+	int					i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		_is.get(c);
+		_oss.put(c);
+		if (c != str[i])
+			return (i);
+		if (c == EOF)
+			throw std::domain_error(ft::f("Unexpected \033[91mEOF\033[0m at "
+				"\033[97mline %\033[0m", _line));
+		i++;
+	}
+	return (-1);
+}
+
+bool				XmlTokenizer::token_chr(char const *str)
 {
 	char				c;
 	bool				ok;
@@ -104,7 +160,7 @@ bool				XmlTokenizer::token_name(tokenDef_s const &def)
 	while (true)
 	{
 		c = _is.peek();
-		if (!std::isalnum(c) && std::strchr(def.str, c) == NULL)
+		if (!std::isalnum(c) && std::strchr(str, c) == NULL)
 			break ;
 		_is.get();
 		_oss.put(c);
@@ -113,19 +169,19 @@ bool				XmlTokenizer::token_name(tokenDef_s const &def)
 	return (ok);
 }
 
-bool				XmlTokenizer::token_str(tokenDef_s const &def)
+bool				XmlTokenizer::token_literal_str(char const *str)
 {
 	char				c;
 	bool				escape;
 
 	c = _is.peek();
-	if (c != def.str[0])
+	if (c != str[0])
 		return (false);
 	escape = false;
 	_is.get(c);
 	while (_is.get(c))
 	{
-		if (!escape && c == def.str[0])
+		if (!escape && c == str[0])
 			return (true);
 		if (!escape && c == '\\')
 			escape = true;
@@ -135,7 +191,8 @@ bool				XmlTokenizer::token_str(tokenDef_s const &def)
 			_oss.put(c);
 		}
 	}
-	throw std::domain_error(ft::f("Missing '%' at line %", def.str, _line));
+	throw std::domain_error(ft::f("Missing '%' at \033[97mline %\033[0m",
+		str, _line));
 }
 
 };
