@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/30 11:09:06 by ngoguey           #+#    #+#             //
-//   Updated: 2015/09/30 11:54:14 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 07:39:05 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -32,6 +32,12 @@ public:
 		{
 			return (this->_v->onEvent(ev, param));
 		}
+
+	AView const          *getView(void) const
+		{
+			return (this->_v);
+		}
+	
 private:
 	DefaultEventBox() = delete;
 	DefaultEventBox(DefaultEventBox const &) = delete;

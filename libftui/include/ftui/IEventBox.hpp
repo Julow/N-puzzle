@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/30 09:49:28 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/09/30 18:06:31 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/02 07:39:19 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ public:
 	virtual ~IEventBox(){}
 
 	virtual bool			call(std::string const &ev, IEventParams *a_) = 0;
+	virtual AView const		*getView(void) const = 0;
 	
 private:
 	IEventBox(IEventBox const &src) = delete;

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/30 09:01:50 by ngoguey           #+#    #+#             //
-//   Updated: 2015/09/30 11:52:10 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 07:21:23 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -53,6 +53,15 @@ bool		Activity::fireEvent(std::string const &event, Args... args) const
 		ret |= it->second->call(ar);
 	}
 	return (ret);
+}
+
+template<typename T, typename... Args>
+void		Activity::registerFun(std::string const &name, T (*f)(Args...))
+{
+	(void)name;
+	(void)f;
+	// TODO push function to lua,
+	return ;
 }
 
 };

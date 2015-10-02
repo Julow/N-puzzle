@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/30 18:05:24 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/02 07:41:01 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,15 @@ public:
 	void				registerEvent(std::string const &event, AView *v);
 	template<class T, typename... Args>
 	void				registerEvent(std::string const &event, AView *v
-									  , bool (T::*callback_)(Args...));
+		, bool (T::*callback_)(Args...));
+	void				unregisterEvent(std::string const &event, AView *v);
+
 	template<typename... Args>
 	bool				fireEvent(std::string const &event, Args... args) const;
 
+	template<typename T, typename... Args>
+	void				registerFun(std::string const &name, T (*f)(Args...));
+	
 	// void				unregisterEvent(std::string const &event, AView *v);
 
 protected:

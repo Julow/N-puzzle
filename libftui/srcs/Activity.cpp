@@ -6,9 +6,11 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/29 08:09:35 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 07:40:42 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <algorithm>
 
 #include "Activity.hpp"
 #include "AView.hpp"
@@ -30,7 +32,7 @@ Activity::~Activity(void)
 	return ;
 }
 
-void				Activity::inflate(std::istream &stream)
+void			Activity::inflate(std::istream &stream)
 {
 	XmlParser			xml(stream);
 	AView				*v;
@@ -45,6 +47,21 @@ void				Activity::inflate(std::istream &stream)
 	v->setViewHolder(this->_rootView);
 	if (xml.next(state))
 		FTASSERT(false, "Activity should not own more than 1 view");
+	return ;
+}
+
+void			Activity::unregisterEvent(std::string const &event, AView *v)
+{
+	auto                    it = this->_eventMap.find(event);
+	auto const              ite = this->_eventMap.cend();
+
+	while (it != ite)
+	{
+		if (it->second->getView() == v)
+			it = this->_eventMap.erase(it);
+		else
+			it++;
+	}
 	return ;
 }
 

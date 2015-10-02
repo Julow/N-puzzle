@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/29 07:32:08 by ngoguey           #+#    #+#             //
-//   Updated: 2015/09/30 08:17:34 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 07:14:08 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -40,7 +40,7 @@ static_assert(false, "Not enough FTASSERT options");
 # ifdef FTASSERT_IGNORE
 #  define FTASSERT(X, ...) do{(void)sizeof(static_cast<size_t>(X));}while(0)
 # else
-#  define FTAARGS(X, ...) #X, __LINE__, __FILE__, __FUNCTION__, #__VA_ARGS__
+#  define FTAARGS(X, ...) #X, __LINE__, __FILE__, __FUNCTION__, ##__VA_ARGS__
 #  define FTASSERT(X, ...)											\
 	do {															\
 		if (!(X))													\
