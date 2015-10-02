@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/30 17:21:19 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/02 07:49:10 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,13 +108,13 @@ void				AView::setParam(string const &k, string const &v)
 	else if (k == "visibility")
 		this->setVisibility(v == "true"); //TODO parser bool
 	else if (k == "mouse_scroll_target")
-		this->registerTargetMouseScroll(v == "true"); //TODO parser bool
+		this->hookMouseScroll(v == "true"); //TODO parser bool
 	else if (k == "mouse_click_target")
-		this->registerTargetMouseClick(v == "true"); //TODO parser bool
+		this->hookMouseClick(v == "true"); //TODO parser bool
 	else if (k == "mouse_move_target")
-		this->registerTargetMove(v == "true"); //TODO parser bool
+		this->hookMove(v == "true"); //TODO parser bool
 	else if (k == "keyboard_target")
-		this->registerTargetKeyboard(v == "true"); //TODO parser bool
+		this->hookKeyboard(v == "true"); //TODO parser bool
 	else if (this->_holder != nullptr)
 		this->_holder->setParam(k, v);
 	else
@@ -288,7 +288,7 @@ void				AView::setMouseOver(bool state)
 ** Register target
 ** Some low level callbacks are not enabled by default
 */
-void			AView::registerTargetMouseScroll(bool state)
+void			AView::hookMouseScroll(bool state)
 {
 	ALayout			*p;
 
@@ -309,7 +309,7 @@ void			AView::registerTargetMouseScroll(bool state)
 	return ;
 }
 
-void			AView::registerTargetMouseClick(bool state)
+void			AView::hookMouseClick(bool state)
 {
 	ALayout			*p;
 
@@ -330,7 +330,7 @@ void			AView::registerTargetMouseClick(bool state)
 	return ;
 }
 
-void			AView::registerTargetMove(bool state)
+void			AView::hookMove(bool state)
 {
 	ALayout			*p;
 
@@ -351,7 +351,7 @@ void			AView::registerTargetMove(bool state)
 	return ;
 }
 
-void			AView::registerTargetMouseCapture(bool state)
+void			AView::hookMouseCapture(bool state)
 {
 	ALayout			*p;
 
@@ -372,7 +372,7 @@ void			AView::registerTargetMouseCapture(bool state)
 	return ;
 }
 
-void			AView::registerTargetKeyboard(bool state)
+void			AView::hookKeyboard(bool state)
 {
 	ALayout			*p;
 

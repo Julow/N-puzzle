@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 07:41:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 07:52:45 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ public:
 
 	void				onMouseMove(int x, int y);
 
-	void				onMouseUp(void);
-	bool				onMouseDown(int x, int y);
+	void				onMouseUp(int x, int y, int button);
+	bool				onMouseDown(int x, int y, int button);
 
 	template<typename... Args>
 	void				registerEvent(std::string const &event, AView *v);
@@ -67,9 +67,7 @@ public:
 	bool				fireEvent(std::string const &event, Args... args) const;
 
 	template<typename T, typename... Args>
-	void				registerFun(std::string const &name, T (*f)(Args...));
-	
-	// void				unregisterEvent(std::string const &event, AView *v);
+	void				registerFun(std::string const &name, T (*f)(Args...));	
 
 protected:
 

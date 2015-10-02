@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/09/30 18:24:30 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/02 07:48:55 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,11 +147,11 @@ protected:
 ** Some low level callbacks are not enabled by default
 */
 
-	void						registerTargetMouseScroll(bool state);
-	void						registerTargetMouseClick(bool state);
-	void						registerTargetMove(bool state);
-	void						registerTargetMouseCapture(bool state); //capture
-	void						registerTargetKeyboard(bool state);
+	void						hookMouseScroll(bool state);
+	void						hookMouseClick(bool state);
+	void						hookMove(bool state);
+	void						hookMouseCapture(bool state); //capture
+	void						hookKeyboard(bool state);
 
 /*
 ** Query
