@@ -1,0 +1,5 @@
+
+<VerticalLayout id="UIParent">
+  <VerticalLayout id="son1"/>
+ <VerticalLayout id="son2"/>
+</VerticalLayout>

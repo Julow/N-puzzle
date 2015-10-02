@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 08:20:24 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 12:24:01 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,22 @@ void			Activity::inflate(std::istream &stream)
 	v->setViewHolder(this->_rootView);
 	if (xml.next(state))
 		FTASSERT(false, "Activity should not own more than 1 view");
+	return ;
+}
+
+void			Activity::render(ACanvas &canvas)
+{
+	AView		*rv;
+
+	rv = this->_rootView == nullptr ? nullptr : this->_rootView->getView();
+	if (rv == nullptr)
+		return ;
+	if (rv->isUpdateQueried())
+		rv->onUpdate();
+	if (rv->isMeasureQueried())
+		rv->onMeasure();
+	if (rv->isRedrawQueried())
+		rv->onDraw(canvas);
 	return ;
 }
 

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/02 10:25:13 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/02 12:40:29 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "ftui/IViewHolder.hpp"
 
 #include <algorithm>
+#include <iostream> //lol
 
 using std::string;
 
@@ -162,6 +163,7 @@ void				ALayout::inflate(XmlParser &xml)
 
 	while (xml.next(state))
 	{
+		std::cout << "ALayout::inflate loop" << (void*)this << std::endl; //lol
 		if (state == XmlParser::State::START)
 		{
 			v = AView::getFactory(xml.getMarkupName())(xml);

@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/10/02 10:05:10 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 12:29:04 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,18 +132,6 @@ public:
 	bool						isMeasureQueried(void) const;
 	bool						isRedrawQueried(void) const;
 
-protected:
-/*
-** View core
-*/
-	IViewHolder					*_holder;
-
-	std::string const *const	_id;
-	unsigned long				_flags;
-	float						_alpha;
-
-	void						setMouseOver(bool state);
-
 /*
 ** Register target
 ** Some low level callbacks are not enabled by default
@@ -162,6 +150,19 @@ protected:
 	void						queryUpdate(void);
 	void						queryMeasure(void);
 	void						queryRedraw(void);
+
+protected:
+/*
+** View core
+*/
+	IViewHolder					*_holder;
+
+	std::string const *const	_id;
+	unsigned long				_flags;
+	float						_alpha;
+
+	void						setMouseOver(bool state);
+
 
 /*
 ** Static

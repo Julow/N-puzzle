@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 11:19:40 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 12:37:21 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "ft/utils.hpp"
 
 #include <algorithm>
+#include <iostream> //lol
 
 namespace ftui
 {
@@ -24,6 +25,7 @@ VerticalLayout::VerticalLayout(XmlParser const &xml)
 {
 	XmlParser::params_map_t const	&params = xml.getParams();
 
+	std::cout << "VerticalLayout CTOR" << std::endl; //lol
 	(void)params;
 }
 
@@ -34,6 +36,12 @@ VerticalLayout::~VerticalLayout(void)
 void			VerticalLayout::onUpdate(void)
 {
 	AView::onUpdate();
+	for (ViewHolder *h : _childs)
+	{
+		if (h->getView()->isUpdateQueried())
+			h->getView()->onUpdate();
+	}
+	std::cout << "VerticalLayout onUpdate " << (void*)this << std::endl; //lol
 }
 
 void            VerticalLayout::inflate(XmlParser &xml)
@@ -80,6 +88,7 @@ void			VerticalLayout::onSizeChange(void)
 	int				childPosX;
 	Vec2<int>		childSize;
 
+	AView::onSizeChange();
 	for (ViewHolder *h : _childs)
 	{
 		childPosX = h->getPos().x;
@@ -110,8 +119,8 @@ void			VerticalLayout::onDraw(ACanvas &canvas)
 	for (ViewHolder *h : _childs)
 	{
 		// Set clip rect
-		// h->getView()->onDraw(canvas);
-		(void)h;
+		if (h->getView()->isRedrawQueried())
+			h->getView()->onDraw(canvas);
 	}
 }
 
@@ -129,6 +138,9 @@ void			VerticalLayout::addView(AView *view)
 	holder = new ViewHolder(this, view);
 	view->setViewHolder(holder);
 	_childs.push_back(holder);
+	view->queryUpdate();
+	view->queryMeasure();
+	view->queryRedraw();
 }
 
 AView			*VerticalLayout::popView(AView *view)
