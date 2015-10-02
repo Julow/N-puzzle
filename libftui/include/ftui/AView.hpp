@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/10/02 12:29:04 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 13:04:08 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ public:
 	};
 
 	virtual ~AView(void);
-	AView(XmlParser const &xml);
+	AView(XmlParser const &xml, Activity &a);
 
 /*
 ** View core
@@ -65,7 +65,7 @@ public:
 	IViewHolder					*getViewHolder(void);
 	IViewHolder const			*getViewHolder(void) const;
 	void						setViewHolder(IViewHolder *holder);
-	virtual void				inflate(XmlParser &xml);
+	virtual void				inflate(XmlParser &xml, Activity &act);
 
 	/*
 	** View properties
@@ -156,6 +156,7 @@ protected:
 ** View core
 */
 	IViewHolder					*_holder;
+	Activity					&_act; //tester un const ici pour loler un peu
 
 	std::string const *const	_id;
 	unsigned long				_flags;
@@ -169,7 +170,7 @@ protected:
 */
 public:
 
-	typedef AView				*(*factory_t)(XmlParser const &);
+	typedef AView				*(*factory_t)(XmlParser const &, Activity &);
 	typedef std::unordered_map<std::string, factory_t>	factory_map_t;
 
 	static factory_t			getFactory(std::string const &name);

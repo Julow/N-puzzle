@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 12:37:21 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 13:08:46 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@
 namespace ftui
 {
 
-VerticalLayout::VerticalLayout(XmlParser const &xml)
-	: ALayout(xml)
+VerticalLayout::VerticalLayout(XmlParser const &xml, Activity &act)
+	: ALayout(xml, act)
 {
 	XmlParser::params_map_t const	&params = xml.getParams();
 
-	std::cout << "VerticalLayout CTOR" << std::endl; //lol
 	(void)params;
+	// TODO, retreive some VerticalLayout data from xml
 }
 
 VerticalLayout::~VerticalLayout(void)
@@ -44,10 +44,10 @@ void			VerticalLayout::onUpdate(void)
 	std::cout << "VerticalLayout onUpdate " << (void*)this << std::endl; //lol
 }
 
-void            VerticalLayout::inflate(XmlParser &xml)
+void            VerticalLayout::inflate(XmlParser &xml, Activity &a)
 {
 	// TODO VerticalLayout::inflate
-	ALayout::inflate(xml);
+	ALayout::inflate(xml, a);
 	return ;
 }
 
@@ -183,9 +183,9 @@ IViewHolder		*VerticalLayout::holderAt(int i)
 /*
 ** Static
 */
-AView			*VerticalLayout::createView(XmlParser const &xml)
+AView			*VerticalLayout::createView(XmlParser const &xml, Activity &act)
 {
-	return (new VerticalLayout(xml));
+	return (new VerticalLayout(xml, act));
 }
 
 };

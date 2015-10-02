@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 10:04:07 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 13:05:21 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ using std::string;
 namespace ftui
 {
 
-AView::AView(XmlParser const &xml)
-	: _holder(nullptr), _id(nullptr), _flags(0), _alpha(0.f)
+AView::AView(XmlParser const &xml, Activity &act)
+	: _holder(nullptr), _act(act), _id(nullptr), _flags(0), _alpha(1.f)
 {
 	XmlParser::params_map_t const	&params = xml.getParams();
 
@@ -60,7 +60,7 @@ void				AView::setViewHolder(IViewHolder *holder)
 	return ;
 }
 
-void				AView::inflate(XmlParser &xml)
+void				AView::inflate(XmlParser &xml, Activity &a)
 {
 	XmlParser::State	state;
 

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 12:38:33 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 12:47:17 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include "ftui/Activity.hpp"
 
 /*
-** everything here are examples or tests
+** everything here is example or test
 */
 
 class Main : public ftui::IGlfwEventListener

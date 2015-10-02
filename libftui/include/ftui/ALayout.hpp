@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 11:15:29 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 13:04:27 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ class	ALayout : public AView
 {
 public:
 
-	ALayout(XmlParser const &xml);
+	ALayout(XmlParser const &xml, Activity &act);
 	virtual ~ALayout(void);
 
 	virtual void				addView(AView *v) = 0;
@@ -43,7 +43,7 @@ public:
 /*
 ** * AView legacy *********************************************************** **
 */
-	virtual void				inflate(XmlParser &xml);
+	virtual void				inflate(XmlParser &xml, Activity &a);
 
 	virtual void				setParam(std::string const &k,
 									std::string const &v);

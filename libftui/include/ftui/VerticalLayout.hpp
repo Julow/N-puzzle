@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:12:43 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 11:16:32 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/02 13:04:44 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ public:
 
 	virtual ~VerticalLayout(void);
 
-	virtual void			inflate(XmlParser &xml);
+	virtual void			inflate(XmlParser &xml, Activity &a);
 
 	virtual void			onUpdate(void);
 	virtual void			onMeasure(void);
@@ -72,7 +72,7 @@ protected:
 
 	std::vector<ViewHolder*>	_childs;
 
-	VerticalLayout(XmlParser const &xml);
+	VerticalLayout(XmlParser const &xml, Activity &act);
 
 	virtual IViewHolder			*holderAt(int i);
 
@@ -86,7 +86,7 @@ private:
 */
 public:
 
-	static AView			*createView(XmlParser const &xml);
+	static AView			*createView(XmlParser const &xml, Activity &act);
 };
 
 /*
