@@ -1,71 +1,80 @@
 #
 
 # Executable name
-NAME := npuzzle
+NAME		:= npuzzle
 
 # Project directories
-DIRS := srcs include libftui/include
+DIRS		:= srcs include libftui/include
 
 # Git submodule to init
-MODULES := 
+MODULES		:= 
 # Makefiles to call
-LIBS := libftui(BINDINGS=glfw make -C ?name?)
+LIBS		:= libftui(BINDINGS=glfw make -C ?name?)
 
-# Compilation and linking flags
-FLAGS := -std=c++14 -Wall -Wextra -O2
-# Same but used in debug mode
-DEBUG_FLAGS := -Wall -Wextra -g
-# Compilation flags
-HEADS := $(addprefix -I,$(DIRS))
-# Linking flags
-ifeq ($(shell uname),Darwin)
-	FLAGS += -DMAC_OS_MODE=1
-	DEBUG_FLAGS += -DMAC_OS_MODE=1
-	LINKS := -lglfw3 -framework OpenGL
+# Base flags
+BASE_FLAGS	= -Wall -Wextra
+HEAD_FLAGS	= $(addprefix -I,$(DIRS))
+
+# Compilation flags (per language)
+C_FLAGS		= $(HEAD_FLAGS) $(BASE_FLAGS)
+CPP_FLAGS	= $(HEAD_FLAGS) $(BASE_FLAGS) -std=c++14
+
+LINK_FLAGS	= $(BASE_FLAGS) -Llibftui -lftui
+
+ifeq ($(DEBUG_MODE),1)
+	# Extra flags used in debug mode
+	BASE_FLAGS	+= -g
+	C_FLAGS		+=
+	CPP_FLAGS	+=
 else
-	LINKS := -lglfw -lGL -lGLEW
+	# Extra flags used when not in debug mode
+	BASE_FLAGS	+= -O2
+	C_FLAGS		+=
+	CPP_FLAGS	+=
 endif
-LINKS += -Llibftui -lftui
+
+DEBUG_MODE	?= 0
+export DEBUG_MODE
+
+# Extra libs
+ifeq ($(shell uname),Darwin)
+	BASE_FLAGS	+= -DMAC_OS_MODE=1
+	LINK_FLAGS	+= -lglfw3 -framework OpenGL
+else
+	LINK_FLAGS	+= -lglfw -lGL -lGLEW
+endif
 
 # Jobs
-JOBS := 4
+JOBS		:= 4
 
 # Column output
-COLUMN_OUTPUT := 1
+COLUMN_OUTPUT	:= 1
 
 ifeq ($(COLUMN_OUTPUT),0)
-	PRINT_OK = printf '\033[32m$<\033[0m\n'
-	PRINT_LINK = printf '\033[32m$@\033[0m\n'
+	PRINT_OK	= printf '\033[32m$<\033[0m\n'
+	PRINT_LINK	= printf '\033[32m$@\033[0m\n'
 else
-	PRINT_OK = echo $(patsubst $(firstword $(DIRS))/%,%,$<) >> $(PRINT_FILE)
-	PRINT_LINK = printf '\n\033[32m$@\033[0m\n'
+	PRINT_OK	= echo $(patsubst $(firstword $(DIRS))/%,%,$<) >> $(PRINT_FILE)
+	PRINT_LINK	= printf '\n\033[32m$@\033[0m\n'
 endif
 
 # Objects directory
-O_DIR := o
+O_DIR		:= o
 
 # Depend file name
-DEPEND := depend.mk
+DEPEND		:= depend.mk
 
 # tmp
-MODULE_RULES := $(addsuffix /.git,$(MODULES))
-PRINT_FILE := .tmp_print
-SHELL := /bin/bash
+MODULE_RULES	:= $(addsuffix /.git,$(MODULES))
+PRINT_FILE		:= .tmp_print
+SHELL			:= /bin/bash
 
 # Default rule (need to be before any include)
 all: $(MODULE_RULES) libs
 ifeq ($(COLUMN_OUTPUT),0)
 	make -j$(JOBS) $(NAME)
 else
-	MAX_LEN=1;															\
-	for o in $(patsubst $(O_DIR)/$(firstword $(DIRS))/%,%,$(O_FILES));	\
-	do																	\
-		if [[ $${#o} -gt $$MAX_LEN ]];									\
-		then															\
-			MAX_LEN=$${#o};												\
-		fi;																\
-	done;																\
-	PER_LINE=$$((`tput cols` / $$(($$MAX_LEN + 2))));					\
+	PER_LINE=$$((`tput cols` / $$(($(MAX_SOURCE_LEN) + 2))));			\
 	CURR=0;																\
 	rm -f $(PRINT_FILE);												\
 	touch $(PRINT_FILE);												\
@@ -77,7 +86,7 @@ else
 			echo;														\
 		fi;																\
 		CURR=$$(($$CURR + 1));											\
-		printf '\033[32m%-*s\033[0m  ' $$MAX_LEN "$$l";					\
+		printf '\033[32m%-*s\033[0m  ' "$(MAX_SOURCE_LEN)" "$$l";		\
 	done &																\
 	make -j$(JOBS) $(NAME);												\
 	STATUS=$$?;															\
@@ -91,11 +100,13 @@ endif
 
 # Linking
 $(NAME): $(LIBS_DEPEND) $(O_FILES)
-	clang++ $(FLAGS) -o $@ $(O_FILES) $(LINKS) && $(PRINT_LINK)
+	clang++ -o $@ $(O_FILES) $(LINK_FLAGS) && $(PRINT_LINK)
 
 # Compiling
-$(O_DIR)/%.o:
-	clang++ $(FLAGS) $(HEADS) -c $< -o $@ && $(PRINT_OK)
+$(O_DIR)/%.o: %.c
+	clang $(C_FLAGS) -c $< -o $@ && $(PRINT_OK)
+$(O_DIR)/%.o: %.cpp
+	clang++ $(CPP_FLAGS) -c $< -o $@ && $(PRINT_OK)
 
 # Init submodules
 $(MODULE_RULES):
@@ -126,7 +137,7 @@ re: fclean all
 
 # Set debug flags
 _debug:
-	$(eval FLAGS := $(DEBUG_FLAGS))
+	$(eval DEBUG_MODE = 1)
 
 .SILENT:
 .PHONY: all clean fclean re debug rebug _debug

@@ -10,7 +10,10 @@ LIBS_DEPEND :=
 libs:
 .PHONY: libs
 
-o/srcs/ACanvas.o: srcs/ACanvas.cpp include/ft/assert.hpp \
+
+
+MAX_SOURCE_LEN := 34
+o/srcs/ACanvas.o: srcs/ACanvas.cpp include/ft/Vec.hpp include/ft/assert.hpp \
 	include/ftui/ACanvas.hpp include/ftui/libftui.hpp | o/srcs/
 o/srcs/ALayout.o: srcs/ALayout.cpp include/ft/assert.hpp \
 	include/ftui/ALayout.hpp include/ftui/AView.hpp include/ftui/libftui.hpp \
@@ -47,8 +50,9 @@ o/srcs/TextView.o: srcs/TextView.cpp include/ft/assert.hpp \
 o/srcs/VerticalLayout.o: srcs/VerticalLayout.cpp include/ft/Vec.hpp \
 	include/ft/assert.hpp include/ftui/ALayout.hpp include/ftui/AView.hpp \
 	include/ftui/IViewHolder.hpp include/ftui/VerticalLayout.hpp \
-	include/ftui/libftui.hpp include/ftui/XmlParser.hpp \
-	include/ftui/XmlTokenizer.hpp include/ft/utils.hpp | o/srcs/
+	include/ftui/libftui.hpp include/ftui/ACanvas.hpp \
+	include/ftui/XmlParser.hpp include/ftui/XmlTokenizer.hpp \
+	include/ft/utils.hpp | o/srcs/
 o/srcs/VerticalLayout_ViewHolder.o: srcs/VerticalLayout_ViewHolder.cpp \
 	include/ft/Vec.hpp include/ft/assert.hpp include/ftui/ALayout.hpp \
 	include/ftui/AView.hpp include/ftui/IViewHolder.hpp \
