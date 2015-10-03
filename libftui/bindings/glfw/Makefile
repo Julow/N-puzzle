@@ -97,14 +97,9 @@ endif
 # Include $(O_FILES) and dependencies
 -include $(DEPEND)
 
-TO_UPDATE =
-
 # Linking
-$(NAME): $(LIBS_DEPEND) $(O_FILES:%.o=$(NAME)(%.o))
-	ar rcs $@ $(TO_UPDATE) && $(PRINT_LINK)
-
-$(NAME)(%.o): %.o
-	$(eval TO_UPDATE += $%)
+$(NAME): $(LIBS_DEPEND) $(O_FILES)
+	ar rcs $@ $(O_FILES) && $(PRINT_LINK)
 
 # Compiling
 $(O_DIR)/%.o: %.c
