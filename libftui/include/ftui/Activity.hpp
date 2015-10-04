@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/04 12:39:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/04 14:10:42 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,6 @@ extern "C"
 }
 
 # include "ftui/IViewHolder.hpp"
-// # include "ftui/EventBox.hpp"
-// # include "ftui/EventParams.hpp"
-
-// class lua_State; //debug
 
 namespace ftui
 {
@@ -52,7 +48,8 @@ public:
 	Activity(Vec2<int> size);
 	virtual ~Activity(void);
 
-	virtual void		inflate(std::istream &stream);
+	void				init_lua_env(void);
+	void				inflate(std::istream &stream);
 
 	void				render(ACanvas &canvas);
 
@@ -115,19 +112,19 @@ public:
 		std::string const &funName, lua_CFunction f);
 	void				registerMemfuns(
 		std::string const &tabName
-		, std::vector<std::tuple<std::string, lua_CFunction>>);
+		, std::vector<std::tuple<std::string, lua_CFunction>> const &fns);
 
-	
 protected:
 	RootViewHolder		*_rootView;
 	event_map_t			_eventMap;
 	Vec2<int>			_size;
 	lua_State			*_l;
-	
+
 private:
 	Activity(void) = delete;
 	Activity(Activity const &src) = delete;
 	Activity			&operator=(Activity const &rhs) = delete;
+
 };
 
 /*

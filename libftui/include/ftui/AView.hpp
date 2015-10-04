@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/10/04 12:47:22 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/04 14:42:51 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,29 +181,32 @@ public:
 		typedef std::tuple<std::string, lua_CFunction>	luamemfuninfo_t;
 		typedef std::vector<luamemfuninfo_t>			luamemfunsinfo_t;
 
-		virtual ~SonInfo(void);		
-		SonInfo(factory_t create, luamemfunsinfo_t luaMemfuns);
+		virtual ~SonInfo(void);
+		SonInfo(std::string const &parent
+				, factory_t create, luamemfunsinfo_t luaMemfuns);
 		SonInfo(SonInfo const &src);
 		SonInfo();
 		SonInfo				&operator=(SonInfo const &rhs);
 
+		std::string			parent;
 		factory_t			create;
 		luamemfunsinfo_t	luaMemfuns;
 	};
 
 	typedef std::unordered_map<std::string, SonInfo>	sons_info_t;
-	static sons_info_t									_views_info;
+	static sons_info_t									viewsInfo;
 
 	static SonInfo::factory_t	getFactory(std::string const &name);
 
 	/*
-	 *	registerNewSonInfoView()	Call this function to register your new AViews
+	 *	registerNewSonView()	Call this function to register your new AViews
 	 *  ********************************************************************* **
 	 *		It should be done once for all instanciable AViews, and before any
 	 *	Xml inflating.
 	 */
-	static void					registerNewSonInfoView(
+	static void					registerNewSonView(
 		std::string const &name
+		, std::string const &parent
 		, SonInfo::factory_t factory
 		, SonInfo::luamemfunsinfo_t luaMemFuns);
 
