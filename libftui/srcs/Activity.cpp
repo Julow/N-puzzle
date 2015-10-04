@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/04 15:07:31 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/04 15:58:22 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void			Activity::init_lua_env(void)
 	if (_l == nullptr)
 		;//TODO throw
 	luaL_openlibs(_l);
-	// ftlua::pushUtils();
+	ftui::lua_pushUtils(*this);
 	for (auto it : AView::viewsInfo)
 	{
 		std::cout << "Created lua table" << it.first << std::endl;
@@ -68,15 +68,22 @@ void			Activity::init_lua_env(void)
 				;//TODO throw
 			lua_setmetatable(_l, -2);
 		}
+		lua_pushstring(_l, "__index");
+		lua_pushvalue(_l, -2);
+		lua_settable(_l, -3);
 		// uncomment to protect the table
-		// lua_pushstring(_l, "__newindex");
-		// lua_pushvalue(_l, -2);
-		// lua_settable(_l, -3);
-		// lua_pushstring(_l, "__metatable");
-		// lua_pushstring(_l, "not your business");
-		// lua_settable(_l, -3);
+		lua_pushstring(_l, "__newindex");
+		lua_pushstring(_l, "no way");
+		lua_settable(_l, -3);
+		lua_pushstring(_l, "__metatable");
+		lua_pushstring(_l, "not your business");
+		lua_settable(_l, -3);
 		lua_setglobal(_l, it.first.c_str());
 	}
+	std::cout << "AView:" << std::endl; lua_getglobal(_l, "ftpt");lua_getglobal(_l, "AView"); lua_call(_l, 1, 0); std::cout << std::endl;
+	std::cout << "ALayout:" << std::endl; lua_getglobal(_l, "ftpt");lua_getglobal(_l, "ALayout"); lua_call(_l, 1, 0); std::cout << std::endl;
+	std::cout << "VerticalLayout:" << std::endl; lua_getglobal(_l, "ftpt");lua_getglobal(_l, "VerticalLayout"); lua_call(_l, 1, 0); std::cout << std::endl;
+	// lua_pushglobaltable(_l);
 	return ;
 }
 
@@ -100,6 +107,9 @@ void			Activity::inflate(std::istream &stream)
 		FTASSERT(false, "Activity should not own more than 1 view");
 	return ;
 }
+
+lua_State		*Activity::getLuaState(void) const
+{ return _l; }
 
 void			Activity::render(ACanvas &canvas)
 {

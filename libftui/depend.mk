@@ -4,7 +4,7 @@ O_FILES :=	o/srcs/ACanvas.o o/srcs/ALayout.o o/srcs/AView.o \
 			o/srcs/Activity_RootViewHolder.o o/srcs/RelativeLayout.o \
 			o/srcs/SliderView.o o/srcs/TextView.o o/srcs/VerticalLayout.o \
 			o/srcs/VerticalLayout_ViewHolder.o o/srcs/XmlParser.o \
-			o/srcs/XmlTokenizer.o o/srcs/ft/assert.o
+			o/srcs/XmlTokenizer.o o/srcs/ft/assert.o o/srcs/lua_debug.o
 
 LIBS_DEPEND := 
 
@@ -80,3 +80,4 @@ o/srcs/XmlTokenizer.o: srcs/XmlTokenizer.cpp include/ft/assert.hpp \
 	include/ft/utils.hpp | o/srcs/
 o/srcs/ft/assert.o: srcs/ft/assert.cpp include/ft/assert.hpp \
 	include/ft/utils.hpp | o/srcs/ft/
+o/srcs/lua_debug.o: srcs/lua_debug.cpp | o/srcs/

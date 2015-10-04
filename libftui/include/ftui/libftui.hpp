@@ -6,14 +6,14 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 11:55:01 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/02 10:25:34 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/04 15:27:27 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFTUI_H
 # define LIBFTUI_H
 
-#include "ft/assert.hpp"
+# include "ft/assert.hpp"
 
 namespace ftui
 {
@@ -49,6 +49,8 @@ template <typename T>				class Vec3;
 */
 class GlfwWindow;
 class IGlfwEventListener;
+
+void			lua_pushUtils(Activity const &a);
 
 };
 
