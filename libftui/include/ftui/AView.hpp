@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/10/04 11:51:23 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/04 12:42:16 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,37 +174,38 @@ protected:
 ** Static
 */
 public:
-	class ViewInfo
+	class Son
 	{
 	public:
 		typedef AView		*(*factory_t)(XmlParser const &, Activity &);
 		typedef std::tuple<std::string, lua_CFunction>	luamemfuninfo_t;
-		typedef std::vector<luamemfuninfo_t>				luamemfunsinfo_t;
+		typedef std::vector<luamemfuninfo_t>			luamemfunsinfo_t;
 		
-		virtual ~ViewInfo(void);		
-		ViewInfo(factory_t create, luamemfunsinfo_t luaMemfuns);
-		ViewInfo(ViewInfo const &src);
-		ViewInfo();
-		ViewInfo		&operator=(ViewInfo const &rhs);
+		virtual ~Son(void);		
+		Son(factory_t create, luamemfunsinfo_t luaMemfuns);
+		Son(Son const &src);
+		Son();
+		Son			&operator=(Son const &rhs);
 
 		factory_t			create;
 		luamemfunsinfo_t	luaMemfuns;
 	};
 
-	typedef std::unordered_map<std::string, ViewInfo>	views_info_t;
+	typedef std::unordered_map<std::string, Son>	views_info_t;
 	static views_info_t									_views_info;
 
-	static ViewInfo::factory_t	getFactory(std::string const &name);
+	static Son::factory_t	getFactory(std::string const &name);
 
 	/*
-	 *	registerNewViewInfo()	Call this function to register your new AViews
+	 *	registerNewView()	Call this function to register your new AViews
 	 *  ********************************************************************* **
-	 *	It should be done once for all AViews, and before any Xml inflating.
+	 *		It should be done once for all instanciable AViews, and before any
+	 *	Xml inflating.
 	 */
 	static void					registerNewView(
 		std::string const &name
-		, ViewInfo::factory_t factory
-		, ViewInfo::luamemfunsinfo_t luaMemFuns);
+		, Son::factory_t factory
+		, Son::luamemfunsinfo_t luaMemFuns);
 
 private:
 

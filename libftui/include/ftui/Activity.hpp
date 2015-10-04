@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/04 10:13:44 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/04 12:39:01 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ public:
 	 *	*
 	 *	onFire case3: (AView::onEvent notextended)
 	 *	  AView::onEvent		  ->			self:fname() || self:onEvent()
-	 *	
 	 */
 	template<typename... Args>
 	void				registerEvent(std::string const &event, AView *v);
@@ -120,16 +119,15 @@ public:
 
 	
 protected:
-
 	RootViewHolder		*_rootView;
 	event_map_t			_eventMap;
 	Vec2<int>			_size;
 	lua_State			*_l;
 	
 private:
-	Activity(void);
-	Activity(Activity const &src);
-	Activity			&operator=(Activity const &rhs);
+	Activity(void) = delete;
+	Activity(Activity const &src) = delete;
+	Activity			&operator=(Activity const &rhs) = delete;
 };
 
 /*

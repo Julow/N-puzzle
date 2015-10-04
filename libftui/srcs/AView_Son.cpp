@@ -1,12 +1,12 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   AView_ViewInfo.cpp                                 :+:      :+:    :+:   //
+//   AView_Son.cpp                                      :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/10/04 11:13:39 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/04 11:21:14 by ngoguey          ###   ########.fr       //
+//   Created: 2015/10/04 12:43:19 by ngoguey           #+#    #+#             //
+//   Updated: 2015/10/04 12:43:19 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,18 +15,18 @@
 namespace ftui
 {
 
-AView::ViewInfo::ViewInfo(factory_t create, luamemfunsinfo_t luaMemfuns)
+AView::Son::Son(factory_t create, luamemfunsinfo_t luaMemfuns)
 	: create(create), luaMemfuns(luaMemfuns){}
 
-AView::ViewInfo::ViewInfo(AView::ViewInfo::ViewInfo const &src)
+AView::Son::Son(AView::Son::Son const &src)
 	: create(src.create), luaMemfuns(src.luaMemfuns){}
 
-AView::ViewInfo::ViewInfo()
+AView::Son::Son()
 	: create(nullptr), luaMemfuns(){}
 
-AView::ViewInfo::~ViewInfo(void){}
+AView::Son::~Son(void){}
 
-AView::ViewInfo        &AView::ViewInfo::operator=(AView::ViewInfo const &rhs)
+AView::Son		&AView::Son::operator=(AView::Son const &rhs)
 {
 	this->create = rhs.create;
 	this->luaMemfuns = rhs.luaMemfuns;
