@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/10/04 12:42:16 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/04 12:47:22 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,38 +174,38 @@ protected:
 ** Static
 */
 public:
-	class Son
+	class SonInfo
 	{
 	public:
 		typedef AView		*(*factory_t)(XmlParser const &, Activity &);
 		typedef std::tuple<std::string, lua_CFunction>	luamemfuninfo_t;
 		typedef std::vector<luamemfuninfo_t>			luamemfunsinfo_t;
-		
-		virtual ~Son(void);		
-		Son(factory_t create, luamemfunsinfo_t luaMemfuns);
-		Son(Son const &src);
-		Son();
-		Son			&operator=(Son const &rhs);
+
+		virtual ~SonInfo(void);		
+		SonInfo(factory_t create, luamemfunsinfo_t luaMemfuns);
+		SonInfo(SonInfo const &src);
+		SonInfo();
+		SonInfo				&operator=(SonInfo const &rhs);
 
 		factory_t			create;
 		luamemfunsinfo_t	luaMemfuns;
 	};
 
-	typedef std::unordered_map<std::string, Son>	views_info_t;
-	static views_info_t									_views_info;
+	typedef std::unordered_map<std::string, SonInfo>	sons_info_t;
+	static sons_info_t									_views_info;
 
-	static Son::factory_t	getFactory(std::string const &name);
+	static SonInfo::factory_t	getFactory(std::string const &name);
 
 	/*
-	 *	registerNewView()	Call this function to register your new AViews
+	 *	registerNewSonInfoView()	Call this function to register your new AViews
 	 *  ********************************************************************* **
 	 *		It should be done once for all instanciable AViews, and before any
 	 *	Xml inflating.
 	 */
-	static void					registerNewView(
+	static void					registerNewSonInfoView(
 		std::string const &name
-		, Son::factory_t factory
-		, Son::luamemfunsinfo_t luaMemFuns);
+		, SonInfo::factory_t factory
+		, SonInfo::luamemfunsinfo_t luaMemFuns);
 
 private:
 
