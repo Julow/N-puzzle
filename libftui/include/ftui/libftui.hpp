@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 11:55:01 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/04 15:27:27 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/04 16:07:21 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ namespace ftui
 
 class	Activity;
 class	IEventBox;
-template<class T, typename... ARGS>	class EventBox;
+template<class T, typename... Args>	class EventBox;
 class	IEventParams;
-template<typename... ARGS>			class EventParams;
-template<typename... ARGS>			class DefaultEventBox;
+template<typename... Args>			class EventParams;
+template<typename... Args>			class DefaultEventBox;
 
 class	ACanvas;
 

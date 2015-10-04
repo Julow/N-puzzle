@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/04 15:58:22 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/04 16:19:12 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,29 @@ Activity::~Activity(void)
 	return ;
 }
 
+static void		finalize_table(
+	lua_State *l, std::string const &name, AView::SonInfo const &i)
+{
+	(void)lua_getglobal(l, name.c_str());
+	if (i.parent != "" )
+	{
+		if (lua_getglobal(l, i.parent.c_str()) != LUA_TTABLE)
+			;//TODO throw
+		lua_setmetatable(l, -2);
+	}
+	lua_pushstring(l, "__index");
+	lua_pushvalue(l, -2);
+	lua_settable(l, -3);
+	lua_pushstring(l, "__newindex");
+	lua_pushstring(l, "no way");
+	lua_settable(l, -3);
+	lua_pushstring(l, "__metatable");
+	lua_pushstring(l, "not your business");
+	lua_settable(l, -3);
+	lua_setglobal(l, name.c_str());
+	return ;
+}
+
 void			Activity::init_lua_env(void)
 {
 	if (_l != nullptr)
@@ -51,39 +74,13 @@ void			Activity::init_lua_env(void)
 	ftui::lua_pushUtils(*this);
 	for (auto it : AView::viewsInfo)
 	{
-		std::cout << "Created lua table" << it.first << std::endl;
 		lua_createtable(_l, 0, 0);
 		lua_setglobal(_l, it.first.c_str());
 	}
 	for (auto it : AView::viewsInfo)
 		this->registerMemfuns(it.first, it.second.luaMemfuns);
 	for (auto it : AView::viewsInfo)
-	{
-		std::cout << "Applying inheritance for '" << it.first << "' to '"
-				  << it.second.parent << "'" << std::endl;
-		(void)lua_getglobal(_l, it.first.c_str());
-		if (it.second.parent != "" )
-		{
-			if (lua_getglobal(_l, it.second.parent.c_str()) != LUA_TTABLE)
-				;//TODO throw
-			lua_setmetatable(_l, -2);
-		}
-		lua_pushstring(_l, "__index");
-		lua_pushvalue(_l, -2);
-		lua_settable(_l, -3);
-		// uncomment to protect the table
-		lua_pushstring(_l, "__newindex");
-		lua_pushstring(_l, "no way");
-		lua_settable(_l, -3);
-		lua_pushstring(_l, "__metatable");
-		lua_pushstring(_l, "not your business");
-		lua_settable(_l, -3);
-		lua_setglobal(_l, it.first.c_str());
-	}
-	std::cout << "AView:" << std::endl; lua_getglobal(_l, "ftpt");lua_getglobal(_l, "AView"); lua_call(_l, 1, 0); std::cout << std::endl;
-	std::cout << "ALayout:" << std::endl; lua_getglobal(_l, "ftpt");lua_getglobal(_l, "ALayout"); lua_call(_l, 1, 0); std::cout << std::endl;
-	std::cout << "VerticalLayout:" << std::endl; lua_getglobal(_l, "ftpt");lua_getglobal(_l, "VerticalLayout"); lua_call(_l, 1, 0); std::cout << std::endl;
-	// lua_pushglobaltable(_l);
+		finalize_table(_l, it.first, it.second);
 	return ;
 }
 
@@ -156,7 +153,6 @@ void			Activity::registerMemfuns(
 	int		t;
 
 	t = lua_getglobal(_l, tabName.c_str());
-	std::cout << "Registering memfuncs for " << tabName << std::endl;
 	if (t != LUA_TTABLE)
 		; //TODO throw
 	for (auto it : fns)
@@ -164,8 +160,6 @@ void			Activity::registerMemfuns(
 		lua_pushstring(_l, std::get<0>(it).c_str());
 		lua_pushcfunction(_l, std::get<1>(it));
 		lua_settable(_l, -3);
-		std::cout << "    Registered lua function self:"
-				  << std::get<0>(it) << std::endl;
 	}
 	lua_setglobal(_l, tabName.c_str());
 	return ;

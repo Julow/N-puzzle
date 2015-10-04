@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/04 15:45:53 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/04 16:26:39 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ namespace ftui
 /*
 ** Activity
 ** -
-** Hold the whole UI
+** Holds the whole UI
 ** Multiple activity can cohabit but there is no facility for that
 */
 class	Activity

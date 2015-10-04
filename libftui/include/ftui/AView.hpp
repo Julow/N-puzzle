@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/10/04 14:42:51 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/04 16:28:12 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,8 +201,7 @@ public:
 	/*
 	 *	registerNewSonView()	Call this function to register your new AViews
 	 *  ********************************************************************* **
-	 *		It should be done once for all instanciable AViews, and before any
-	 *	Xml inflating.
+	 *		It should be done once for all AViews, and before any xml inflating.
 	 */
 	static void					registerNewSonView(
 		std::string const &name

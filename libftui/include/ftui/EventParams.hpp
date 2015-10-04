@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/30 09:44:41 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/10/02 10:25:18 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/04 16:20:38 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@
 
 # include <tuple>
 
-template<typename... ARGS>
+template<typename... Args>
 class ftui::EventParams : public IEventParams
 {
 public:
 	EventParams() : tup() {};
 	virtual ~EventParams();
 
-	std::tuple<ARGS...>			tup;
+	std::tuple<Args...>			tup;
 private:
 	EventParams(EventParams const &src) = delete;
 	EventParams					&operator=(EventParams const &rhs) = delete;

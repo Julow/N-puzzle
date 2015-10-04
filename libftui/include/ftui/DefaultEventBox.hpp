@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/30 11:09:06 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/10/02 10:25:19 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/04 16:20:28 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 
 # include "ftui/IEventBox.hpp"
 
-template<typename... ARGS>
+template<typename... Args>
 class ftui::DefaultEventBox : public IEventBox
 {
 private:
-	typedef std::tuple<ARGS...>		tuple_t;
+	typedef std::tuple<Args...>		tuple_t;
 
 	AView				*_v;
 

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 15:25:06 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/04 15:50:00 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/04 16:04:08 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,7 +24,7 @@ extern "C"
 
 #include "ftui/Activity.hpp"
 
-static std::vector<std::string> const		funs = {{
+static std::vector<std::string> const		funs{{
 		"\
 ftpt = function(t)														\
 	print(tostring(t)..' #'..tostring(#t)..' mt:'..tostring(getmetatable(t))); \
@@ -51,7 +51,8 @@ void		lua_pushUtils(Activity const &a)
 
 	for (auto it : funs)
 	{
-		FTASSERT(luaL_dostring(l, it.c_str()) == 0);
+		if (luaL_dostring(l, it.c_str()) == 0)
+			; //TODO throw
 	}
 	return ;
 }

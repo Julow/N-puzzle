@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/30 09:44:31 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/10/02 10:25:35 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/04 16:20:09 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 # include "ftui/IEventBox.hpp"
 # include "ft/assert.hpp"
 
-template<class T, typename... ARGS>
+template<class T, typename... Args>
 class ftui::EventBox : public IEventBox
 {
 private:
-	typedef bool					(T::*fun_t)(ARGS...);
-	typedef std::tuple<ARGS...>		tuple_t;
+	typedef bool					(T::*fun_t)(Args...);
+	typedef std::tuple<Args...>		tuple_t;
 
 	T					*_v;
 	fun_t				_f;
@@ -33,11 +33,11 @@ public:
 
 	bool				call(std::string const &str, IEventParams *a_)
 		{
-			EventParams<ARGS...>	 *a;
+			EventParams<Args...>	 *a;
 
- 			FTASSERT(dynamic_cast<EventParams<ARGS...>*>(a_) != nullptr
+ 			FTASSERT(dynamic_cast<EventParams<Args...>*>(a_) != nullptr
 					 , "Wrong parameters type to " + str + " call");
-			a = reinterpret_cast<EventParams<ARGS...>*>(a_);
+			a = reinterpret_cast<EventParams<Args...>*>(a_);
 			return delayed_dispatch(a->tup);
 		}
 	AView const			*getView(void) const
@@ -53,7 +53,7 @@ private:
 		}
 	bool				delayed_dispatch(tuple_t params)
 		{
-			return call_func(params, std::index_sequence_for<ARGS...>{});
+			return call_func(params, std::index_sequence_for<Args...>{});
 		}
 
 	EventBox() = delete;
