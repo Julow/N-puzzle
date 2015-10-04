@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/10/04 11:22:52 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/04 11:51:23 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,6 @@ protected:
 
 	void						setMouseOver(bool state);
 
-
 /*
 ** Static
 */
@@ -190,19 +189,19 @@ public:
 
 		factory_t			create;
 		luamemfunsinfo_t	luaMemfuns;
-
 	};
 
 	typedef std::unordered_map<std::string, ViewInfo>	views_info_t;
 	static views_info_t									_views_info;
 
 	static ViewInfo::factory_t	getFactory(std::string const &name);
+
 	/*
 	 *	registerNewViewInfo()	Call this function to register your new AViews
 	 *  ********************************************************************* **
 	 *	It should be done once for all AViews, and before any Xml inflating.
 	 */
-	static void					registerNewViewInfo(
+	static void					registerNewView(
 		std::string const &name
 		, ViewInfo::factory_t factory
 		, ViewInfo::luamemfunsinfo_t luaMemFuns);
@@ -242,7 +241,6 @@ private:
 	static void			isUpdateQueried(lua_State *l);
 	static void			isMeasureQueried(lua_State *l);
 	static void			isRedrawQueried(lua_State *l);
-
 
 /*
 ** Disable

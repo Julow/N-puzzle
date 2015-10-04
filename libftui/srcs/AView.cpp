@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/04 11:28:31 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/04 11:49:57 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -439,78 +439,5 @@ void			AView::queryRedraw(void)
 	}	
 	return ;
 }
-
-/*
-** Static
-*/
-
-using luamfun = AView::ViewInfo::luamemfuninfo_t;
-
-AView::views_info_t			AView::_views_info
-{
-	{"VerticalLayout", {&VerticalLayout::createView, {
-				{"setRequestedSize", nullptr},
-				{"setAlpha", nullptr},
-				{"setVisibility", nullptr},
-				{"setParam", nullptr},
-	}}}
-};
-
-AView::ViewInfo::factory_t	AView::getFactory(std::string const &name)
-{
-	AView::ViewInfo		f;
-
-	f = AView::_views_info.at(name);
-	//TODO?? catch throw
-	return (f.create);
-}
-
-void                    AView::registerNewViewInfo(
-	std::string const &name
-	, ViewInfo::factory_t factory
-	, ViewInfo::luamemfunsinfo_t luaMemFuns)
-{	
-	if (!AView::_views_info.insert(
-			std::make_pair(name, AView::ViewInfo(factory, luaMemFuns))).second)
-	{
-		std::cerr << "Factory, already exists" << std::endl;
-		// TODO throw? static AView::registerFactory
-	}
-	return ;
-}
-
-// void		AView::setRequestedSize(lua_State *l){(void)l;}
-
-// void		AView::setAlpha(lua_State *l){(void)l;}
-// void		AView::setVisibility(lua_State *l){(void)l;}
-// void		AView::setParam(lua_State *l){(void)l;}
-
-// void		AView::hookMouseScroll(lua_State *l){(void)l;}
-// void		AView::hookMouseClick(lua_State *l){(void)l;}
-// void		AView::hookMove(lua_State *l){(void)l;}
-// void		AView::hookMouseCapture(lua_State *l){(void)l;}
-// void		AView::hookKeyboard(lua_State *l){(void)l;}
-// void		AView::queryUpdate(lua_State *l){(void)l;}
-// void		AView::queryMeasure(lua_State *l){(void)l;}
-// void		AView::queryRedraw(lua_State *l){(void)l;}
-
-// void		AView::getRequestedSize(lua_State *l){(void)l;}
-// void		AView::getPos(lua_State *l){(void)l;}
-// void		AView::getSize(lua_State *l){(void)l;}
-
-// void		AView::getId(lua_State *l){(void)l;}
-// void		AView::getParent(lua_State *l){(void)l;}
-// void		AView::getAlpha(lua_State *l){(void)l;}
-// void		AView::isVisible(lua_State *l){(void)l;}
-// void		AView::isMouseOver(lua_State *l){(void)l;}
-
-// void		AView::isMouseScrollTargeted(lua_State *l){(void)l;}
-// void		AView::isMouseClickTargeted(lua_State *l){(void)l;}
-// void		AView::isMouseMoveTargeted(lua_State *l){(void)l;}
-// void		AView::isMouseCaptureTargeted(lua_State *l){(void)l;}
-// void		AView::isKeyboardTargeted(lua_State *l){(void)l;}
-// void		AView::isUpdateQueried(lua_State *l){(void)l;}
-// void		AView::isMeasureQueried(lua_State *l){(void)l;}
-// void		AView::isRedrawQueried(lua_State *l){(void)l;}
 
 };
