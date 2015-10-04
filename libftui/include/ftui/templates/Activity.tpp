@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/30 09:01:50 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/10/02 10:25:52 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/04 10:11:53 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void		Activity::registerEvent(std::string const &event, AView *v
 }
 
 template<typename... Args>
-bool		Activity::fireEvent(std::string const &event, Args... args) const
+bool		Activity::fireEvent(std::string const &event, Args... args)
 {
 	auto                	it = this->_eventMap.find(event);
 	auto const				ite = this->_eventMap.cend();

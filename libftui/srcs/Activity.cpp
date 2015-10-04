@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 13:09:37 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/04 09:30:47 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,19 @@ namespace ftui
 Activity::Activity(Vec2<int> size) :
 	_rootView(NULL),
 	_eventMap(),
-	_size(size)
+	_size(size),
+	_l(luaL_newstate())
 {
+	if (_l == nullptr)
+		;//TODO throw
+	luaL_openlibs(_l);
 	return ;
 }
 
 Activity::~Activity(void)
 {
+	if (_l != nullptr)
+		lua_close(_l);
 	return ;
 }
 
@@ -81,12 +87,12 @@ void			Activity::unregisterEvent(std::string const &event, AView *v)
 	return ;
 }
 
-void			Activity::registerFun(std::string const &name
-									  , void (*f)(lua_State *))
-{
-	(void)name;
-	(void)f;
-	return ;
-}
+// void			Activity::registerFun(std::string const &name
+// 									  , void (*f)(lua_State *))
+// {
+// 	(void)name;
+// 	(void)f;
+// 	return ;
+// }
 
 };

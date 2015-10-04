@@ -1,5 +1,5 @@
 O_FILES :=	o/srcs/ACanvas.o o/srcs/ALayout.o o/srcs/AView.o \
-			o/srcs/AbsoluteLayout.o o/srcs/Activity.o \
+			o/srcs/AView_ViewInfo.o o/srcs/AbsoluteLayout.o o/srcs/Activity.o \
 			o/srcs/Activity_RootViewHolder.o o/srcs/RelativeLayout.o \
 			o/srcs/SliderView.o o/srcs/TextView.o o/srcs/VerticalLayout.o \
 			o/srcs/VerticalLayout_ViewHolder.o o/srcs/XmlParser.o \
@@ -24,6 +24,8 @@ o/srcs/AView.o: srcs/AView.cpp include/ft/assert.hpp include/ftui/AView.hpp \
 	include/ftui/IViewHolder.hpp include/ftui/EventParams.hpp \
 	include/ftui/IEventParams.hpp include/ftui/XmlParser.hpp \
 	include/ftui/XmlTokenizer.hpp include/ftui/VerticalLayout.hpp | o/srcs/
+o/srcs/AView_ViewInfo.o: srcs/AView_ViewInfo.cpp include/ft/assert.hpp \
+	include/ftui/AView.hpp include/ftui/libftui.hpp | o/srcs/
 o/srcs/AbsoluteLayout.o: srcs/AbsoluteLayout.cpp include/ft/assert.hpp \
 	include/ftui/AbsoluteLayout.hpp include/ftui/libftui.hpp | o/srcs/
 o/srcs/Activity.o: srcs/Activity.cpp include/ft/Vec.hpp include/ft/assert.hpp \

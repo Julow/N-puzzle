@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/10/02 16:54:54 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/04 11:22:52 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,15 @@
 # include "ftui/libftui.hpp"
 
 # include <string>
+# include <vector>
 # include <unordered_map>
 
-class lua_State; //debug
+extern "C"
+{
+# include <lua.h>
+# include <lauxlib.h>
+# include <lualib.h>
+}
 
 namespace ftui
 {
@@ -169,13 +175,39 @@ protected:
 ** Static
 */
 public:
+	class ViewInfo
+	{
+	public:
+		typedef AView		*(*factory_t)(XmlParser const &, Activity &);
+		typedef std::tuple<std::string, lua_CFunction>	luamemfuninfo_t;
+		typedef std::vector<luamemfuninfo_t>				luamemfunsinfo_t;
+		
+		virtual ~ViewInfo(void);		
+		ViewInfo(factory_t create, luamemfunsinfo_t luaMemfuns);
+		ViewInfo(ViewInfo const &src);
+		ViewInfo();
+		ViewInfo		&operator=(ViewInfo const &rhs);
 
-	typedef AView				*(*factory_t)(XmlParser const &, Activity &);
-	typedef std::unordered_map<std::string, factory_t>	factory_map_t;
+		factory_t			create;
+		luamemfunsinfo_t	luaMemfuns;
 
-	static factory_t			getFactory(std::string const &name);
-	static void					registerFactory(std::string const &name,
-									factory_t factory);
+	};
+
+	typedef std::unordered_map<std::string, ViewInfo>	views_info_t;
+	static views_info_t									_views_info;
+
+	static ViewInfo::factory_t	getFactory(std::string const &name);
+	/*
+	 *	registerNewViewInfo()	Call this function to register your new AViews
+	 *  ********************************************************************* **
+	 *	It should be done once for all AViews, and before any Xml inflating.
+	 */
+	static void					registerNewViewInfo(
+		std::string const &name
+		, ViewInfo::factory_t factory
+		, ViewInfo::luamemfunsinfo_t luaMemFuns);
+
+private:
 
 	static void			setRequestedSize(lua_State *l);
 
@@ -211,9 +243,6 @@ public:
 	static void			isMeasureQueried(lua_State *l);
 	static void			isRedrawQueried(lua_State *l);
 
-private:
-
-	static factory_map_t	_factories;
 
 /*
 ** Disable

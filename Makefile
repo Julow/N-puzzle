@@ -19,7 +19,7 @@ HEAD_FLAGS	= $(addprefix -I,$(DIRS))
 C_FLAGS		= $(HEAD_FLAGS) $(BASE_FLAGS)
 CPP_FLAGS	= $(HEAD_FLAGS) $(BASE_FLAGS) -std=c++14
 
-LINK_FLAGS	= $(BASE_FLAGS) -Llibftui -lftui
+LINK_FLAGS	= $(BASE_FLAGS) -Llibftui -lftui -llua
 
 ifeq ($(DEBUG_MODE),1)
 	# Extra flags used in debug mode

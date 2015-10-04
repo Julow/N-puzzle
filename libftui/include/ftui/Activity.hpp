@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 12:24:13 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/04 10:13:44 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,18 @@
 # include <string>
 # include <istream>
 
+extern "C"
+{
+# include <lua.h>
+# include <lauxlib.h>
+# include <lualib.h>
+}
+
 # include "ftui/IViewHolder.hpp"
 // # include "ftui/EventBox.hpp"
 // # include "ftui/EventParams.hpp"
 
-class lua_State; //debug
+// class lua_State; //debug
 
 namespace ftui
 {
@@ -57,24 +64,67 @@ public:
 	void				onMouseUp(int x, int y, int button);
 	bool				onMouseDown(int x, int y, int button);
 
+	/*
+	 *	registerEvent(e,v)		Registers an event for a given view:
+	 * 								- DerivedView::onEvent()	c++ method
+	 * 								- self:fname()				lua callback
+	 * 								- self:onEvent()			lua method
+	 * 	registerEvent(e,v,c)	Registers an event for a given view:
+	 *								- DerivedView::fname()		c++ callback
+	 *	unregisterEvent(e,v)	Unregisters a view from an event
+	 * 	********************************************************************* **
+	 *	AView::onEvent handles the call to lua.
+	 * 	********************************************************************* **
+	 *	onFire case1: (c++ callback)
+	 *	  DerivedView::fname()	  ->(optional)	AView::onEvent()
+	 *	  AView::onEvent		  ->			self:fname() || self:onEvent()
+	 *	*
+	 *	onFire case2: (AView::onEvent extended)
+	 *	  DerivedView::onEvent()  ->(optional)	AView::onEvent()
+	 *	  AView::onEvent		  ->			self:fname() || self:onEvent()
+	 *	*
+	 *	onFire case3: (AView::onEvent notextended)
+	 *	  AView::onEvent		  ->			self:fname() || self:onEvent()
+	 *	
+	 */
 	template<typename... Args>
 	void				registerEvent(std::string const &event, AView *v);
 	template<class T, typename... Args>
-	void				registerEvent(std::string const &event, AView *v
-		, bool (T::*callback_)(Args...));
+	void				registerEvent(
+		std::string const &event, AView *v, bool (T::*callback)(Args...));
 	void				unregisterEvent(std::string const &event, AView *v);
 
+	/*
+	 *	fireEvent()			fires an event in the multimap:
+	 * 	********************************************************************* **
+	 *		If the given Args... types do no match those from registerEvent, a
+	 *	dynamic_cast may rise an exception.
+	 */
 	template<typename... Args>
-	bool				fireEvent(std::string const &event, Args... args) const;
+	bool				fireEvent(std::string const &event, Args... args);
 
-	void				registerFun(std::string const &name
-									, void (*f)(lua_State *));
+	/*
+	 *	registerGFun() 		Registers a cfun to lua _G
+	 *	registerMemfuns()	Registers several cfuns to a specific table in _G
+	 * 	********************************************************************* **
+	 *		The user must handle the lua-stack in those functions. Two optional
+	 *	functions are available to assist you in the process:
+	 *		- ftui::LOLfun
+	 *		- ftui::LOLmemfun
+	 */
+	void				registerGFun(
+		std::string const &funName, lua_CFunction f);
+	void				registerMemfuns(
+		std::string const &tabName
+		, std::vector<std::tuple<std::string, lua_CFunction>>);
 
+	
 protected:
 
 	RootViewHolder		*_rootView;
 	event_map_t			_eventMap;
 	Vec2<int>			_size;
+	lua_State			*_l;
 	
 private:
 	Activity(void);
