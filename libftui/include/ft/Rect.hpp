@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/02 18:43:04 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/02 19:09:29 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/05 14:26:41 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,106 +20,88 @@ namespace ft
 
 /*
 ** Represent a Rect
+** -
+** All functions assumes top <= bottom && left <= right
 */
 template<typename T>
 class	Rect
 {
 public:
-	Rect(void) :
-		x(0),
-		y(0),
-		width(0),
-		height(0) {}
-	Rect(Rect<T> const &src) :
-		x(src.x),
-		y(src.y),
-		width(src.width),
-		height(src.height) {}
-	Rect(Vec2<T> pos, Vec2<T> size) :
-		x(pos.x),
-		y(pos.y),
-		width(size.x),
-		height(size.y) {}
-	Rect(Vec4<T> const &vec) :
-		x(vec.x),
-		y(vec.y),
-		width(vec.z),
-		height(vec.w) {}
-	Rect(T x, T y, T width, T height) :
-		x(x),
-		y(y),
-		width(width),
-		height(height) {}
+	Rect(void);
+	Rect(Rect<T> const &src);
+	Rect(T left, T top, T right, T bottom);
+	Rect(Vec2<T> pos, Vec2<T> size);
+	virtual ~Rect(void);
 
-	T			x;
-	T			y;
-	T			width;
-	T			height;
+	T			left;
+	T			top;
+	T			right;
+	T			bottom;
 
 /*
-** Extend to overlap 'rect'
+** Bounds
 */
-	// void		merge(Rect<T> const &rect)
-	// {
-	// 	if (x > rect.x)
-	// 	{
-	// 		width += x - rect.x;
-	// 		x = rect.x;
-	// 	}
-	// 	if (y > rect.y)
-	// 	{
-	// 	}
-	// }
+	T			getWidth(void) const;
+	T			getHeight(void) const;
+
+	/*
+	** Move the rect and keep it's size
+	*/
+	void		setPos(Vec2<T> pos);
+
+	void		setSize(Vec2<T> size);
 
 /*
-** Clamp to fit inside 'bounds'
-** Clamped rect are not moved outside it's old bounds
-**  (except if width or height are set to 0)
+** Checks
 */
-	void		clamp(Rect<T> const &bounds)
-	{
-		if (x < bounds.x)
-		{
-			width -= bounds.x - x;
-			x = bounds.x;
-		}
-		if (y < bounds.y)
-		{
-			height -= bounds.y - y;
-			y += bounds.y;
-		}
-		if (width > bounds.width)
-			width = bounds.width;
-		else if (width < 0)
-			width = 0;
-		if (height > bounds.height)
-			height = bounds.height;
-		else if (height < 0)
-			height = 0;
-	}
+	/*
+	** Check collision with 'rect'
+	*/
+	bool		collides(Rect<T> const &rect) const;
+
+	/*
+	** Check collision with 'rect'
+	** Set 'res' to the surface of the collision
+	** Does not update 'res' if the rects doesn't collide
+	*/
+	bool		collides(Rect<T> const &rect, Rect<T> &res) const;
+
+	/*
+	** Check if 'rect' fit in the rect
+	*/
+	bool		contains(Rect<T> const &rect) const;
+
+	/*
+	** Check if pt is into the rect's bounds
+	*/
+	bool		contains(Vec2<T> pt) const;
+
+/*
+** Operations
+*/
+	/*
+	** Enlarge the rect to contains 'rect'
+	*/
+	void		merge(Rect<T> const &rect);
+
+	/*
+	** Enlarge the rect to contains 'pt'
+	*/
+	void		merge(Vec2<T> pt);
 
 /*
 ** Operators
 */
-	Rect<T>		&operator=(Rect<T> const &rhs)
-	{
-		x = rhs.x;
-		y = rhs.y;
-		width = rhs.width;
-		height = rhs.height;
-		return (*this);
-	}
+	Rect<T>		&operator=(Rect<T> const &rhs);
 
-	bool		operator==(Rect<T> const &rhs) const
-	{
-		return (x == rhs.x && y == rhs.y
-			&& width == rhs.width && height == rhs.height);
-	}
+	bool		operator==(Rect<T> const &rhs) const;
 
 protected:
 private:
 };
 
 };
+
+# include "templates/Rect.tpp"
 
 #endif
