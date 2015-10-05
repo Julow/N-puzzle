@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/05 13:09:09 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/05 14:33:25 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ public:
 
 	typedef std::unordered_multimap<std::string, IEventBox*>	event_map_t;
 
-	Activity(Vec2<int> size);
+	Activity(ft::Vec2<int> size);
 	virtual ~Activity(void);
 
 	void				init_lua_env(void);
@@ -112,7 +112,7 @@ public:
 protected:
 	RootViewHolder		*_rootView;
 	event_map_t			_eventMap;
-	Vec2<int>			_size;
+	ft::Vec2<int>		_size;
 	lua_State			*_l;
 
 private:
@@ -130,7 +130,7 @@ private:
 class	Activity::RootViewHolder : public IViewHolder
 {
 public:
-	RootViewHolder(XmlParser const &xml, AView *v, Vec2<int> s);
+	RootViewHolder(XmlParser const &xml, AView *v, ft::Vec2<int> s);
 	virtual ~RootViewHolder(void);
 		
 	virtual ALayout			*getParent(void);
@@ -139,19 +139,19 @@ public:
 	virtual AView			*getView(void);
 	virtual AView const		*getView(void) const;
 
-	virtual Vec2<int>		getPos(void) const;
-	virtual Vec2<int>		getSize(void) const;
+	virtual ft::Vec2<int>	getPos(void) const;
+	virtual ft::Vec2<int>	getSize(void) const;
 
-	virtual void			setRequestedSize(Vec2<int> size);
-	virtual Vec2<int>		getRequestedSize(void) const;
+	virtual void			setRequestedSize(ft::Vec2<int> size);
+	virtual ft::Vec2<int>	getRequestedSize(void) const;
 
 	virtual void			setParam(std::string const &k
 									, std::string const &v);
 protected:
 
 	AView					*_view;
-	Vec2<int>				_size;
-	Vec2<int>				_requestedSize;
+	ft::Vec2<int>			_size;
+	ft::Vec2<int>			_requestedSize;
 
 private:
 	RootViewHolder(void) = delete;

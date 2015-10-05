@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 15:04:00 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/02 18:37:05 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/05 14:26:29 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "ftui/libftui.hpp"
 
-namespace ftui
+namespace ft
 {
 
 /*

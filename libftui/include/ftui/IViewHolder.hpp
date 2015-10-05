@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/24 08:37:05 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/02 10:25:35 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/05 14:30:42 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ public:
 	virtual AView			*getView(void) = 0;
 	virtual AView const		*getView(void) const = 0;
 
-	virtual Vec2<int>		getPos(void) const = 0;
-	virtual Vec2<int>		getSize(void) const = 0;
+	virtual ft::Vec2<int>	getPos(void) const = 0;
+	virtual ft::Vec2<int>	getSize(void) const = 0;
 
-	virtual void			setRequestedSize(Vec2<int> size) = 0;
-	virtual Vec2<int>		getRequestedSize(void) const = 0;
+	virtual void			setRequestedSize(ft::Vec2<int> size) = 0;
+	virtual ft::Vec2<int>	getRequestedSize(void) const = 0;
 
 	virtual void			setParam(std::string const &k
 									 , std::string const &v) = 0;
