@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/30 09:44:31 by ngoguey           #+#    #+#             */
-//   Updated: 2015/10/04 16:20:09 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/05 17:40:08 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ public:
 		{
 			return (this->_v);
 		}
-	
+
 private:
 	template<std::size_t ...I>
 	bool				call_func(tuple_t params, std::index_sequence<I...>)

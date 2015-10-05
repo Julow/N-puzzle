@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/05 16:03:07 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/05 19:20:51 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ public:
 		lua_call(_act.getLuaState(), 2, 0);
 		
 		std::cout << std::endl;
+
+		Main::give6ret5(_act.getLuaState());
 	}
 
 	void				loop(void)
@@ -81,29 +83,32 @@ public:
 
 	static ftui::Vec2<int>	ret2(void)
 		{
+			std::cout << "ret2" << std::endl;
 			return {21, 42};
 		}
 
 	static void				give2(ftui::Vec2<int>)
 		{
+			std::cout << "give2" << std::endl;
 			return ;
 		}
 
 	static int				give1ret1(int)
 		{
+			std::cout << "give1ret1" << std::endl;
 			return 84;
 		}
-	
+
 	static int			give6ret5(lua_State *l)
 		{
 			return
-				ftui::helperFun<6, 5>(
+				ftui::helperFun<4, 4>(
 					l
 					// , std::vector<ftui::Imemfun*>(
-					, ftui::make_fun<0, 2>(&Main::ret2)
+					// , ftui::make_fun<0, 2>(&Main::ret2)
 					, ftui::make_fun<2, 0>(&Main::give2)
-					, ftui::make_fun<1, 1>(&Main::give1ret1)
-					, ftui::make_memfun<1, 1>(instance(), &Main::getPuzzleSize)
+					// , ftui::make_fun<1, 1>(&Main::give1ret1)
+					// , ftui::make_memfun<1, 1>(instance(), &Main::getPuzzleSize)
 						// ftui::memfun(instance(), &Main::getPuzzleSize)
 						// )
 					)
