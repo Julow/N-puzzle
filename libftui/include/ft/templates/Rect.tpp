@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/05 14:06:16 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/05 14:11:27 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/05 15:05:44 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@ namespace ft
 {
 
 template<typename T>
-Rect::Rect(void) :
+Rect<T>::Rect(void) :
 	left(0),
 	top(0),
 	right(0),
@@ -23,7 +23,7 @@ Rect::Rect(void) :
 }
 
 template<typename T>
-Rect::Rect(Rect<T> const &src) :
+Rect<T>::Rect(Rect<T> const &src) :
 	left(src.left),
 	top(src.top),
 	right(src.right),
@@ -32,7 +32,7 @@ Rect::Rect(Rect<T> const &src) :
 }
 
 template<typename T>
-Rect::Rect(T left, T top, T right, T bottom) :
+Rect<T>::Rect(T left, T top, T right, T bottom) :
 	left(left),
 	top(top),
 	right(right),
@@ -41,7 +41,7 @@ Rect::Rect(T left, T top, T right, T bottom) :
 }
 
 template<typename T>
-Rect::Rect(Vec2<T> pos, Vec2<T> size) :
+Rect<T>::Rect(Vec2<T> pos, Vec2<T> size) :
 	left(pos.x),
 	top(pos.y),
 	right(pos.x + size.x),
@@ -50,24 +50,24 @@ Rect::Rect(Vec2<T> pos, Vec2<T> size) :
 }
 
 template<typename T>
-Rect::~Rect(void)
+Rect<T>::~Rect(void)
 {
 }
 
 template<typename T>
-T			Rect::getWidth(void) const
+T			Rect<T>::getWidth(void) const
 {
 	return (right - left);
 }
 
 template<typename T>
-T			Rect::getHeight(void) const
+T			Rect<T>::getHeight(void) const
 {
 	return (bottom - top);
 }
 
 template<typename T>
-void		Rect::setPos(Vec2<T> pos)
+void		Rect<T>::setPos(Vec2<T> pos)
 {
 	right = pos.x + getWidth();
 	bottom = pos.y + getHeight();
@@ -76,14 +76,14 @@ void		Rect::setPos(Vec2<T> pos)
 }
 
 template<typename T>
-void		Rect::setSize(Vec2<T> size)
+void		Rect<T>::setSize(Vec2<T> size)
 {
 	right = left + size.x;
 	bottom = top + size.y;
 }
 
 template<typename T>
-bool		Rect::collides(Rect<T> const &rect) const
+bool		Rect<T>::collides(Rect<T> const &rect) const
 {
 	if (rect.left <= right && rect.right >= left
 		&& rect.top <= bottom && rect.bottom >= top)
@@ -92,7 +92,7 @@ bool		Rect::collides(Rect<T> const &rect) const
 }
 
 template<typename T>
-bool		Rect::collides(Rect<T> const &rect, Rect<T> &res) const
+bool		Rect<T>::collides(Rect<T> const &rect, Rect<T> &res) const
 {
 	if (!collides(rect))
 		return (false);
@@ -104,7 +104,7 @@ bool		Rect::collides(Rect<T> const &rect, Rect<T> &res) const
 }
 
 template<typename T>
-bool		Rect::contains(Rect<T> const &rect) const
+bool		Rect<T>::contains(Rect<T> const &rect) const
 {
 	if (rect.left >= left && rect.top >= top
 		&& rect.right <= right && rect.bottom <= bottom)
@@ -113,7 +113,7 @@ bool		Rect::contains(Rect<T> const &rect) const
 }
 
 template<typename T>
-bool		Rect::contains(Vec2<T> pt) const
+bool		Rect<T>::contains(Vec2<T> pt) const
 {
 	if (pt.x >= left && pt.x <= right
 		&& pt.y >= top && pt.y <= bottom)
@@ -122,7 +122,7 @@ bool		Rect::contains(Vec2<T> pt) const
 }
 
 template<typename T>
-void		Rect::merge(Rect<T> const &rect)
+void		Rect<T>::merge(Rect<T> const &rect)
 {
 	if (rect.left < left)
 		left = rect.left;
@@ -135,7 +135,7 @@ void		Rect::merge(Rect<T> const &rect)
 }
 
 template<typename T>
-void		Rect::merge(Vec2<T> pt)
+void		Rect<T>::merge(Vec2<T> pt)
 {
 	if (pt.x < left)
 		left = pt.x;
@@ -148,7 +148,7 @@ void		Rect::merge(Vec2<T> pt)
 }
 
 template<typename T>
-Rect<T>		&Rect::operator=(Rect<T> const &rhs)
+Rect<T>		&Rect<T>::operator=(Rect<T> const &rhs)
 {
 	left = rhs.left;
 	top = rhs.top;
@@ -158,7 +158,7 @@ Rect<T>		&Rect::operator=(Rect<T> const &rhs)
 }
 
 template<typename T>
-bool		Rect::operator==(Rect<T> const &rhs) const
+bool		Rect<T>::operator==(Rect<T> const &rhs) const
 {
 	return (left == rhs.left && top == rhs.top
 		&& right == rhs.right && bottom == rhs.bottom);

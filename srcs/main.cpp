@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 12:47:17 by ngoguey          ###   ########.fr       //
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   main.cpp                                           :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
+//   Updated: 2015/10/05 17:32:28 by jaguillo         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #include "ftui/glfw/GlfwWindow.hpp"
 #include "ftui/glfw/IGlfwEventListener.hpp"
@@ -27,7 +27,7 @@ class Main : public ftui::IGlfwEventListener
 {
 public:
 	Main(void) :
-		_window(500, 400, "lol"), _act(ftui::Vec2<int>(500, 400))
+		_window(500, 400, "lol"), _act(ft::Vec2<int>(500, 400))
 	{
 		std::ifstream			stream("res/layout/npuzzleui.xml");
 

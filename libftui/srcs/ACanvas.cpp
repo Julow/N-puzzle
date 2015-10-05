@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/05 14:34:25 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/05 15:06:22 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -91,7 +91,7 @@ void		ACanvas::fillRect(ft::Rect<int> const &rect, Params const &opt)
 
 	y = rect.bottom;
 	while (--y >= rect.top)
-		putPixel(rect.left, y, opt.strokeColor, size.x);
+		putPixel(rect.left, y, opt.strokeColor, rect.getWidth());
 }
 
 // void		strokeLine(Vec2<int> a, Vec2<int> b, Params const &opt);
