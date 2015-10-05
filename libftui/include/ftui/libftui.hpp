@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 11:55:01 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/04 16:07:21 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/10/05 14:30:32 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,6 @@ class	VerticalLayout;
 
 class	XmlTokenizer;
 class	XmlParser;
-
-template <typename T>				class Vec2;
-template <typename T>				class Vec3;
 
 /*
 ** Glfw binding

@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ACanvas.cpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/02 18:42:50 by jaguillo         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   ACanvas.cpp                                        :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
+//   Updated: 2015/10/05 15:06:22 by jaguillo         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #include "ftui/ACanvas.hpp"
 #include <cstring>
@@ -38,14 +38,14 @@ int			ACanvas::getHeight(void) const
 	return (_height);
 }
 
-void		ACanvas::clear(Vec2<int> pos, Vec2<int> size)
+void		ACanvas::clear(ft::Rect<int> const &rect)
 {
-	int const	width = size.x * sizeof(color_t);
+	int const	width = rect.getWidth() * sizeof(color_t);
 	int			end;
 	int			offset;
 
-	offset = pos.y * _width + pos.x;
-	end = size.y * _width + offset;
+	offset = rect.top * _width + rect.left;
+	end = rect.getHeight() * _width + offset;
 	while (offset < end)
 	{
 		memset(_bitmap + offset, 0, width);
@@ -68,29 +68,30 @@ void		ACanvas::setAlpha(float alpha)
 	_alpha = alpha;
 }
 
-void		ACanvas::strokeRect(Vec2<int> pos, Vec2<int> size, Params const &opt)
+void		ACanvas::strokeRect(ft::Rect<int> const &rect, Params const &opt)
 {
-	if (size.x == 0 || size.y == 0)
+	int			y;
+
+	if (rect.getWidth() == 0 || rect.getHeight() == 0)
 		return ;
-	putPixel(pos.x, pos.y, opt.strokeColor, size.x);
-	size.y += pos.y;
-	while (pos.y < size.y)
+	y = rect.bottom - 1;
+	putPixel(rect.left, y, opt.strokeColor, rect.getWidth());
+	while (y >= rect.top)
 	{
-		putPixel(pos.x, pos.y, opt.strokeColor);
-		putPixel(pos.x + size.x, pos.y, opt.strokeColor);
-		pos.y++;
+		putPixel(rect.left, y, opt.strokeColor);
+		putPixel(rect.right, y, opt.strokeColor);
+		y--;
 	}
-	putPixel(pos.x, pos.y, opt.strokeColor, size.x);
+	putPixel(rect.left, y, opt.strokeColor, rect.getWidth());
 }
 
-void		ACanvas::fillRect(Vec2<int> pos, Vec2<int> size, Params const &opt)
+void		ACanvas::fillRect(ft::Rect<int> const &rect, Params const &opt)
 {
-	size.y += pos.y;
-	while (pos.y < size.y)
-	{
-		putPixel(pos.x, pos.y, opt.strokeColor, size.x);
-		pos.y++;
-	}
+	int			y;
+
+	y = rect.bottom;
+	while (--y >= rect.top)
+		putPixel(rect.left, y, opt.strokeColor, rect.getWidth());
 }
 
 // void		strokeLine(Vec2<int> a, Vec2<int> b, Params const &opt);

@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:12:43 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 16:56:21 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/10/05 14:30:12 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ protected:
 
 	VerticalLayout(XmlParser const &xml, Activity &act);
 
-	virtual IViewHolder			*holderAt(int i);
+	virtual IViewHolder		*holderAt(int i);
 
 private:
 	VerticalLayout(void) = delete;
@@ -108,11 +108,11 @@ public:
 	virtual ALayout			*getParent(void);
 	virtual ALayout const	*getParent(void) const;
 
-	virtual Vec2<int>		getPos(void) const;
-	virtual Vec2<int>		getSize(void) const;
+	virtual ft::Vec2<int>	getPos(void) const;
+	virtual ft::Vec2<int>	getSize(void) const;
 
-	virtual Vec2<int>		getRequestedSize(void) const;
-	virtual void			setRequestedSize(Vec2<int> size);
+	virtual ft::Vec2<int>	getRequestedSize(void) const;
+	virtual void			setRequestedSize(ft::Vec2<int> size);
 
 	virtual void			setParam(std::string const &k,
 								std::string const &v);
@@ -126,9 +126,9 @@ public:
 	/*
 	** Automatically call onSizeChange if size is different than actual
 	*/
-	void					setSize(Vec2<int> size);
+	void					setSize(ft::Vec2<int> size);
 
-	Vec2<int>				getVerticalMargin(void) const;
+	ft::Vec2<int>			getVerticalMargin(void) const;
 	Align					getHorizontalAlign(void) const;
 
 protected:
@@ -136,11 +136,11 @@ protected:
 	AView					*_view;
 	VerticalLayout			*_parent;
 
-	Vec2<int>				_pos;
-	Vec2<int>				_size;
-	Vec2<int>				_requestedSize;
+	ft::Vec2<int>			_pos;
+	ft::Vec2<int>			_size;
+	ft::Vec2<int>			_requestedSize;
 
-	Vec2<int>				_verticalMargin;
+	ft::Vec2<int>			_verticalMargin;
 	Align					_horizontalAlign;
 
 private:

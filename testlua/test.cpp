@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/24 07:31:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/02 15:54:03 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/05 14:04:52 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,12 +15,7 @@
 #include <cmath>
 #include <stdexcept>
 
-extern "C"
-{
-#include <lua.h>
-#include <lauxlib.h>
-#include <lualib.h>
-}
+#include "ftui/lua.hpp"
 
 /*
 envdump

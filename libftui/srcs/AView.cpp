@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   AView.cpp                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/04 11:49:57 by ngoguey          ###   ########.fr       //
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   AView.cpp                                          :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
+//   Updated: 2015/10/05 14:28:48 by jaguillo         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #include <iostream>
 #include <exception>
@@ -140,7 +140,7 @@ void				AView::onMeasure(void)
 	this->_flags &= ~AView::MEASURE_QUERY;
 	// TODO call lua if registered AView::onMeasure
 	if (_holder != NULL)
-		_holder->setRequestedSize(Vec2<int>(0, 0));
+		_holder->setRequestedSize(ft::Vec2<int>(0, 0));
 }
 
 void				AView::onDraw(ACanvas &canvas)

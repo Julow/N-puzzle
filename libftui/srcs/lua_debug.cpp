@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 15:25:06 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/04 16:04:08 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/05 14:04:50 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,14 +15,8 @@
 #include <vector>
 #include <iostream>//de
 
-extern "C"
-{
-# include <lua.h>
-# include <lauxlib.h>
-# include <lualib.h>
-}
-
 #include "ftui/Activity.hpp"
+#include "ftui/lua.hpp"
 
 static std::vector<std::string> const		funs{{
 		"\

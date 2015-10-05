@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/05 19:20:51 by ngoguey          ###   ########.fr       //
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   main.cpp                                           :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
+//   Updated: 2015/10/05 17:34:59 by jaguillo         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #include "ftui/glfw/GlfwWindow.hpp"
 #include "ftui/glfw/IGlfwEventListener.hpp"
@@ -19,13 +19,7 @@
 
 #include "ftui/Activity.hpp"
 #include "ftui/luaCFunctions_helpers.hpp"
-
-extern "C"
-{
-#include <lua.h>
-#include <lauxlib.h>
-#include <lualib.h>
-}
+#include "ftui/lua.hpp"
 
 /*
 ** everything here is example or test
@@ -35,7 +29,7 @@ class Main : public ftui::IGlfwEventListener
 {
 public:
 	Main(void) :
-		_window(500, 400, "lol"), _act(ftui::Vec2<int>(500, 400))
+		_window(500, 400, "lol"), _act(ft::Vec2<int>(500, 400))
 		, _puzzleSize(42)
 	{
 		std::ifstream			stream("res/layout/npuzzleui.xml");
@@ -81,13 +75,13 @@ public:
 			return (1);
 		}
 
-	static ftui::Vec2<int>	ret2(void)
+	static ft::Vec2<int>	ret2(void)
 		{
 			std::cout << "ret2" << std::endl;
 			return {21, 42};
 		}
 
-	static void				give2(ftui::Vec2<int>)
+	static void				give2(ft::Vec2<int>)
 		{
 			std::cout << "give2" << std::endl;
 			return ;

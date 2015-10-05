@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   VerticalLayout_ViewHolder.cpp                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/25 10:11:27 by ngoguey           #+#    #+#             */
-//   Updated: 2015/10/02 11:17:54 by ngoguey          ###   ########.fr       //
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   VerticalLayout_ViewHolder.cpp                      :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/09/25 10:11:27 by ngoguey           #+#    #+#             //
+//   Updated: 2015/10/05 14:27:50 by jaguillo         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #include "ftui/VerticalLayout.hpp"
 #include "ftui/XmlParser.hpp"
@@ -27,17 +27,17 @@ VerticalLayout::ViewHolder::~ViewHolder(void)
 {
 }
 
-Vec2<int>		VerticalLayout::ViewHolder::getPos(void) const
+ft::Vec2<int>	VerticalLayout::ViewHolder::getPos(void) const
 {
 	return (_pos);
 }
 
-Vec2<int>		VerticalLayout::ViewHolder::getSize(void) const
+ft::Vec2<int>	VerticalLayout::ViewHolder::getSize(void) const
 {
 	return (_size);
 }
 
-Vec2<int>		VerticalLayout::ViewHolder::getRequestedSize(void) const
+ft::Vec2<int>	VerticalLayout::ViewHolder::getRequestedSize(void) const
 {
 	return (_requestedSize);
 }
@@ -52,7 +52,7 @@ void			VerticalLayout::ViewHolder::setPosY(int y)
 	_pos.y = y;
 }
 
-void			VerticalLayout::ViewHolder::setSize(Vec2<int> size)
+void			VerticalLayout::ViewHolder::setSize(ft::Vec2<int> size)
 {
 	if (_size == size)
 		return ;
@@ -60,7 +60,7 @@ void			VerticalLayout::ViewHolder::setSize(Vec2<int> size)
 	_view->onSizeChange();
 }
 
-void			VerticalLayout::ViewHolder::setRequestedSize(Vec2<int> size)
+void			VerticalLayout::ViewHolder::setRequestedSize(ft::Vec2<int> size)
 {
 	_requestedSize = size;
 }
@@ -74,12 +74,12 @@ void            VerticalLayout::ViewHolder::setParam(std::string const &k
 	return ;
 }
 
-Vec2<int>		VerticalLayout::ViewHolder::getVerticalMargin(void) const
+ft::Vec2<int>	VerticalLayout::ViewHolder::getVerticalMargin(void) const
 {
 	return (_verticalMargin);
 }
 
-VerticalLayout::Align	VerticalLayout::ViewHolder::getHorizontalAlign(void) const
+VerticalLayout::Align VerticalLayout::ViewHolder::getHorizontalAlign(void) const
 {
 	return (_horizontalAlign);
 }

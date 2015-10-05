@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   VerticalLayout.cpp                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/02 19:10:28 by jaguillo         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   VerticalLayout.cpp                                 :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
+//   Updated: 2015/10/05 14:28:11 by jaguillo         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #include "ftui/VerticalLayout.hpp"
 #include "ftui/ACanvas.hpp"
@@ -59,7 +59,7 @@ void            VerticalLayout::inflate(XmlParser &xml, Activity &a)
 */
 void			VerticalLayout::onMeasure(void)
 {
-	Vec2<int>		requestedSize;
+	ft::Vec2<int>	requestedSize;
 	int				offsetTop = 0;
 	int				maxWidth = 0;
 
@@ -75,7 +75,7 @@ void			VerticalLayout::onMeasure(void)
 		offsetTop += h->getVerticalMargin().y;
 		offsetTop += requestedSize.y;
 	}
-	_holder->setRequestedSize(Vec2<int>(maxWidth, offsetTop));
+	_holder->setRequestedSize(ft::Vec2<int>(maxWidth, offsetTop));
 }
 
 /*
@@ -85,9 +85,9 @@ void			VerticalLayout::onMeasure(void)
 */
 void			VerticalLayout::onSizeChange(void)
 {
-	Vec2<int>		layoutSize = _holder->getSize();
+	ft::Vec2<int>	layoutSize = _holder->getSize();
 	int				childPosX;
-	Vec2<int>		childSize;
+	ft::Vec2<int>	childSize;
 
 	AView::onSizeChange();
 	for (ViewHolder *h : _childs)

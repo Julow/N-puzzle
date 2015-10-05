@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/02 19:10:03 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/05 14:33:46 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define ACANVAS_HPP
 
 # include "ftui/libftui.hpp"
+# include "ft/Rect.hpp"
 # include "ft/Vec.hpp"
 
 namespace ftui
@@ -62,7 +63,7 @@ public:
 			_bitmap[x++] = color;
 	}
 
-	void		clear(Vec2<int> pos, Vec2<int> size);
+	void		clear(ft::Rect<int> const &rect);
 
 /*
 ** Alpha
@@ -75,8 +76,8 @@ public:
 /*
 ** Drawing
 */
-	void		strokeRect(Vec2<int> pos, Vec2<int> size, Params const &opt);
-	void		fillRect(Vec2<int> pos, Vec2<int> size, Params const &opt);
+	void		strokeRect(ft::Rect<int> const &rect, Params const &opt);
+	void		fillRect(ft::Rect<int> const &rect, Params const &opt);
 
 	// void		strokeLine(Vec2<int> a, Vec2<int> b, Params const &opt);
 	// void		strokeText(Vec2<int> pos, std::string const &text, Params const &opt);
