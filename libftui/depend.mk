@@ -1,6 +1,6 @@
 O_FILES :=	o/srcs/ACanvas.o o/srcs/ALayout.o o/srcs/AView.o \
-			o/srcs/AView_SonInfo.o o/srcs/AView_luaCFunctions.o \
-			o/srcs/AView_statics.o o/srcs/AbsoluteLayout.o o/srcs/Activity.o \
+			o/srcs/AView_luaCFunctions.o o/srcs/AView_statics.o \
+			o/srcs/AbsoluteLayout.o o/srcs/Activity.o \
 			o/srcs/Activity_RootViewHolder.o o/srcs/RelativeLayout.o \
 			o/srcs/SliderView.o o/srcs/TextView.o o/srcs/VerticalLayout.o \
 			o/srcs/VerticalLayout_ViewHolder.o o/srcs/XmlParser.o \
@@ -25,8 +25,6 @@ o/srcs/AView.o: srcs/AView.cpp include/ft/assert.hpp include/ftui/AView.hpp \
 	include/ftui/IViewHolder.hpp include/ftui/EventParams.hpp \
 	include/ftui/IEventParams.hpp include/ftui/XmlParser.hpp \
 	include/ftui/XmlTokenizer.hpp include/ftui/VerticalLayout.hpp | o/srcs/
-o/srcs/AView_SonInfo.o: srcs/AView_SonInfo.cpp include/ft/assert.hpp \
-	include/ftui/AView.hpp include/ftui/libftui.hpp | o/srcs/
 o/srcs/AView_luaCFunctions.o: srcs/AView_luaCFunctions.cpp \
 	include/ft/assert.hpp include/ftui/AView.hpp include/ftui/libftui.hpp \
 	| o/srcs/
@@ -80,4 +78,9 @@ o/srcs/XmlTokenizer.o: srcs/XmlTokenizer.cpp include/ft/assert.hpp \
 	include/ft/utils.hpp | o/srcs/
 o/srcs/ft/assert.o: srcs/ft/assert.cpp include/ft/assert.hpp \
 	include/ft/utils.hpp | o/srcs/ft/
-o/srcs/lua_debug.o: srcs/lua_debug.cpp | o/srcs/
+o/srcs/lua_debug.o: srcs/lua_debug.cpp include/ft/assert.hpp \
+	include/ftui/libftui.hpp include/ft/Vec.hpp include/ftui/Activity.hpp \
+	include/ftui/DefaultEventBox.hpp include/ftui/EventBox.hpp \
+	include/ftui/EventParams.hpp include/ftui/IEventBox.hpp \
+	include/ftui/IEventParams.hpp include/ftui/IViewHolder.hpp \
+	include/ftui/templates/Activity.tpp | o/srcs/

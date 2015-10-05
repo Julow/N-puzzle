@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-/*   Updated: 2015/10/05 13:09:16 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/10/05 13:36:04 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,29 +169,20 @@ protected:
 ** Static
 */
 public:
-	class SonInfo
+	struct view_info_s
 	{
-	public:
 		typedef AView		*(*factory_t)(XmlParser const &, Activity &);
-		typedef std::tuple<std::string, lua_CFunction>	luamemfuninfo_t;
-		typedef std::vector<luamemfuninfo_t>			luamemfunsinfo_t;
+		typedef std::tuple<std::string, lua_CFunction>	luamethod_t;
 
-		virtual ~SonInfo(void);
-		SonInfo(std::string const &parent
-				, factory_t create, luamemfunsinfo_t luaMemfuns);
-		SonInfo(SonInfo const &src);
-		SonInfo();
-		SonInfo				&operator=(SonInfo const &rhs);
-
-		std::string			parent;
-		factory_t			create;
-		luamemfunsinfo_t	luaMemfuns;
+		std::string					parent;
+		factory_t					factory;
+		std::vector<luamethod_t>	luaMethods;
 	};
 
-	typedef std::unordered_map<std::string, SonInfo>	sons_info_t;
-	static sons_info_t									viewsInfo;
+	typedef std::unordered_map<std::string, view_info_s>	views_info_t;
+	static views_info_t				viewsInfo;
 
-	static SonInfo::factory_t	getFactory(std::string const &name);
+	static view_info_s::factory_t	getFactory(std::string const &name);
 
 	/*
 	 *	registerNewSonView()	Call this function to register your new AViews
@@ -201,8 +192,8 @@ public:
 	static void					registerNewSonView(
 		std::string const &name
 		, std::string const &parent
-		, SonInfo::factory_t factory
-		, SonInfo::luamemfunsinfo_t luaMemFuns);
+		, view_info_s::factory_t factory
+		, std::vector<view_info_s::luamethod_t> luaMethods);
 
 private:
 
