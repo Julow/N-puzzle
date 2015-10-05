@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/04 16:19:12 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/05 13:31:11 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ Activity::~Activity(void)
 }
 
 static void		finalize_table(
-	lua_State *l, std::string const &name, AView::SonInfo const &i)
+	lua_State *l, std::string const &name, AView::view_info_s const &i)
 {
 	(void)lua_getglobal(l, name.c_str());
 	if (i.parent != "" )
@@ -78,7 +78,7 @@ void			Activity::init_lua_env(void)
 		lua_setglobal(_l, it.first.c_str());
 	}
 	for (auto it : AView::viewsInfo)
-		this->registerMemfuns(it.first, it.second.luaMemfuns);
+		this->registerMemfuns(it.first, it.second.luaMethods);
 	for (auto it : AView::viewsInfo)
 		finalize_table(_l, it.first, it.second);
 	return ;
