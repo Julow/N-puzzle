@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             */
-//   Updated: 2015/10/04 16:28:12 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/10/05 13:09:16 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,7 @@
 # include <vector>
 # include <unordered_map>
 
-extern "C"
-{
-# include <lua.h>
-# include <lauxlib.h>
-# include <lualib.h>
-}
+# include "ftui/lua.hpp"
 
 namespace ftui
 {

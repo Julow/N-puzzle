@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/04 16:26:39 by ngoguey          ###   ########.fr       //
+/*   Updated: 2015/10/05 13:09:09 by jaguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,8 @@
 # include <string>
 # include <istream>
 
-extern "C"
-{
-# include <lua.h>
-# include <lauxlib.h>
-# include <lualib.h>
-}
-
 # include "ftui/IViewHolder.hpp"
+# include "ftui/lua.hpp"
 
 namespace ftui
 {
