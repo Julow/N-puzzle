@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/05 11:51:59 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/05 11:54:11 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/10/06 12:01:40 by juloo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 extern "C"
 {
 
-# include <lua-5.3/lua.h>
-# include <lua-5.3/lauxlib.h>
-# include <lua-5.3/lualib.h>
+# include "ftui/lua/lua.h"
+# include "ftui/lua/lauxlib.h"
+# include "ftui/lua/lualib.h"
 
 }
 

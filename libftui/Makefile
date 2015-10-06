@@ -1,29 +1,47 @@
 #
 
 # Executable name
-NAME		:= libftui.a
+NAME			:= libftui.a
 
 # Project directories
-DIRS		:= srcs include
+DIRS			:= srcs include
 
 # Bindings
-BINDINGS ?=
-BINDINGS_DIR := bindings
+BINDINGS		?=
+BINDINGS_DIR	:= bindings
+
+# Lua
+LUA_DIR			:= lua-5.3.1
+LUA_ARCHIVE		:= $(LUA_DIR).tar.gz
+LUA_LINK		:= ln -sf ../../$(LUA_DIR)/src include/ftui/lua
+LUA_SRC			:= $(LUA_DIR)/src
+LUA_LIB			:= $(LUA_SRC)/liblua.a
+LUA_PLATFORM	= posix
+
+PLATFORM		:= $(shell uname)
+
+ifeq ($(PLATFORM),Linux)
+	LUA_PLATFORM = linux
+else
+	ifeq ($(PLATFORM),Darwin)
+		LUA_PLATFORM = macosx
+	endif
+endif
 
 # Git submodule to init
-MODULES		:= 
+MODULES			:= 
 # Makefiles to call
-LIBS		:= 
+LIBS			:= 
 
 # Base flags
-BASE_FLAGS	= -Wall -Wextra
-HEAD_FLAGS	= $(addprefix -I,$(DIRS))
+BASE_FLAGS		= -Wall -Wextra
+HEAD_FLAGS		= $(addprefix -I,$(DIRS))
 
 # Compilation flags (per language)
-C_FLAGS		= $(HEAD_FLAGS) $(BASE_FLAGS)
-CPP_FLAGS	= $(HEAD_FLAGS) $(BASE_FLAGS) -std=c++14
+C_FLAGS			= $(HEAD_FLAGS) $(BASE_FLAGS)
+CPP_FLAGS		= $(HEAD_FLAGS) $(BASE_FLAGS) -std=c++14
 
-LINK_FLAGS	= $(BASE_FLAGS)
+LINK_FLAGS		= $(BASE_FLAGS)
 
 ifeq ($(DEBUG_MODE),1)
 	# Extra flags used in debug mode
@@ -37,11 +55,11 @@ else
 	CPP_FLAGS	+=
 endif
 
-DEBUG_MODE	?= 0
+DEBUG_MODE		?= 0
 export DEBUG_MODE
 
 # Jobs
-JOBS		:= 4
+JOBS			:= 4
 
 # Column output
 COLUMN_OUTPUT	:= 1
@@ -55,10 +73,10 @@ else
 endif
 
 # Objects directory
-O_DIR		:= o
+O_DIR			:= o
 
 # Depend file name
-DEPEND		:= depend.mk
+DEPEND			:= depend.mk
 
 # tmp
 MODULE_RULES	:= $(addsuffix /.git,$(MODULES))
@@ -66,7 +84,7 @@ PRINT_FILE		:= .tmp_print
 SHELL			:= /bin/bash
 
 # Default rule (need to be before any include)
-all: $(MODULE_RULES) libs bindings
+all: $(MODULE_RULES) $(LUA_LIB) libs bindings
 ifeq ($(COLUMN_OUTPUT),0)
 	make -j$(JOBS) $(NAME)
 else
@@ -90,13 +108,25 @@ else
 	rm -f $(PRINT_FILE);												\
 	exit $$STATUS
 endif
+	make $(patsubst %,"$(NAME)(%)",$(shell ar t $(LUA_LIB)))
+	ranlib $(NAME)
 
 # Include $(O_FILES) and dependencies
 -include $(DEPEND)
 
 # Linking
 $(NAME): $(LIBS_DEPEND) $(O_FILES)
-	ar rcs $@ $(O_FILES) && $(PRINT_LINK)
+	ar rcS $@ $(O_FILES) && $(PRINT_LINK)
+
+# Lua
+$(LUA_LIB):
+	echo Extract lua
+	tar -xf $(LUA_ARCHIVE)
+	echo "Make lua ($(LUA_PLATFORM))"
+	make -C $(LUA_DIR) $(LUA_PLATFORM)
+	$(LUA_LINK)
+$(NAME)(%): $(LUA_SRC)/%
+	ar rcS $@ $<
 
 # Compiling
 $(O_DIR)/%.o: %.c

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/05 14:29:18 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/06 12:39:54 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -53,9 +53,9 @@ static void		finalize_table(
 	lua_pushstring(l, "__index");
 	lua_pushvalue(l, -2);
 	lua_settable(l, -3);
-	lua_pushstring(l, "__newindex");
-	lua_pushstring(l, "no way");
-	lua_settable(l, -3);
+	// lua_pushstring(l, "__newindex");
+	// lua_pushstring(l, "no way");
+	// lua_settable(l, -3);
 	lua_pushstring(l, "__metatable");
 	lua_pushstring(l, "not your business");
 	lua_settable(l, -3);

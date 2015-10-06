@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/05 13:30:36 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/05 22:43:22 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,11 +21,11 @@ namespace ftui
 AView::views_info_t				AView::viewsInfo
 {
 	{"AView", {"", nullptr, {
-				{"setRequestedSize", nullptr},
-				{"setAlpha", nullptr},
-				{"setVisibility", nullptr},
-				{"setParam", nullptr},
-					}}},
+		std::make_tuple("setRequestedSize", nullptr),
+		std::make_tuple("setAlpha", nullptr),
+		std::make_tuple("setVisibility", nullptr),
+		std::make_tuple("setParam", nullptr),
+	}}},
 	{"ALayout", {"AView", nullptr, {}}},
 	{"VerticalLayout", {"ALayout", &VerticalLayout::createView, {}}}
 };

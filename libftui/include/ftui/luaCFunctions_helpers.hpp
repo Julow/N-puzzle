@@ -6,11 +6,15 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/05 14:23:58 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/05 19:29:42 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/06 12:42:52 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 # include "ftui/libftui.hpp"
+
+# include <iostream>
+
+# include "ft/Vec.hpp"
 
 namespace ftui
 {
@@ -118,15 +122,15 @@ int				retreiveParam<int>(lua_State *l)
 }
 
 template <>
-Vec2<int>		retreiveParam<Vec2<int>>(lua_State *l)
+ft::Vec2<int>		retreiveParam<ft::Vec2<int>>(lua_State *l)
 {
-	return Vec2<int>(luaL_checkinteger(l, -1), luaL_checkinteger(l, -1));
+	return ft::Vec2<int>(luaL_checkinteger(l, -1), luaL_checkinteger(l, -1));
 }
 
 template <>
-Vec2<double>	retreiveParam<Vec2<double>>(lua_State *l)
+ft::Vec2<double>	retreiveParam<ft::Vec2<double>>(lua_State *l)
 {
-	return Vec2<double>(luaL_checknumber(l, -1), luaL_checknumber(l, -1));
+	return ft::Vec2<double>(luaL_checknumber(l, -1), luaL_checknumber(l, -1));
 }
 
 
