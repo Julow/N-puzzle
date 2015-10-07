@@ -6,10 +6,9 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/05 14:23:58 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/06 12:42:52 by juloo            ###   ########.fr       //
+//   Updated: 2015/10/07 18:55:17 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
-
 
 #ifndef LUACFUNCTIONS_HELPERS_HPP
 # define LUACFUNCTIONS_HELPERS_HPP
@@ -24,7 +23,6 @@
 
 namespace ftui
 {
-
 
 inline void        luaFT_stackdump(lua_State *L)
 {
@@ -115,13 +113,13 @@ void					pushStack(lua_State *, Ret&&)
 	return ;
 }
 
-template <> void		pushStack<1, double>(lua_State *l, double&& r)
+template <> inline void		pushStack<1, double>(lua_State *l, double&& r)
 { lua_pushnumber(l, r); }
-template <> void		pushStack<1, int>(lua_State *l, int&& r)
+template <> inline void		pushStack<1, int>(lua_State *l, int&& r)
 { lua_pushinteger(l, r); }
-template <> void		pushStack<1, std::string>(lua_State *l, std::string&& r)
+template <> inline void		pushStack<1, std::string>(lua_State *l, std::string&& r)
 { lua_pushstring(l, r.c_str()); }
-template <> void		pushStack<2, ft::Vec2<int> >(
+template <> inline void		pushStack<2, ft::Vec2<int> >(
 	lua_State *l, ft::Vec2<int>&& r)
 {
 	lua_pushinteger(l, r.x);//TODO right order ?

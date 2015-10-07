@@ -6,10 +6,6 @@ NAME			:= libftui.a
 # Project directories
 DIRS			:= srcs include
 
-# Bindings
-BINDINGS		?=
-BINDINGS_DIR	:= bindings
-
 # Lua
 LUA_DIR			:= lua-5.3.1
 LUA_ARCHIVE		:= $(LUA_DIR).tar.gz
@@ -84,7 +80,7 @@ PRINT_FILE		:= .tmp_print
 SHELL			:= /bin/bash
 
 # Default rule (need to be before any include)
-all: $(MODULE_RULES) $(LUA_LIB) libs bindings
+all: $(MODULE_RULES) $(LUA_LIB) libs
 ifeq ($(COLUMN_OUTPUT),0)
 	make -j$(JOBS) $(NAME)
 else
@@ -142,13 +138,6 @@ $(MODULE_RULES):
 # Create obj directories
 $(O_DIR)/%/:
 	mkdir -p $@
-
-# Bindings
-bindings:
-	for b in $(BINDINGS);												\
-	do																	\
-		FTUI_PATH=$(realpath .) make -C $(BINDINGS_DIR)/$$b;			\
-	done
 
 # Set debug mode and make
 debug: _debug all

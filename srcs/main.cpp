@@ -6,40 +6,91 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/05 17:34:59 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/07 18:56:53 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#include "ftui/glfw/GlfwWindow.hpp"
-#include "ftui/glfw/IGlfwEventListener.hpp"
 #include "ft/utils.hpp"
 
 #include <iostream>
 #include <fstream>
+#include <stdexcept>
 
 #include "ftui/Activity.hpp"
 #include "ftui/luaCFunctions_helpers.hpp"
 #include "ftui/lua.hpp"
 
 /*
+** include glfw
+*/
+#ifdef MAC_OS_MODE
+# define GLFW_INCLUDE_GLCOREARB
+#else
+# include <GL/glew.h>
+#endif
+
+#include <GLFW/glfw3.h>
+
+/*
+** init glfw
+*/
+#ifdef MAC_OS_MODE
+# define INIT_GLEW			true
+# define OPENGL_PROFILE		GLFW_OPENGL_CORE_PROFILE
+#else
+# define INIT_GLEW			(glewInit() == GLEW_OK)
+# define OPENGL_PROFILE		GLFW_OPENGL_COMPAT_PROFILE
+#endif
+#ifdef GLFW_DOUBLEBUFFER
+# define HINT_DOUBLE_BUFFER	true
+#else
+# define GLFW_DOUBLEBUFFER	0
+# define HINT_DOUBLE_BUFFER	false
+#endif
+
+/*
 ** everything here is example or test
 */
 
-class Main : public ftui::IGlfwEventListener
+#define WIDTH		500
+#define HEIGHT		400
+
+class Main
 {
 public:
-	Main(void) :
-		_window(500, 400, "lol"), _act(ft::Vec2<int>(500, 400))
-		, _puzzleSize(42)
+	Main(void) : _act(ft::Vec2<int>(WIDTH, HEIGHT)), _puzzleSize(42)
 	{
 		std::ifstream			stream("res/layout/npuzzleui.xml");
 
 		Main::_instance = this;
 		_act.inflate(stream);
-		_window.setEventListener(this);
 		_act.registerLuaCFun_global("getPuzzleSize", &Main::getPuzzleSize);
 
-		
+/*
+** init glwf
+*/
+		if (glfwInit() != GL_TRUE)
+			throw std::runtime_error("Cannot load GLFW");
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+		glfwWindowHint(GLFW_SAMPLES, 4);
+		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+		if (HINT_DOUBLE_BUFFER)
+			glfwWindowHint(GLFW_DOUBLEBUFFER, GL_TRUE);
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, OPENGL_PROFILE);
+		if ((_window = glfwCreateWindow(WIDTH, HEIGHT, "npuzzle", NULL, NULL)) == NULL)
+			throw std::runtime_error("Cannot create GLFW window");
+		glfwMakeContextCurrent(_window);
+		if (!INIT_GLEW)
+			throw std::runtime_error("Cannot load GLEW");
+		glViewport(0, 0, WIDTH, HEIGHT);
+		glfwSetWindowUserPointer(_window, this);
+		glfwSetKeyCallback(_window, &Main::handleKeyEvents);
+/*
+** -
+*/
+
 		std::cout << std::endl;
 		lua_getglobal(_act.getLuaState(), "ftpt");
 		lua_getglobal(_act.getLuaState(), "_G");
@@ -62,13 +113,19 @@ public:
 
 	void				loop(void)
 	{
-		while (!_window.shouldClose())
+		while (!glfwWindowShouldClose(_window))
 		{
 			glfwPollEvents();
 			_act.render(*reinterpret_cast<ftui::ACanvas*>(&_act));
 		}
 	}
 	int					getPuzzleSize(void) { return _puzzleSize; }
+
+	~Main(void)
+	{
+		glfwDestroyWindow(_window);
+		glfwTerminate();
+	}
 
 private:
 	static Main			*_instance;
@@ -119,72 +176,59 @@ public:
 public:
 	
 /*
-** event listener
+** events
 */
-	virtual void		onKeyUp(int key, int scancode, int mods)
+	void				onKeyUp(int key, int scancode, int mods)
 	{
-		ft::f(std::cout, "Key up; key: %, scancode: %, mods: %\n",
-			key, scancode, mods);
 		if (key == GLFW_KEY_ESCAPE)
-			_window.setShouldClose(true);
+			glfwSetWindowShouldClose(_window, true);
+		else
+			ft::f(std::cout, "Key up; key: %, scancode: %, mods: %\n",
+				key, scancode, mods);
 	}
 
-	virtual void		onKeyDown(int key, int scancode, int mods)
+	void				onKeyDown(int key, int scancode, int mods)
 	{
 		ft::f(std::cout, "Key down; key: %, scancode: %, mods: %\n",
 			key, scancode, mods);
 	}
 
-	virtual void		onKeyRepeat(int key, int scancode, int mods)
+/*
+** handle glfw events
+*/
+	static void			handleKeyEvents(GLFWwindow *window,
+		int key, int scancode, int action, int mods)
 	{
-		ft::f(std::cout, "Key repeat; key: %, scancode: %, mods: %\n",
-			key, scancode, mods);
-	}
+		Main		*main;
 
-	virtual void		onMouseEnter(void)
-	{
-		std::cout << "Mouse enter" << std::endl;
-	}
-
-	virtual void		onMouseLeave(void)
-	{
-		std::cout << "Mouse leave" << std::endl;
-	}
-
-	virtual void		onMouseMove(double x, double y)
-	{
-		(void)x;
-		(void)y;
-	}
-
-	virtual void		onMouseScroll(double x, double y)
-	{
-		(void)x;
-		(void)y;
-	}
-
-	virtual void		onMouseUp(int button, int mods)
-	{
-		ft::f(std::cout, "Mouse up; button: %, mods: %\n", button, mods);
-	}
-
-	virtual void		onMouseDown(int button, int mods)
-	{
-		ft::f(std::cout, "Mouse down; button: %, mods: %\n", button, mods);
+		main = reinterpret_cast<Main*>(glfwGetWindowUserPointer(window));
+		if (main == NULL)
+			return ;
+		if (action == GLFW_RELEASE)
+			main->onKeyUp(key, scancode, mods);
+		else if (action == GLFW_PRESS)
+			main->onKeyDown(key, scancode, mods);
 	}
 
 protected:
-	ftui::GlfwWindow	_window;
+	GLFWwindow			*_window;
 	ftui::Activity		_act;
 	int					_puzzleSize;
 };
+
 Main			*Main::_instance;
 
 int				main(void)
 {
-	Main				main;
-	
-	main.loop();
-	std::cout << "main end" << std::endl;
+	try
+	{
+		Main		main;
+
+		main.loop();
+	}
+	catch (std::exception const &e)
+	{
+		std::cout << "lol: " << e.what() << std::endl;
+	}
 	return (0);
 }

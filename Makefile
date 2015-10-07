@@ -9,7 +9,7 @@ DIRS		:= srcs include libftui/include
 # Git submodule to init
 MODULES		:= 
 # Makefiles to call
-LIBS		:= libftui(BINDINGS=glfw make -C ?name?)
+LIBS		:= libftui
 
 # Base flags
 BASE_FLAGS	= -Wall -Wextra
