@@ -52,6 +52,7 @@ inline void        luaFT_stackdump(lua_State *L)
 	return ;
 }
 
+// * STEP 2 HELPERS ********************************************************* //
 template <typename T>
 constexpr inline int	decay(){ return 1; }
 
@@ -59,7 +60,7 @@ template <>
 constexpr inline int	decay<ft::Vec2<int>>(){ return 2; }
 
 template <typename T>
-inline T			retreiveParam(lua_State *, int)
+inline T				popStack(lua_State *, int)
 {
 	static_assert(!std::is_same<T, T>::value
 				  , "This type is not handled by LOLhelper function.");
@@ -67,61 +68,106 @@ inline T			retreiveParam(lua_State *, int)
 }
 
 template <>
-inline double		retreiveParam<double>(lua_State *l, int numIn)
+inline double			popStack<double>(lua_State *l, int numIn)
 {
-	double			v(luaL_checknumber(l, -numIn));
+	double				v(luaL_checknumber(l, -numIn));
 
 	lua_remove(l, -numIn);
 	return v;
 }
 
 template <>
-inline std::string		retreiveParam<std::string>(lua_State *l, int numIn)
+inline std::string		popStack<std::string>(lua_State *l, int numIn)
 {
-	std::string		v(luaL_checklstring(l, -numIn, NULL));
+	std::string			v(luaL_checklstring(l, -numIn, NULL));
 
 	lua_remove(l, -numIn);
 	return v;
 }
 
 template <>
-inline int				retreiveParam<int>(lua_State *l, int numIn)
+inline int				popStack<int>(lua_State *l, int numIn)
 {
-	int				v(luaL_checkinteger(l, -numIn));
+	int					v(luaL_checkinteger(l, -numIn));
 
 	lua_remove(l, -numIn);
 	return v;
 }
 
 template <>
-inline ft::Vec2<int>	retreiveParam<ft::Vec2<int>>(lua_State *l, int numIn)
+inline ft::Vec2<int>	popStack<ft::Vec2<int>>(lua_State *l, int numIn)
 {
-	ft::Vec2<int>	v(luaL_checkinteger(l, -numIn)
-					  , luaL_checkinteger(l, -numIn + 1));
+	ft::Vec2<int>		v(
+		luaL_checkinteger(l, -numIn), luaL_checkinteger(l, -numIn + 1));
 
 	lua_remove(l, -numIn + 1);
 	lua_remove(l, -numIn + 1);
 	return v;
 }
 
-
-
-template <int NumIn, int NumOut
-		  , typename Ret, typename... Retreived>
-void		helperLoop(lua_State *, Ret (*f)(), Retreived const &&...r)
+// * STEP 4 HELPERS ********************************************************* //
+template <int NumOut, typename Ret>
+void					pushStack(lua_State *, Ret&&)
 {
-	std::cout << "Calling now!!!\n";
-	reinterpret_cast<Ret (*)(Retreived...)>(f)(r...);
+	static_assert(!std::is_same<Ret, Ret>::value
+				  , "This return type is not supported by LOLhelper function "
+				  " or Wrong number of arguments for return value");
 	return ;
 }
 
+template <> void		pushStack<1, double>(lua_State *l, double&& r)
+{ lua_pushnumber(l, r); }
+template <> void		pushStack<1, int>(lua_State *l, int&& r)
+{ lua_pushinteger(l, r); }
+template <> void		pushStack<1, std::string>(lua_State *l, std::string&& r)
+{ lua_pushstring(l, r.c_str()); }
+template <> void		pushStack<2, ft::Vec2<int> >(
+	lua_State *l, ft::Vec2<int>&& r)
+{
+	lua_pushinteger(l, r.x);//TODO right order ?
+	lua_pushinteger(l, r.y);
+	return ;
+}
+
+// * STEP 4 *** Call the function ******************************************* //
+template <int NumOut, typename Ret, typename... Params>
+void		helperCall(lua_State *l, Ret (*f)(Params...), Params ...p)
+{
+	pushStack<NumOut>(l, f(p...));
+	luaFT_stackdump(l);
+	return ;
+}
+
+template <int NumOut, typename... Params>
+void		helperCall(lua_State *l, void (*f)(Params...), Params ...p)
+{
+	static_assert(NumOut == 0, "Wrong number of arguments for return value");
+	f(p...);
+	luaFT_stackdump(l);
+	return ;
+}
+
+// * STEP 3 *** Clean the function pointer and check NumIn ****************** //
+template <int NumIn, int NumOut
+		  , typename Ret, typename... Retreived>
+void		helperLoop(
+	lua_State *l, Ret (*f)(), Retreived const &&...r)
+{
+	static_assert(NumIn == 0, "Wrong number of arguments provided");
+	std::cout << "Calling now!!!\n";
+	helperCall<NumOut>(l, reinterpret_cast<Ret (*)(Retreived...)>(f), r...);
+	return ;
+}
+
+// * STEP 2 *** Loop through arguments to retreive them from the lua Stack ** //
 template <int NumIn, int NumOut
 		  , typename Ret, typename Head, typename... ArgsLeft
 		  , typename... Retreived>
-void		helperLoop(lua_State *l, Ret (*f)(Head, ArgsLeft...), Retreived&&...r)
+void		helperLoop(
+	lua_State *l, Ret (*f)(Head, ArgsLeft...), Retreived&&...r)
 {
 	luaFT_stackdump(l);
-	Head		p{retreiveParam<Head>(l, NumIn)};
+	Head		p{popStack<Head>(l, NumIn)};
 	ft::f(std::cout, "got '%' at index %\n", p, -NumIn);
 
 	helperLoop<NumIn - decay<Head>(), NumOut>(
@@ -132,13 +178,14 @@ void		helperLoop(lua_State *l, Ret (*f)(Head, ArgsLeft...), Retreived&&...r)
 	return ;
 }
 
-// * Fun ******** //
+// * STEP 1 *** Call the helperLoop ***************************************** //
+// * Function *** //
 template <int NumIn, int NumOut, typename Ret, typename... Args>
 int			helperFun(lua_State *l, Ret (*f)(Args...))
 {
 	std::cout << "helperFun entry\n";
 	helperLoop<NumIn, NumOut>(l, f);
-	return (0);
+	return (NumOut);
 }
 
 // * MemFun ***** //

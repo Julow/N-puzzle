@@ -114,19 +114,7 @@ public:
 
 	static int			give6ret5(lua_State *l)
 		{
-			return
-				ftui::helperFun<4, 0>(
-					l
-					// , std::vector<ftui::Imemfun*>(
-					// , ftui::make_fun<0, 2>(&Main::ret2)
-					, &Main::give4
-					// , ftui::make_fun<1, 1>(&Main::give1ret1)
-					// , ftui::make_memfun<1, 1>(instance(), &Main::getPuzzleSize)
-						// ftui::memfun(instance(), &Main::getPuzzleSize)
-						// )
-					)
-				;
-			(void)l;
+			return ftui::helperFun<0, 2>(l, &Main::ret2);
 		}
 public:
 	
