@@ -78,7 +78,11 @@ void			Activity::init_lua_env(void)
 		lua_setglobal(_l, it.first.c_str());
 	}
 	for (auto it : AView::viewsInfo)
-		this->registerMemfuns(it.first, it.second.luaMethods);
+	{
+		for (auto itm : it.second.luaMethods)
+			this->registerLuaCFun_table(
+				it.first, std::get<0>(itm), std::get<1>(itm));
+	}
 	for (auto it : AView::viewsInfo)
 		finalize_table(_l, it.first, it.second);
 	return ;
@@ -139,28 +143,25 @@ void			Activity::unregisterEvent(std::string const &event, AView *v)
 	return ;
 }
 
-void			Activity::registerGFun(
+void			Activity::registerLuaCFun_global(
 	std::string const &funName, lua_CFunction f)
 {
 	lua_register(_l, funName.c_str(), f);
 	return ;
 }
 
-void			Activity::registerMemfuns(
+void			Activity::registerLuaCFun_table(
 	std::string const &tabName
-	, std::vector<std::tuple<std::string, lua_CFunction>> const &fns)
+	, std::string const &funName, lua_CFunction f)
 {
 	int		t;
 
 	t = lua_getglobal(_l, tabName.c_str());
 	if (t != LUA_TTABLE)
 		; //TODO throw
-	for (auto it : fns)
-	{
-		lua_pushstring(_l, std::get<0>(it).c_str());
-		lua_pushcfunction(_l, std::get<1>(it));
-		lua_settable(_l, -3);
-	}
+	lua_pushstring(_l, funName.c_str());
+	lua_pushcfunction(_l, f);
+	lua_settable(_l, -3);
 	lua_setglobal(_l, tabName.c_str());
 	return ;
 }

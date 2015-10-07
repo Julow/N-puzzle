@@ -16,12 +16,13 @@
 namespace ftui
 {
 
-void		AView::setRequestedSize(lua_State *l)
+int			AView::setRequestedSizeG(lua_State *l)
 {
 	(void)l;
+		return 0;
 }
 
-void		AView::setAlpha(lua_State *l)
+int			AView::setAlphaG(lua_State *l)
 {
 	// return (ftui::helperMemfun<1, 0>(
 	// 			l
@@ -29,37 +30,38 @@ void		AView::setAlpha(lua_State *l)
 	// 			, std::make_tuple()
 	// 			));
 	(void)l;
+	return 0;
 }
 
-void		AView::setVisibility(lua_State *l){(void)l;}
-void		AView::setParam(lua_State *l){(void)l;}
+int			AView::setVisibilityG(lua_State *l){(void)l; return 0;}
+int			AView::setParamG(lua_State *l){(void)l; return 0;}
 
-void		AView::hookMouseScroll(lua_State *l){(void)l;}
-void		AView::hookMouseClick(lua_State *l){(void)l;}
-void		AView::hookMove(lua_State *l){(void)l;}
-void		AView::hookMouseCapture(lua_State *l){(void)l;}
-void		AView::hookKeyboard(lua_State *l){(void)l;}
-void		AView::queryUpdate(lua_State *l){(void)l;}
-void		AView::queryMeasure(lua_State *l){(void)l;}
-void		AView::queryRedraw(lua_State *l){(void)l;}
+int			AView::hookMouseScrollG(lua_State *l){(void)l; return 0;}
+int			AView::hookMouseClickG(lua_State *l){(void)l; return 0;}
+int			AView::hookMoveG(lua_State *l){(void)l; return 0;}
+int			AView::hookMouseCaptureG(lua_State *l){(void)l; return 0;}
+int			AView::hookKeyboardG(lua_State *l){(void)l; return 0;}
+int			AView::queryUpdateG(lua_State *l){(void)l; return 0;}
+int			AView::queryMeasureG(lua_State *l){(void)l; return 0;}
+int			AView::queryRedrawG(lua_State *l){(void)l; return 0;}
 
-void		AView::getRequestedSize(lua_State *l){(void)l;}
-void		AView::getPos(lua_State *l){(void)l;}
-void		AView::getSize(lua_State *l){(void)l;}
+int			AView::getRequestedSizeG(lua_State *l){(void)l; return 0;}
+int			AView::getPosG(lua_State *l){(void)l; return 0;}
+int			AView::getSizeG(lua_State *l){(void)l; return 0;}
 
-void		AView::getId(lua_State *l){(void)l;}
-void		AView::getParent(lua_State *l){(void)l;}
-void		AView::getAlpha(lua_State *l){(void)l;}
-void		AView::isVisible(lua_State *l){(void)l;}
-void		AView::isMouseOver(lua_State *l){(void)l;}
+int			AView::getIdG(lua_State *l){(void)l; return 0;}
+int			AView::getParentG(lua_State *l){(void)l; return 0;}
+int			AView::getAlphaG(lua_State *l){(void)l; return 0;}
+int			AView::isVisibleG(lua_State *l){(void)l; return 0;}
+int			AView::isMouseOverG(lua_State *l){(void)l; return 0;}
 
-void		AView::isMouseScrollTargeted(lua_State *l){(void)l;}
-void		AView::isMouseClickTargeted(lua_State *l){(void)l;}
-void		AView::isMouseMoveTargeted(lua_State *l){(void)l;}
-void		AView::isMouseCaptureTargeted(lua_State *l){(void)l;}
-void		AView::isKeyboardTargeted(lua_State *l){(void)l;}
-void		AView::isUpdateQueried(lua_State *l){(void)l;}
-void		AView::isMeasureQueried(lua_State *l){(void)l;}
-void		AView::isRedrawQueried(lua_State *l){(void)l;}
+int			AView::isMouseScrollTargetedG(lua_State *l){(void)l; return 0;}
+int			AView::isMouseClickTargetedG(lua_State *l){(void)l; return 0;}
+int			AView::isMouseMoveTargetedG(lua_State *l){(void)l; return 0;}
+int			AView::isMouseCaptureTargetedG(lua_State *l){(void)l; return 0;}
+int			AView::isKeyboardTargetedG(lua_State *l){(void)l; return 0;}
+int			AView::isUpdateQueriedG(lua_State *l){(void)l; return 0;}
+int			AView::isMeasureQueriedG(lua_State *l){(void)l; return 0;}
+int			AView::isRedrawQueriedG(lua_State *l){(void)l; return 0;}
 
 };

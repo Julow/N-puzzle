@@ -20,12 +20,12 @@ namespace ftui
 
 AView::views_info_t				AView::viewsInfo
 {
-	{"AView", {"", nullptr, {
-		std::make_tuple("setRequestedSize", nullptr),
-		std::make_tuple("setAlpha", nullptr),
-		std::make_tuple("setVisibility", nullptr),
-		std::make_tuple("setParam", nullptr),
-	}}},
+	{"AView", AView::view_info_s{"", nullptr, std::vector<AView::view_info_s::luamethod_t>{
+				std::make_tuple("setRequestedSize", &AView::setRequestedSizeG),
+					std::make_tuple("setAlpha", &AView::setAlphaG),
+					std::make_tuple("setVisibility", &AView::setVisibilityG),
+					std::make_tuple("setParam", &AView::setParamG),
+					}}},
 	{"ALayout", {"AView", nullptr, {}}},
 	{"VerticalLayout", {"ALayout", &VerticalLayout::createView, {}}}
 };

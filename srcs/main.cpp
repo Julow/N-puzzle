@@ -37,7 +37,7 @@ public:
 		Main::_instance = this;
 		_act.inflate(stream);
 		_window.setEventListener(this);
-		_act.registerGFun("getPuzzleSize", &Main::getPuzzleSize);
+		_act.registerLuaCFun_global("getPuzzleSize", &Main::getPuzzleSize);
 
 		
 		std::cout << std::endl;
@@ -52,6 +52,12 @@ public:
 		
 		std::cout << std::endl;
 
+//		lua_pushstring(_act.getLuaState(), "ft");
+		lua_pushnumber(_act.getLuaState(), 21.12);
+		lua_pushinteger(_act.getLuaState(), 42);
+		lua_pushinteger(_act.getLuaState(), 43);
+
+		
 		Main::give6ret5(_act.getLuaState());
 	}
 
@@ -81,12 +87,26 @@ public:
 			return {21, 42};
 		}
 
-	static void				give2(ft::Vec2<int>)
+	static void				give2(ft::Vec2<int> v)
 		{
-			std::cout << "give2" << std::endl;
+			std::cout << "give2 with:" << v.x<< " " << v.y<< std::endl;
 			return ;
 		}
 
+	static void				give4(//std::string s
+								   ft::Vec2<int> v
+								  , double d)
+		{
+			std::cout << "give4 with:"
+//					  << s  << " "
+					  << v.x  << " "
+					  << v.y  << " "
+					  << d  << " "
+					  << std::endl;
+			return ;
+		}
+
+	
 	static int				give1ret1(int)
 		{
 			std::cout << "give1ret1" << std::endl;
@@ -96,11 +116,11 @@ public:
 	static int			give6ret5(lua_State *l)
 		{
 			return
-				ftui::helperFun<4, 4>(
+				ftui::helperFun(
 					l
 					// , std::vector<ftui::Imemfun*>(
 					// , ftui::make_fun<0, 2>(&Main::ret2)
-					, ftui::make_fun<2, 0>(&Main::give2)
+					, &Main::give4
 					// , ftui::make_fun<1, 1>(&Main::give1ret1)
 					// , ftui::make_memfun<1, 1>(instance(), &Main::getPuzzleSize)
 						// ftui::memfun(instance(), &Main::getPuzzleSize)

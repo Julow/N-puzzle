@@ -103,11 +103,11 @@ public:
 	 *		- ftui::LOLfun
 	 *		- ftui::LOLmemfun
 	 */
-	void				registerGFun(
+	void				registerLuaCFun_global(
 		std::string const &funName, lua_CFunction f);
-	void				registerMemfuns(
+	void				registerLuaCFun_table(
 		std::string const &tabName
-		, std::vector<std::tuple<std::string, lua_CFunction>> const &fns);
+		, std::string const &funName, lua_CFunction f);
 
 protected:
 	RootViewHolder		*_rootView;

@@ -10,7 +10,11 @@
 //                                                                            //
 // ************************************************************************** //
 
-# include "ftui/libftui.hpp"
+
+#ifndef LUACFUNCTIONS_HELPERS_HPP
+# define LUACFUNCTIONS_HELPERS_HPP
+
+#include "ftui/libftui.hpp"
 
 # include <iostream>
 
@@ -82,120 +86,125 @@ MemFun<InCount, OutCount, Ret, C, Args...>	make_memfun(
 
 
 /*
-template <typename Ret, typename... Args, std::size_t ...I>
-Ret                call_func(
-	Ret (*fptr)(Args...), std::tuple<Args...> params, std::index_sequence<I...>)
-{
-	return fptr(std::get<I>(params)...);
-}
-template <typename Ret, typename... Args>
-Ret					delayed_dispatch(
-	Ret (*fptr)(Args...), std::tuple<Args...> params)
-{
-	return call_func(fptr, params, std::index_sequence_for<Args...>{});
-}
+  template <typename Ret, typename... Args, std::size_t ...I>
+  Ret                call_func(
+  Ret (*fptr)(Args...), std::tuple<Args...> params, std::index_sequence<I...>)
+  {
+  return fptr(std::get<I>(params)...);
+  }
+  template <typename Ret, typename... Args>
+  Ret					delayed_dispatch(
+  Ret (*fptr)(Args...), std::tuple<Args...> params)
+  {
+  return call_func(fptr, params, std::index_sequence_for<Args...>{});
+  }
 */
+
+template <typename T>
+inline void			popStack(lua_State *l)
+{
+	std::cout << "popStack x1\n";
+	lua_pop(l, 1);
+	return ;
+}
+
+
+template <>
+inline void		popStack<ft::Vec2<int>>(lua_State *l)
+{
+	std::cout << "popStack x2\n";
+	lua_pop(l, 2);
+	return ;
+}
+
 
 
 template <typename T>
-T			retreiveParam(lua_State *)
+inline T			retreiveParam(lua_State *)
 {
 	return T();
 }
 
 template <>
-double		retreiveParam<double>(lua_State *l)
+inline double		retreiveParam<double>(lua_State *l)
 {
+	std::cout << "\n";
 	return luaL_checknumber(l, -1);
 }
 
 template <>
-std::string		retreiveParam<std::string>(lua_State *l)
+inline std::string		retreiveParam<std::string>(lua_State *l)
 {
+	std::cout << "\n";
 	return std::string(luaL_checklstring(l, -1, NULL));
 }
 
 template <>
-int				retreiveParam<int>(lua_State *l)
+inline int				retreiveParam<int>(lua_State *l)
 {
+	std::cout << "\n";
 	return luaL_checkinteger(l, -1);
 }
 
 template <>
-ft::Vec2<int>		retreiveParam<ft::Vec2<int>>(lua_State *l)
+inline ft::Vec2<int>		retreiveParam<ft::Vec2<int>>(lua_State *l)
 {
-	return ft::Vec2<int>(luaL_checkinteger(l, -1), luaL_checkinteger(l, -1));
+	std::cout << "\n";
+	return ft::Vec2<int>(luaL_checkinteger(l, -2), luaL_checkinteger(l, -1));
 }
 
 template <>
-ft::Vec2<double>	retreiveParam<ft::Vec2<double>>(lua_State *l)
+inline ft::Vec2<double>	retreiveParam<ft::Vec2<double>>(lua_State *l)
 {
-	return ft::Vec2<double>(luaL_checknumber(l, -1), luaL_checknumber(l, -1));
+	std::cout << "\n";
+	return ft::Vec2<double>(luaL_checknumber(l, -2), luaL_checknumber(l, -1));
 }
 
 
+template <typename Ret, typename... Retreived>
+void		helper(lua_State *l, Ret (*f)(), Retreived...r)
+{
+	std::cout << "helper last\n";
+	reinterpret_cast<Ret (*)(Retreived...)>(f)(r...);
+	return ;
+}
+
+template <typename Ret, typename Head, typename... ArgsLeft
+		  , typename... Retreived>
+void		helper(lua_State *l, Ret (*f)(Head, ArgsLeft...), Retreived...r)
+{
+	Head		p{retreiveParam<Head>(l)};
+
+	popStack<Head>(l);
+	std::cout << "helper mid\n";
+	helper(l, reinterpret_cast<Ret (*)(ArgsLeft...)>(f)
+		   , p
+		   , (r)...
+		);
+	return ;
+}
 
 // * Fun ******** //
-template<size_t InCount, size_t OutCount, typename Ret, typename... Args>
-static inline void		helper(
-	lua_State *l, Fun<InCount, OutCount, Ret, Args...> functor)
+template <typename Ret, typename... Args>
+int			helperFun(lua_State *l, Ret (*f)(Args...))
 {
-	std::cout << "helper for Fun \n";
-	// helper2<Fun<InCount, OutCount, Ret, Args...>, Args...>(l, functor);
-	// functor.ret = functor._funptr();
 	(void)l;
-	(void)functor;
-	return ;
+//	helper<func<Ret, Args...>>(reinterpret_cast<func<Ret, Args...>>(f));
+/*	helper< Wrap<Ret, Args...> >(
+ 		static_cast<typename Wrap<Ret, Args...>::fun_t>(f)
+
+		);*/
+
+	std::cout << "helperFun entry\n";
+	helper(l, f);
+//	helper(static_cast<typename Wrap<Ret, Args...> >(f));
+//	reinterpret_cast<Wrap<Ret, Args...> >(f);
+	return (0);
 }
 
 // * MemFun ***** //
-template<size_t InCount, size_t OutCount
-		 , typename Ret, class C, typename... Args>
-static inline void		helper(
-	lua_State *l, MemFun<InCount, OutCount, Ret, C, Args...> functor)
-{
-	std::cout << "helper for memFun \n";
-	(void)l;
-	(void)functor;
-	return ;
-}
 
-
-
-static inline void		helperLoop(lua_State *l)
-{
-	std::cout << "helperloop end\n";
-	(void)l;
-	return ;
-}
-
-template <typename Head, typename... Tail>
-static inline void		helperLoop(lua_State *l, Head &&h, Tail&& ... t)
-{
-	std::cout << "helperloop\n";	
-	helperLoop(l, std::forward<Tail>(t)...);
-	helper(l, h);
-	return ;
-}
-
-
-template <size_t InCount, size_t OutCount, typename... DestFunctions>
-int			helperFun(lua_State *l, DestFunctions... destfunctions)
-{
-	(void)l;
-	helperLoop(l, std::forward<DestFunctions>(destfunctions)...);
-	// (void)destfunctions...;
-	return (OutCount);
-}
-
-// template <size_t InCount, size_t OutCount
-// 		  , typename... ArgsIn, typename... ArgsOut>
-// int			helperMemfun(lua_State *l
-// 					  , std::tuple<ArgsIn...> in
-// 					  , std::tuple<ArgsOut...> out)
-// {
-	
-// 	return (OutCount);
-// }
 
 };
+
+#endif

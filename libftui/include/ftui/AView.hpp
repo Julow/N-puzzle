@@ -197,39 +197,39 @@ public:
 
 private:
 
-	static void			setRequestedSize(lua_State *l);
+	static int				setRequestedSizeG(lua_State *l);
 
-	static void			setAlpha(lua_State *l);
-	static void			setVisibility(lua_State *l);
-	static void			setParam(lua_State *l);
+	static int				setAlphaG(lua_State *l);
+	static int				setVisibilityG(lua_State *l);
+	static int				setParamG(lua_State *l);
 
-	static void			hookMouseScroll(lua_State *l);
-	static void			hookMouseClick(lua_State *l);
-	static void			hookMove(lua_State *l);
-	static void			hookMouseCapture(lua_State *l);
-	static void			hookKeyboard(lua_State *l);
-	static void			queryUpdate(lua_State *l);
-	static void			queryMeasure(lua_State *l);
-	static void			queryRedraw(lua_State *l);
+	static int				hookMouseScrollG(lua_State *l);
+	static int				hookMouseClickG(lua_State *l);
+	static int				hookMoveG(lua_State *l);
+	static int				hookMouseCaptureG(lua_State *l);
+	static int				hookKeyboardG(lua_State *l);
+	static int				queryUpdateG(lua_State *l);
+	static int				queryMeasureG(lua_State *l);
+	static int				queryRedrawG(lua_State *l);
 
-	static void			getRequestedSize(lua_State *l);
-	static void			getPos(lua_State *l);
-	static void			getSize(lua_State *l);
+	static int				getRequestedSizeG(lua_State *l);
+	static int				getPosG(lua_State *l);
+	static int				getSizeG(lua_State *l);
 
-	static void			getId(lua_State *l);
-	static void			getParent(lua_State *l);
-	static void			getAlpha(lua_State *l);
-	static void			isVisible(lua_State *l);
-	static void			isMouseOver(lua_State *l);
+	static int				getIdG(lua_State *l);
+	static int				getParentG(lua_State *l);
+	static int				getAlphaG(lua_State *l);
+	static int				isVisibleG(lua_State *l);
+	static int				isMouseOverG(lua_State *l);
 
-	static void			isMouseScrollTargeted(lua_State *l);
-	static void			isMouseClickTargeted(lua_State *l);
-	static void			isMouseMoveTargeted(lua_State *l);
-	static void			isMouseCaptureTargeted(lua_State *l);
-	static void			isKeyboardTargeted(lua_State *l);
-	static void			isUpdateQueried(lua_State *l);
-	static void			isMeasureQueried(lua_State *l);
-	static void			isRedrawQueried(lua_State *l);
+	static int				isMouseScrollTargetedG(lua_State *l);
+	static int				isMouseClickTargetedG(lua_State *l);
+	static int				isMouseMoveTargetedG(lua_State *l);
+	static int				isMouseCaptureTargetedG(lua_State *l);
+	static int				isKeyboardTargetedG(lua_State *l);
+	static int				isUpdateQueriedG(lua_State *l);
+	static int				isMeasureQueriedG(lua_State *l);
+	static int				isRedrawQueriedG(lua_State *l);
 
 /*
 ** Disable
