@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/07 20:50:55 by juloo            ###   ########.fr       //
+//   Updated: 2015/10/07 22:53:18 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,21 +24,34 @@ Canvas::Canvas(color_t *bitmap, int width, int height) :
 {
 }
 
+Canvas::Canvas(Canvas const &src) :
+	_bitmap(src._bitmap),
+	_width(src._width),
+	_height(src._height),
+	_alpha(src._alpha)
+{
+}
+
 Canvas::~Canvas(void)
 {
 }
 
-int			Canvas::getWidth(void) const
+Canvas::color_t const	*Canvas::getBitmap(void) const
+{
+	return (_bitmap);
+}
+
+int				Canvas::getWidth(void) const
 {
 	return (_width);
 }
 
-int			Canvas::getHeight(void) const
+int				Canvas::getHeight(void) const
 {
 	return (_height);
 }
 
-void		Canvas::clear(ft::Rect<int> const &rect)
+void			Canvas::clear(ft::Rect<int> const &rect)
 {
 	int const	width = rect.getWidth() * sizeof(color_t);
 	int			end;
@@ -48,27 +61,28 @@ void		Canvas::clear(ft::Rect<int> const &rect)
 	end = rect.getHeight() * _width + offset;
 	while (offset < end)
 	{
-		memset(_bitmap + offset, 0, width);
+		memset(_bitmap + offset, 180, width);
+		// memset(_bitmap + offset, 0, width);
 		offset += _width;
 	}
 }
 
-float		Canvas::getAlpha(void) const
+float			Canvas::getAlpha(void) const
 {
 	return (_alpha);
 }
 
-void		Canvas::applyAlpha(float alpha)
+void			Canvas::applyAlpha(float alpha)
 {
 	_alpha *= alpha;
 }
 
-void		Canvas::setAlpha(float alpha)
+void			Canvas::setAlpha(float alpha)
 {
 	_alpha = alpha;
 }
 
-void		Canvas::strokeRect(ft::Rect<int> const &rect, Params const &opt)
+void			Canvas::strokeRect(ft::Rect<int> const &rect, Params const &opt)
 {
 	int			y;
 
@@ -85,13 +99,22 @@ void		Canvas::strokeRect(ft::Rect<int> const &rect, Params const &opt)
 	putPixel(rect.left, y, opt.strokeColor, rect.getWidth());
 }
 
-void		Canvas::fillRect(ft::Rect<int> const &rect, Params const &opt)
+void			Canvas::fillRect(ft::Rect<int> const &rect, Params const &opt)
 {
 	int			y;
 
 	y = rect.bottom;
 	while (--y >= rect.top)
 		putPixel(rect.left, y, opt.strokeColor, rect.getWidth());
+}
+
+Canvas			&Canvas::operator=(Canvas const &rhs)
+{
+	_bitmap = rhs._bitmap;
+	_width = rhs._width;
+	_height = rhs._height;
+	_alpha = rhs._alpha;
+	return (*this);
 }
 
 // void		strokeLine(Vec2<int> a, Vec2<int> b, Params const &opt);

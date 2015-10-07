@@ -1,4 +1,4 @@
-O_FILES :=	o/srcs/main.o
+O_FILES :=	o/srcs/GlCanvasHolder.o o/srcs/main.o
 
 LIBS_DEPEND := libftui/libftui.a
 
@@ -8,7 +8,14 @@ libs:
 
 
 
-MAX_SOURCE_LEN := 13
+MAX_SOURCE_LEN := 23
+o/srcs/GlCanvasHolder.o: srcs/GlCanvasHolder.cpp include/GlCanvasHolder.hpp \
+	libftui/include/ft/Rect.hpp libftui/include/ft/Vec.hpp \
+	libftui/include/ft/assert.hpp libftui/include/ft/templates/Vec2.tpp \
+	libftui/include/ft/templates/Vec3.tpp \
+	libftui/include/ft/templates/Vec4.tpp libftui/include/ftui/Canvas.hpp \
+	libftui/include/ftui/libftui.hpp include/gl.hpp \
+	libftui/include/ft/utils.hpp | o/srcs/
 o/srcs/main.o: srcs/main.cpp libftui/include/ft/utils.hpp \
 	libftui/include/ft/Vec.hpp libftui/include/ft/assert.hpp \
 	libftui/include/ft/templates/Vec2.tpp \
@@ -19,4 +26,6 @@ o/srcs/main.o: srcs/main.cpp libftui/include/ft/utils.hpp \
 	libftui/include/ftui/IEventParams.hpp libftui/include/ftui/IViewHolder.hpp \
 	libftui/include/ftui/libftui.hpp libftui/include/ftui/lua.hpp \
 	libftui/include/ftui/templates/Activity.tpp \
-	libftui/include/ftui/luaCFunctions_helpers.hpp | o/srcs/
+	libftui/include/ftui/luaCFunctions_helpers.hpp include/GlCanvasHolder.hpp \
+	libftui/include/ft/Rect.hpp libftui/include/ftui/Canvas.hpp include/gl.hpp \
+	| o/srcs/

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/07 18:56:53 by juloo            ###   ########.fr       //
+//   Updated: 2015/10/07 22:49:47 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -20,16 +20,8 @@
 #include "ftui/luaCFunctions_helpers.hpp"
 #include "ftui/lua.hpp"
 
-/*
-** include glfw
-*/
-#ifdef MAC_OS_MODE
-# define GLFW_INCLUDE_GLCOREARB
-#else
-# include <GL/glew.h>
-#endif
-
-#include <GLFW/glfw3.h>
+#include "GlCanvasHolder.hpp"
+#include "gl.hpp"
 
 /*
 ** init glfw
@@ -58,7 +50,10 @@
 class Main
 {
 public:
-	Main(void) : _act(ft::Vec2<int>(WIDTH, HEIGHT)), _puzzleSize(42)
+	Main(void) :
+		_canvasHolder(WIDTH, HEIGHT),
+		_act(ft::Vec2<int>(WIDTH, HEIGHT)),
+		_puzzleSize(42)
 	{
 		std::ifstream			stream("res/layout/npuzzleui.xml");
 
@@ -90,7 +85,11 @@ public:
 /*
 ** -
 */
+		_canvasHolder.init();
 
+/*
+** test
+*/
 		std::cout << std::endl;
 		lua_getglobal(_act.getLuaState(), "ftpt");
 		lua_getglobal(_act.getLuaState(), "_G");
@@ -113,10 +112,12 @@ public:
 
 	void				loop(void)
 	{
+		ftui::Canvas		canvas(_canvasHolder.getCanvas());
+
 		while (!glfwWindowShouldClose(_window))
 		{
 			glfwPollEvents();
-			_act.render(*reinterpret_cast<ftui::ACanvas*>(&_act));
+			_act.render(canvas);
 		}
 	}
 	int					getPuzzleSize(void) { return _puzzleSize; }
@@ -212,6 +213,7 @@ public:
 
 protected:
 	GLFWwindow			*_window;
+	GlCanvasHolder		_canvasHolder;
 	ftui::Activity		_act;
 	int					_puzzleSize;
 };

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/07 20:49:04 by juloo            ###   ########.fr       //
+//   Updated: 2015/10/07 22:43:51 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -42,20 +42,25 @@ public:
 	};
 
 	Canvas(color_t *bitmap, int width, int height);
+	Canvas(Canvas const &src);
 	virtual ~Canvas(void);
+
+	Canvas			&operator=(Canvas const &rhs);
 
 /*
 ** Bitmap
 */
-	int			getWidth(void) const;
-	int			getHeight(void) const;
+	color_t const	*getBitmap(void) const;
 
-	inline void	putPixel(int x, int y, color_t color)
+	int				getWidth(void) const;
+	int				getHeight(void) const;
+
+	inline void		putPixel(int x, int y, color_t color)
 	{
 		_bitmap[y * _width + x] = color;
 	}
 
-	inline void	putPixel(int x, int y, color_t color, int n)
+	inline void		putPixel(int x, int y, color_t color, int n)
 	{
 		x += y * _width;
 		n += x;
@@ -63,37 +68,35 @@ public:
 			_bitmap[x++] = color;
 	}
 
-	void		clear(ft::Rect<int> const &rect);
+	void			clear(ft::Rect<int> const &rect);
 
 /*
 ** Alpha
 */
-	float		getAlpha(void) const;
+	float			getAlpha(void) const;
 
-	void		applyAlpha(float alpha);
-	void		setAlpha(float alpha);
+	void			applyAlpha(float alpha);
+	void			setAlpha(float alpha);
 
 /*
 ** Drawing
 */
-	void		strokeRect(ft::Rect<int> const &rect, Params const &opt);
-	void		fillRect(ft::Rect<int> const &rect, Params const &opt);
+	void			strokeRect(ft::Rect<int> const &rect, Params const &opt);
+	void			fillRect(ft::Rect<int> const &rect, Params const &opt);
 
 	// void		strokeLine(Vec2<int> a, Vec2<int> b, Params const &opt);
 	// void		strokeText(Vec2<int> pos, std::string const &text, Params const &opt);
 
 protected:
 
-	color_t		*_bitmap;
-	int			_width;
-	int			_height;
+	color_t			*_bitmap;
+	int				_width;
+	int				_height;
 
-	float		_alpha;
+	float			_alpha;
 
 private:
 	Canvas(void);
-	Canvas(Canvas const &src);
-	Canvas		&operator=(Canvas const &rhs);
 };
 
 };
