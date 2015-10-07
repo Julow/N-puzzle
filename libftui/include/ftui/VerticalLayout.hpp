@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   VerticalLayout.hpp                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:12:43 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/05 14:30:12 by jaguillo         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   VerticalLayout.hpp                                 :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/09/22 13:12:43 by jaguillo          #+#    #+#             //
+//   Updated: 2015/10/07 20:50:27 by juloo            ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #ifndef VERTICALLAYOUT_HPP
 # define VERTICALLAYOUT_HPP
@@ -53,7 +53,7 @@ public:
 
 	virtual void			onUpdate(void);
 	virtual void			onMeasure(void);
-	virtual void			onDraw(ACanvas &canvas);
+	virtual void			onDraw(Canvas &canvas);
 
 	virtual void			onSizeChange(void);
 

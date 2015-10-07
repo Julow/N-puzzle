@@ -6,12 +6,12 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/05 14:28:11 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/07 20:49:42 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "ftui/VerticalLayout.hpp"
-#include "ftui/ACanvas.hpp"
+#include "ftui/Canvas.hpp"
 #include "ftui/XmlParser.hpp"
 #include "ft/utils.hpp"
 
@@ -114,7 +114,7 @@ void			VerticalLayout::onSizeChange(void)
 }
 
 // TODO: onDraw
-void			VerticalLayout::onDraw(ACanvas &canvas)
+void			VerticalLayout::onDraw(Canvas &canvas)
 {
 	float			old_alpha;
 

@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ALayout.hpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 16:56:27 by ngoguey          ###   ########.fr       //
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   ALayout.hpp                                        :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             //
+//   Updated: 2015/10/07 20:50:13 by juloo            ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #ifndef ALAYOUT_HPP
 # define ALAYOUT_HPP
@@ -50,7 +50,7 @@ public:
 
 	virtual void				onUpdate(void) = 0;
 	virtual void				onMeasure(void) = 0;
-	virtual void				onDraw(ACanvas &canvas) = 0;
+	virtual void				onDraw(Canvas &canvas) = 0;
 
 	virtual bool				onMouseScroll(int x, int y, float delta);
 	virtual bool				onMouseDown(int x, int y, int button);

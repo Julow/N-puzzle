@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   libftui.hpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 11:55:01 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/05 14:30:32 by jaguillo         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   libftui.hpp                                        :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/09/22 11:55:01 by jaguillo          #+#    #+#             //
+//   Updated: 2015/10/07 20:50:34 by juloo            ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #ifndef LIBFTUI_H
 # define LIBFTUI_H
@@ -25,7 +25,7 @@ class	IEventParams;
 template<typename... Args>			class EventParams;
 template<typename... Args>			class DefaultEventBox;
 
-class	ACanvas;
+class	Canvas;
 
 class	AView;
 class	SliderView;

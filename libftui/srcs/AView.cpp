@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/05 14:28:48 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/07 20:51:14 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -143,7 +143,7 @@ void				AView::onMeasure(void)
 		_holder->setRequestedSize(ft::Vec2<int>(0, 0));
 }
 
-void				AView::onDraw(ACanvas &canvas)
+void				AView::onDraw(Canvas &canvas)
 {
 	this->_flags &= ~AView::REDRAW_QUERY;
 	// TODO call lua if registered AView::onDraw

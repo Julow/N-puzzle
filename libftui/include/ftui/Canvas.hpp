@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ACanvas.hpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/05 14:33:46 by jaguillo         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   Canvas.hpp                                         :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
+//   Updated: 2015/10/07 20:49:04 by juloo            ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #ifndef ACANVAS_HPP
 # define ACANVAS_HPP
@@ -21,13 +21,13 @@ namespace ftui
 {
 
 /*
-** ACanvas
+** Canvas
 ** -
 ** Base class for a drawing canvas
 ** -
 ** TODO: rename to Canvas
 */
-class	ACanvas
+class	Canvas
 {
 public:
 	typedef unsigned long int		color_t;
@@ -41,8 +41,8 @@ public:
 		// float		borderRound;
 	};
 
-	ACanvas(color_t *bitmap, int width, int height);
-	virtual ~ACanvas(void);
+	Canvas(color_t *bitmap, int width, int height);
+	virtual ~Canvas(void);
 
 /*
 ** Bitmap
@@ -91,9 +91,9 @@ protected:
 	float		_alpha;
 
 private:
-	ACanvas(void);
-	ACanvas(ACanvas const &src);
-	ACanvas		&operator=(ACanvas const &rhs);
+	Canvas(void);
+	Canvas(Canvas const &src);
+	Canvas		&operator=(Canvas const &rhs);
 };
 
 };

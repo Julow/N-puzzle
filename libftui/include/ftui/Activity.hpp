@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Activity.hpp                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/05 14:33:25 by jaguillo         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   Activity.hpp                                       :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
+//   Updated: 2015/10/07 20:50:07 by juloo            ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #ifndef ACTIVITY_HPP
 # define ACTIVITY_HPP
@@ -46,7 +46,7 @@ public:
 	void				inflate(std::istream &stream);
 	lua_State			*getLuaState(void) const;
 
-	void				render(ACanvas &canvas);
+	void				render(Canvas &canvas);
 
 	void				onKeyUp(int key_code);
 	bool				onKeyDown(int key_code);

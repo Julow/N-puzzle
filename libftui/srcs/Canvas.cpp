@@ -1,22 +1,22 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   ACanvas.cpp                                        :+:      :+:    :+:   //
+//   Canvas.cpp                                         :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/05 15:06:22 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/07 20:50:55 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#include "ftui/ACanvas.hpp"
+#include "ftui/Canvas.hpp"
 #include <cstring>
 
 namespace ftui
 {
 
-ACanvas::ACanvas(color_t *bitmap, int width, int height) :
+Canvas::Canvas(color_t *bitmap, int width, int height) :
 	_bitmap(bitmap),
 	_width(width),
 	_height(height),
@@ -24,21 +24,21 @@ ACanvas::ACanvas(color_t *bitmap, int width, int height) :
 {
 }
 
-ACanvas::~ACanvas(void)
+Canvas::~Canvas(void)
 {
 }
 
-int			ACanvas::getWidth(void) const
+int			Canvas::getWidth(void) const
 {
 	return (_width);
 }
 
-int			ACanvas::getHeight(void) const
+int			Canvas::getHeight(void) const
 {
 	return (_height);
 }
 
-void		ACanvas::clear(ft::Rect<int> const &rect)
+void		Canvas::clear(ft::Rect<int> const &rect)
 {
 	int const	width = rect.getWidth() * sizeof(color_t);
 	int			end;
@@ -53,22 +53,22 @@ void		ACanvas::clear(ft::Rect<int> const &rect)
 	}
 }
 
-float		ACanvas::getAlpha(void) const
+float		Canvas::getAlpha(void) const
 {
 	return (_alpha);
 }
 
-void		ACanvas::applyAlpha(float alpha)
+void		Canvas::applyAlpha(float alpha)
 {
 	_alpha *= alpha;
 }
 
-void		ACanvas::setAlpha(float alpha)
+void		Canvas::setAlpha(float alpha)
 {
 	_alpha = alpha;
 }
 
-void		ACanvas::strokeRect(ft::Rect<int> const &rect, Params const &opt)
+void		Canvas::strokeRect(ft::Rect<int> const &rect, Params const &opt)
 {
 	int			y;
 
@@ -85,7 +85,7 @@ void		ACanvas::strokeRect(ft::Rect<int> const &rect, Params const &opt)
 	putPixel(rect.left, y, opt.strokeColor, rect.getWidth());
 }
 
-void		ACanvas::fillRect(ft::Rect<int> const &rect, Params const &opt)
+void		Canvas::fillRect(ft::Rect<int> const &rect, Params const &opt)
 {
 	int			y;
 

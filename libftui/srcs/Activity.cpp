@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/06 12:39:54 by juloo            ###   ########.fr       //
+//   Updated: 2015/10/07 20:49:36 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -112,7 +112,7 @@ void			Activity::inflate(std::istream &stream)
 lua_State		*Activity::getLuaState(void) const
 { return _l; }
 
-void			Activity::render(ACanvas &canvas)
+void			Activity::render(Canvas &canvas)
 {
 	AView		*rv;
 
