@@ -20,12 +20,13 @@
 # include <functional>
 
 # include "ft/Vec.hpp"
+# include "ft/utils.hpp"
 
 namespace ftui
 {
 
 
-void        luaFT_stackdump(lua_State *L)
+inline void        luaFT_stackdump(lua_State *L)
 {
 	int const               top = lua_gettop(L);
 	int                     i;
@@ -51,125 +52,25 @@ void        luaFT_stackdump(lua_State *L)
 	return ;
 }
 
-
-
-class Ifun
-{
-public:
-	virtual ~Ifun(){};
-};
-
-// * Fun ******** //
-template<size_t InCount, size_t OutCount, typename Ret, typename... Args>
-struct Fun
-{
-private:
-	typedef Ret (*fun_t)(Args...);
-public:
-	Fun(fun_t funptr) : _funptr(funptr){};
-
-	fun_t			_funptr;
-	Ret				ret;
-};
-
-template<size_t InCount, typename... Args>
-struct Fun<InCount, 0u, void, Args...>
-{
-private:
-	typedef void (*fun_t)(Args...);
-public:
-	Fun(fun_t funptr) : _funptr(funptr){};
-
-	fun_t			_funptr;
-};
-
-template<size_t InCount, size_t OutCount, typename Ret, typename... Args>
-Fun<InCount, OutCount, Ret, Args...>	make_fun(Ret (*funptr)(Args...))
-{
-	return Fun<InCount, OutCount, Ret, Args...>{funptr};
-}
-
-
-
-// * MemFun ***** //
-template<size_t InCount, size_t OutCount
-		 , typename Ret, class C, typename... Args>
-struct MemFun : Ifun
-{
-private:
-	typedef Ret (C::*fun_t)(Args...);
-public:
-	MemFun(C *inst, fun_t funptr) : _instance(inst), _funptr(funptr){};
-
-	C				*_instance;
-	fun_t			_funptr;	
-	Ret				ret;
-};
-
-template <size_t InCount, size_t OutCount
-		  , typename Ret, class C, typename... Args>
-MemFun<InCount, OutCount, Ret, C, Args...>	make_memfun(
-	C *inst, Ret (C::*funptr)(Args...))
-{
-	return MemFun<InCount, OutCount, Ret, C, Args...>{inst, funptr};
-}
-
-
-/*
-  template <typename Ret, typename... Args, std::size_t ...I>
-  Ret                call_func(
-  Ret (*fptr)(Args...), std::tuple<Args...> params, std::index_sequence<I...>)
-  {
-  return fptr(std::get<I>(params)...);
-  }
-  template <typename Ret, typename... Args>
-  Ret					delayed_dispatch(
-  Ret (*fptr)(Args...), std::tuple<Args...> params)
-  {
-  return call_func(fptr, params, std::index_sequence_for<Args...>{});
-  }
-*/
-/*
-template <typename T>
-inline void			popStack(lua_State *l)
-{
-	std::cout << "popStack x1\n";
-	lua_pop(l, 1);
-	return ;
-}
-*/
-/*
-template <>
-inline void		popStack<ft::Vec2<int>>(lua_State *l)
-{
-	std::cout << "popStack x2\n";
-	lua_pop(l, 2);
-	return ;
-}
-*/
-
-
 template <typename T>
 constexpr inline int	decay(){ return 1; }
 
 template <>
 constexpr inline int	decay<ft::Vec2<int>>(){ return 2; }
 
-
 template <typename T>
 inline T			retreiveParam(lua_State *, int)
 {
+	static_assert(!std::is_same<T, T>::value
+				  , "This type is not handled by LOLhelper function.");
 	return T();
 }
 
 template <>
 inline double		retreiveParam<double>(lua_State *l, int numIn)
 {
-	std::cout << "retreive double with numIn=" << numIn << "\n";
-	luaFT_stackdump(l);
-	double	v(luaL_checknumber(l, -numIn));
-	ft::f(std::cout, "got '%'\n", v);
-	
+	double			v(luaL_checknumber(l, -numIn));
+
 	lua_remove(l, -numIn);
 	return v;
 }
@@ -177,11 +78,8 @@ inline double		retreiveParam<double>(lua_State *l, int numIn)
 template <>
 inline std::string		retreiveParam<std::string>(lua_State *l, int numIn)
 {
-	std::cout << "retreive string with numIn=" << numIn << "\n";
-	luaFT_stackdump(l);
 	std::string		v(luaL_checklstring(l, -numIn, NULL));
-	ft::f(std::cout, "got '%'\n", v);
-	
+
 	lua_remove(l, -numIn);
 	return v;
 }
@@ -189,24 +87,18 @@ inline std::string		retreiveParam<std::string>(lua_State *l, int numIn)
 template <>
 inline int				retreiveParam<int>(lua_State *l, int numIn)
 {
-	std::cout << "\n";
-	luaFT_stackdump(l);
-	int	v(luaL_checkinteger(l, -numIn));
-	ft::f(std::cout, "got '%'\n", v);
-	
+	int				v(luaL_checkinteger(l, -numIn));
+
 	lua_remove(l, -numIn);
 	return v;
 }
 
 template <>
-inline ft::Vec2<int>		retreiveParam<ft::Vec2<int>>(lua_State *l, int numIn)
+inline ft::Vec2<int>	retreiveParam<ft::Vec2<int>>(lua_State *l, int numIn)
 {
-	std::cout << "retreive Vec2<int> with numIn=" << numIn << "\n";
-	luaFT_stackdump(l);
-	ft::Vec2<int>		v(luaL_checkinteger(l, -numIn)
-						  , luaL_checkinteger(l, -numIn + 1));
-	ft::f(std::cout, "got '%' '%'\n", v.x, v.y);
-	
+	ft::Vec2<int>	v(luaL_checkinteger(l, -numIn)
+					  , luaL_checkinteger(l, -numIn + 1));
+
 	lua_remove(l, -numIn + 1);
 	lua_remove(l, -numIn + 1);
 	return v;
@@ -216,9 +108,9 @@ inline ft::Vec2<int>		retreiveParam<ft::Vec2<int>>(lua_State *l, int numIn)
 
 template <int NumIn, int NumOut
 		  , typename Ret, typename... Retreived>
-void		helper(lua_State *, Ret (*f)(), Retreived...r)
+void		helperLoop(lua_State *, Ret (*f)(), Retreived const &&...r)
 {
-	std::cout << "helper last\n";
+	std::cout << "Calling now!!!\n";
 	reinterpret_cast<Ret (*)(Retreived...)>(f)(r...);
 	return ;
 }
@@ -226,16 +118,16 @@ void		helper(lua_State *, Ret (*f)(), Retreived...r)
 template <int NumIn, int NumOut
 		  , typename Ret, typename Head, typename... ArgsLeft
 		  , typename... Retreived>
-void		helper(lua_State *l, Ret (*f)(Head, ArgsLeft...), Retreived...r)
+void		helperLoop(lua_State *l, Ret (*f)(Head, ArgsLeft...), Retreived&&...r)
 {
-	std::cout << "helper mid all\n";
+	luaFT_stackdump(l);
 	Head		p{retreiveParam<Head>(l, NumIn)};
+	ft::f(std::cout, "got '%' at index %\n", p, -NumIn);
 
-	
-	std::cout << "helper mid\n";
-	helper<NumIn - decay<Head>(), NumOut>(l, reinterpret_cast<Ret (*)(ArgsLeft...)>(f)
-		   , (r)...
-		   , p
+	helperLoop<NumIn - decay<Head>(), NumOut>(
+		l, reinterpret_cast<Ret (*)(ArgsLeft...)>(f)
+		, std::forward<Retreived>(r)...
+		, std::forward<Head>(p)
 		);
 	return ;
 }
@@ -245,7 +137,7 @@ template <int NumIn, int NumOut, typename Ret, typename... Args>
 int			helperFun(lua_State *l, Ret (*f)(Args...))
 {
 	std::cout << "helperFun entry\n";
-	helper<NumIn, NumOut>(l, f);
+	helperLoop<NumIn, NumOut>(l, f);
 	return (0);
 }
 

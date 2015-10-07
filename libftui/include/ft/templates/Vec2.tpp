@@ -93,4 +93,13 @@ DECLARE_OPERATOR(/)
 
 # undef DECLARE_OPERATOR
 
+template <typename T>
+std::ostream&   operator<<(std::ostream &o, Vec2<T> const &rhs)
+{
+	return (o << std::string("(")
+			<< rhs.x << std::string("/")
+			<< rhs.y << std::string(")"));
+}
+
+	
 };

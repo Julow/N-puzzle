@@ -61,6 +61,9 @@ private:
 };
 
 template <typename T>
+std::ostream&	operator<<(std::ostream &o, Vec2<T> const &rhs);
+
+template <typename T>
 class	Vec3
 {
 public:
