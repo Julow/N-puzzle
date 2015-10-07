@@ -52,11 +52,10 @@ public:
 		
 		std::cout << std::endl;
 
-//		lua_pushstring(_act.getLuaState(), "ft");
-		lua_pushnumber(_act.getLuaState(), 21.12);
+		lua_pushstring(_act.getLuaState(), "ft");
 		lua_pushinteger(_act.getLuaState(), 42);
 		lua_pushinteger(_act.getLuaState(), 43);
-
+		lua_pushnumber(_act.getLuaState(), 21.12);
 		
 		Main::give6ret5(_act.getLuaState());
 	}
@@ -93,12 +92,12 @@ public:
 			return ;
 		}
 
-	static void				give4(//std::string s
-								   ft::Vec2<int> v
+	static void				give4(std::string s
+								  , ft::Vec2<int> v
 								  , double d)
 		{
 			std::cout << "give4 with:"
-//					  << s  << " "
+					  << s  << " "
 					  << v.x  << " "
 					  << v.y  << " "
 					  << d  << " "
@@ -116,7 +115,7 @@ public:
 	static int			give6ret5(lua_State *l)
 		{
 			return
-				ftui::helperFun(
+				ftui::helperFun<4, 0>(
 					l
 					// , std::vector<ftui::Imemfun*>(
 					// , ftui::make_fun<0, 2>(&Main::ret2)
