@@ -52,27 +52,9 @@ inline T				popStack(lua_State *, int)
 }
 
 template <>
-inline double			popStack<double>(lua_State *l, int numIn)
-{
-	double				v(luaL_checknumber(l, -numIn));
-
-	lua_remove(l, -numIn);
-	return v;
-}
-
-template <>
 inline std::string		popStack<std::string>(lua_State *l, int numIn)
 {
 	std::string			v(luaL_checklstring(l, -numIn, NULL));
-
-	lua_remove(l, -numIn);
-	return v;
-}
-
-template <>
-inline int				popStack<int>(lua_State *l, int numIn)
-{
-	int					v(luaL_checkinteger(l, -numIn));
 
 	lua_remove(l, -numIn);
 	return v;
@@ -89,6 +71,23 @@ inline ft::Vec2<int>	popStack<ft::Vec2<int>>(lua_State *l, int numIn)
 	return v;
 }
 
+#define BASICPOPSTACK(TYPE, FUNCTION)							\
+template <>														\
+inline TYPE				popStack<TYPE>(lua_State *l, int numIn)	\
+{																\
+	TYPE				v(FUNCTION(l, -numIn));					\
+																\
+	lua_remove(l, -numIn);										\
+	return v;													\
+}
+
+BASICPOPSTACK(int, luaL_checkinteger)
+BASICPOPSTACK(bool, luaL_checkinteger)
+BASICPOPSTACK(float, luaL_checknumber)
+BASICPOPSTACK(double, luaL_checknumber)
+
+#undef BASICPOPSTACK
+
 // * STEP 4 HELPERS ********************************************************* //
 template <int NumOut, typename Ret>
 void					pushStack(lua_State *, Ret&&)
@@ -99,10 +98,6 @@ void					pushStack(lua_State *, Ret&&)
 	return ;
 }
 
-template <> inline void		pushStack<1, double>(lua_State *l, double&& r)
-{ lua_pushnumber(l, r); }
-template <> inline void		pushStack<1, int>(lua_State *l, int&& r)
-{ lua_pushinteger(l, r); }
 template <> inline void		pushStack<1, std::string>(lua_State *l, std::string&& r)
 { lua_pushstring(l, r.c_str()); }
 template <> inline void		pushStack<2, ft::Vec2<int> >(
@@ -112,6 +107,21 @@ template <> inline void		pushStack<2, ft::Vec2<int> >(
 	lua_pushinteger(l, r.y);
 	return ;
 }
+
+#define BASICPUSHSTACK(TYPE, FUNCTION)								\
+template <>															\
+inline void				pushStack<1, TYPE>(lua_State *l, TYPE &&r)	\
+{																	\
+	FUNCTION(l, r);													\
+	return ;														\
+}
+
+BASICPUSHSTACK(int, lua_pushinteger)
+BASICPUSHSTACK(bool, lua_pushinteger)
+BASICPUSHSTACK(float, lua_pushnumber)
+BASICPUSHSTACK(double, lua_pushnumber)
+
+#undef BASICPUSHSTACK
 
 // * STEP 4 *** Call the function ******************************************* //
 // * Function *** //
@@ -180,14 +190,16 @@ template <int NumIn, int NumOut
 void		helperLoop(
 	lua_State *l, Ret (*f)(Head, ArgsLeft...), Retreived&&...r)
 {
+	using HeadCleanRef = typename std::remove_reference<Head>::type;
+	using HeadCleanAll = typename std::remove_cv<HeadCleanRef>::type;
 	luaFT_stackdump(l);
-	Head		p{popStack<Head>(l, NumIn)};
+	HeadCleanAll	p{popStack<HeadCleanAll>(l, NumIn)};
 	ft::f(std::cout, "got '%' at index %\n", p, -NumIn);
 
-	helperLoop<NumIn - decay<Head>(), NumOut>(
+	helperLoop<NumIn - decay<HeadCleanAll>(), NumOut>(
 		l, reinterpret_cast<Ret (*)(ArgsLeft...)>(f)
 		, std::forward<Retreived>(r)...
-		, std::forward<Head>(p)
+		, std::forward<HeadCleanAll>(p)
 		);
 	return ;
 }
@@ -199,14 +211,16 @@ template <int NumIn, int NumOut
 void		helperLoop(
 	lua_State *l, C *i, Ret (C::*f)(Head, ArgsLeft...), Retreived&&...r)
 {
+	using HeadCleanRef = typename std::remove_reference<Head>::type;
+	using HeadCleanAll = typename std::remove_cv<HeadCleanRef>::type;
 	luaFT_stackdump(l);
-	Head		p{popStack<Head>(l, NumIn)};
+	HeadCleanAll	p{popStack<HeadCleanAll>(l, NumIn)};
 	ft::f(std::cout, "got '%' at index %\n", p, -NumIn);
 
-	helperLoop<NumIn - decay<Head>(), NumOut>(
+	helperLoop<NumIn - decay<HeadCleanAll>(), NumOut>(
 		l, i, reinterpret_cast<Ret (C::*)(ArgsLeft...)>(f)
 		, std::forward<Retreived>(r)...
-		, std::forward<Head>(p)
+		, std::forward<HeadCleanAll>(p)
 		);
 	return ;
 }
@@ -229,9 +243,19 @@ int		luaCFunHelper(lua_State *l, C *i, Ret (C::*f)(Args...))
 	return (NumOut);
 }
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
+int		luaCFunHelper(lua_State *l, C const *i, Ret (C::*f)(Args...) const)
+{
+	using F = Ret (C::*)(Args...);
+	using FClean = typename std::remove_cv<F>::type;
+	using CClean = typename std::remove_cv<C>::type;
+	internal::helperLoop<NumIn, NumOut>(
+		l, reinterpret_cast<CClean>(i), reinterpret_cast<FClean>(f));
+	return (NumOut);
+}
+template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
 int		luaCFunHelper(lua_State *l, Ret (C::*f)(Args...))
 {
-	C		*i;
+	void		*i;
 
 	if (!lua_istable(l, -NumIn))
 		;//TODO throw
@@ -241,8 +265,15 @@ int		luaCFunHelper(lua_State *l, Ret (C::*f)(Args...))
 	i = lua_touserdata(l, -1);
 	lua_pop(l, 1);
 	lua_remove(l, -NumIn);
-	internal::helperLoop<NumIn - 1, NumOut>(l, i, f);
+	internal::helperLoop<NumIn - 1, NumOut>(l, reinterpret_cast<C*>(i), f);
 	return (NumOut - 1);
+}
+template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
+int		luaCFunHelper(lua_State *l, Ret (C::*f)(Args...) const)
+{
+	using F = Ret (C::*)(Args...);
+	using FClean = typename std::remove_cv<F>::type;
+	return (luaCFunHelper<NumIn, NumOut>(l, reinterpret_cast<FClean>(f)));
 }
 
 };

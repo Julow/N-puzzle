@@ -140,7 +140,7 @@ public:
 
 	void						hookMouseScroll(bool state);
 	void						hookMouseClick(bool state);
-	void						hookMove(bool state);
+	void						hookMouseMove(bool state);
 	void						hookMouseCapture(bool state);
 	void						hookKeyboard(bool state);
 
@@ -205,7 +205,7 @@ private:
 
 	static int				hookMouseScrollG(lua_State *l);
 	static int				hookMouseClickG(lua_State *l);
-	static int				hookMoveG(lua_State *l);
+	static int				hookMouseMoveG(lua_State *l);
 	static int				hookMouseCaptureG(lua_State *l);
 	static int				hookKeyboardG(lua_State *l);
 	static int				queryUpdateG(lua_State *l);
