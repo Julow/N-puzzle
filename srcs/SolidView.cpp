@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/08 13:10:03 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/08 16:58:39 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -32,7 +32,7 @@ SolidView::~SolidView(void)
 void			SolidView::onDraw(Canvas &canvas)
 {
 	AView::onDraw(canvas);
-	canvas.fillRect(ft::Rect<int>(_holder->getPos(), _holder->getSize()),
+	canvas.fillRect(ft::Rect<int>(ft::Vec2<int>(0, 0), _holder->getSize()),
 		Canvas::Params{0x0, _color});
 	std::cout << "Draw " << _color << std::endl;
 }

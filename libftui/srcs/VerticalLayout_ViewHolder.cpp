@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 10:11:27 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/08 13:10:43 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/08 14:08:04 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -72,7 +72,7 @@ void            VerticalLayout::ViewHolder::setParam(std::string const &k
 	{
 		{"marginTop", [](VerticalLayout::ViewHolder *holder, std::string const &v){ holder->_verticalMargin.x = atoi(v.c_str()); }},
 		{"marginBottom", [](VerticalLayout::ViewHolder *holder, std::string const &v){ holder->_verticalMargin.y = atoi(v.c_str()); }},
-		{"verticalAlign", [](VerticalLayout::ViewHolder *holder, std::string const &v){ /* TODO */ (void)holder; (void)v; }},
+		{"verticalAlign", [](VerticalLayout::ViewHolder *holder, std::string const &v){ /* TODO: vertical align */ (void)holder; (void)v; }},
 		{"width", [](VerticalLayout::ViewHolder *holder, std::string const &v){ holder->_requestedSize.x = atoi(v.c_str()); }},
 		{"height", [](VerticalLayout::ViewHolder *holder, std::string const &v){ holder->_requestedSize.y = atoi(v.c_str()); }},
 	};

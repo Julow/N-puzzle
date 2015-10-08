@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/08 11:21:06 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/08 16:15:17 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -52,8 +52,8 @@ public:
 */
 	color_t const	*getBitmap(void) const;
 
-	int				getWidth(void) const;
-	int				getHeight(void) const;
+	int				getBitmapWidth(void) const;
+	int				getBitmapHeight(void) const;
 
 	inline void		putPixel(int x, int y, color_t color)
 	{
@@ -69,6 +69,24 @@ public:
 	}
 
 	void			clear(ft::Rect<int> const &rect);
+
+/*
+** Clip
+** -
+** The clip is used to change the size and origin of shape being drawn
+** So rect filled with fillRect(0, 0, ...) are draw inside the clip
+** The clip is usualy applied and restored by layouts
+** Warning: clear(ft::Rect<int> const&) is not affected by the clip
+*/
+	ft::Rect<int> const	&getClip(void) const;
+
+	int				getWidth(void) const;
+	int				getHeight(void) const;
+
+	void			applyClip(ft::Rect<int> const &rect);
+	void			setClip(ft::Rect<int> const &rect);
+
+	void			clearClip(void);
 
 /*
 ** Alpha
@@ -92,6 +110,8 @@ protected:
 	color_t			*_bitmap;
 	int				_width;
 	int				_height;
+
+	ft::Rect<int>	_clip;
 
 	float			_alpha;
 

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/08 12:59:20 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/08 16:58:00 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,10 +24,6 @@ namespace ftui
 VerticalLayout::VerticalLayout(XmlParser const &xml, Activity &act)
 	: ALayout(xml, act)
 {
-	XmlParser::params_map_t const	&params = xml.getParams();
-
-	(void)params;
-	// TODO, retreive some VerticalLayout data from xml
 }
 
 VerticalLayout::~VerticalLayout(void)
@@ -47,7 +43,6 @@ void			VerticalLayout::onUpdate(void)
 
 void            VerticalLayout::inflate(XmlParser &xml, Activity &a)
 {
-	// TODO VerticalLayout::inflate
 	ALayout::inflate(xml, a);
 	return ;
 }
@@ -113,20 +108,20 @@ void			VerticalLayout::onSizeChange(void)
 	}
 }
 
-// TODO: onDraw
 void			VerticalLayout::onDraw(Canvas &canvas)
 {
-	float			old_alpha;
+	float const			old_alpha = canvas.getAlpha();
+	ft::Rect<int> const	old_clip = canvas.getClip();
 
-	old_alpha = canvas.getAlpha();
 	AView::onDraw(canvas);
 	for (ViewHolder *h : _childs)
 	{
-		// TODO Set clip rect
 		if (h->getView()->isRedrawQueried())
 		{
 			canvas.applyAlpha(h->getView()->getAlpha());
+			canvas.applyClip(ft::Rect<int>(h->getPos(), h->getSize()));
 			h->getView()->onDraw(canvas);
+			canvas.setClip(old_clip);
 			canvas.setAlpha(old_alpha);
 		}
 	}
