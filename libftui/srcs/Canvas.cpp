@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/07 22:53:18 by juloo            ###   ########.fr       //
+//   Updated: 2015/10/08 10:51:50 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -61,7 +61,7 @@ void			Canvas::clear(ft::Rect<int> const &rect)
 	end = rect.getHeight() * _width + offset;
 	while (offset < end)
 	{
-		memset(_bitmap + offset, 180, width);
+		memset(_bitmap + offset, 0, width);
 		// memset(_bitmap + offset, 0, width);
 		offset += _width;
 	}

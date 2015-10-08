@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/07 22:49:47 by juloo            ###   ########.fr       //
+//   Updated: 2015/10/08 10:34:46 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -117,7 +117,10 @@ public:
 		while (!glfwWindowShouldClose(_window))
 		{
 			glfwPollEvents();
+			canvas.clear(ft::Rect<int>(0, 0, canvas.getWidth(), canvas.getHeight()));
 			_act.render(canvas);
+			_canvasHolder.render();
+			glfwSwapBuffers(_window);
 		}
 	}
 	int					getPuzzleSize(void) { return _puzzleSize; }

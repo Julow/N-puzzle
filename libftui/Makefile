@@ -104,7 +104,14 @@ else
 	rm -f $(PRINT_FILE);												\
 	exit $$STATUS
 endif
-	make $(patsubst %,"$(NAME)(%)",$(shell ar t $(LUA_LIB)))
+	LUA_FILES="$(patsubst %,$(NAME)(%),$(shell ar t $(LUA_LIB) \
+		| grep '\.o'))";												\
+	if [[ -z "$$LUA_FILES" ]];											\
+	then																\
+		echo "Error: liblua not correctly compiled"; exit 1;			\
+	else																\
+		make $${LUA_FILES};												\
+	fi;																	\
 	ranlib $(NAME)
 
 # Include $(O_FILES) and dependencies
@@ -121,7 +128,7 @@ $(LUA_LIB):
 	echo "Make lua ($(LUA_PLATFORM))"
 	make -C $(LUA_DIR) $(LUA_PLATFORM)
 	$(LUA_LINK)
-$(NAME)(%): $(LUA_SRC)/%
+$(NAME)(%.o): $(LUA_SRC)/%.o
 	ar rcS $@ $<
 
 # Compiling

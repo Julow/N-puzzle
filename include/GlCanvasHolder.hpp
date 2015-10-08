@@ -6,7 +6,7 @@
 //   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/07 20:31:56 by juloo             #+#    #+#             //
-//   Updated: 2015/10/07 22:59:32 by juloo            ###   ########.fr       //
+//   Updated: 2015/10/08 08:40:20 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -35,7 +35,7 @@ public:
 	/*
 	** Return a canvas that can be used to draw in
 	*/
-	ftui::Canvas		getCanvas(void);
+	ftui::Canvas		&getCanvas(void);
 
 	/*
 	** Render the current canvas
@@ -43,7 +43,7 @@ public:
 	void				render(void);
 
 protected:
-	ftui::Canvas::color_t	*_bitmap;
+	ftui::Canvas			_canvas;
 	int						_width;
 	int						_height;
 

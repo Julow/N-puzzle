@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/07 22:43:51 by juloo            ###   ########.fr       //
+//   Updated: 2015/10/08 11:21:06 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -23,9 +23,9 @@ namespace ftui
 /*
 ** Canvas
 ** -
-** Base class for a drawing canvas
+** Draw
 ** -
-** TODO: rename to Canvas
+** Warning: copy constructor and assignation does not delete/copy the bitmap
 */
 class	Canvas
 {
