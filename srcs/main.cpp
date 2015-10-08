@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/08 10:34:46 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/08 12:57:18 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,6 +21,7 @@
 #include "ftui/lua.hpp"
 
 #include "GlCanvasHolder.hpp"
+#include "SolidView.hpp"
 #include "gl.hpp"
 
 /*
@@ -45,7 +46,7 @@
 */
 
 #define WIDTH		500
-#define HEIGHT		400
+#define HEIGHT		100
 
 class Main
 {
@@ -225,6 +226,7 @@ Main			*Main::_instance;
 
 int				main(void)
 {
+	ftui::AView::registerNewSonView("SolidView", "AView", ftui::SolidView::create_view, {});
 	try
 	{
 		Main		main;

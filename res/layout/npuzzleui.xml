@@ -1,5 +1,18 @@
-
 <VerticalLayout id="UIParent">
-  <VerticalLayout id="son1"/>
- <VerticalLayout id="son2"/>
+	<SolidView
+		marginTop="20"
+		marginBottom="20"
+		verticalAlign="CENTER"
+		width="200"
+		height="50"
+		color="0xFFFF0000"
+	/>
+	<SolidView
+		marginTop="20"
+		marginBottom="20"
+		verticalAlign="LEFT"
+		width="200"
+		height="50"
+		color="0xFF00FFFF"
+	/>
 </VerticalLayout>

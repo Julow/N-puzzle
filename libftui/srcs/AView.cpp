@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/07 20:51:14 by juloo            ###   ########.fr       //
+//   Updated: 2015/10/08 13:04:09 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -64,6 +64,12 @@ void				AView::inflate(XmlParser &xml, Activity &)
 {
 	XmlParser::State	state;
 
+	for (auto const &p : xml.getParams())
+	{
+		if (_holder != NULL)
+			_holder->setParam(p.first, p.second);
+		setParam(p.first, p.second);
+	}
 	if (!xml.next(state))
 		FTASSERT(false);
 	FTASSERT(state == XmlParser::State::END);

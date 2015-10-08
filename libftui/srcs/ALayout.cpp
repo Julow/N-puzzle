@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ALayout.cpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 13:08:26 by ngoguey          ###   ########.fr       //
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   ALayout.cpp                                        :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
+//   Updated: 2015/10/08 13:00:38 by jaguillo         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #include "ftui/ALayout.hpp"
 #include "ftui/XmlParser.hpp"
@@ -167,8 +167,8 @@ void				ALayout::inflate(XmlParser &xml, Activity &a)
 		if (state == XmlParser::State::START)
 		{
 			v = AView::getFactory(xml.getMarkupName())(xml, a);
-			v->inflate(xml, a);
 			this->addView(v);
+			v->inflate(xml, a);
 		}
 		else if (state == XmlParser::State::END)
 			return ;

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:12:43 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/07 20:50:27 by juloo            ###   ########.fr       //
+//   Updated: 2015/10/08 11:51:02 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -32,6 +32,14 @@ namespace ftui
 ** * Requested width can be clamp to layout's width
 ** * Are not shrink if height go outside layout's height
 **    but are partially hidden
+** -
+** Childs params:
+** * marginTop			Top margin in px
+** * marginBottom		Bottom margin in px
+** * verticalAlign		Vertical align: LEFT, CENTER, RIGHT
+** * width				Default requested width
+** * height				Default requested height
+** -
 */
 class	VerticalLayout : public ALayout
 {

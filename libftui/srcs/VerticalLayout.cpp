@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/07 20:49:42 by juloo            ###   ########.fr       //
+//   Updated: 2015/10/08 12:59:20 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -122,7 +122,7 @@ void			VerticalLayout::onDraw(Canvas &canvas)
 	AView::onDraw(canvas);
 	for (ViewHolder *h : _childs)
 	{
-		// Set clip rect
+		// TODO Set clip rect
 		if (h->getView()->isRedrawQueried())
 		{
 			canvas.applyAlpha(h->getView()->getAlpha());
