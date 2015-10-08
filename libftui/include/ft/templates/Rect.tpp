@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Rect.tpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/10/05 14:06:16 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/05 15:05:44 by jaguillo         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   Rect.tpp                                           :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/10/05 14:06:16 by jaguillo          #+#    #+#             //
+//   Updated: 2015/10/08 14:53:42 by jaguillo         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 namespace ft
 {
@@ -76,10 +76,22 @@ void		Rect<T>::setPos(Vec2<T> pos)
 }
 
 template<typename T>
+Vec2<T>		Rect<T>::getPos(void) const
+{
+	return (Vec2<T>(top, left));
+}
+
+template<typename T>
 void		Rect<T>::setSize(Vec2<T> size)
 {
 	right = left + size.x;
 	bottom = top + size.y;
+}
+
+template<typename T>
+Vec2<T>		Rect<T>::getSize(void) const
+{
+	return (Vec2<T>(getWidth(), getHeight()));
 }
 
 template<typename T>
@@ -145,6 +157,38 @@ void		Rect<T>::merge(Vec2<T> pt)
 		top = pt.y;
 	else if (pt.y > bottom)
 		bottom = pt.y;
+}
+
+template<typename T>
+Rect<T>		Rect<T>::operator+(Vec2<T> offset) const
+{
+	return (Rect<T>(left + offset.x, top + offset.y,
+		right + offset.x, bottom + offset.y));
+}
+
+template<typename T>
+Rect<T>		&Rect<T>::operator+=(Vec2<T> offset)
+{
+	left += offset.x;
+	top += offset.y;
+	right += offset.x;
+	bottom += offset.y;
+}
+
+template<typename T>
+Rect<T>		Rect<T>::operator-(Vec2<T> offset) const
+{
+	return (Rect<T>(left - offset.x, top - offset.y,
+		right - offset.x, bottom - offset.y));
+}
+
+template<typename T>
+Rect<T>		&Rect<T>::operator-=(Vec2<T> offset)
+{
+	left -= offset.x;
+	top -= offset.y;
+	right -= offset.x;
+	bottom -= offset.y;
 }
 
 template<typename T>

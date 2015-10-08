@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Rect.hpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/10/02 18:43:04 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/05 14:26:41 by jaguillo         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   Rect.hpp                                           :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/10/02 18:43:04 by jaguillo          #+#    #+#             //
+//   Updated: 2015/10/08 14:52:46 by jaguillo         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #ifndef RECT_HPP
 # define RECT_HPP
@@ -48,8 +48,10 @@ public:
 	** Move the rect and keep it's size
 	*/
 	void		setPos(Vec2<T> pos);
+	Vec2<T>		getPos(void) const;
 
 	void		setSize(Vec2<T> size);
+	Vec2<T>		getSize(void) const;
 
 /*
 ** Checks
@@ -92,8 +94,19 @@ public:
 /*
 ** Operators
 */
+	/*
+	** Offset the rect
+	*/
+	Rect<T>		operator+(Vec2<T> offset) const;
+	Rect<T>		&operator+=(Vec2<T> offset);
+	Rect<T>		operator-(Vec2<T> offset) const;
+	Rect<T>		&operator-=(Vec2<T> offset);
+
 	Rect<T>		&operator=(Rect<T> const &rhs);
 
+	/*
+	** TODO: float comparaison
+	*/
 	bool		operator==(Rect<T> const &rhs) const;
 
 protected:
