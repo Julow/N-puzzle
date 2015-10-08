@@ -1,4 +1,4 @@
-O_FILES :=	o/srcs/GlCanvasHolder.o o/srcs/main.o
+O_FILES :=	o/srcs/GlCanvasHolder.o o/srcs/SolidView.o o/srcs/main.o
 
 LIBS_DEPEND := libftui/libftui.a
 
@@ -16,6 +16,13 @@ o/srcs/GlCanvasHolder.o: srcs/GlCanvasHolder.cpp include/GlCanvasHolder.hpp \
 	libftui/include/ft/templates/Vec4.tpp libftui/include/ftui/Canvas.hpp \
 	libftui/include/ftui/libftui.hpp include/gl.hpp \
 	libftui/include/ft/utils.hpp | o/srcs/
+o/srcs/SolidView.o: srcs/SolidView.cpp include/SolidView.hpp \
+	libftui/include/ft/Rect.hpp libftui/include/ft/Vec.hpp \
+	libftui/include/ft/assert.hpp libftui/include/ft/templates/Vec2.tpp \
+	libftui/include/ft/templates/Vec3.tpp \
+	libftui/include/ft/templates/Vec4.tpp libftui/include/ftui/AView.hpp \
+	libftui/include/ftui/Canvas.hpp libftui/include/ftui/libftui.hpp \
+	libftui/include/ftui/lua.hpp | o/srcs/
 o/srcs/main.o: srcs/main.cpp libftui/include/ft/utils.hpp \
 	libftui/include/ft/Vec.hpp libftui/include/ft/assert.hpp \
 	libftui/include/ft/templates/Vec2.tpp \
@@ -27,5 +34,6 @@ o/srcs/main.o: srcs/main.cpp libftui/include/ft/utils.hpp \
 	libftui/include/ftui/libftui.hpp libftui/include/ftui/lua.hpp \
 	libftui/include/ftui/templates/Activity.tpp \
 	libftui/include/ftui/luaCFunctions_helpers.hpp include/GlCanvasHolder.hpp \
-	libftui/include/ft/Rect.hpp libftui/include/ftui/Canvas.hpp include/gl.hpp \
+	libftui/include/ft/Rect.hpp libftui/include/ftui/Canvas.hpp \
+	include/SolidView.hpp libftui/include/ftui/AView.hpp include/gl.hpp \
 	| o/srcs/

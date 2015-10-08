@@ -6,21 +6,25 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/08 10:34:46 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/08 13:52:56 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "ft/utils.hpp"
 
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <stdexcept>
 
 #include "ftui/Activity.hpp"
+#include "ftui/AView.hpp"
+#include "ftui/ALayout.hpp"
 #include "ftui/luaCFunctions_helpers.hpp"
 #include "ftui/lua.hpp"
 
 #include "GlCanvasHolder.hpp"
+#include "SolidView.hpp"
 #include "gl.hpp"
 
 /*
@@ -44,8 +48,35 @@
 ** everything here is example or test
 */
 
+/*
+** Print tree of view
+*/
+
+void		printViewTree(ftui::AView const *view, int indent = 0)
+{
+	ftui::ALayout const	*layout;
+
+	std::cout << std::setfill('\t') << std::setw(indent) << "";
+	std::cout << typeid(*view).name();
+	if (view->getId() != NULL)
+		std::cout << " #" << *(view->getId());
+	if (view->getAlpha() < 1.f)
+		std::cout << " alpha=" << view->getAlpha();
+	layout = dynamic_cast<ftui::ALayout const*>(view);
+	if (layout != NULL)
+		std::cout << ':';
+	std::cout << std::endl;
+	if (layout != NULL)
+		for (int i = 0; i < layout->size(); i++)
+			printViewTree(layout->at(i), indent + 1);
+}
+
+/*
+** -
+*/
+
 #define WIDTH		500
-#define HEIGHT		400
+#define HEIGHT		100
 
 class Main
 {
@@ -86,6 +117,9 @@ public:
 ** -
 */
 		_canvasHolder.init();
+
+
+		printViewTree(_act.getRoot());
 
 /*
 ** test
@@ -225,6 +259,7 @@ Main			*Main::_instance;
 
 int				main(void)
 {
+	ftui::AView::registerNewSonView("SolidView", "AView", ftui::SolidView::create_view, {});
 	try
 	{
 		Main		main;

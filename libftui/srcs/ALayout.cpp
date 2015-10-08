@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ALayout.cpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/02 13:08:26 by ngoguey          ###   ########.fr       //
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   ALayout.cpp                                        :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
+//   Updated: 2015/10/08 13:44:49 by jaguillo         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #include "ftui/ALayout.hpp"
 #include "ftui/XmlParser.hpp"
@@ -161,14 +161,21 @@ void				ALayout::inflate(XmlParser &xml, Activity &a)
 	AView				*v;
 	XmlParser::State	state;
 
+	// TODO: hummm move to something like AView::inflateParams
+	for (auto const &p : xml.getParams())
+	{
+		if (_holder != NULL)
+			_holder->setParam(p.first, p.second);
+		setParam(p.first, p.second);
+	}
 	while (xml.next(state))
 	{
 		std::cout << "ALayout::inflate loop" << (void*)this << std::endl; //lol
 		if (state == XmlParser::State::START)
 		{
 			v = AView::getFactory(xml.getMarkupName())(xml, a);
-			v->inflate(xml, a);
 			this->addView(v);
+			v->inflate(xml, a);
 		}
 		else if (state == XmlParser::State::END)
 			return ;

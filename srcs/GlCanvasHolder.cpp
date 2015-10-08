@@ -6,7 +6,7 @@
 //   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/07 21:38:50 by juloo             #+#    #+#             //
-//   Updated: 2015/10/08 11:23:01 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/08 11:44:31 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -51,8 +51,8 @@ void			GlCanvasHolder::render(void)
 {
 	if (_canvas.getBitmap() == NULL)
 		throw std::domain_error("render() call before init()");
-	_canvas.fillRect(ft::Rect<int>(0, 0, _canvas.getWidth() / 2 + 5,
-		_canvas.getHeight() / 2 - 5), ftui::Canvas::Params({0xFFFF0000, 0xFFFF0000})); // TMP
+	// _canvas.fillRect(ft::Rect<int>(0, 0, _canvas.getWidth() / 2 + 5,
+	// 	_canvas.getHeight() / 2 - 5), ftui::Canvas::Params({0xFFFF0000, 0xFFFF0000})); // TMP
 	glUseProgram(_shaders);
 	glBindVertexArray(_quad);
 	glActiveTexture(GL_TEXTURE0);

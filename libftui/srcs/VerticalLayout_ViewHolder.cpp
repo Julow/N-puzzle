@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 10:11:27 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/05 14:27:50 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/08 13:10:43 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -68,9 +68,17 @@ void			VerticalLayout::ViewHolder::setRequestedSize(ft::Vec2<int> size)
 void            VerticalLayout::ViewHolder::setParam(std::string const &k
 													 , std::string const &v)
 {
-	(void)k;
-	(void)v;
-	// TODO VerticalLayout::ViewHolder::setParam
+	static std::unordered_map<std::string, void (*)(VerticalLayout::ViewHolder*, std::string const &)> const	param_map
+	{
+		{"marginTop", [](VerticalLayout::ViewHolder *holder, std::string const &v){ holder->_verticalMargin.x = atoi(v.c_str()); }},
+		{"marginBottom", [](VerticalLayout::ViewHolder *holder, std::string const &v){ holder->_verticalMargin.y = atoi(v.c_str()); }},
+		{"verticalAlign", [](VerticalLayout::ViewHolder *holder, std::string const &v){ /* TODO */ (void)holder; (void)v; }},
+		{"width", [](VerticalLayout::ViewHolder *holder, std::string const &v){ holder->_requestedSize.x = atoi(v.c_str()); }},
+		{"height", [](VerticalLayout::ViewHolder *holder, std::string const &v){ holder->_requestedSize.y = atoi(v.c_str()); }},
+	};
+	auto const	&it = param_map.find(k);
+	if (it != param_map.end())
+		it->second(this, v);
 	return ;
 }
 
@@ -83,7 +91,6 @@ VerticalLayout::Align VerticalLayout::ViewHolder::getHorizontalAlign(void) const
 {
 	return (_horizontalAlign);
 }
-
 
 AView			*VerticalLayout::ViewHolder::getView(void)
 {
