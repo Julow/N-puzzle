@@ -77,7 +77,8 @@ void				XmlTokenizer::parse_spaces(void)
 
 bool				XmlTokenizer::token_eof(char const *str)
 {
-	if (_is.peek() == EOF)
+	_is.peek();
+	if (_is.eof()) //TODO j'ai ptete fait de la merde
 		return (true);
 	return (false);
 	(void)str;
@@ -143,7 +144,7 @@ int				XmlTokenizer::token_str_hard(char const *str)
 		_oss.put(c);
 		if (c != str[i])
 			return (i);
-		if (c == EOF)
+		if (_is.eof()) //TODO j'ai ptete fait de la merde
 			throw std::domain_error(ft::f("Unexpected \033[91mEOF\033[0m at "
 				"\033[97mline %\033[0m", _line));
 		i++;

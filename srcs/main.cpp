@@ -175,7 +175,7 @@ public:
 
 	static int			give6ret5(lua_State *l)
 		{
-			return ftui::helperFun<0, 2>(l, &Main::ret2);
+			return ftui::luaCFunHelper<0, 2>(l, &Main::ret2);
 		}
 public:
 	

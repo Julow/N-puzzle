@@ -31,7 +31,8 @@ o/srcs/AView_luaCFunctions.o: srcs/AView_luaCFunctions.cpp \
 	include/ft/assert.hpp include/ftui/AView.hpp include/ftui/libftui.hpp \
 	include/ftui/lua.hpp include/ft/Vec.hpp include/ft/templates/Vec2.tpp \
 	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
-	include/ft/utils.hpp include/ftui/luaCFunctions_helpers.hpp | o/srcs/
+	include/ft/utils.hpp include/ftui/luaCFunctions_helpers.hpp \
+	include/ftui/templates/luaCFunctions_helpers.tpp | o/srcs/
 o/srcs/AView_statics.o: srcs/AView_statics.cpp include/ft/assert.hpp \
 	include/ftui/AView.hpp include/ftui/libftui.hpp include/ftui/lua.hpp \
 	include/ft/Vec.hpp include/ft/templates/Vec2.tpp \
