@@ -10,9 +10,10 @@
 //                                                                            //
 // ************************************************************************** //
 
+#include <cstdlib>
+
 #include "ftui/VerticalLayout.hpp"
 #include "ftui/XmlParser.hpp"
-
 #include "ftui/Activity.hpp"
 
 namespace ftui
