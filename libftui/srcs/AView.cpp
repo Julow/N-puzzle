@@ -118,7 +118,7 @@ void				AView::setParam(string const &k, string const &v)
 	else if (k == "mouse_click_target")
 		this->hookMouseClick(v == "true"); //TODO parser bool
 	else if (k == "mouse_move_target")
-		this->hookMove(v == "true"); //TODO parser bool
+		this->hookMouseMove(v == "true"); //TODO parser bool
 	else if (k == "keyboard_target")
 		this->hookKeyboard(v == "true"); //TODO parser bool
 	else if (this->_holder != nullptr)
@@ -334,7 +334,7 @@ void			AView::hookMouseClick(bool state)
 	return ;
 }
 
-void			AView::hookMove(bool state)
+void			AView::hookMouseMove(bool state)
 {
 	ALayout			*p;
 
