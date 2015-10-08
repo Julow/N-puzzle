@@ -38,8 +38,34 @@ DEF_LUACFUN_GSUFFIX(queryRedraw, 1, 0)
 // DEF_LUACFUN_GSUFFIX(getRequestedSize, 1, 2) //NYI
 // DEF_LUACFUN_GSUFFIX(getPos, 1, 2) //NYI
 // DEF_LUACFUN_GSUFFIX(getSize, 1, 2) //NYI
-// DEF_LUACFUN_GSUFFIX(getId, 1, 1) //custom function
-// DEF_LUACFUN_GSUFFIX(getParent, 1, 1) //custom function
+int			AView::getIdG(lua_State *l)
+{
+	AView *const				i = luaCFunRetreiveSelf<AView>(l, -1);
+	std::string const *const	s = i->getId();
+
+	if (s == nullptr)
+		lua_pushnil(l);
+	else
+		lua_pushstring(l, s->c_str());
+	return (1);
+}
+
+int			AView::getParentG(lua_State *l)
+{
+	AView *const	i = luaCFunRetreiveSelf<AView>(l, -1);
+	ALayout *const	p = i->getParent();
+
+	if (p == nullptr)
+		lua_pushnil(l);
+	else
+	{
+		lua_pushglobaltable(l);
+		lua_pushlightuserdata(l, p);
+		lua_gettable(l, -2);
+	}
+	return (1);
+}
+
 DEF_LUACFUN_GSUFFIX(getAlpha, 1, 1)
 DEF_LUACFUN_GSUFFIX(isVisible, 1, 1)
 DEF_LUACFUN_GSUFFIX(isMouseOver, 1, 1)

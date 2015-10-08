@@ -34,6 +34,11 @@ inline void        luaFT_stackdump(lua_State *L) //TODO move luaFT_stackdump
 	return ;
 }
 
+/*
+** ************************************************************************** //
+** * luaCFunHelper ********************************************************** //
+** ************************************************************************** //
+*/
 // * STEP 2 HELPERS ********************************************************* //
 namespace internal
 {
@@ -255,17 +260,18 @@ int		luaCFunHelper(lua_State *l, C const *i, Ret (C::*f)(Args...) const)
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
 int		luaCFunHelper(lua_State *l, Ret (C::*f)(Args...))
 {
-	void		*i;
+	// void		*i;
 
-	if (!lua_istable(l, -NumIn))
-		;//TODO throw
-	lua_pushinteger(l, 0);
-	if (lua_gettable(l, -NumIn - 1) != LUA_TLIGHTUSERDATA)
-		; //TODO throw
-	i = lua_touserdata(l, -1);
-	lua_pop(l, 1);
-	lua_remove(l, -NumIn);
-	internal::helperLoop<NumIn - 1, NumOut>(l, reinterpret_cast<C*>(i), f);
+	// if (!lua_istable(l, -NumIn))
+		// ;//TODO throw
+	// lua_pushinteger(l, 0);
+	// if (lua_gettable(l, -NumIn - 1) != LUA_TLIGHTUSERDATA)
+		// ; //TODO throw
+	// i = lua_touserdata(l, -1);
+	// lua_pop(l, 1);
+	// lua_remove(l, -NumIn);
+	
+	internal::helperLoop<NumIn - 1, NumOut>(l, luaCFunRetreiveSelf<C>(l, -NumIn), f);
 	return (NumOut - 1);
 }
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
@@ -276,4 +282,25 @@ int		luaCFunHelper(lua_State *l, Ret (C::*f)(Args...) const)
 	return (luaCFunHelper<NumIn, NumOut>(l, reinterpret_cast<FClean>(f)));
 }
 
+/*
+** ************************************************************************** //
+** * luaCFunRetreiveSelf **************************************************** //
+** ************************************************************************** //
+*/
+
+template <typename T>
+inline T	*luaCFunRetreiveSelf(lua_State *l, int index)
+{
+	void		*i;
+
+	if (!lua_istable(l, index))
+		;//TODO throw
+	lua_pushinteger(l, 0);
+	if (lua_gettable(l, index - 1) != LUA_TLIGHTUSERDATA)
+		; //TODO throw
+	i = lua_touserdata(l, -1);
+	lua_pop(l, 1);
+	lua_remove(l, index);
+	return (reinterpret_cast<T*>(i));
+}
 };

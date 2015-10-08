@@ -58,6 +58,17 @@ int		luaCFunHelper(lua_State *l, Ret (C::*f)(Args...));
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
 int		luaCFunHelper(lua_State *l, Ret (C::*f)(Args...) const);
 
+/*
+** 'luaCFunRetreiveSelf'		1. Looks for a table at index.		(may throw)
+**								2. Looks for a userdata at tab[0]	(may throw)
+**								3. Pops it from the stack
+**								4. Returns it
+*/
+
+template <typename T>
+T		*luaCFunRetreiveSelf(lua_State *l, int index);
+
+
 };
 
 # include "ftui/templates/luaCFunctions_helpers.tpp"

@@ -20,12 +20,35 @@ namespace ftui
 
 AView::views_info_t				AView::viewsInfo
 {
-	{"AView", AView::view_info_s{"", nullptr, std::vector<AView::view_info_s::luamethod_t>{
-				std::make_tuple("setRequestedSize", &AView::setRequestedSizeG),
-					std::make_tuple("setAlpha", &AView::setAlphaG),
-					std::make_tuple("setVisibility", &AView::setVisibilityG),
-					std::make_tuple("setParam", &AView::setParamG),
-					}}},
+	{"AView", {"", nullptr, {
+		std::make_tuple("setRequestedSize", &AView::setRequestedSizeG),
+		std::make_tuple("setAlpha", &AView::setAlphaG),
+		std::make_tuple("setVisibility", &AView::setVisibilityG),
+		std::make_tuple("setParam", &AView::setParamG),
+		std::make_tuple("hookMouseScroll", &AView::hookMouseScrollG),
+		std::make_tuple("hookMouseClick", &AView::hookMouseClickG),
+		std::make_tuple("hookMouseMove", &AView::hookMouseMoveG),
+		std::make_tuple("hookMouseCapture", &AView::hookMouseCaptureG),
+		std::make_tuple("hookKeyboard", &AView::hookKeyboardG),
+		std::make_tuple("queryUpdate", &AView::queryUpdateG),
+		std::make_tuple("queryMeasure", &AView::queryMeasureG),
+		std::make_tuple("queryRedraw", &AView::queryRedrawG),
+		std::make_tuple("getRequestedSize", &AView::getRequestedSizeG),
+		std::make_tuple("getPos", &AView::getPosG),
+		std::make_tuple("getSize", &AView::getSizeG),
+		std::make_tuple("getId", &AView::getIdG),
+		std::make_tuple("getParent", &AView::getParentG),
+		std::make_tuple("getAlpha", &AView::getAlphaG),
+		std::make_tuple("isVisible", &AView::isVisibleG),
+		std::make_tuple("isMouseOver", &AView::isMouseOverG),
+		std::make_tuple("isMouseScrollTargeted", &AView::isMouseScrollTargetedG),
+		std::make_tuple("isMouseClickTargeted", &AView::isMouseClickTargetedG),
+		std::make_tuple("isMouseCaptureTargeted", &AView::isMouseCaptureTargetedG),
+		std::make_tuple("isKeyboardTargeted", &AView::isKeyboardTargetedG),
+		std::make_tuple("isUpdateQueried", &AView::isUpdateQueriedG),
+		std::make_tuple("isMeasureQueried", &AView::isMeasureQueriedG),
+		std::make_tuple("isRedrawQueried", &AView::isRedrawQueriedG),
+	}}},
 	{"ALayout", {"AView", nullptr, {}}},
 	{"VerticalLayout", {"ALayout", &VerticalLayout::createView, {}}}
 };
