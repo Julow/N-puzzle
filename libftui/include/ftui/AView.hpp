@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/07 20:50:18 by juloo            ###   ########.fr       //
+//   Updated: 2015/10/08 13:38:01 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -159,7 +159,7 @@ protected:
 	IViewHolder					*_holder;
 	Activity					&_act;
 
-	std::string const *const	_id;
+	std::string const *			_id;
 	unsigned long				_flags;
 	float						_alpha;
 

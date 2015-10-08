@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/07 20:50:07 by juloo            ###   ########.fr       //
+//   Updated: 2015/10/08 13:28:11 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -45,6 +45,9 @@ public:
 	void				init_lua_env(void);
 	void				inflate(std::istream &stream);
 	lua_State			*getLuaState(void) const;
+
+	AView				*getRoot(void);
+	AView const			*getRoot(void) const;
 
 	void				render(Canvas &canvas);
 

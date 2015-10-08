@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/08 13:04:09 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/08 13:46:05 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -26,18 +26,15 @@ using std::string;
 namespace ftui
 {
 
-AView::AView(XmlParser const &xml, Activity &act)
+AView::AView(XmlParser const &, Activity &act)
 	: _holder(nullptr), _act(act), _id(nullptr), _flags(0), _alpha(1.f)
 {
-	XmlParser::params_map_t const	&params = xml.getParams();
-
-	(void)params;
-	// TODO, retreive some AView data from xml
-	return ;
 }
 
 AView::~AView(void)
 {
+	if (_id != NULL)
+		delete _id;
 }
 
 /*
@@ -109,8 +106,11 @@ bool				AView::isMouseOver(void) const
 { return (this->_flags & AView::MOUSE_OVER); }
 void				AView::setParam(string const &k, string const &v)
 {
+	// TODO: fucking hmap
 	if (k == "alpha")
 		this->setAlpha(::atof(v.c_str())); //TODO parser float
+	else if (k == "id" && _id == NULL) // Can be set only once
+		this->_id = new std::string(v);
 	else if (k == "visibility")
 		this->setVisibility(v == "true"); //TODO parser bool
 	else if (k == "mouse_scroll_target")
@@ -123,8 +123,6 @@ void				AView::setParam(string const &k, string const &v)
 		this->hookKeyboard(v == "true"); //TODO parser bool
 	else if (this->_holder != nullptr)
 		this->_holder->setParam(k, v);
-	else
-		FTASSERT(false, "Unknown param (no holder atached)");
 	return ;
 }
 
