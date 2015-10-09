@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:12:43 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 09:08:23 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 14:30:08 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -83,6 +83,8 @@ protected:
 	VerticalLayout(XmlParser const &xml, Activity &act);
 
 	virtual IViewHolder		*holderAt(int i);
+
+	virtual void			alignChilds(void);
 
 private:
 	VerticalLayout(void) = delete;

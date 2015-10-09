@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 15:08:28 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/09 13:15:14 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -45,9 +45,6 @@ public:
 ** * AView legacy *********************************************************** **
 */
 	virtual void				inflate(XmlParser &xml, Activity &);
-
-	virtual void				setParam(std::string const &k,
-									std::string const &v);
 
 	virtual void				onUpdate(void) = 0;
 	virtual void				onMeasure(void) = 0;

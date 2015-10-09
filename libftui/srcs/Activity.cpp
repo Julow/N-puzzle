@@ -138,7 +138,10 @@ void			Activity::render(Canvas &canvas)
 	if (rv->isUpdateQueried())
 		rv->onUpdate();
 	if (rv->isMeasureQueried())
+	{
 		rv->onMeasure();
+		_rootView->setSize(_rootView->getRequestedSize());
+	}
 	if (rv->isRedrawQueried())
 		rv->onDraw(canvas);
 	return ;

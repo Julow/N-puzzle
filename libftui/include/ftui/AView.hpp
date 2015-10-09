@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/09 15:05:14 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/09 16:01:47 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -67,6 +67,16 @@ public:
 	IViewHolder					*getViewHolder(void);
 	IViewHolder const			*getViewHolder(void) const;
 	void						setViewHolder(IViewHolder *holder);
+
+	/*
+	** Extract the view tree from a xml file
+	** `v->inflate()` is always called after 'v' has been put in his parent
+	** -
+	** View creation:
+	** v = new ...View(...) // More often: AView::getFactory("...")(xml, act)
+	** v->setHolder(...)	// if any
+	** v->inflate(xml)
+	*/
 	virtual void				inflate(XmlParser &xml, Activity &act);
 
 	/*
@@ -80,6 +90,13 @@ public:
 
 	bool						isMouseOver(void) const;
 
+	/*
+	** Set param
+	** used to retrieve param from XML
+	** -
+	** AView::setParam()		is called from AView::inflate()
+	** IViewHolder::setParam()	is called from AView::setParam()
+	*/
 	virtual void				setParam(std::string const &k,
 										 std::string const &v);
 
@@ -160,7 +177,7 @@ protected:
 	IViewHolder					*_holder;
 	Activity					&_act;
 
-	std::string const *			_id;
+	std::string const *const	_id;
 	uint32_t					_flags;
 	float						_alpha;
 
@@ -186,11 +203,13 @@ public:
 	static view_info_s::factory_t	getFactory(std::string const &name);
 
 	/*
-	 *	registerNewSonView()	Call this function to register your new AViews
+	 *  defineView()
+	 *  Define a view class so that can be created from a xml file
 	 *  ********************************************************************* **
-	 *		It should be done once for all AViews, and before any xml inflating.
+	 *  It should be done once for all custom views,
+	 *    and before any xml inflating.
 	 */
-	static void					registerNewSonView(
+	static void						defineView(
 		std::string const &name
 		, std::string const &parent
 		, view_info_s::factory_t factory

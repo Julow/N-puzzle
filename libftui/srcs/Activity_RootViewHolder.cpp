@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 09:38:59 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/05 14:29:02 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 13:29:01 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -50,6 +50,14 @@ ft::Vec2<int>	Activity::RootViewHolder::getPos(void) const
 ft::Vec2<int>	Activity::RootViewHolder::getSize(void) const
 { return (this->_size); }
 
+void			Activity::RootViewHolder::setSize(ft::Vec2<int> size)
+{
+	if (size == _size)
+		return ;
+	_size = size;
+	_view->onSizeChange();
+}
+
 void			Activity::RootViewHolder::setRequestedSize(ft::Vec2<int> size)
 {
 	_requestedSize = size;
@@ -68,6 +76,5 @@ void			Activity::RootViewHolder::setParam(std::string const &k
 	// TODO Activity::RootViewHolder::setParam
 	return ;
 }
-
 
 };

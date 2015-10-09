@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 10:11:27 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/09 10:46:13 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 14:56:40 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -20,8 +20,14 @@
 namespace ftui
 {
 
-VerticalLayout::ViewHolder::ViewHolder(VerticalLayout *p, AView *v)
-	: _view(v), _parent(p)
+VerticalLayout::ViewHolder::ViewHolder(VerticalLayout *p, AView *v) :
+	_view(v),
+	_parent(p),
+	_pos(0, 0),
+	_size(0, 0),
+	_requestedSize(0, 0),
+	_verticalMargin(0, 0),
+	_horizontalAlign(VerticalLayout::Align::LEFT)
 {
 }
 
