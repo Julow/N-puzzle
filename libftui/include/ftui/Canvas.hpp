@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 08:48:09 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 15:36:57 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -39,7 +39,7 @@ public:
 	public:
 		color_t		strokeColor;
 		color_t		fillColor;
-		// float		strokeSize;
+		int32_t		lineWidth;
 		// float		borderRound;
 	};
 

@@ -35,6 +35,7 @@
 		verticalAlign="CENTER"
 		width="200"
 		height="50"
-		fillColor="0xFF0000FF"
+		strokeColor="0xFF00FFFF"
+		lineWidth="5"
 	/>
 </VerticalLayout>

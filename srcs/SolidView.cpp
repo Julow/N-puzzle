@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 15:30:29 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 15:38:47 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -20,7 +20,7 @@ namespace ftui
 {
 
 SolidView::SolidView(XmlParser const &xml, Activity &act) :
-	AView(xml, act), _params{0x0, 0x0}
+	AView(xml, act), _params{0x0, 0x0, 1}
 {
 }
 
@@ -42,10 +42,12 @@ void			SolidView::onDraw(Canvas &canvas)
 void			SolidView::setParam(std::string const &k, std::string const &v)
 {
 	AView::setParam(k, v);
-	if (k == "fillColor")
+	if (k == "fillColor") // TODO: param_map
 		_params.fillColor = std::stoul(v, NULL, 16);
 	else if (k == "strokeColor")
 		_params.strokeColor = std::stoul(v, NULL, 16);
+	else if (k == "lineWidth")
+		_params.lineWidth = std::stoi(v, NULL, 16);
 	else
 		AView::setParam(k, v);
 }
