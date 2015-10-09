@@ -6,12 +6,13 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 10:11:27 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/08 14:08:04 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 10:46:13 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include <cstdlib>
 
+#include "ft/utils.hpp"
 #include "ftui/VerticalLayout.hpp"
 #include "ftui/XmlParser.hpp"
 #include "ftui/Activity.hpp"
@@ -66,16 +67,45 @@ void			VerticalLayout::ViewHolder::setRequestedSize(ft::Vec2<int> size)
 	_requestedSize = size;
 }
 
-void            VerticalLayout::ViewHolder::setParam(std::string const &k
-													 , std::string const &v)
+void			VerticalLayout::ViewHolder::setParam(std::string const &k,
+						std::string const &v)
 {
-	static std::unordered_map<std::string, void (*)(VerticalLayout::ViewHolder*, std::string const &)> const	param_map
+	static std::unordered_map<std::string, void (*)(VerticalLayout::ViewHolder*,
+		std::string const &)> const		param_map
 	{
-		{"marginTop", [](VerticalLayout::ViewHolder *holder, std::string const &v){ holder->_verticalMargin.x = atoi(v.c_str()); }},
-		{"marginBottom", [](VerticalLayout::ViewHolder *holder, std::string const &v){ holder->_verticalMargin.y = atoi(v.c_str()); }},
-		{"verticalAlign", [](VerticalLayout::ViewHolder *holder, std::string const &v){ /* TODO: vertical align */ (void)holder; (void)v; }},
-		{"width", [](VerticalLayout::ViewHolder *holder, std::string const &v){ holder->_requestedSize.x = atoi(v.c_str()); }},
-		{"height", [](VerticalLayout::ViewHolder *holder, std::string const &v){ holder->_requestedSize.y = atoi(v.c_str()); }},
+		{"marginTop", [](VerticalLayout::ViewHolder *holder,
+			std::string const &v)
+		{
+			holder->_verticalMargin.x = atoi(v.c_str());
+		}},
+		{"marginBottom", [](VerticalLayout::ViewHolder *holder,
+			std::string const &v)
+		{
+			holder->_verticalMargin.y = atoi(v.c_str());
+		}},
+		{"verticalAlign", [](VerticalLayout::ViewHolder *holder,
+			std::string const &v)
+		{
+			if (v == "LEFT")
+				holder->setHorizontalAlign(VerticalLayout::Align::LEFT);
+			else if (v == "CENTER")
+				holder->setHorizontalAlign(VerticalLayout::Align::CENTER);
+			else if (v == "RIGHT")
+				holder->setHorizontalAlign(VerticalLayout::Align::RIGHT);
+			else
+				throw std::domain_error(ft::f("Invalid param: "
+					"verticalAlign=\"%\"", v));
+		}},
+		{"width", [](VerticalLayout::ViewHolder *holder,
+			std::string const &v)
+		{
+			holder->_requestedSize.x = atoi(v.c_str());
+		}},
+		{"height", [](VerticalLayout::ViewHolder *holder,
+			std::string const &v)
+		{
+			holder->_requestedSize.y = atoi(v.c_str());
+		}},
 	};
 	auto const	&it = param_map.find(k);
 	if (it != param_map.end())
@@ -88,9 +118,19 @@ ft::Vec2<int>	VerticalLayout::ViewHolder::getVerticalMargin(void) const
 	return (_verticalMargin);
 }
 
+void			VerticalLayout::ViewHolder::setVerticalMargin(ft::Vec2<int> margin)
+{
+	_verticalMargin = margin;
+}
+
 VerticalLayout::Align VerticalLayout::ViewHolder::getHorizontalAlign(void) const
 {
 	return (_horizontalAlign);
+}
+
+void		 VerticalLayout::ViewHolder::setHorizontalAlign(VerticalLayout::Align align)
+{
+	_horizontalAlign = align;
 }
 
 AView			*VerticalLayout::ViewHolder::getView(void)

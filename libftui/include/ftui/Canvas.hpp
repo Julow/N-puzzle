@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 07:52:50 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/09 08:48:09 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -70,6 +70,7 @@ public:
 			_bitmap[x++] = color;
 	}
 
+	void			clear(void);
 	void			clear(ft::Rect<int> const &rect);
 
 /*

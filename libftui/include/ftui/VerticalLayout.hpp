@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:12:43 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/08 11:51:02 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 09:08:23 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -137,7 +137,9 @@ public:
 	void					setSize(ft::Vec2<int> size);
 
 	ft::Vec2<int>			getVerticalMargin(void) const;
+	void					setVerticalMargin(ft::Vec2<int> margin);
 	Align					getHorizontalAlign(void) const;
+	void					setHorizontalAlign(Align align);
 
 protected:
 

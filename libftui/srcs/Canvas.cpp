@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/08 15:20:28 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 08:49:07 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -50,6 +50,11 @@ int				Canvas::getBitmapWidth(void) const
 int				Canvas::getBitmapHeight(void) const
 {
 	return (_height);
+}
+
+void			Canvas::clear(void)
+{
+	memset(_bitmap, 0, _width * _height * sizeof(color_t));
 }
 
 void			Canvas::clear(ft::Rect<int> const &rect)
