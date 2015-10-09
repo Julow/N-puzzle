@@ -17,7 +17,7 @@
 			height="100"
 			strokeColor="0xFF000000"
 			fillColor="0xFFFF0000"
-			alpha="0.1"
+			alpha="0.5"
 		/>
 		<SolidView
 			marginTop="0"
@@ -26,7 +26,7 @@
 			width="200"
 			height="100"
 			fillColor="0xFF000000"
-			alpha="0.1"
+			alpha="0.5"
 		/>
 	</VerticalLayout>
 	<SolidView

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 17:05:13 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 23:26:08 by juloo            ###   ########.fr       //
+//   Updated: 2015/10/10 00:11:59 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,8 +14,6 @@
 # define COLOR_HPP
 
 # include <stdint.h>
-# include <iostream> // TODO remove
-#include <iomanip> // TODO remove
 
 namespace ft
 {
@@ -67,16 +65,17 @@ public:
 	** out_rgb = ((dst_rgb * dst_a / 256) + (src_rgb * src_a / 256))
 	**                 * (256 - dst_a) / out_alpha
 	*/
-	static t			put(t dst, t src)
+	static inline t			put(t dst, t src)
 	{
 		uint32_t const	dst_a = a(dst);
 		uint32_t const	src_a = a(src);
-		uint32_t const	out_a = (src_a + (dst_a * (256 - src_a) / 256)) * 256;
+		uint32_t const	out_a = src_a + (dst_a * (256 - src_a) / 256);
+		uint32_t const	tmp = out_a * 256 / (256 - dst_a);
 
-		return ((out_a << 16)
-		| (((256 - dst_a) * (dst_a * r(dst) + (src_a * r(src))) / out_a) << 16)
-		| (((256 - dst_a) * (dst_a * g(dst) + (src_a * g(src))) / out_a) << 8)
-		| (((256 - dst_a) * (dst_a * b(dst) + (src_a * b(src))) / out_a)));
+		return ((out_a << 24)
+			| (((dst_a * r(dst) + (src_a * r(src))) / tmp) << 16)
+			| (((dst_a * g(dst) + (src_a * g(src))) / tmp) << 8)
+			| (((dst_a * b(dst) + (src_a * b(src))) / tmp)));
 	}
 
 // 	static t			put(t dst, t src)
@@ -101,33 +100,6 @@ public:
 // ))
 // 		);
 // 	}
-
-	static void			print(std::ostream &o, t color) // TODO remove
-	{
-		o << "0x"
-			<< std::setbase(16) << std::setw(2) << std::setfill('0') << (int)a(color)
-			<< std::setbase(16) << std::setw(2) << std::setfill('0') << (int)r(color)
-			<< std::setbase(16) << std::setw(2) << std::setfill('0') << (int)g(color)
-			<< std::setbase(16) << std::setw(2) << std::setfill('0') << (int)b(color);
-	}
-
-	static void			debug(t color)
-	{
-		std::cout << "rgba: "
-			<< (int)r(color) << ", "
-			<< (int)g(color) << ", "
-			<< (int)b(color) << ", "
-			<< (int)a(color) << " ; put on 0xFFFFFFFF: ";
-		Color::print(std::cout, put(0xFFFFFFFF, color)); std::cout << " ; put on 0x7FFFFFFF: ";
-		Color::print(std::cout, put(0x7FFFFFFF, color)); std::cout << std::endl;
-			// << (int)a(color) << " ; zero: ";
-		// Color::print(std::cout, a(color, 0)); std::cout << ", ";
-		// Color::print(std::cout, r(color, 0)); std::cout << ", ";
-		// Color::print(std::cout, g(color, 0)); std::cout << ", ";
-		// Color::print(std::cout, b(color, 0)); std::cout << " ; 1: ";
-		// Color::print(std::cout, alpha(color, 1.f)); std::cout << " ; 0.5: ";
-		// Color::print(std::cout, alpha(color, 0.5f)); std::cout << std::endl;
-	}
 
 protected:
 
