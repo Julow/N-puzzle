@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 16:02:18 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 20:42:34 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -159,7 +159,7 @@ public:
 		while (!glfwWindowShouldClose(_window))
 		{
 			glfwPollEvents();
-			glClearColor(0.7f, 0.2f, 0.2f, 1);
+			glClearColor(1, 1, 1, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 			// canvas.clear();
 			_act.render(canvas);

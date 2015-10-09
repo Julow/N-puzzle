@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 17:05:13 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 18:50:05 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 23:26:08 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -61,21 +61,46 @@ public:
 	}
 
 	/*
-	** Return the result of putting 'put' before 'color'
-	** alpha blending: src + (dst * (256 - src) / 256)
+	** Return the result of putting 'src' in front of 'dst'
+	** -
+	** out_alpha = src_a + (dst_a * (256 - src_a) / 256)
+	** out_rgb = ((dst_rgb * dst_a / 256) + (src_rgb * src_a / 256))
+	**                 * (256 - dst_a) / out_alpha
 	*/
-	static t			put(t color, t put)
+	static t			put(t dst, t src)
 	{
-		uint8_t		put_a = a(put);
+		uint32_t const	dst_a = a(dst);
+		uint32_t const	src_a = a(src);
+		uint32_t const	out_a = (src_a + (dst_a * (256 - src_a) / 256)) * 256;
 
-		put_a = put_a + (a(color) * (256 - put_a) / 256);
-		return (
-			(put_a << 24)
-			| (0 << 16)
-			| (0 << 8)
-			| (0 << 0)
-		);
+		return ((out_a << 16)
+		| (((256 - dst_a) * (dst_a * r(dst) + (src_a * r(src))) / out_a) << 16)
+		| (((256 - dst_a) * (dst_a * g(dst) + (src_a * g(src))) / out_a) << 8)
+		| (((256 - dst_a) * (dst_a * b(dst) + (src_a * b(src))) / out_a)));
 	}
+
+// 	static t			put(t dst, t src)
+// 	{
+// 		uint32_t const		dst_a = a(dst);
+// 		uint32_t const		src_a = a(src);
+// 		uint32_t const		out_a = src_a + (dst_a * (256 - src_a) / 256);
+
+// 		return (
+// 			(out_a << 24)
+// | ((
+// 	(((r(dst) * dst_a / 256) + (r(src) * src_a / 256)) * (256 - dst_a))
+// 			/ out_a
+// ) << 16)
+// | ((
+// 	(((g(dst) * dst_a / 256) + (g(src) * src_a / 256)) * (256 - dst_a))
+// 			/ out_a
+// ) << 8)
+// | ((
+// 	(((b(dst) * dst_a / 256) + (b(src) * src_a / 256)) * (256 - dst_a))
+// 			/ out_a
+// ))
+// 		);
+// 	}
 
 	static void			print(std::ostream &o, t color) // TODO remove
 	{

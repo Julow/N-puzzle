@@ -6,7 +6,7 @@
 //   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/07 21:38:50 by juloo             #+#    #+#             //
-//   Updated: 2015/10/09 18:00:18 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 22:15:22 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -39,15 +39,6 @@ void			GlCanvasHolder::init(void)
 	init_shaders();
 	init_quad();
 	init_texture();
-	ft::Color::debug(0x0);
-	ft::Color::debug(0xFF000000);
-	ft::Color::debug(0xFFFF0000);
-	ft::Color::debug(0xFF00FF00);
-	ft::Color::debug(0xFF0000FF);
-	ft::Color::debug(0x000000FF);
-	ft::Color::debug(0x00FFFFFF);
-	ft::Color::debug(0x007F7F7F);
-	throw std::exception();
 }
 
 ftui::Canvas	&GlCanvasHolder::getCanvas(void)
