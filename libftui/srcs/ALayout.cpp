@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 13:11:01 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 16:30:13 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -163,7 +163,6 @@ void				ALayout::inflate(XmlParser &xml, Activity &a)
 
 	while (xml.next(state))
 	{
-		std::cout << "ALayout::inflate loop" << (void*)this << std::endl; //lol
 		if (state == XmlParser::State::START)
 		{
 			v = AView::getFactory(xml.getMarkupName())(xml, a);
@@ -188,7 +187,7 @@ bool				ALayout::onMouseScroll(int x, int y, float delta)
 	{
 		v = at(i);
 		FTASSERT(v != nullptr);
-		if (v->isMouseScrollTargeted() && v->isMouseOver()) // TODO?? check x, y
+		if (v->isMouseScrollTargeted() && v->isMouseOver())
 			ret |= v->onMouseScroll(x, y, delta);
 	}
 	if (AView::isMouseScrollTargeted())
@@ -207,7 +206,7 @@ bool				ALayout::onMouseDown(int x, int y, int button)
 		v = at(i);
 		FTASSERT(v != nullptr);
 		if (v->isMouseClickTargeted() &&
-			(v->isMouseOver() || v->isMouseCaptureTargeted())) // TODO? check xy
+			(v->isMouseOver() || v->isMouseCaptureTargeted()))
 			ret |= v->onMouseDown(x, y, button);
 	}
 	if (AView::isMouseClickTargeted())
@@ -226,7 +225,7 @@ bool				ALayout::onMouseUp(int x, int y, int button)
 		v = at(i);
 		FTASSERT(v != nullptr);
 		if (v->isMouseClickTargeted() &&
-			(v->isMouseOver() || v->isMouseCaptureTargeted())) // TODO? check xy
+			(v->isMouseOver() || v->isMouseCaptureTargeted()))
 			ret |= v->onMouseUp(x, y, button);
 	}
 	if (AView::isMouseClickTargeted())
@@ -246,7 +245,7 @@ bool				ALayout::onMouseMove(int x, int y)
 		FTASSERT(v != nullptr);
 		// TODO for childrens: call setmouseover  (before of after onmove)
 		if (v->isMouseMoveTargeted() &&
-			(v->isMouseOver() || v->isMouseCaptureTargeted())) // TODO? check xy
+			(v->isMouseOver() || v->isMouseCaptureTargeted()))
 			ret |= v->onMouseMove(x, y);
 	}
 	if (AView::isMouseMoveTargeted())

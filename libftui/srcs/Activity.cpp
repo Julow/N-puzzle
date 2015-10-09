@@ -6,13 +6,13 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 14:00:58 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/09 16:32:21 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include <algorithm>
-#include <iostream> //debug
 
+#include "ft/utils.hpp"
 #include "ftui/Activity.hpp"
 #include "ftui/AView.hpp"
 #include "ftui/XmlParser.hpp"
@@ -20,16 +20,16 @@
 namespace ftui
 {
 
+/*
+** TODO: Allow to call AView::defineView after Activity constructor
+*/
 Activity::Activity(ft::Vec2<int> size) :
 	_rootView(NULL),
 	_eventMap(),
 	_size(size),
 	_l(nullptr)
 {
-	this->_l = luaL_newstate();
-	if (_l == nullptr)
-		;//TODO throw
-	luaL_openlibs(_l);
+	init_lua_env();
 	return ;
 }
 
@@ -44,10 +44,11 @@ static void		finalize_table(
 	lua_State *l, std::string const &name, AView::view_info_s const &i)
 {
 	(void)lua_getglobal(l, name.c_str());
-	if (i.parent != "" )
+	if (i.parent != "")
 	{
 		if (lua_getglobal(l, i.parent.c_str()) != LUA_TTABLE)
-			;//TODO throw
+			throw std::runtime_error(ft::f("Lua: Corrupted table (%)",
+				i.parent));
 		lua_setmetatable(l, -2);
 	}
 	lua_pushstring(l, "__index");
@@ -65,11 +66,10 @@ static void		finalize_table(
 
 void			Activity::init_lua_env(void)
 {
-	if (_l != nullptr)
-		;//TODO ?
+	FTASSERT(_l == nullptr, "lua state already created");
 	this->_l = luaL_newstate();
 	if (_l == nullptr)
-		;//TODO throw
+		throw std::runtime_error("Error while creating lua state");
 	luaL_openlibs(_l);
 	ftui::lua_pushUtils(*this);
 	for (auto it : AView::viewsInfo)
@@ -94,9 +94,6 @@ void			Activity::inflate(std::istream &stream)
 	AView				*v;
 	XmlParser::State	state;
 
-	if (_l == nullptr)
-		;//TODO ?
-	this->init_lua_env();// TODO, move elsewhere
 	if (!xml.next(state))
 		FTASSERT(false, "Activity should own at least 1 view");
 	FTASSERT(state == XmlParser::State::START, "Cannot fail");
@@ -180,7 +177,7 @@ void			Activity::registerLuaCFun_table(
 
 	t = lua_getglobal(_l, tabName.c_str());
 	if (t != LUA_TTABLE)
-		; //TODO throw
+		throw std::runtime_error(ft::f("Lua: Corrupted table (%)", tabName));
 	lua_pushstring(_l, funName.c_str());
 	lua_pushcfunction(_l, f);
 	lua_settable(_l, -3);

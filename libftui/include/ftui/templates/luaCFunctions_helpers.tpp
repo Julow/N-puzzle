@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/09 10:10:30 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/09 16:32:01 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -295,10 +295,12 @@ inline T	*luaCFunRetreiveSelf(lua_State *l, int index)
 	void		*i;
 
 	if (!lua_istable(l, index))
-		;//TODO throw
+		throw std::runtime_error(ft::f("Lua stack: bad argument at index %",
+			index));
 	lua_pushinteger(l, 0);
 	if (lua_gettable(l, index - 1) != LUA_TLIGHTUSERDATA)
-		; //TODO throw
+		throw std::runtime_error(ft::f("Lua stack: Corrupted table at index %",
+			index));
 	i = lua_touserdata(l, -1);
 	lua_pop(l, 1);
 	lua_remove(l, index);

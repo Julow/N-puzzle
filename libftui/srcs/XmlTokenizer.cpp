@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   XmlTokenizer.cpp                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/24 21:50:50 by juloo             #+#    #+#             */
-/*   Updated: 2015/10/02 15:12:41 by jaguillo         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   XmlTokenizer.cpp                                   :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/09/24 21:50:50 by juloo             #+#    #+#             //
+//   Updated: 2015/10/09 16:18:20 by jaguillo         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #include "ftui/XmlTokenizer.hpp"
 #include "ft/utils.hpp"
@@ -78,7 +78,7 @@ void				XmlTokenizer::parse_spaces(void)
 bool				XmlTokenizer::token_eof(char const *str)
 {
 	_is.peek();
-	if (_is.eof()) //TODO j'ai ptete fait de la merde
+	if (_is.eof())
 		return (true);
 	return (false);
 	(void)str;
@@ -144,7 +144,7 @@ int				XmlTokenizer::token_str_hard(char const *str)
 		_oss.put(c);
 		if (c != str[i])
 			return (i);
-		if (_is.eof()) //TODO j'ai ptete fait de la merde
+		if (_is.eof())
 			throw std::domain_error(ft::f("Unexpected \033[91mEOF\033[0m at "
 				"\033[97mline %\033[0m", _line));
 		i++;

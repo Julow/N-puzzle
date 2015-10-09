@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 14:56:18 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 16:08:03 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -159,11 +159,9 @@ AView			*VerticalLayout::popView(AView *view)
 	child_container_t::iterator	it;
 
 	holder = dynamic_cast<ViewHolder*>(view->getViewHolder());
-	if (holder == nullptr)
-		; // TODO THROW
-	it = std::find(this->_childs.begin(), this->_childs.end(), holder);
-	if (it == this->_childs.end())
-		; // TODO THROW
+	if (holder == nullptr || (it = std::find(_childs.begin(), _childs.end(),
+		holder)) == _childs.end())
+		throw std::domain_error(ft::f("Invalid pop view"));
 	this->_childs.erase(it);
 	delete (holder);
 	view->setViewHolder(nullptr);
