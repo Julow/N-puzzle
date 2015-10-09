@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 12:48:48 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/09 10:44:38 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,6 +14,7 @@
 #include <exception>
 #include <cstdlib>
 
+#include "ft/utils.hpp"
 #include "ftui/AView.hpp"
 #include "ftui/Activity.hpp"
 #include "ftui/ALayout.hpp"
@@ -131,23 +132,47 @@ bool				AView::isMouseOver(void) const
 { return (this->_flags & AView::MOUSE_OVER); }
 void				AView::setParam(string const &k, string const &v)
 {
-	// TODO: fucking hmap
-	if (k == "alpha")
-		this->setAlpha(::atof(v.c_str())); //TODO parser float
-	else if (k == "id" && _id == NULL) // Can be set only once
-		this->_id = new std::string(v);
-	else if (k == "visibility")
-		this->setVisibility(v == "true"); //TODO parser bool
-	else if (k == "mouse_scroll_target")
-		this->hookMouseScroll(v == "true"); //TODO parser bool
-	else if (k == "mouse_click_target")
-		this->hookMouseClick(v == "true"); //TODO parser bool
-	else if (k == "mouse_move_target")
-		this->hookMouseMove(v == "true"); //TODO parser bool
-	else if (k == "keyboard_target")
-		this->hookKeyboard(v == "true"); //TODO parser bool
-	else if (this->_holder != nullptr)
-		this->_holder->setParam(k, v);
+	static std::unordered_map<std::string, void (*)(AView*,
+		std::string const &)> const		param_map
+	{
+		{"alpha", [](AView *view, std::string const &p)
+		{
+			view->setAlpha(std::atof(p.c_str()));
+		}},
+		{"id", [](AView *view, std::string const &p)
+		{
+			if (view->_id != NULL)
+				throw std::domain_error(ft::f("Param \"id\" defined twice "
+					"in view #%", view->_id));
+			view->_id = new std::string(p);
+		}},
+		{"visibility", [](AView *view, std::string const &p)
+		{
+			view->setVisibility(p == "true");
+		}},
+		{"mouse_scroll_target", [](AView *view, std::string const &p)
+		{
+			view->hookMouseScroll(p == "true");
+		}},
+		{"mouse_click_target", [](AView *view, std::string const &p)
+		{
+			view->hookMouseClick(p == "true");
+		}},
+		{"mouse_move_target", [](AView *view, std::string const &p)
+		{
+			view->hookMouseMove(p == "true");
+		}},
+		{"keyboard_target", [](AView *view, std::string const &p)
+		{
+			view->hookKeyboard(p == "true");
+		}},
+	};
+	auto const	&it = param_map.find(k);
+
+	if (it != param_map.end())
+		it->second(this, v);
+	else if (_holder != NULL)
+		_holder->setParam(k, v);
 	return ;
 }
 
