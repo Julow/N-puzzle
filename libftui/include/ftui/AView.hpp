@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/09 07:52:29 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/09 15:05:14 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -196,7 +196,7 @@ public:
 		, view_info_s::factory_t factory
 		, std::vector<view_info_s::luamethod_t> luaMethods);
 
-private:
+public:
 
 	static int				setRequestedSizeG(lua_State *l);
 

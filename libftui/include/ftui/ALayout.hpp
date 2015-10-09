@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 07:52:09 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/09 15:08:28 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -94,6 +94,19 @@ private:
 	ALayout(void) = delete;
 	ALayout(ALayout const &src) = delete;
 	ALayout			&operator=(ALayout const &rhs) = delete;
+
+/*
+** Static
+*/
+public:
+	static int					setParamG(lua_State *l);
+	static int					atG(lua_State *l);
+
+	static int					sizeG(lua_State *l);
+	
+	static int					addViewG(lua_State *l);
+	static int					popViewG(lua_State *l);
+	
 };
 
 };

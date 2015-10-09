@@ -22,7 +22,9 @@ o/srcs/SolidView.o: srcs/SolidView.cpp include/SolidView.hpp \
 	libftui/include/ft/templates/Vec3.tpp \
 	libftui/include/ft/templates/Vec4.tpp libftui/include/ftui/AView.hpp \
 	libftui/include/ftui/Canvas.hpp libftui/include/ftui/libftui.hpp \
-	libftui/include/ftui/lua.hpp | o/srcs/
+	libftui/include/ftui/lua.hpp libftui/include/ftui/IViewHolder.hpp \
+	libftui/include/ftui/XmlParser.hpp libftui/include/ftui/XmlTokenizer.hpp \
+	| o/srcs/
 o/srcs/main.o: srcs/main.cpp libftui/include/ft/utils.hpp \
 	libftui/include/ft/Vec.hpp libftui/include/ft/assert.hpp \
 	libftui/include/ft/templates/Vec2.tpp \
@@ -32,8 +34,10 @@ o/srcs/main.o: srcs/main.cpp libftui/include/ft/utils.hpp \
 	libftui/include/ftui/EventParams.hpp libftui/include/ftui/IEventBox.hpp \
 	libftui/include/ftui/IEventParams.hpp libftui/include/ftui/IViewHolder.hpp \
 	libftui/include/ftui/libftui.hpp libftui/include/ftui/lua.hpp \
-	libftui/include/ftui/templates/Activity.tpp \
-	libftui/include/ftui/luaCFunctions_helpers.hpp include/GlCanvasHolder.hpp \
-	libftui/include/ft/Rect.hpp libftui/include/ftui/Canvas.hpp \
-	include/SolidView.hpp libftui/include/ftui/AView.hpp include/gl.hpp \
+	libftui/include/ftui/templates/Activity.tpp libftui/include/ftui/AView.hpp \
+	libftui/include/ftui/ALayout.hpp \
+	libftui/include/ftui/luaCFunctions_helpers.hpp \
+	libftui/include/ftui/templates/luaCFunctions_helpers.tpp \
+	include/GlCanvasHolder.hpp libftui/include/ft/Rect.hpp \
+	libftui/include/ftui/Canvas.hpp include/SolidView.hpp include/gl.hpp \
 	| o/srcs/

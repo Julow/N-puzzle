@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 08:51:21 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 16:08:09 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,6 +16,7 @@
 #include <iomanip>
 #include <fstream>
 #include <stdexcept>
+#include <string>     // std::string, std::to_string
 
 #include "ftui/Activity.hpp"
 #include "ftui/AView.hpp"
@@ -149,7 +150,6 @@ public:
 	void				loop(void)
 	{
 		ftui::Canvas		canvas(_canvasHolder.getCanvas());
-
 		while (!glfwWindowShouldClose(_window))
 		{
 			glfwPollEvents();
