@@ -6,12 +6,14 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/08 16:15:17 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 07:52:50 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef ACANVAS_HPP
 # define ACANVAS_HPP
+
+# include <stdint.h>
 
 # include "ftui/libftui.hpp"
 # include "ft/Rect.hpp"
@@ -30,7 +32,7 @@ namespace ftui
 class	Canvas
 {
 public:
-	typedef unsigned long int		color_t;
+	typedef uint32_t	color_t;
 
 	struct	Params
 	{

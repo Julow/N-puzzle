@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/07 20:50:13 by juloo            ###   ########.fr       //
+//   Updated: 2015/10/09 07:52:09 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -17,6 +17,7 @@
 
 # include <iterator>
 # include <vector>
+# include <stdint.h>
 
 # include "ftui/AView.hpp"
 
@@ -84,7 +85,7 @@ public:
 
 protected:
 
-	unsigned long				_layoutFlags;
+	uint32_t					_layoutFlags;
 
 	virtual IViewHolder			*holderAt(int i) = 0;
 

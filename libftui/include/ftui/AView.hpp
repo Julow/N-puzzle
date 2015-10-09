@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/08 13:38:01 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 07:52:29 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,6 +18,7 @@
 # include <string>
 # include <vector>
 # include <unordered_map>
+# include <stdint.h>
 
 # include "ftui/lua.hpp"
 
@@ -160,7 +161,7 @@ protected:
 	Activity					&_act;
 
 	std::string const *			_id;
-	unsigned long				_flags;
+	uint32_t					_flags;
 	float						_alpha;
 
 	void						setMouseOver(bool state);
