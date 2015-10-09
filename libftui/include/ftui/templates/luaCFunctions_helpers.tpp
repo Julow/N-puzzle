@@ -1,3 +1,14 @@
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   luaCFunctions_helpers.tpp                          :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
+//   Updated: 2015/10/09 10:10:30 by ngoguey          ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 # include <iostream>
 # include <functional> //TODO move luaFT_stackdump
@@ -43,10 +54,10 @@ inline void        luaFT_stackdump(lua_State *L) //TODO move luaFT_stackdump
 namespace internal
 {
 template <typename T>
-constexpr inline int	decay(){ return 1; }
+constexpr inline int	decay(void){ return 1; }
 
 template <>
-constexpr inline int	decay<ft::Vec2<int>>(){ return 2; }
+constexpr inline int	decay<ft::Vec2<int>>(void){ return 2; }
 
 template <typename T>
 inline T				popStack(lua_State *, int)
@@ -103,9 +114,9 @@ void					pushStack(lua_State *, Ret&&)
 	return ;
 }
 
-template <> inline void		pushStack<1, std::string>(lua_State *l, std::string&& r)
+template <> inline void	pushStack<1, std::string>(lua_State *l, std::string&& r)
 { lua_pushstring(l, r.c_str()); }
-template <> inline void		pushStack<2, ft::Vec2<int> >(
+template <> inline void	pushStack<2, ft::Vec2<int> >(
 	lua_State *l, ft::Vec2<int>&& r)
 {
 	lua_pushinteger(l, r.x);//TODO right order ?
@@ -260,18 +271,8 @@ int		luaCFunHelper(lua_State *l, C const *i, Ret (C::*f)(Args...) const)
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
 int		luaCFunHelper(lua_State *l, Ret (C::*f)(Args...))
 {
-	// void		*i;
-
-	// if (!lua_istable(l, -NumIn))
-		// ;//TODO throw
-	// lua_pushinteger(l, 0);
-	// if (lua_gettable(l, -NumIn - 1) != LUA_TLIGHTUSERDATA)
-		// ; //TODO throw
-	// i = lua_touserdata(l, -1);
-	// lua_pop(l, 1);
-	// lua_remove(l, -NumIn);
-	
-	internal::helperLoop<NumIn - 1, NumOut>(l, luaCFunRetreiveSelf<C>(l, -NumIn), f);
+	internal::helperLoop<NumIn - 1, NumOut>(
+		l, luaCFunRetreiveSelf<C>(l, -NumIn), f);
 	return (NumOut - 1);
 }
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>

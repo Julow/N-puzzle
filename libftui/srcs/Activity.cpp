@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/08 13:30:03 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 09:01:10 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -152,7 +152,10 @@ void			Activity::unregisterEvent(std::string const &event, AView *v)
 	while (it != ite)
 	{
 		if (it->second->getView() == v)
+		{
+			delete it->second;
 			it = this->_eventMap.erase(it);
+		}
 		else
 			it++;
 	}
