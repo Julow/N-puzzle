@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 15:13:02 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 16:02:18 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -270,8 +270,7 @@ Main			*Main::_instance;
 
 int				main(void)
 {
-	// TODO: ftui::AView::defineView("SolidView", "AView", ftui::SolidView::create_view, {});
-	ftui::AView::registerNewSonView("SolidView", "AView", ftui::SolidView::create_view, {});
+	ftui::AView::defineView("SolidView", "AView", ftui::SolidView::create_view, {});
 	try
 	{
 		Main		main;

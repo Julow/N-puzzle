@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/09 13:13:59 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 16:01:47 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -203,11 +203,13 @@ public:
 	static view_info_s::factory_t	getFactory(std::string const &name);
 
 	/*
-	 *	registerNewSonView()	Call this function to register your new AViews
+	 *  defineView()
+	 *  Define a view class so that can be created from a xml file
 	 *  ********************************************************************* **
-	 *		It should be done once for all AViews, and before any xml inflating.
+	 *  It should be done once for all custom views,
+	 *    and before any xml inflating.
 	 */
-	static void					registerNewSonView(
+	static void						defineView(
 		std::string const &name
 		, std::string const &parent
 		, view_info_s::factory_t factory
