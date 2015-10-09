@@ -91,6 +91,19 @@ private:
 	ALayout(void) = delete;
 	ALayout(ALayout const &src) = delete;
 	ALayout			&operator=(ALayout const &rhs) = delete;
+
+/*
+** Static
+*/
+public:
+	static int					setParamG(lua_State *l);
+	static int					atG(lua_State *l);
+
+	static int					sizeG(lua_State *l);
+	
+	static int					addViewG(lua_State *l);
+	static int					popViewG(lua_State *l);
+	
 };
 
 };

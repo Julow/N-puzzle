@@ -42,15 +42,23 @@ AView::views_info_t				AView::viewsInfo
 		std::make_tuple("getAlpha", &AView::getAlphaG),
 		std::make_tuple("isVisible", &AView::isVisibleG),
 		std::make_tuple("isMouseOver", &AView::isMouseOverG),
-		std::make_tuple("isMouseScrollTargeted", &AView::isMouseScrollTargetedG),
+		std::make_tuple("isMouseScrollTargeted"
+						, &AView::isMouseScrollTargetedG),
 		std::make_tuple("isMouseClickTargeted", &AView::isMouseClickTargetedG),
-		std::make_tuple("isMouseCaptureTargeted", &AView::isMouseCaptureTargetedG),
+		std::make_tuple("isMouseCaptureTargeted"
+						, &AView::isMouseCaptureTargetedG),
 		std::make_tuple("isKeyboardTargeted", &AView::isKeyboardTargetedG),
 		std::make_tuple("isUpdateQueried", &AView::isUpdateQueriedG),
 		std::make_tuple("isMeasureQueried", &AView::isMeasureQueriedG),
 		std::make_tuple("isRedrawQueried", &AView::isRedrawQueriedG),
 	}}},
-	{"ALayout", {"AView", nullptr, {}}},
+	{"ALayout", {"AView", nullptr, {
+		// std::make_tuple("setParam", &ALayout::setParamG) // CHECK HERITAGE
+		std::make_tuple("size", &ALayout::sizeG)
+		// std::make_tuple("at", &ALayout::atG),
+		// std::make_tuple("addView", &ALayout::addViewG),
+		// std::make_tuple("popView", &ALayout::popViewG)
+			}}},
 	{"VerticalLayout", {"ALayout", &VerticalLayout::createView, {}}}
 };
 

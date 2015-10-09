@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 15:25:06 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/09 14:34:15 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/09 14:35:17 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -74,7 +74,7 @@ ftpt = function(t, p1, p2, p3)												\n \
 end;																		\n \
 "
 			}};
-//			then string.format(' metatab:%s', tostring(getmetatable(t)))\n	
+
 namespace ftui
 {
 

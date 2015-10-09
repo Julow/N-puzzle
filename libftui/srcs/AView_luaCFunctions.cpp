@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/05 14:29:39 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/09 16:08:25 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -50,21 +50,22 @@ int			AView::getIdG(lua_State *l)
 	return (1);
 }
 
-int			AView::getParentG(lua_State *l)
-{
-	AView *const	i = luaCFunRetreiveSelf<AView>(l, -1);
-	ALayout *const	p = i->getParent();
+DEF_LUACFUN_GSUFFIX(getParent, 1, 1) //TODO untested
+// int			AView::getParentG(lua_State *l)
+// {
+// 	AView *const	i = luaCFunRetreiveSelf<AView>(l, -1);
+// 	ALayout *const	p = i->getParent();
 
-	if (p == nullptr)
-		lua_pushnil(l);
-	else
-	{
-		lua_pushglobaltable(l);
-		lua_pushlightuserdata(l, p);
-		lua_gettable(l, -2);
-	}
-	return (1);
-}
+// 	if (p == nullptr)
+// 		lua_pushnil(l);
+// 	else
+// 	{
+// 		lua_pushglobaltable(l);
+// 		lua_pushlightuserdata(l, p);
+// 		lua_gettable(l, -2);
+// 	}
+// 	return (1);
+// }
 
 DEF_LUACFUN_GSUFFIX(getAlpha, 1, 1)
 DEF_LUACFUN_GSUFFIX(isVisible, 1, 1)

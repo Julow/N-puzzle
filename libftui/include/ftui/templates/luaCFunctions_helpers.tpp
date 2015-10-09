@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/09 16:32:01 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 16:08:43 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -105,12 +105,27 @@ BASICPOPSTACK(double, luaL_checknumber)
 #undef BASICPOPSTACK
 
 // * STEP 4 HELPERS ********************************************************* //
-template <int NumOut, typename Ret>
+template <int NumOut, typename Ret,
+	typename std::enable_if<!std::is_pointer<Ret>::value>::type* = nullptr>
 void					pushStack(lua_State *, Ret&&)
 {
 	static_assert(!std::is_same<Ret, Ret>::value
 				  , "This return type is not supported by LOLhelper function "
 				  " or Wrong number of arguments for return value");
+	return ;
+}
+
+template <int NumOut, typename Ret,
+	typename std::enable_if<std::is_pointer<Ret>::value>::type* = nullptr>
+void					pushStack(lua_State *, Ret&& r)
+{
+	static_assert(NumOut == 1, "Wrong number of arguments for return value");
+	void *const	ptr = reinterpret_cast<void*>(r);
+
+	std::cout << "faire des trucs sur la stack lua\n";
+	(void)ptr;
+	//TODO untested + finir
+	// static_assert(!std::is_same<Ret, Ret>::value, "truc c'est bon");
 	return ;
 }
 

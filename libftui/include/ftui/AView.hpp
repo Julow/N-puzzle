@@ -215,7 +215,7 @@ public:
 		, view_info_s::factory_t factory
 		, std::vector<view_info_s::luamethod_t> luaMethods);
 
-private:
+public:
 
 	static int				setRequestedSizeG(lua_State *l);
 

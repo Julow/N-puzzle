@@ -16,6 +16,7 @@
 #include <iomanip>
 #include <fstream>
 #include <stdexcept>
+#include <string>     // std::string, std::to_string
 
 #include "ftui/Activity.hpp"
 #include "ftui/AView.hpp"
@@ -155,7 +156,6 @@ public:
 	void				loop(void)
 	{
 		ftui::Canvas		canvas(_canvasHolder.getCanvas());
-
 		while (!glfwWindowShouldClose(_window))
 		{
 			glfwPollEvents();
