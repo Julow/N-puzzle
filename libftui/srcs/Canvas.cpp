@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 15:44:44 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 15:57:05 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -127,7 +127,7 @@ void			Canvas::strokeRect(ft::Rect<int> const &rect, Params const &opt)
 	if (rect.getWidth() == 0 || rect.getHeight() == 0)
 		return ;
 	y = rect.bottom + _clip.top - 1;
-	top = rect.bottom + _clip.top - opt.lineWidth;
+	top = std::max(rect.bottom - opt.lineWidth, rect.top) + _clip.top;
 	while (y >= top)
 		putPixel(left, y--, opt.strokeColor, rect.getWidth());
 	top = rect.top + _clip.top + opt.lineWidth;
