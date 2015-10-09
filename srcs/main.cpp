@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/08 13:52:56 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 08:51:21 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -113,11 +113,13 @@ public:
 		glViewport(0, 0, WIDTH, HEIGHT);
 		glfwSetWindowUserPointer(_window, this);
 		glfwSetKeyCallback(_window, &Main::handleKeyEvents);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 /*
 ** -
 */
 		_canvasHolder.init();
-
 
 		printViewTree(_act.getRoot());
 
@@ -151,7 +153,9 @@ public:
 		while (!glfwWindowShouldClose(_window))
 		{
 			glfwPollEvents();
-			canvas.clear(ft::Rect<int>(0, 0, canvas.getWidth(), canvas.getHeight()));
+			glClearColor(0.7f, 0.2f, 0.2f, 1);
+			glClear(GL_COLOR_BUFFER_BIT);
+			canvas.clear();
 			_act.render(canvas);
 			_canvasHolder.render();
 			glfwSwapBuffers(_window);

@@ -6,7 +6,7 @@
 //   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/07 21:38:50 by juloo             #+#    #+#             //
-//   Updated: 2015/10/08 16:59:00 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 08:42:33 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -78,7 +78,7 @@ void			GlCanvasHolder::init_texture(void)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB,
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_RGBA,
 		GL_UNSIGNED_BYTE, _canvas.getBitmap());
 	glGenerateMipmap(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -102,7 +102,8 @@ void			GlCanvasHolder::init_quad(void)
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), NULL);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+	// glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), NULL);
 	glEnableVertexAttribArray(0);
 	glBindVertexArray(0);
 	glDeleteBuffers(1, &vbo);
@@ -140,7 +141,7 @@ void			GlCanvasHolder::init_shaders(void)
 		"#version 410 core\n"
 		"layout (location = 0) in vec2	buff_pos;\n"
 		"out vec2 out_pos;\n"
-		"void main() { out_pos = buff_pos; gl_Position = vec4(buff_pos, 0.f, 1.f); }\n";
+		"void main() { out_pos = (buff_pos + 1.f) / 2.f; gl_Position = vec4(buff_pos, 0.f, 1.f); }\n";
 	static const char *const	frag_shader_code =
 		"#version 410 core\n"
 		"uniform sampler2D bitmap;\n"
