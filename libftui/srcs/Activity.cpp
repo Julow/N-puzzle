@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 14:45:48 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 14:00:58 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -56,9 +56,9 @@ static void		finalize_table(
 	// lua_pushstring(l, "__newindex");
 	// lua_pushstring(l, "no way");
 	// lua_settable(l, -3);
-	lua_pushstring(l, "__metatable");
-	lua_pushstring(l, "not your business");
-	lua_settable(l, -3);
+	// lua_pushstring(l, "__metatable");
+	// lua_pushstring(l, "not your business");
+	// lua_settable(l, -3);
 	lua_setglobal(l, name.c_str());
 	return ;
 }
@@ -155,7 +155,10 @@ void			Activity::unregisterEvent(std::string const &event, AView *v)
 	while (it != ite)
 	{
 		if (it->second->getView() == v)
+		{
+			delete it->second;
 			it = this->_eventMap.erase(it);
+		}
 		else
 			it++;
 	}

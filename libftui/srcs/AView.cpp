@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 14:49:57 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 15:01:01 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,6 +16,7 @@
 
 #include "ft/utils.hpp"
 #include "ftui/AView.hpp"
+#include "ftui/Activity.hpp"
 #include "ftui/ALayout.hpp"
 #include "ftui/IViewHolder.hpp"
 #include "ftui/EventParams.hpp"
@@ -43,6 +44,29 @@ AView::AView(XmlParser const &xml, Activity &act) :
 	_flags(0),
 	_alpha(1.f)
 {
+	lua_State *const	l = act.getLuaState();
+
+	lua_pushglobaltable(l);							// _G
+	lua_createtable(l, 0, 0);						// {}, _G
+	lua_getglobal(l, xml.getMarkupName().c_str());	// parent, {}, _G
+	if (!lua_istable(l, -1))
+		;//TODO throw
+	lua_setmetatable(l, -2);						// [{}], _G
+	lua_pushstring(l, "__index");					// __index, {}, _G
+	lua_pushvalue(l, -2);							// {}, __index, [{}], _G
+	lua_settable(l, -3);							// [{}], _G
+
+	lua_pushlightuserdata(l, this);					// ptr, {}, _G
+	lua_pushvalue(l, -2);							// {}, ptr, [{}], _G
+	lua_settable(l, -4);							// {}, [_G]
+	
+	if (_id != nullptr)
+	{
+		lua_pushstring(l, _id->c_str());			// id, {}, _G
+		lua_pushvalue(l, -2);						// {}, id, [{}], [_G]
+		lua_settable(l, -4);						// {}, [_G]
+	}
+	lua_pop(l, 2);
 }
 
 AView::~AView(void)
