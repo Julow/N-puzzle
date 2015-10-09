@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:37 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/08 13:06:04 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 15:28:45 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -31,7 +31,7 @@ public:
 
 protected:
 
-	Canvas::color_t		_color;
+	Canvas::Params		_params;
 
 private:
 	SolidView(void);

@@ -5,7 +5,8 @@
 		verticalAlign="CENTER"
 		width="200"
 		height="50"
-		color="0xFF0000FF"
+		strokeColor="0xFFFFFFFF"
+		fillColor="0xFF0000FF"
 	/>
 	<VerticalLayout id="lol">
 		<SolidView
@@ -14,7 +15,8 @@
 			verticalAlign="CENTER"
 			width="200"
 			height="50"
-			color="0xFFFF0000"
+			strokeColor="0xFF000000"
+			fillColor="0xFFFF0000"
 			alpha="1"
 		/>
 		<SolidView
@@ -23,7 +25,7 @@
 			verticalAlign="CENTER"
 			width="200"
 			height="50"
-			color="0xFF00FF00"
+			fillColor="0xFF00FF00"
 		/>
 	</VerticalLayout>
 	<SolidView
@@ -33,6 +35,6 @@
 		verticalAlign="CENTER"
 		width="200"
 		height="50"
-		color="0xFF0000FF"
+		fillColor="0xFF0000FF"
 	/>
 </VerticalLayout>

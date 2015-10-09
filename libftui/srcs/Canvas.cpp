@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 14:44:19 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 15:25:02 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -146,7 +146,7 @@ void			Canvas::fillRect(ft::Rect<int> const &rect, Params const &opt)
 
 	y = rect.bottom + _clip.top;
 	while (--y >= top)
-		putPixel(left, y, opt.strokeColor, width);
+		putPixel(left, y, opt.fillColor, width);
 }
 
 Canvas			&Canvas::operator=(Canvas const &rhs)

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 14:57:00 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 15:30:29 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,8 +19,8 @@
 namespace ftui
 {
 
-SolidView::SolidView(XmlParser const &xml, Activity &act)
-	: AView(xml, act), _color(0x0)
+SolidView::SolidView(XmlParser const &xml, Activity &act) :
+	AView(xml, act), _params{0x0, 0x0}
 {
 }
 
@@ -31,15 +31,21 @@ SolidView::~SolidView(void)
 void			SolidView::onDraw(Canvas &canvas)
 {
 	AView::onDraw(canvas);
-	canvas.fillRect(ft::Rect<int>(ft::Vec2<int>(0, 0), _holder->getSize()),
-		Canvas::Params{0x0, _color});
+	if (_params.fillColor != 0x0)
+		canvas.fillRect(ft::Rect<int>(ft::Vec2<int>(0, 0), _holder->getSize()),
+			_params);
+	if (_params.strokeColor != 0x0)
+		canvas.strokeRect(ft::Rect<int>(ft::Vec2<int>(0, 0), _holder->getSize()),
+			_params);
 }
 
 void			SolidView::setParam(std::string const &k, std::string const &v)
 {
 	AView::setParam(k, v);
-	if (k == "color")
-		_color = std::stoul(v, NULL, 16);
+	if (k == "fillColor")
+		_params.fillColor = std::stoul(v, NULL, 16);
+	else if (k == "strokeColor")
+		_params.strokeColor = std::stoul(v, NULL, 16);
 	else
 		AView::setParam(k, v);
 }
