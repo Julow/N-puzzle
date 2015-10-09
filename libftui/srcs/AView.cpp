@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 10:44:38 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 14:49:57 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -27,14 +27,27 @@ using std::string;
 namespace ftui
 {
 
-AView::AView(XmlParser const &, Activity &act)
-	: _holder(nullptr), _act(act), _id(nullptr), _flags(0), _alpha(1.f)
+static std::string const	*retrieveId(XmlParser const &xml)
+{
+	auto const		&it = xml.getParams().find("id");
+
+	if (it != xml.getParams().end())
+		return (new std::string(it->second));
+	return (nullptr);
+}
+
+AView::AView(XmlParser const &xml, Activity &act) :
+	_holder(nullptr),
+	_act(act),
+	_id(retrieveId(xml)),
+	_flags(0),
+	_alpha(1.f)
 {
 }
 
 AView::~AView(void)
 {
-	if (_id != NULL)
+	if (_id != nullptr)
 		delete _id;
 }
 
@@ -43,6 +56,7 @@ AView::~AView(void)
 */
 std::string const	*AView::getId(void) const
 { return (this->_id); }
+
 ALayout				*AView::getParent(void)
 { return (this->_holder == nullptr ? nullptr : this->_holder->getParent()); }
 
@@ -63,11 +77,7 @@ void				AView::inflate(XmlParser &xml, Activity &)
 	XmlParser::State	state;
 
 	for (auto const &p : xml.getParams())
-	{
-		if (_holder != NULL)
-			_holder->setParam(p.first, p.second);
 		setParam(p.first, p.second);
-	}
 	if (!xml.next(state))
 		FTASSERT(false);
 	FTASSERT(state == XmlParser::State::END);
@@ -79,14 +89,17 @@ void				AView::inflate(XmlParser &xml, Activity &)
 */
 float				AView::getAlpha(void) const
 { return (this->_alpha); }
+
 bool				AView::isVisible(void) const
 { return (this->_flags & AView::HIDDEN); }
+
 void				AView::setAlpha(float value)
 {
 	this->_alpha = value;
 	//TODO finish AView::setAlpha
 	return ;
 }
+
 void				AView::setVisibility(bool hidden)
 {
 	if (static_cast<bool>(this->_flags & AView::HIDDEN) != hidden)
@@ -103,8 +116,10 @@ void				AView::setVisibility(bool hidden)
 	}
 	return ;
 }
+
 bool				AView::isMouseOver(void) const
 { return (this->_flags & AView::MOUSE_OVER); }
+
 void				AView::setParam(string const &k, string const &v)
 {
 	static std::unordered_map<std::string, void (*)(AView*,
@@ -113,13 +128,6 @@ void				AView::setParam(string const &k, string const &v)
 		{"alpha", [](AView *view, std::string const &p)
 		{
 			view->setAlpha(std::atof(p.c_str()));
-		}},
-		{"id", [](AView *view, std::string const &p)
-		{
-			if (view->_id != NULL)
-				throw std::domain_error(ft::f("Param \"id\" defined twice "
-					"in view #%", view->_id));
-			view->_id = new std::string(p);
 		}},
 		{"visibility", [](AView *view, std::string const &p)
 		{
@@ -168,8 +176,6 @@ void				AView::onMeasure(void)
 {
 	this->_flags &= ~AView::MEASURE_QUERY;
 	// TODO call lua if registered AView::onMeasure
-	if (_holder != NULL)
-		_holder->setRequestedSize(ft::Vec2<int>(0, 0));
 }
 
 void				AView::onDraw(Canvas &canvas)

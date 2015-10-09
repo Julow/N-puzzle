@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/08 16:58:00 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 14:56:18 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -48,6 +48,38 @@ void            VerticalLayout::inflate(XmlParser &xml, Activity &a)
 }
 
 /*
+** Align childs horizontally and lock their size
+*/
+void			VerticalLayout::alignChilds(void)
+{
+	ft::Vec2<int>	layoutSize = _holder->getSize();
+	int				childPosX;
+	ft::Vec2<int>	childSize;
+
+	for (ViewHolder *h : _childs)
+	{
+		childPosX = h->getPos().x;
+		childSize = h->getRequestedSize();
+		if (childSize.x > layoutSize.x)
+			childSize.x = layoutSize.x;
+		switch (h->getHorizontalAlign())
+		{
+		case Align::LEFT:
+			childPosX = 0;
+			break ;
+		case Align::CENTER:
+			childPosX = (layoutSize.x - childSize.x) / 2;
+			break ;
+		case Align::RIGHT:
+			childPosX = layoutSize.x - childSize.x;
+			break ;
+		}
+		h->setPosX(childPosX);
+		h->setSize(childSize);
+	}
+}
+
+/*
 ** onMeasure
 ** -
 ** Place childs vertically
@@ -71,41 +103,16 @@ void			VerticalLayout::onMeasure(void)
 		offsetTop += requestedSize.y;
 	}
 	_holder->setRequestedSize(ft::Vec2<int>(maxWidth, offsetTop));
+	alignChilds();
 }
 
 /*
 ** onSizeChange
-** -
-** Align childs horizontally and lock their size
 */
 void			VerticalLayout::onSizeChange(void)
 {
-	ft::Vec2<int>	layoutSize = _holder->getSize();
-	int				childPosX;
-	ft::Vec2<int>	childSize;
-
 	AView::onSizeChange();
-	for (ViewHolder *h : _childs)
-	{
-		childPosX = h->getPos().x;
-		childSize = h->getRequestedSize();
-		if (childSize.x > layoutSize.x)
-			childSize.x = layoutSize.x;
-		switch (h->getHorizontalAlign())
-		{
-		case Align::LEFT:
-			childPosX = 0;
-			break ;
-		case Align::CENTER:
-			childPosX = (layoutSize.x - childSize.x) / 2;
-			break ;
-		case Align::RIGHT:
-			childPosX = layoutSize.x - childSize.x;
-			break ;
-		}
-		h->setPosX(childPosX);
-		h->setSize(childSize);
-	}
+	alignChilds();
 }
 
 void			VerticalLayout::onDraw(Canvas &canvas)

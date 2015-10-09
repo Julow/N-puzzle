@@ -6,7 +6,7 @@
 //   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/07 21:38:50 by juloo             #+#    #+#             //
-//   Updated: 2015/10/09 08:42:33 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 14:44:34 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -51,8 +51,6 @@ void			GlCanvasHolder::render(void)
 {
 	if (_canvas.getBitmap() == NULL)
 		throw std::domain_error("render() call before init()");
-	_canvas.fillRect(ft::Rect<int>(0, 0, _canvas.getWidth() / 2 + 5,
-		_canvas.getHeight() / 2 - 5), ftui::Canvas::Params({0xFFFF0000, 0xFFFF0000})); // TMP
 	glUseProgram(_shaders);
 	glBindVertexArray(_quad);
 	glActiveTexture(GL_TEXTURE0);
@@ -141,7 +139,9 @@ void			GlCanvasHolder::init_shaders(void)
 		"#version 410 core\n"
 		"layout (location = 0) in vec2	buff_pos;\n"
 		"out vec2 out_pos;\n"
-		"void main() { out_pos = (buff_pos + 1.f) / 2.f; gl_Position = vec4(buff_pos, 0.f, 1.f); }\n";
+		"void main() { out_pos = (buff_pos + 1.f) / 2.f;\n"
+		"out_pos.y = 1.f - out_pos.y;\n"
+		"gl_Position = vec4(buff_pos, 0.f, 1.f); }\n";
 	static const char *const	frag_shader_code =
 		"#version 410 core\n"
 		"uniform sampler2D bitmap;\n"

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 08:49:07 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 14:44:19 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -37,6 +37,9 @@ Canvas::~Canvas(void)
 {
 }
 
+/*
+** TODO: alpha
+*/
 Canvas::color_t const	*Canvas::getBitmap(void) const
 {
 	return (_bitmap);
@@ -141,7 +144,7 @@ void			Canvas::fillRect(ft::Rect<int> const &rect, Params const &opt)
 	int const	width = rect.getWidth();
 	int			y;
 
-	y = rect.bottom + _clip.left;
+	y = rect.bottom + _clip.top;
 	while (--y >= top)
 		putPixel(left, y, opt.strokeColor, width);
 }

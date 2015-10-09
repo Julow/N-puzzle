@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 08:51:21 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 14:56:10 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -60,6 +60,12 @@ void		printViewTree(ftui::AView const *view, int indent = 0)
 	std::cout << typeid(*view).name();
 	if (view->getId() != NULL)
 		std::cout << " #" << *(view->getId());
+	if (view->getViewHolder() != nullptr)
+		ft::f(std::cout, " <(%, %) / (%, %)>",
+			view->getViewHolder()->getPos().x,
+			view->getViewHolder()->getPos().y,
+			view->getViewHolder()->getSize().x,
+			view->getViewHolder()->getSize().y);
 	if (view->getAlpha() < 1.f)
 		std::cout << " alpha=" << view->getAlpha();
 	layout = dynamic_cast<ftui::ALayout const*>(view);
@@ -76,7 +82,7 @@ void		printViewTree(ftui::AView const *view, int indent = 0)
 */
 
 #define WIDTH		500
-#define HEIGHT		100
+#define HEIGHT		400
 
 class Main
 {
@@ -155,11 +161,12 @@ public:
 			glfwPollEvents();
 			glClearColor(0.7f, 0.2f, 0.2f, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
-			canvas.clear();
+			// canvas.clear();
 			_act.render(canvas);
 			_canvasHolder.render();
 			glfwSwapBuffers(_window);
 		}
+		printViewTree(_act.getRoot());
 	}
 	int					getPuzzleSize(void) { return _puzzleSize; }
 
@@ -263,6 +270,7 @@ Main			*Main::_instance;
 
 int				main(void)
 {
+	// ftui::AView::defineView("SolidView", "AView", ftui::SolidView::create_view, {});
 	ftui::AView::registerNewSonView("SolidView", "AView", ftui::SolidView::create_view, {});
 	try
 	{

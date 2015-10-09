@@ -1,30 +1,38 @@
 <VerticalLayout id="UIParent">
+	<SolidView
+		marginTop="10"
+		marginBottom="10"
+		verticalAlign="CENTER"
+		width="200"
+		height="50"
+		color="0xFF0000FF"
+	/>
 	<VerticalLayout id="lol">
 		<SolidView
-			marginTop="20"
-			marginBottom="20"
+			marginTop="5"
+			marginBottom="10"
 			verticalAlign="CENTER"
 			width="200"
 			height="50"
 			color="0xFFFF0000"
-			alpha="0.5"
+			alpha="1"
 		/>
 		<SolidView
-			marginTop="20"
-			marginBottom="20"
-			verticalAlign="LEFT"
+			marginTop="10"
+			marginBottom="10"
+			verticalAlign="CENTER"
 			width="200"
 			height="50"
-			color="0xFF00FFFF"
+			color="0xFF00FF00"
 		/>
 	</VerticalLayout>
 	<SolidView
 		id="mdr"
-		marginTop="20"
-		marginBottom="20"
+		marginTop="10"
+		marginBottom="10"
 		verticalAlign="CENTER"
 		width="200"
 		height="50"
-		color="0xFF00FF00"
+		color="0xFF0000FF"
 	/>
 </VerticalLayout>

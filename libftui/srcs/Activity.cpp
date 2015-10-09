@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/08 13:30:03 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 14:45:48 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -138,7 +138,10 @@ void			Activity::render(Canvas &canvas)
 	if (rv->isUpdateQueried())
 		rv->onUpdate();
 	if (rv->isMeasureQueried())
+	{
 		rv->onMeasure();
+		_rootView->setSize(_rootView->getRequestedSize());
+	}
 	if (rv->isRedrawQueried())
 		rv->onDraw(canvas);
 	return ;
