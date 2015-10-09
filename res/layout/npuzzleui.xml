@@ -11,21 +11,22 @@
 	<VerticalLayout id="lol">
 		<SolidView
 			marginTop="5"
-			marginBottom="10"
+			marginBottom="-10"
 			verticalAlign="CENTER"
 			width="200"
 			height="50"
 			strokeColor="0xFF000000"
 			fillColor="0xFFFF0000"
-			alpha="1"
+			alpha="1.f"
 		/>
 		<SolidView
-			marginTop="10"
+			marginTop="0"
 			marginBottom="10"
 			verticalAlign="CENTER"
 			width="200"
 			height="50"
 			fillColor="0xFF00FF00"
+			alpha="0.5"
 		/>
 	</VerticalLayout>
 	<SolidView

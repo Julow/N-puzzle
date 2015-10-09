@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 15:57:05 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 17:53:32 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,7 +16,7 @@
 namespace ftui
 {
 
-Canvas::Canvas(color_t *bitmap, int width, int height) :
+Canvas::Canvas(ft::Color::t *bitmap, int width, int height) :
 	_bitmap(bitmap),
 	_width(width),
 	_height(height),
@@ -40,7 +40,7 @@ Canvas::~Canvas(void)
 /*
 ** TODO: alpha
 */
-Canvas::color_t const	*Canvas::getBitmap(void) const
+ft::Color::t const	*Canvas::getBitmap(void) const
 {
 	return (_bitmap);
 }
@@ -57,12 +57,12 @@ int				Canvas::getBitmapHeight(void) const
 
 void			Canvas::clear(void)
 {
-	memset(_bitmap, 0, _width * _height * sizeof(color_t));
+	memset(_bitmap, 0, _width * _height * sizeof(ft::Color::t));
 }
 
 void			Canvas::clear(ft::Rect<int> const &rect)
 {
-	int const	width = rect.getWidth() * sizeof(color_t);
+	int const	width = rect.getWidth() * sizeof(ft::Color::t);
 	int			end;
 	int			offset;
 
@@ -119,27 +119,28 @@ void			Canvas::setAlpha(float alpha)
 
 void			Canvas::strokeRect(ft::Rect<int> const &rect, Params const &opt)
 {
-	int const	left = rect.left + _clip.left;
-	int const	right = rect.right + _clip.left;
-	int			top;
-	int			y;
+	int const		left = rect.left + _clip.left;
+	int const		right = rect.right + _clip.left;
+	ft::Color::t const	strokeColor = ft::Color::alpha(opt.strokeColor, _alpha);
+	int				top;
+	int				y;
 
 	if (rect.getWidth() == 0 || rect.getHeight() == 0)
 		return ;
 	y = rect.bottom + _clip.top - 1;
 	top = std::max(rect.bottom - opt.lineWidth, rect.top) + _clip.top;
 	while (y >= top)
-		putPixel(left, y--, opt.strokeColor, rect.getWidth());
+		putPixel(left, y--, strokeColor, rect.getWidth());
 	top = rect.top + _clip.top + opt.lineWidth;
 	while (y >= top)
 	{
-		putPixel(left, y, opt.strokeColor, opt.lineWidth);
-		putPixel(right - opt.lineWidth, y, opt.strokeColor, opt.lineWidth);
+		putPixel(left, y, strokeColor, opt.lineWidth);
+		putPixel(right - opt.lineWidth, y, strokeColor, opt.lineWidth);
 		y--;
 	}
 	top -= opt.lineWidth;
 	while (y >= top)
-		putPixel(left, y--, opt.strokeColor, rect.getWidth());
+		putPixel(left, y--, strokeColor, rect.getWidth());
 }
 
 void			Canvas::fillRect(ft::Rect<int> const &rect, Params const &opt)
@@ -147,11 +148,12 @@ void			Canvas::fillRect(ft::Rect<int> const &rect, Params const &opt)
 	int const	left = rect.left + _clip.left;
 	int const	top = rect.top + _clip.top;
 	int const	width = rect.getWidth();
+	ft::Color::t const	fillColor = ft::Color::alpha(opt.fillColor, _alpha);
 	int			y;
 
 	y = rect.bottom + _clip.top;
 	while (--y >= top)
-		putPixel(left, y, opt.fillColor, width);
+		putPixel(left, y, fillColor, width);
 }
 
 Canvas			&Canvas::operator=(Canvas const &rhs)
@@ -162,8 +164,5 @@ Canvas			&Canvas::operator=(Canvas const &rhs)
 	_alpha = rhs._alpha;
 	return (*this);
 }
-
-// void		strokeLine(Vec2<int> a, Vec2<int> b, Params const &opt);
-// void		strokeText(Vec2<int> pos, std::string const &text, Params const &opt);
 
 };

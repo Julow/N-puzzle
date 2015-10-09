@@ -6,12 +6,13 @@
 //   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/07 21:38:50 by juloo             #+#    #+#             //
-//   Updated: 2015/10/09 14:44:34 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 18:00:18 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "GlCanvasHolder.hpp"
 #include "gl.hpp"
+#include "ft/Color.hpp"
 #include "ft/utils.hpp"
 
 #include <stdexcept>
@@ -33,11 +34,20 @@ void			GlCanvasHolder::init(void)
 {
 	if (_canvas.getBitmap() != NULL)
 		throw std::domain_error("init() called twice");
-	_canvas = ftui::Canvas(new ftui::Canvas::color_t[_width * _height],
+	_canvas = ftui::Canvas(new ft::Color::t[_width * _height],
 		_width, _height);
 	init_shaders();
 	init_quad();
 	init_texture();
+	ft::Color::debug(0x0);
+	ft::Color::debug(0xFF000000);
+	ft::Color::debug(0xFFFF0000);
+	ft::Color::debug(0xFF00FF00);
+	ft::Color::debug(0xFF0000FF);
+	ft::Color::debug(0x000000FF);
+	ft::Color::debug(0x00FFFFFF);
+	ft::Color::debug(0x007F7F7F);
+	throw std::exception();
 }
 
 ftui::Canvas	&GlCanvasHolder::getCanvas(void)

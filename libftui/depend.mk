@@ -44,21 +44,21 @@ o/srcs/AView_luaCFunctions.o: srcs/AView_luaCFunctions.cpp \
 	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
 	include/ft/utils.hpp include/ftui/luaCFunctions_helpers.hpp \
 	include/ftui/templates/luaCFunctions_helpers.tpp | o/srcs/
-o/srcs/AView_statics.o: srcs/AView_statics.cpp include/ft/assert.hpp \
-	include/ftui/AView.hpp include/ftui/libftui.hpp include/ftui/lua.hpp \
-	include/ft/Vec.hpp include/ft/templates/Vec2.tpp \
+o/srcs/AView_statics.o: srcs/AView_statics.cpp include/ft/utils.hpp \
+	include/ft/assert.hpp include/ftui/AView.hpp include/ftui/libftui.hpp \
+	include/ftui/lua.hpp include/ft/Vec.hpp include/ft/templates/Vec2.tpp \
 	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
 	include/ftui/ALayout.hpp include/ftui/IViewHolder.hpp \
 	include/ftui/VerticalLayout.hpp | o/srcs/
 o/srcs/AbsoluteLayout.o: srcs/AbsoluteLayout.cpp include/ft/assert.hpp \
 	include/ftui/AbsoluteLayout.hpp include/ftui/libftui.hpp | o/srcs/
-o/srcs/Activity.o: srcs/Activity.cpp include/ft/Vec.hpp include/ft/assert.hpp \
-	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
-	include/ft/templates/Vec4.tpp include/ftui/Activity.hpp \
-	include/ftui/DefaultEventBox.hpp include/ftui/EventBox.hpp \
-	include/ftui/EventParams.hpp include/ftui/IEventBox.hpp \
-	include/ftui/IEventParams.hpp include/ftui/IViewHolder.hpp \
-	include/ftui/libftui.hpp include/ftui/lua.hpp \
+o/srcs/Activity.o: srcs/Activity.cpp include/ft/utils.hpp include/ft/Vec.hpp \
+	include/ft/assert.hpp include/ft/templates/Vec2.tpp \
+	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
+	include/ftui/Activity.hpp include/ftui/DefaultEventBox.hpp \
+	include/ftui/EventBox.hpp include/ftui/EventParams.hpp \
+	include/ftui/IEventBox.hpp include/ftui/IEventParams.hpp \
+	include/ftui/IViewHolder.hpp include/ftui/libftui.hpp include/ftui/lua.hpp \
 	include/ftui/templates/Activity.tpp include/ftui/AView.hpp \
 	include/ftui/XmlParser.hpp include/ftui/XmlTokenizer.hpp | o/srcs/
 o/srcs/Activity_RootViewHolder.o: srcs/Activity_RootViewHolder.cpp \
@@ -70,8 +70,8 @@ o/srcs/Activity_RootViewHolder.o: srcs/Activity_RootViewHolder.cpp \
 	include/ftui/IViewHolder.hpp include/ftui/libftui.hpp include/ftui/lua.hpp \
 	include/ftui/templates/Activity.tpp include/ftui/AView.hpp \
 	include/ftui/XmlParser.hpp include/ftui/XmlTokenizer.hpp | o/srcs/
-o/srcs/Canvas.o: srcs/Canvas.cpp include/ft/Rect.hpp include/ft/Vec.hpp \
-	include/ft/assert.hpp include/ft/templates/Vec2.tpp \
+o/srcs/Canvas.o: srcs/Canvas.cpp include/ft/Color.hpp include/ft/Rect.hpp \
+	include/ft/Vec.hpp include/ft/assert.hpp include/ft/templates/Vec2.tpp \
 	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
 	include/ftui/Canvas.hpp include/ftui/libftui.hpp | o/srcs/
 o/srcs/RelativeLayout.o: srcs/RelativeLayout.cpp include/ft/assert.hpp \
@@ -85,8 +85,8 @@ o/srcs/VerticalLayout.o: srcs/VerticalLayout.cpp include/ft/Vec.hpp \
 	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
 	include/ftui/ALayout.hpp include/ftui/AView.hpp \
 	include/ftui/IViewHolder.hpp include/ftui/VerticalLayout.hpp \
-	include/ftui/libftui.hpp include/ftui/lua.hpp include/ft/Rect.hpp \
-	include/ftui/Canvas.hpp include/ftui/XmlParser.hpp \
+	include/ftui/libftui.hpp include/ftui/lua.hpp include/ft/Color.hpp \
+	include/ft/Rect.hpp include/ftui/Canvas.hpp include/ftui/XmlParser.hpp \
 	include/ftui/XmlTokenizer.hpp include/ft/utils.hpp | o/srcs/
 o/srcs/VerticalLayout_ViewHolder.o: srcs/VerticalLayout_ViewHolder.cpp \
 	include/ft/utils.hpp include/ft/Vec.hpp include/ft/assert.hpp \

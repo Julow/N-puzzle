@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 15:36:57 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/09 18:01:16 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,6 +16,7 @@
 # include <stdint.h>
 
 # include "ftui/libftui.hpp"
+# include "ft/Color.hpp"
 # include "ft/Rect.hpp"
 # include "ft/Vec.hpp"
 
@@ -32,18 +33,16 @@ namespace ftui
 class	Canvas
 {
 public:
-	typedef uint32_t	color_t;
-
 	struct	Params
 	{
 	public:
-		color_t		strokeColor;
-		color_t		fillColor;
-		int32_t		lineWidth;
+		ft::Color::t	strokeColor;
+		ft::Color::t	fillColor;
+		int32_t			lineWidth;
 		// float		borderRound;
 	};
 
-	Canvas(color_t *bitmap, int width, int height);
+	Canvas(ft::Color::t *bitmap, int width, int height);
 	Canvas(Canvas const &src);
 	virtual ~Canvas(void);
 
@@ -52,22 +51,33 @@ public:
 /*
 ** Bitmap
 */
-	color_t const	*getBitmap(void) const;
+	ft::Color::t const	*getBitmap(void) const;
 
 	int				getBitmapWidth(void) const;
 	int				getBitmapHeight(void) const;
 
-	inline void		putPixel(int x, int y, color_t color)
+	inline void		putPixel(int x, int y, ft::Color::t color)
 	{
-		_bitmap[y * _width + x] = color;
+		y = y * _width + x;
+		if (ft::Color::a(color) < 255)
+			_bitmap[y] = ft::Color::put(_bitmap[y], color);
+		else
+			_bitmap[y] = color;
 	}
 
-	inline void		putPixel(int x, int y, color_t color, int n)
+	inline void		putPixel(int x, int y, ft::Color::t color, int n)
 	{
 		x += y * _width;
 		n += x;
-		while (x < n)
-			_bitmap[x++] = color;
+		if (ft::Color::a(color) < 255)
+			while (x < n)
+			{
+				_bitmap[x] = ft::Color::put(_bitmap[x], color);
+				x++;
+			}
+		else
+			while (x < n)
+				_bitmap[x++] = color;
 	}
 
 	void			clear(void);
@@ -110,7 +120,7 @@ public:
 
 protected:
 
-	color_t			*_bitmap;
+	ft::Color::t	*_bitmap;
 	int				_width;
 	int				_height;
 

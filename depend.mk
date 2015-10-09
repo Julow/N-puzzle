@@ -10,15 +10,17 @@ libs:
 
 MAX_SOURCE_LEN := 23
 o/srcs/GlCanvasHolder.o: srcs/GlCanvasHolder.cpp include/GlCanvasHolder.hpp \
-	libftui/include/ft/Rect.hpp libftui/include/ft/Vec.hpp \
-	libftui/include/ft/assert.hpp libftui/include/ft/templates/Vec2.tpp \
+	libftui/include/ft/Color.hpp libftui/include/ft/Rect.hpp \
+	libftui/include/ft/Vec.hpp libftui/include/ft/assert.hpp \
+	libftui/include/ft/templates/Vec2.tpp \
 	libftui/include/ft/templates/Vec3.tpp \
 	libftui/include/ft/templates/Vec4.tpp libftui/include/ftui/Canvas.hpp \
 	libftui/include/ftui/libftui.hpp include/gl.hpp \
 	libftui/include/ft/utils.hpp | o/srcs/
 o/srcs/SolidView.o: srcs/SolidView.cpp include/SolidView.hpp \
-	libftui/include/ft/Rect.hpp libftui/include/ft/Vec.hpp \
-	libftui/include/ft/assert.hpp libftui/include/ft/templates/Vec2.tpp \
+	libftui/include/ft/Color.hpp libftui/include/ft/Rect.hpp \
+	libftui/include/ft/Vec.hpp libftui/include/ft/assert.hpp \
+	libftui/include/ft/templates/Vec2.tpp \
 	libftui/include/ft/templates/Vec3.tpp \
 	libftui/include/ft/templates/Vec4.tpp libftui/include/ftui/AView.hpp \
 	libftui/include/ftui/Canvas.hpp libftui/include/ftui/libftui.hpp \
@@ -38,6 +40,6 @@ o/srcs/main.o: srcs/main.cpp libftui/include/ft/utils.hpp \
 	libftui/include/ftui/ALayout.hpp \
 	libftui/include/ftui/luaCFunctions_helpers.hpp \
 	libftui/include/ftui/templates/luaCFunctions_helpers.tpp \
-	include/GlCanvasHolder.hpp libftui/include/ft/Rect.hpp \
-	libftui/include/ftui/Canvas.hpp include/SolidView.hpp include/gl.hpp \
-	| o/srcs/
+	include/GlCanvasHolder.hpp libftui/include/ft/Color.hpp \
+	libftui/include/ft/Rect.hpp libftui/include/ftui/Canvas.hpp \
+	include/SolidView.hpp include/gl.hpp | o/srcs/
