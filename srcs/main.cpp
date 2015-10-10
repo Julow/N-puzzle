@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 20:42:34 by juloo            ###   ########.fr       //
+//   Updated: 2015/10/10 13:50:32 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -133,24 +133,20 @@ public:
 /*
 ** test
 */
-		std::cout << std::endl;
-		lua_getglobal(_act.getLuaState(), "ftpt");
-		lua_getglobal(_act.getLuaState(), "_G");
-		lua_call(_act.getLuaState(), 1, 0);
-		lua_getglobal(_act.getLuaState(), "print");
-		lua_pushstring(_act.getLuaState(), "puzzle size:");
-		lua_getglobal(_act.getLuaState(), "getPuzzleSize");
-		lua_call(_act.getLuaState(), 0, 1);
-		lua_call(_act.getLuaState(), 2, 0);
-		
-		std::cout << std::endl;
+		lua_State *l = _act.getLuaState(); //don't remove please
 
-		lua_pushstring(_act.getLuaState(), "ft");
-		lua_pushinteger(_act.getLuaState(), 42);
-		lua_pushinteger(_act.getLuaState(), 43);
-		lua_pushnumber(_act.getLuaState(), 21.12);
-		
-		Main::give6ret5(_act.getLuaState());
+		std::cout <<  std::endl;
+		std::cout <<  std::endl;
+
+		luaL_dostring(l, "for k, v in ipairs(UIParent) do print('salut', k, v); end");
+		std::cout <<  std::endl;
+		std::cout <<  std::endl;
+		luaL_dostring(l, "ft_ptab(UIParent);");
+		luaL_dostring(l, "ft_ptab(ALayout);");
+		luaL_dostring(l, "ft_ptab(VerticalLayout);");
+		luaL_dostring(l, "ft_pchildren(UIParent);");
+		// luaL_dostring(l, "ft_ptab(_G);");
+		// std::cout << "caca4" << std::endl;
 	}
 
 	void				loop(void)

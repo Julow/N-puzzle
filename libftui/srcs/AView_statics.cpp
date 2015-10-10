@@ -54,8 +54,8 @@ AView::views_info_t				AView::viewsInfo
 	}}},
 	{"ALayout", {"AView", nullptr, {
 		// std::make_tuple("setParam", &ALayout::setParamG) // CHECK HERITAGE
-		std::make_tuple("size", &ALayout::sizeG)
-		// std::make_tuple("at", &ALayout::atG),
+		std::make_tuple("size", &ALayout::sizeG),
+		std::make_tuple("at", &ALayout::atG)
 		// std::make_tuple("addView", &ALayout::addViewG),
 		// std::make_tuple("popView", &ALayout::popViewG)
 			}}},

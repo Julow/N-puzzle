@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/09 16:08:43 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/10 11:07:42 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -117,15 +117,22 @@ void					pushStack(lua_State *, Ret&&)
 
 template <int NumOut, typename Ret,
 	typename std::enable_if<std::is_pointer<Ret>::value>::type* = nullptr>
-void					pushStack(lua_State *, Ret&& r)
+void					pushStack(lua_State *l, Ret&& r)
 {
 	static_assert(NumOut == 1, "Wrong number of arguments for return value");
-	void *const	ptr = reinterpret_cast<void*>(r);
+	void *const		ptr = reinterpret_cast<void*>(r);
 
-	std::cout << "faire des trucs sur la stack lua\n";
-	(void)ptr;
-	//TODO untested + finir
-	// static_assert(!std::is_same<Ret, Ret>::value, "truc c'est bon");
+	if (r == nullptr)
+	{
+		lua_pushnil(l);
+		return ;
+	}
+	lua_pushglobaltable(l);
+	lua_pushlightuserdata(l, ptr);
+	lua_gettable(l, -2);
+
+	lua_remove(l, -2);
+	FTASSERT(!lua_isnil(l, -1), "lightuserdata not found in _G");
 	return ;
 }
 
@@ -160,7 +167,7 @@ template <int NumOut, typename Ret, typename... Params>
 void	helperCall(lua_State *l, Ret (*f)(Params...), Params ...p)
 {
 	pushStack<NumOut>(l, f(p...));
-	luaFT_stackdump(l);
+	// luaFT_stackdump(l);
 	return ;
 }
 template <int NumOut, typename... Params>
@@ -168,7 +175,7 @@ void	helperCall(lua_State *l, void (*f)(Params...), Params ...p)
 {
 	static_assert(NumOut == 0, "Wrong number of arguments for return value");
 	f(p...);
-	luaFT_stackdump(l);
+	// luaFT_stackdump(l);
 	return ;
 }
 
@@ -177,7 +184,7 @@ template <int NumOut, typename Ret, class C, typename... Params>
 void	helperCall(lua_State *l, C *i, Ret (C::*f)(Params...), Params ...p)
 {
 	pushStack<NumOut>(l, (i->*f)(p...));
-	luaFT_stackdump(l);
+	// luaFT_stackdump(l);
 	return ;
 }
 template <int NumOut, class C, typename... Params>
@@ -185,7 +192,7 @@ void	helperCall(lua_State *l, C *i, void (C::*f)(Params...), Params ...p)
 {
 	static_assert(NumOut == 0, "Wrong number of arguments for return value");
 	(i->*f)(p...);
-	luaFT_stackdump(l);
+	// luaFT_stackdump(l);
 	return ;
 }
 
@@ -223,9 +230,9 @@ void		helperLoop(
 {
 	using HeadCleanRef = typename std::remove_reference<Head>::type;
 	using HeadCleanAll = typename std::remove_cv<HeadCleanRef>::type;
-	luaFT_stackdump(l);
+	// luaFT_stackdump(l);
 	HeadCleanAll	p{popStack<HeadCleanAll>(l, NumIn)};
-	ft::f(std::cout, "got '%' at index %\n", p, -NumIn);
+	// ft::f(std::cout, "got '%' at index %\n", p, -NumIn);
 
 	helperLoop<NumIn - decay<HeadCleanAll>(), NumOut>(
 		l, reinterpret_cast<Ret (*)(ArgsLeft...)>(f)
@@ -244,9 +251,9 @@ void		helperLoop(
 {
 	using HeadCleanRef = typename std::remove_reference<Head>::type;
 	using HeadCleanAll = typename std::remove_cv<HeadCleanRef>::type;
-	luaFT_stackdump(l);
+	// luaFT_stackdump(l);
 	HeadCleanAll	p{popStack<HeadCleanAll>(l, NumIn)};
-	ft::f(std::cout, "got '%' at index %\n", p, -NumIn);
+	// ft::f(std::cout, "got '%' at index %\n", p, -NumIn);
 
 	helperLoop<NumIn - decay<HeadCleanAll>(), NumOut>(
 		l, i, reinterpret_cast<Ret (C::*)(ArgsLeft...)>(f)
@@ -288,7 +295,7 @@ int		luaCFunHelper(lua_State *l, Ret (C::*f)(Args...))
 {
 	internal::helperLoop<NumIn - 1, NumOut>(
 		l, luaCFunRetreiveSelf<C>(l, -NumIn), f);
-	return (NumOut - 1);
+	return (NumOut);
 }
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
 int		luaCFunHelper(lua_State *l, Ret (C::*f)(Args...) const)
@@ -314,8 +321,8 @@ inline T	*luaCFunRetreiveSelf(lua_State *l, int index)
 			index));
 	lua_pushinteger(l, 0);
 	if (lua_gettable(l, index - 1) != LUA_TLIGHTUSERDATA)
-		throw std::runtime_error(ft::f("Lua stack: Corrupted table at index %",
-			index));
+		throw std::runtime_error(
+			ft::f("Missing luserdata at self[0] in table"));
 	i = lua_touserdata(l, -1);
 	lua_pop(l, 1);
 	lua_remove(l, index);

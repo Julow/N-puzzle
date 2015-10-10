@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 15:25:06 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/10 10:03:34 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/10 13:07:03 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,9 +18,11 @@
 #include "ftui/Activity.hpp"
 #include "ftui/lua.hpp"
 
+#define TOSTRING(...) #__VA_ARGS__
+
 static std::vector<std::string> const		funs{ //TODO omg lol mdr
 {"															\
-fttostring = function(v)									\
+ft_tostring = function(v)									\
 	if type(v) == 'function' then							\
 		return string.gsub(tostring(v), 'function: ', 'FN');\
 	elseif type(v) == 'table' then							\
@@ -32,7 +34,7 @@ fttostring = function(v)									\
 end															\
 "},
 {"\
-ftpt = function(t, p1, p2, p3, p4)											\n \
+ft_ptab = function(t, p1, p2, p3, p4)										\n \
 	local maxDepth = p1 or -1;												\n \
 	local curDepth = p2 or 0;												\n \
 	local excludedK = p3 or {[os] = true, [package] = true					\n \
@@ -56,11 +58,11 @@ ftpt = function(t, p1, p2, p3, p4)											\n \
 		local mt = '';														\n \
 		local lcol = '';													\n \
 		local rcol = '';													\n \
-		local kstr = string.sub(fttostring(k), -30 + 2 * curDepth);			\n \
+		local kstr = string.sub(ft_tostring(k), -30 + 2 * curDepth);		\n \
 																			\n \
 		empty = false														\n \
 		if type(v) == 'table' then											\n \
-			mt = string.format(' mt{%s}', fttostring(getmetatable(v)))		\n \
+			mt = string.format(' mt{%s}', ft_tostring(getmetatable(v)))		\n \
 		end																	\n \
 		if expand then														\n \
 			lcol = curCol													\n \
@@ -70,17 +72,41 @@ ftpt = function(t, p1, p2, p3, p4)											\n \
 		kstr = string.format('%32s', kstr);									\n \
 		kstr = string.sub(kstr, -32 + 2 * curDepth);						\n \
 		print(string.format('%s%s%s%3.3s/%3.3s{%s}%s%s'						\n \
-		, header, lcol, kstr, type(k), type(v), fttostring(v), rcol, mt));	\n \
+		, header, lcol, kstr, type(k), type(v), ft_tostring(v), rcol, mt));	\n \
 		if expand then														\n \
-			mt = ftpt(v, maxDepth, curDepth + 1, excludedK, nextTab);		\n \
+			mt = ft_ptab(v, maxDepth, curDepth + 1, excludedK, nextTab);	\n \
 		end																	\n \
 	end;																	\n \
 	if empty then															\n \
 		print(string.format('%s', header));									\n \
 	end																		\n \
 end;																		\n \
-"
-			}};
+"},
+{TOSTRING(
+		ft_pchildren = function(t, tab)
+		tab = tab or '**';
+		
+		if t == nil or t[0] == nil or type(t[0]) ~= 'userdata' then
+		print('wrong ft_pchildren Argument:', t);
+		return ;
+		end
+		print(string.format('%s %s(%s) %dchildren'
+							, tab
+							, ft_tostring(t:getId())
+							, ft_tostring(t)
+							, (t.size and t:size() or 0)
+				  ));
+		if type(t.size) == 'function' then
+		tab = tab..'**';
+		for i=0,t:size() - 1 do
+					--print('SALUT BORDEL', t:size(), i);\n
+					ft_pchildren(t:at(i), tab);
+		end
+		end
+		// print('salut, ici');
+		end;
+		)}
+};
 
 namespace ftui
 {
