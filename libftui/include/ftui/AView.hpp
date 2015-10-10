@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/10 16:16:32 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 16:34:59 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,20 +24,6 @@
 
 namespace ftui
 {
-
-// TODO: move this comment
-// AView							# Base class
-// 	->	ASolidView				# Basic graphic handling (TODO)
-// 		->	SolidView			# Simplest concrete View (TODO)
-// 		->	TextView			# Text rendering
-// 		->	SliderView
-// 		->	...
-
-// 		->	ALayout				# Base class for layouts
-// 			->	VerticalLayout	# 
-// 				-> ScrollableLayout
-// 			->	AbsoluteLayout
-// 			->	RelativeLayout
 
 /*
 ** Represents an UI component

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:37 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 15:28:45 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 16:46:45 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,6 +19,9 @@
 namespace ftui
 {
 
+/*
+** TODO: Rename params and add set/getters
+*/
 class	SolidView : public AView
 {
 public:

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 13:29:39 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 16:37:43 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -128,7 +128,7 @@ private:
 /*
 ** Activity::RootViewHolder
 ** -
-** TODO comment
+** Hold the root view
 */
 class	Activity::RootViewHolder : public IViewHolder
 {

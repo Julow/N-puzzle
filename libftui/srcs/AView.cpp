@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 10:20:08 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/10 16:28:25 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -50,7 +50,8 @@ AView::AView(XmlParser const &xml, Activity &act) :
 	lua_createtable(l, 0, 0);						// {}, _G
 	lua_getglobal(l, xml.getMarkupName().c_str());	// parent, {}, _G
 	if (!lua_istable(l, -1))
-		;//TODO throw
+		throw std::runtime_error(ft::f("Error: cannot retrieve table '%'",
+			xml.getMarkupName()));
 	lua_setmetatable(l, -2);						// [{}], _G
 	lua_pushstring(l, "__index");					// __index, {}, _G
 	lua_pushvalue(l, -2);							// {}, __index, [{}], _G

@@ -6,7 +6,7 @@
 //   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/24 21:50:50 by juloo             #+#    #+#             //
-//   Updated: 2015/10/09 16:18:20 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 16:29:21 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -102,7 +102,6 @@ bool				XmlTokenizer::token_mark_start(char const *str)
 				" at \033[97mline %\033[0m", _line));
 		while (token_str_hard("-->") >= 0)
 			continue ;
-		// TODO ?: Token::COMMENT, _oss.str()
 		parse_spaces();
 		return (token_mark_start(NULL));
 	}

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 16:14:25 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 16:33:30 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -41,12 +41,24 @@ void			SolidView::onDraw(Canvas &canvas)
 
 void			SolidView::setParam(std::string const &k, std::string const &v)
 {
-	if (k == "fillColor") // TODO: param_map
-		_params.fillColor = std::stoul(v, NULL, 16);
-	else if (k == "strokeColor")
-		_params.strokeColor = std::stoul(v, NULL, 16);
-	else if (k == "lineWidth")
-		_params.lineWidth = std::stoi(v, NULL, 16);
+	static std::unordered_map<std::string, void (*)(SolidView*, std::string const&)>	param_map
+	{
+		{"fillColor", [](SolidView *v, std::string const &str)
+		{
+			v->_params.fillColor = std::stoul(str, NULL, 16);
+		}},
+		{"strokeColor", [](SolidView *v, std::string const &str)
+		{
+			v->_params.strokeColor = std::stoul(str, NULL, 16);
+		}},
+		{"lineWidth", [](SolidView *v, std::string const &str)
+		{
+			v->_params.lineWidth = std::stoi(str, NULL);
+		}}
+	};
+	auto const	&it = param_map.find(k);
+	if (it != param_map.end())
+		it->second(this, v);
 	else
 		AView::setParam(k, v);
 }

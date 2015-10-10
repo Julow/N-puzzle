@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/10 11:07:42 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/10 16:20:58 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -176,6 +176,7 @@ void	helperCall(lua_State *l, void (*f)(Params...), Params ...p)
 	static_assert(NumOut == 0, "Wrong number of arguments for return value");
 	f(p...);
 	// luaFT_stackdump(l);
+	(void)l;
 	return ;
 }
 
@@ -193,6 +194,7 @@ void	helperCall(lua_State *l, C *i, void (C::*f)(Params...), Params ...p)
 	static_assert(NumOut == 0, "Wrong number of arguments for return value");
 	(i->*f)(p...);
 	// luaFT_stackdump(l);
+	(void)l;
 	return ;
 }
 
