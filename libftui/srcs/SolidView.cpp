@@ -6,11 +6,11 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 17:33:41 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 17:43:54 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#include "SolidView.hpp"
+#include "ftui/SolidView.hpp"
 #include "ftui/IViewHolder.hpp"
 #include "ftui/XmlParser.hpp"
 
