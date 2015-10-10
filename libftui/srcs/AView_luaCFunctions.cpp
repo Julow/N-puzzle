@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/10 18:40:04 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 18:56:55 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -54,13 +54,14 @@ DEF_LUACFUN_GSUFFIX(AView, isMeasureQueried,		1,	1)
 DEF_LUACFUN_GSUFFIX(AView, isRedrawQueried,			1,	1)
 DEF_LUACFUN_GSUFFIX(AView, getParent,				1,	1) //TODO untested
 
-DEF_LUACFUN_GSUFFIX(ASolidView, getBorderWidth,		1,	1) // TODO: untested
-DEF_LUACFUN_GSUFFIX(ASolidView, setBorderWidth,		2,	0) // TODO: untested
+DEF_LUACFUN_GSUFFIX(ASolidView, getBorderWidth,		1,	1)
+DEF_LUACFUN_GSUFFIX(ASolidView, setBorderWidth,		2,	0)
 
-DEF_LUACFUN_G_CAST(ASolidView, getBackgroundColor,	1,	1, int) // TODO: untested
-DEF_LUACFUN_G_CAST(ASolidView, getBorderColor,		1,	1, int) // TODO: untested
-DEF_LUACFUN_G_CAST(ASolidView, setBackgroundColor,	2,	0, void, int) // TODO: untested
-DEF_LUACFUN_G_CAST(ASolidView, setBorderColor,		2,	0, void, int) // TODO: untested
+// TODO: unsigned int
+DEF_LUACFUN_G_CAST(ASolidView, getBackgroundColor,	1,	1, int)
+DEF_LUACFUN_G_CAST(ASolidView, getBorderColor,		1,	1, int)
+DEF_LUACFUN_G_CAST(ASolidView, setBackgroundColor,	2,	0, void, int)
+DEF_LUACFUN_G_CAST(ASolidView, setBorderColor,		2,	0, void, int)
 
 int			AView::getIdG(lua_State *l)
 {

@@ -27,9 +27,9 @@ o/srcs/main.o: srcs/main.cpp libftui/include/ft/utils.hpp \
 	libftui/include/ftui/IEventParams.hpp libftui/include/ftui/IViewHolder.hpp \
 	libftui/include/ftui/libftui.hpp libftui/include/ftui/lua.hpp \
 	libftui/include/ftui/templates/Activity.tpp libftui/include/ftui/AView.hpp \
-	libftui/include/ftui/ALayout.hpp \
+	libftui/include/ft/Color.hpp libftui/include/ft/Rect.hpp \
+	libftui/include/ftui/ALayout.hpp libftui/include/ftui/ASolidView.hpp \
+	libftui/include/ftui/Canvas.hpp \
 	libftui/include/ftui/luaCFunctions_helpers.hpp \
 	libftui/include/ftui/templates/luaCFunctions_helpers.tpp \
-	include/GlCanvasHolder.hpp libftui/include/ft/Color.hpp \
-	libftui/include/ft/Rect.hpp libftui/include/ftui/Canvas.hpp include/gl.hpp \
-	| o/srcs/
+	include/GlCanvasHolder.hpp include/gl.hpp | o/srcs/

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 17:53:32 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 19:02:20 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -37,9 +37,6 @@ Canvas::~Canvas(void)
 {
 }
 
-/*
-** TODO: alpha
-*/
 ft::Color::t const	*Canvas::getBitmap(void) const
 {
 	return (_bitmap);
