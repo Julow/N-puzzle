@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 16:30:13 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 16:18:19 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -161,6 +161,8 @@ void				ALayout::inflate(XmlParser &xml, Activity &a)
 	AView				*v;
 	XmlParser::State	state;
 
+	for (auto const &p : xml.getParams())
+		setParam(p.first, p.second);
 	while (xml.next(state))
 	{
 		if (state == XmlParser::State::START)

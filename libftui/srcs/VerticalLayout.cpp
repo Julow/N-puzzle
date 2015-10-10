@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 16:08:03 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 15:53:17 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,7 +16,7 @@
 #include "ft/utils.hpp"
 
 #include <algorithm>
-#include <iostream> //lol
+#include <iostream> // TODO: lol
 
 namespace ftui
 {
@@ -38,7 +38,6 @@ void			VerticalLayout::onUpdate(void)
 		if (h->getView()->isUpdateQueried())
 			h->getView()->onUpdate();
 	}
-	std::cout << "VerticalLayout onUpdate " << (void*)this << std::endl; //lol
 }
 
 void            VerticalLayout::inflate(XmlParser &xml, Activity &a)

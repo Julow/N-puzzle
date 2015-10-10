@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 15:26:30 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 16:14:25 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -41,7 +41,6 @@ void			SolidView::onDraw(Canvas &canvas)
 
 void			SolidView::setParam(std::string const &k, std::string const &v)
 {
-	AView::setParam(k, v);
 	if (k == "fillColor") // TODO: param_map
 		_params.fillColor = std::stoul(v, NULL, 16);
 	else if (k == "strokeColor")

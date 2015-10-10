@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/10 15:26:18 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 16:16:32 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -108,7 +108,8 @@ public:
 	** Set param
 	** used to retrieve param from XML
 	** -
-	** AView::setParam()		is called from AView::inflate()
+	** CustomView::setParam()	is called from AView::inflate()
+	** AView::setParam()		is called from CustomView::setParam()
 	** IViewHolder::setParam()	is called from AView::setParam()
 	*/
 	virtual void				setParam(std::string const &k,

@@ -3,12 +3,12 @@
 		marginTop="10"
 		marginBottom="10"
 		verticalAlign="CENTER"
-		width="200"
+		width="250"
 		height="20"
 		strokeColor="0xFFFFFFFF"
 		fillColor="0xFF0000FF"
 	/>
-	<VerticalLayout id="lol">
+	<VerticalLayout id="lol" verticalAlign="CENTER">
 		<SolidView
 			marginTop="5"
 			marginBottom="-40"
@@ -31,7 +31,7 @@
 		<SolidView
 			marginTop="-120"
 			marginBottom="100"
-			verticalAlign="LEFT"
+			verticalAlign="CENTER"
 			width="50"
 			height="130"
 			fillColor="0xFF00FF00"
@@ -40,8 +40,8 @@
 		<SolidView
 			marginTop="-240"
 			marginBottom="100"
-			verticalAlign="LEFT"
-			width="80"
+			verticalAlign="RIGHT"
+			width="100"
 			height="40"
 			strokeColor="0x5F000000"
 			fillColor="0xFFFF0000"
@@ -53,7 +53,7 @@
 		marginTop="10"
 		marginBottom="10"
 		verticalAlign="CENTER"
-		width="200"
+		width="300"
 		height="50"
 		strokeColor="0xFF00FFFF"
 		lineWidth="5"
