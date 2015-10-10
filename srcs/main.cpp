@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 10:49:28 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/10 11:23:19 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -141,7 +141,7 @@ public:
 		// luaL_dostring(l, "ftparents = function(t) repeat print('Table id: ', t:getId()); ftpt(t); t = t:getParent(); until t == nil; end");
 		// luaL_dostring(l, "for k, v in pairs(_G) do print('salut'); end;");
 		// luaL_dostring(l, "for k, v in pairs(_G) do if type(k) == 'userdata' then print('**********EXPANDING:'); ftparents(v); end; end;");
-		luaL_dostring(l, "ft_psons(UIParent);");
+		luaL_dostring(l, "ft_pchildren(UIParent);");
 		// luaL_dostring(l, "local t = UIParent; local n = t:size(); print('size:', n);");
 		// luaL_dostring(l, "ftpt(lol);");
 		// std::cout << "caca3" << std::endl;

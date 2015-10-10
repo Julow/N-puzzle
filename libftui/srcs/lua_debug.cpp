@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 15:25:06 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/10 11:18:43 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/10 11:24:30 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -83,14 +83,14 @@ ft_ptab = function(t, p1, p2, p3, p4)										\n \
 end;																		\n \
 "},
 {TOSTRING(
-		ft_psons = function(t, tab)
+		ft_pchildren = function(t, tab)
 		tab = tab or '**';
 		
 		if t == nil or t[0] == nil or type(t[0]) ~= 'userdata' then
-		print('wrong ft_psons Argument:', t);
+		print('wrong ft_pchildren Argument:', t);
 		return ;
 		end
-		print(string.format('%s %s(%s) %dsons'
+		print(string.format('%s %s(%s) %dchildren'
 							, tab
 							, ft_tostring(t:getId())
 							, ft_tostring(t)
@@ -100,7 +100,7 @@ end;																		\n \
 		tab = tab..'**';
 		for i=0,t:size() - 1 do
 					--print('SALUT BORDEL', t:size(), i);\n
-					ft_psons(t:at(i), tab);
+					ft_pchildren(t:at(i), tab);
 		end
 		end
 		// print('salut, ici');
