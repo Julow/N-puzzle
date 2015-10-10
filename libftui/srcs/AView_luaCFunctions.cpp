@@ -52,7 +52,7 @@ DEF_LUACFUN_GSUFFIX(AView, isKeyboardTargeted,		1,	1)
 DEF_LUACFUN_GSUFFIX(AView, isUpdateQueried,			1,	1)
 DEF_LUACFUN_GSUFFIX(AView, isMeasureQueried,		1,	1)
 DEF_LUACFUN_GSUFFIX(AView, isRedrawQueried,			1,	1)
-DEF_LUACFUN_GSUFFIX(AView, getParent,				1,	1) //TODO untested
+DEF_LUACFUN_GSUFFIX(AView, getParent,				1,	1)
 
 DEF_LUACFUN_GSUFFIX(ASolidView, getBorderWidth,		1,	1)
 DEF_LUACFUN_GSUFFIX(ASolidView, setBorderWidth,		2,	0)
@@ -74,22 +74,6 @@ int			AView::getIdG(lua_State *l)
 		lua_pushstring(l, s->c_str());
 	return (1);
 }
-
-// int			AView::getParentG(lua_State *l)
-// {
-// 	AView *const	i = luaCFunRetreiveSelf<AView>(l, -1);
-// 	ALayout *const	p = i->getParent();
-	
-// 	if (p == nullptr)
-// 		lua_pushnil(l);
-// 	else
-// 	{
-// 		lua_pushglobaltable(l);
-// 		lua_pushlightuserdata(l, p);
-// 		lua_gettable(l, -2);
-// 	}
-// 	return (1);
-// }
 
 int			AView::getRequestedSizeG(lua_State *l)
 {
