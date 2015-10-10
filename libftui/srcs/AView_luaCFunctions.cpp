@@ -6,11 +6,12 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/09 16:08:25 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/10 15:25:45 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "ftui/AView.hpp"
+#include "ftui/IViewHolder.hpp"
 #include "ftui/luaCFunctions_helpers.hpp"
 
 namespace ftui
@@ -77,5 +78,57 @@ DEF_LUACFUN_GSUFFIX(isKeyboardTargeted, 1, 1)
 DEF_LUACFUN_GSUFFIX(isUpdateQueried, 1, 1)
 DEF_LUACFUN_GSUFFIX(isMeasureQueried, 1, 1)
 DEF_LUACFUN_GSUFFIX(isRedrawQueried, 1, 1)
+
+int			AView::getRequestedSizeG(lua_State *l)
+{
+	IViewHolder *const	h = luaCFunRetreiveSelf<AView>(l, -1)->getViewHolder();
+	ft::Vec2<int>		s;
+
+	if (h == nullptr)
+		return (0);
+	s = h->getRequestedSize();
+	lua_pushinteger(l, s.x);
+	lua_pushinteger(l, s.y);
+	return (2);
+}
+
+int			AView::getPosG(lua_State *l)
+{
+	IViewHolder *const	h = luaCFunRetreiveSelf<AView>(l, -1)->getViewHolder();
+	ft::Vec2<int>		s;
+
+	if (h == nullptr)
+		return (0);
+	s = h->getPos();
+	lua_pushinteger(l, s.x);
+	lua_pushinteger(l, s.y);
+	return (2);
+}
+
+int			AView::getSizeG(lua_State *l)
+{
+	IViewHolder *const	h = luaCFunRetreiveSelf<AView>(l, -1)->getViewHolder();
+	ft::Vec2<int>		s;
+
+	if (h == nullptr)
+		return (0);
+	s = h->getSize();
+	lua_pushinteger(l, s.x);
+	lua_pushinteger(l, s.y);
+	return (2);
+}
+
+int			AView::setRequestedSizeG(lua_State *l)
+{
+	IViewHolder *const	h = luaCFunRetreiveSelf<AView>(l, -3)->getViewHolder();
+	ft::Vec2<int>		s;
+
+	s.x = luaL_checkinteger(l, -1);
+	s.y = luaL_checkinteger(l, -2);
+	lua_pop(l, 2);
+	if (h == nullptr)
+		h->setRequestedSize(s);
+	return (0);
+}
 
 };

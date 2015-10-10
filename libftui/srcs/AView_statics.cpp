@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/09 16:02:12 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 15:25:04 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -22,7 +22,7 @@ namespace ftui
 AView::views_info_t				AView::viewsInfo
 {
 	{"AView", {"", nullptr, {
-		// std::make_tuple("setRequestedSize", &AView::setRequestedSizeG),
+		std::make_tuple("setRequestedSize", &AView::setRequestedSizeG),
 		std::make_tuple("setAlpha", &AView::setAlphaG),
 		std::make_tuple("setVisibility", &AView::setVisibilityG),
 		std::make_tuple("setParam", &AView::setParamG),
@@ -34,9 +34,9 @@ AView::views_info_t				AView::viewsInfo
 		std::make_tuple("queryUpdate", &AView::queryUpdateG),
 		std::make_tuple("queryMeasure", &AView::queryMeasureG),
 		std::make_tuple("queryRedraw", &AView::queryRedrawG),
-		// std::make_tuple("getRequestedSize", &AView::getRequestedSizeG),
-		// std::make_tuple("getPos", &AView::getPosG),
-		// std::make_tuple("getSize", &AView::getSizeG),
+		std::make_tuple("getRequestedSize", &AView::getRequestedSizeG),
+		std::make_tuple("getPos", &AView::getPosG),
+		std::make_tuple("getSize", &AView::getSizeG),
 		std::make_tuple("getId", &AView::getIdG),
 		std::make_tuple("getParent", &AView::getParentG),
 		std::make_tuple("getAlpha", &AView::getAlphaG),

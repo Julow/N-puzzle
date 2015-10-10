@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/09 16:01:47 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 15:26:18 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,6 +24,20 @@
 
 namespace ftui
 {
+
+// TODO: move this comment
+// AView							# Base class
+// 	->	ASolidView				# Basic graphic handling (TODO)
+// 		->	SolidView			# Simplest concrete View (TODO)
+// 		->	TextView			# Text rendering
+// 		->	SliderView
+// 		->	...
+
+// 		->	ALayout				# Base class for layouts
+// 			->	VerticalLayout	# 
+// 				-> ScrollableLayout
+// 			->	AbsoluteLayout
+// 			->	RelativeLayout
 
 /*
 ** Represents an UI component
@@ -217,8 +231,6 @@ public:
 
 public:
 
-	static int				setRequestedSizeG(lua_State *l);
-
 	static int				setAlphaG(lua_State *l);
 	static int				setVisibilityG(lua_State *l);
 	static int				setParamG(lua_State *l);
@@ -232,6 +244,7 @@ public:
 	static int				queryMeasureG(lua_State *l);
 	static int				queryRedrawG(lua_State *l);
 
+	static int				setRequestedSizeG(lua_State *l);
 	static int				getRequestedSizeG(lua_State *l);
 	static int				getPosG(lua_State *l);
 	static int				getSizeG(lua_State *l);

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 17:05:13 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 00:11:59 by juloo            ###   ########.fr       //
+//   Updated: 2015/10/10 15:29:01 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -26,6 +26,8 @@ namespace ft
 ** -
 ** Can be safely writen as 0xFFFFFFFF (0xAARRGGBB) style
 **  (2 digit per component)
+** -
+** TODO: handle gamma
 */
 class	Color
 {
@@ -65,41 +67,19 @@ public:
 	** out_rgb = ((dst_rgb * dst_a / 256) + (src_rgb * src_a / 256))
 	**                 * (256 - dst_a) / out_alpha
 	*/
+
 	static inline t			put(t dst, t src)
 	{
 		uint32_t const	dst_a = a(dst);
 		uint32_t const	src_a = a(src);
 		uint32_t const	out_a = src_a + (dst_a * (256 - src_a) / 256);
-		uint32_t const	tmp = out_a * 256 / (256 - dst_a);
+		uint32_t const	tmp = out_a * 256 / (256 - std::min(dst_a, src_a));
 
 		return ((out_a << 24)
 			| (((dst_a * r(dst) + (src_a * r(src))) / tmp) << 16)
 			| (((dst_a * g(dst) + (src_a * g(src))) / tmp) << 8)
 			| (((dst_a * b(dst) + (src_a * b(src))) / tmp)));
 	}
-
-// 	static t			put(t dst, t src)
-// 	{
-// 		uint32_t const		dst_a = a(dst);
-// 		uint32_t const		src_a = a(src);
-// 		uint32_t const		out_a = src_a + (dst_a * (256 - src_a) / 256);
-
-// 		return (
-// 			(out_a << 24)
-// | ((
-// 	(((r(dst) * dst_a / 256) + (r(src) * src_a / 256)) * (256 - dst_a))
-// 			/ out_a
-// ) << 16)
-// | ((
-// 	(((g(dst) * dst_a / 256) + (g(src) * src_a / 256)) * (256 - dst_a))
-// 			/ out_a
-// ) << 8)
-// | ((
-// 	(((b(dst) * dst_a / 256) + (b(src) * src_a / 256)) * (256 - dst_a))
-// 			/ out_a
-// ))
-// 		);
-// 	}
 
 protected:
 

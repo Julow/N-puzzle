@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 15:38:47 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 15:26:30 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -31,12 +31,12 @@ SolidView::~SolidView(void)
 void			SolidView::onDraw(Canvas &canvas)
 {
 	AView::onDraw(canvas);
-	if (_params.fillColor != 0x0)
+	if (ft::Color::a(_params.fillColor) != 0)
 		canvas.fillRect(ft::Rect<int>(ft::Vec2<int>(0, 0), _holder->getSize()),
 			_params);
-	if (_params.strokeColor != 0x0)
-		canvas.strokeRect(ft::Rect<int>(ft::Vec2<int>(0, 0), _holder->getSize()),
-			_params);
+	if (ft::Color::a(_params.strokeColor) != 0)
+		canvas.strokeRect(ft::Rect<int>(ft::Vec2<int>(0, 0),
+			_holder->getSize()), _params);
 }
 
 void			SolidView::setParam(std::string const &k, std::string const &v)
