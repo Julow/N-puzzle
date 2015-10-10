@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 15:01:01 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 10:20:08 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -56,6 +56,10 @@ AView::AView(XmlParser const &xml, Activity &act) :
 	lua_pushvalue(l, -2);							// {}, __index, [{}], _G
 	lua_settable(l, -3);							// [{}], _G
 
+	lua_pushinteger(l, 0);							// 0, {}, _G
+	lua_pushlightuserdata(l, this);					// ptr, 0, {}, _G
+	lua_settable(l, -3);							// [{}], _G
+	
 	lua_pushlightuserdata(l, this);					// ptr, {}, _G
 	lua_pushvalue(l, -2);							// {}, ptr, [{}], _G
 	lua_settable(l, -4);							// {}, [_G]

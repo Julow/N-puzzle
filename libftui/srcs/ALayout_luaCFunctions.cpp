@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/09 15:56:44 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/10 11:06:17 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,7 +19,6 @@ namespace ftui
 #define DEF_LUACFUN_GSUFFIX(NAME, NUMIN, NUMOUT)			\
 int			ALayout::NAME##G(lua_State *l)					\
 {															\
-	std::cout << "luaCFun : " << #NAME << std::endl;		\
 	return luaCFunHelper<NUMIN, NUMOUT>(l, &ALayout::NAME);	\
 }
 
@@ -27,10 +26,11 @@ int			ALayout::NAME##G(lua_State *l)					\
 DEF_LUACFUN_GSUFFIX(size, 1, 1)
 int			ALayout::atG(lua_State *l)					
 {															
+	// std::cout << "salutBORDEL DE MERDE" << std::endl;
 	return luaCFunHelper<2, 1>(
 		l, static_cast<AView*(ALayout::*)(int)>(&ALayout::at));
 }
-// DEF_LUACFUN_GSUFFIX(at, 2, 1)
+// DEF_LUACFUN_GSUFFIX(sat, 2, 1)
 // DEF_LUACFUN_GSUFFIX(addView, 1, 0)
 // DEF_LUACFUN_GSUFFIX(popView, 1, 0)
 

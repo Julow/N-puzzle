@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/09 16:08:25 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/10 10:21:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -55,7 +55,7 @@ DEF_LUACFUN_GSUFFIX(getParent, 1, 1) //TODO untested
 // {
 // 	AView *const	i = luaCFunRetreiveSelf<AView>(l, -1);
 // 	ALayout *const	p = i->getParent();
-
+	
 // 	if (p == nullptr)
 // 		lua_pushnil(l);
 // 	else

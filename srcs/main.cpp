@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 20:42:34 by juloo            ###   ########.fr       //
+//   Updated: 2015/10/10 10:49:28 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -133,24 +133,21 @@ public:
 /*
 ** test
 */
-		std::cout << std::endl;
-		lua_getglobal(_act.getLuaState(), "ftpt");
-		lua_getglobal(_act.getLuaState(), "_G");
-		lua_call(_act.getLuaState(), 1, 0);
-		lua_getglobal(_act.getLuaState(), "print");
-		lua_pushstring(_act.getLuaState(), "puzzle size:");
-		lua_getglobal(_act.getLuaState(), "getPuzzleSize");
-		lua_call(_act.getLuaState(), 0, 1);
-		lua_call(_act.getLuaState(), 2, 0);
-		
-		std::cout << std::endl;
+		lua_State *l = _act.getLuaState(); //don't remove please
 
-		lua_pushstring(_act.getLuaState(), "ft");
-		lua_pushinteger(_act.getLuaState(), 42);
-		lua_pushinteger(_act.getLuaState(), 43);
-		lua_pushnumber(_act.getLuaState(), 21.12);
-		
-		Main::give6ret5(_act.getLuaState());
+		// std::cout << "caca" << std::endl;
+		// luaL_dostring(l, "ftpt(_G);");
+		// std::cout << "caca2" << std::endl;
+		// luaL_dostring(l, "ftparents = function(t) repeat print('Table id: ', t:getId()); ftpt(t); t = t:getParent(); until t == nil; end");
+		// luaL_dostring(l, "for k, v in pairs(_G) do print('salut'); end;");
+		// luaL_dostring(l, "for k, v in pairs(_G) do if type(k) == 'userdata' then print('**********EXPANDING:'); ftparents(v); end; end;");
+		luaL_dostring(l, "ft_psons(UIParent);");
+		// luaL_dostring(l, "local t = UIParent; local n = t:size(); print('size:', n);");
+		// luaL_dostring(l, "ftpt(lol);");
+		// std::cout << "caca3" << std::endl;
+		// luaL_dostring(l, "print('salut');");
+		// luaL_dostring(l, "ftpt(lol:getParent());");
+		// std::cout << "caca4" << std::endl;
 	}
 
 	void				loop(void)
