@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 15:25:06 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/10 11:24:30 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/10 13:07:03 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -74,7 +74,7 @@ ft_ptab = function(t, p1, p2, p3, p4)										\n \
 		print(string.format('%s%s%s%3.3s/%3.3s{%s}%s%s'						\n \
 		, header, lcol, kstr, type(k), type(v), ft_tostring(v), rcol, mt));	\n \
 		if expand then														\n \
-			mt = ftpt(v, maxDepth, curDepth + 1, excludedK, nextTab);		\n \
+			mt = ft_ptab(v, maxDepth, curDepth + 1, excludedK, nextTab);	\n \
 		end																	\n \
 	end;																	\n \
 	if empty then															\n \

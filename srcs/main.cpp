@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 11:23:19 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/10 13:50:32 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -135,18 +135,17 @@ public:
 */
 		lua_State *l = _act.getLuaState(); //don't remove please
 
-		// std::cout << "caca" << std::endl;
-		// luaL_dostring(l, "ftpt(_G);");
-		// std::cout << "caca2" << std::endl;
-		// luaL_dostring(l, "ftparents = function(t) repeat print('Table id: ', t:getId()); ftpt(t); t = t:getParent(); until t == nil; end");
-		// luaL_dostring(l, "for k, v in pairs(_G) do print('salut'); end;");
-		// luaL_dostring(l, "for k, v in pairs(_G) do if type(k) == 'userdata' then print('**********EXPANDING:'); ftparents(v); end; end;");
+		std::cout <<  std::endl;
+		std::cout <<  std::endl;
+
+		luaL_dostring(l, "for k, v in ipairs(UIParent) do print('salut', k, v); end");
+		std::cout <<  std::endl;
+		std::cout <<  std::endl;
+		luaL_dostring(l, "ft_ptab(UIParent);");
+		luaL_dostring(l, "ft_ptab(ALayout);");
+		luaL_dostring(l, "ft_ptab(VerticalLayout);");
 		luaL_dostring(l, "ft_pchildren(UIParent);");
-		// luaL_dostring(l, "local t = UIParent; local n = t:size(); print('size:', n);");
-		// luaL_dostring(l, "ftpt(lol);");
-		// std::cout << "caca3" << std::endl;
-		// luaL_dostring(l, "print('salut');");
-		// luaL_dostring(l, "ftpt(lol:getParent());");
+		// luaL_dostring(l, "ft_ptab(_G);");
 		// std::cout << "caca4" << std::endl;
 	}
 

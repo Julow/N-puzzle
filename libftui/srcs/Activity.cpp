@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 16:32:21 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 13:51:12 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -43,26 +43,44 @@ Activity::~Activity(void)
 static void		finalize_table(
 	lua_State *l, std::string const &name, AView::view_info_s const &i)
 {
+	(void)lua_getglobal(l, "finalize_template");
 	(void)lua_getglobal(l, name.c_str());
-	if (i.parent != "")
-	{
-		if (lua_getglobal(l, i.parent.c_str()) != LUA_TTABLE)
-			throw std::runtime_error(ft::f("Lua: Corrupted table (%)",
-				i.parent));
-		lua_setmetatable(l, -2);
-	}
-	lua_pushstring(l, "__index");
-	lua_pushvalue(l, -2);
-	lua_settable(l, -3);
-	// lua_pushstring(l, "__newindex");
-	// lua_pushstring(l, "no way");
-	// lua_settable(l, -3);
-	// lua_pushstring(l, "__metatable");
-	// lua_pushstring(l, "not your business");
-	// lua_settable(l, -3);
-	lua_setglobal(l, name.c_str());
+	(void)lua_getglobal(l, i.parent.c_str());
+	lua_call(l, 2, 0);	
 	return ;
 }
+
+static void	load_special_code(lua_State *l)
+{
+	// TODO move this lua function to C or to new htab
+	luaL_dostring(l, "ALayout.__ipairs = function(t)       \
+	 local i, n = -1, t:size()                             \
+	 print('__pairs for ', t, n);						   \
+	 return function()                                     \
+	         i = i + 1                                     \
+	         if i < n then                                 \
+	             return i, t:at(i);						   \
+	         end										   \
+	     end											   \
+	 end");
+	luaL_dostring(l, "finalize_template = function(t, p)	\
+		t.__index = t;										\
+		if p ~= nil then									\
+			setmetatable(t, p);								\
+			if t.__ipairs == nil then						\
+				t.__ipairs = p.__ipairs						\
+			end												\
+		end													\
+	end");
+	return ;
+}
+
+static void	unload_special_code(lua_State *l)
+{
+	luaL_dostring(l, "finalize_template = nil;");
+	return ;
+}
+
 
 void			Activity::init_lua_env(void)
 {
@@ -83,8 +101,10 @@ void			Activity::init_lua_env(void)
 			this->registerLuaCFun_table(
 				it.first, std::get<0>(itm), std::get<1>(itm));
 	}
+	load_special_code(_l);
 	for (auto it : AView::viewsInfo)
 		finalize_table(_l, it.first, it.second);
+	unload_special_code(_l);
 	return ;
 }
 
