@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 16:18:19 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 18:06:10 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -22,8 +22,8 @@ using std::string;
 namespace ftui
 {
 
-ALayout::ALayout(XmlParser const &xml, Activity &act)
-	: AView(xml, act)
+ALayout::ALayout(XmlParser const &xml, Activity &act) :
+	ASolidView(xml, act)
 {
 	XmlParser::params_map_t const	&params = xml.getParams();
 

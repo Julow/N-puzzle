@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 13:15:14 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 18:03:54 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,7 +19,7 @@
 # include <vector>
 # include <stdint.h>
 
-# include "ftui/AView.hpp"
+# include "ftui/ASolidView.hpp"
 
 namespace ftui
 {
@@ -31,7 +31,7 @@ namespace ftui
 ** -
 ** Default implementation of some callbacks just spread it to childs
 */
-class	ALayout : public AView
+class	ALayout : public ASolidView
 {
 public:
 

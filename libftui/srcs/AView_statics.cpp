@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/10 17:44:36 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 17:55:16 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,6 +16,7 @@
 #include "ftui/AView.hpp"
 #include "ftui/VerticalLayout.hpp"
 #include "ftui/SolidView.hpp"
+#include "ftui/ASolidView.hpp"
 
 namespace ftui
 {
@@ -53,7 +54,15 @@ AView::views_info_t				AView::viewsInfo
 		std::make_tuple("isMeasureQueried", &AView::isMeasureQueriedG),
 		std::make_tuple("isRedrawQueried", &AView::isRedrawQueriedG),
 	}}},
-	{"ALayout", {"AView", nullptr, {
+	{"ASolidView", {"AView", nullptr, {
+		// std::make_tuple("getBackgroundColor", &ASolidView::getBackgroundColorG),
+		// std::make_tuple("getBorderColor", &ASolidView::getBorderColorG),
+		// std::make_tuple("getBorderWidth", &ASolidView::getBorderWidthG),
+		// std::make_tuple("setBackgroundColor", &ASolidView::setBackgroundColorG),
+		// std::make_tuple("setBorderColor", &ASolidView::setBorderColorG),
+		// std::make_tuple("setBorderWidth", &ASolidView::setBorderWidthG),
+	}}},
+	{"ALayout", {"ASolidView", nullptr, {
 		// std::make_tuple("setParam", &ALayout::setParamG) // CHECK HERITAGE
 		std::make_tuple("size", &ALayout::sizeG)
 		// std::make_tuple("at", &ALayout::atG),
@@ -61,7 +70,7 @@ AView::views_info_t				AView::viewsInfo
 		// std::make_tuple("popView", &ALayout::popViewG)
 			}}},
 	{"VerticalLayout", {"ALayout", &VerticalLayout::createView, {}}},
-	{"SolidView", {"AView", &SolidView::create_view, {}}},
+	{"SolidView", {"ASolidView", &SolidView::createView, {}}},
 };
 
 AView::view_info_s::factory_t	AView::getFactory(std::string const &name)

@@ -1,5 +1,5 @@
-O_FILES :=	o/srcs/ALayout.o o/srcs/ALayout_luaCFunctions.o o/srcs/AView.o \
-			o/srcs/AView_luaCFunctions.o o/srcs/AView_statics.o \
+O_FILES :=	o/srcs/ALayout.o o/srcs/ALayout_luaCFunctions.o o/srcs/ASolidView.o \
+			o/srcs/AView.o o/srcs/AView_luaCFunctions.o o/srcs/AView_statics.o \
 			o/srcs/AbsoluteLayout.o o/srcs/Activity.o \
 			o/srcs/Activity_RootViewHolder.o o/srcs/Canvas.o \
 			o/srcs/RelativeLayout.o o/srcs/SliderView.o o/srcs/SolidView.o \
@@ -28,6 +28,13 @@ o/srcs/ALayout_luaCFunctions.o: srcs/ALayout_luaCFunctions.cpp \
 	include/ft/templates/Vec4.tpp include/ft/utils.hpp \
 	include/ftui/luaCFunctions_helpers.hpp \
 	include/ftui/templates/luaCFunctions_helpers.tpp | o/srcs/
+o/srcs/ASolidView.o: srcs/ASolidView.cpp include/ft/Color.hpp \
+	include/ft/Rect.hpp include/ft/Vec.hpp include/ft/assert.hpp \
+	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
+	include/ft/templates/Vec4.tpp include/ftui/ASolidView.hpp \
+	include/ftui/AView.hpp include/ftui/Canvas.hpp include/ftui/libftui.hpp \
+	include/ftui/lua.hpp include/ftui/IViewHolder.hpp \
+	include/ftui/XmlParser.hpp include/ftui/XmlTokenizer.hpp | o/srcs/
 o/srcs/AView.o: srcs/AView.cpp include/ft/utils.hpp include/ft/assert.hpp \
 	include/ftui/AView.hpp include/ftui/libftui.hpp include/ftui/lua.hpp \
 	include/ft/Vec.hpp include/ft/templates/Vec2.tpp \
@@ -50,7 +57,9 @@ o/srcs/AView_statics.o: srcs/AView_statics.cpp include/ft/utils.hpp \
 	include/ftui/lua.hpp include/ft/Vec.hpp include/ft/templates/Vec2.tpp \
 	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
 	include/ftui/ALayout.hpp include/ftui/IViewHolder.hpp \
-	include/ftui/VerticalLayout.hpp | o/srcs/
+	include/ftui/VerticalLayout.hpp include/ft/Color.hpp include/ft/Rect.hpp \
+	include/ftui/ASolidView.hpp include/ftui/Canvas.hpp \
+	include/ftui/SolidView.hpp | o/srcs/
 o/srcs/AbsoluteLayout.o: srcs/AbsoluteLayout.cpp include/ft/assert.hpp \
 	include/ftui/AbsoluteLayout.hpp include/ftui/libftui.hpp | o/srcs/
 o/srcs/Activity.o: srcs/Activity.cpp include/ft/utils.hpp include/ft/Vec.hpp \
@@ -82,10 +91,9 @@ o/srcs/SliderView.o: srcs/SliderView.cpp include/ft/assert.hpp \
 o/srcs/SolidView.o: srcs/SolidView.cpp include/ft/Color.hpp \
 	include/ft/Rect.hpp include/ft/Vec.hpp include/ft/assert.hpp \
 	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
-	include/ft/templates/Vec4.tpp include/ftui/AView.hpp \
-	include/ftui/Canvas.hpp include/ftui/SolidView.hpp \
-	include/ftui/libftui.hpp include/ftui/lua.hpp include/ftui/IViewHolder.hpp \
-	include/ftui/XmlParser.hpp include/ftui/XmlTokenizer.hpp | o/srcs/
+	include/ft/templates/Vec4.tpp include/ftui/ASolidView.hpp \
+	include/ftui/AView.hpp include/ftui/Canvas.hpp include/ftui/SolidView.hpp \
+	include/ftui/libftui.hpp include/ftui/lua.hpp | o/srcs/
 o/srcs/TextView.o: srcs/TextView.cpp include/ft/assert.hpp \
 	include/ftui/TextView.hpp include/ftui/libftui.hpp | o/srcs/
 o/srcs/VerticalLayout.o: srcs/VerticalLayout.cpp include/ft/Vec.hpp \

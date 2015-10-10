@@ -8,7 +8,11 @@
 		borderColor="0xFFFFFFFF"
 		backgroundColor="0xFF0000FF"
 	/>
-	<VerticalLayout id="lol" verticalAlign="CENTER">
+	<VerticalLayout
+		id="lol"
+		verticalAlign="CENTER"
+		borderColor="0xFF000000"
+	>
 		<SolidView
 			marginTop="5"
 			marginBottom="-40"
@@ -46,6 +50,15 @@
 			borderColor="0x5F000000"
 			backgroundColor="0xFFFF0000"
 			alpha="0.8"
+		/>
+		<SolidView
+			marginTop="20"
+			marginBottom="20"
+			verticalAlign="CENTER"
+			width="20"
+			height="20"
+			backgroundColor="0xFFFF0000"
+			alpha="0.5"
 		/>
 	</VerticalLayout>
 	<SolidView
