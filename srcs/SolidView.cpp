@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 16:33:30 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 17:33:41 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -41,26 +41,58 @@ void			SolidView::onDraw(Canvas &canvas)
 
 void			SolidView::setParam(std::string const &k, std::string const &v)
 {
-	static std::unordered_map<std::string, void (*)(SolidView*, std::string const&)>	param_map
+	static std::unordered_map<std::string, void (*)(SolidView*,
+		std::string const&)>	param_map
 	{
-		{"fillColor", [](SolidView *v, std::string const &str)
+		{"backgroundColor", [](SolidView *v, std::string const &str)
 		{
-			v->_params.fillColor = std::stoul(str, NULL, 16);
+			v->setBackgroundColor(std::stoul(str, NULL, 16));
 		}},
-		{"strokeColor", [](SolidView *v, std::string const &str)
+		{"borderColor", [](SolidView *v, std::string const &str)
 		{
-			v->_params.strokeColor = std::stoul(str, NULL, 16);
+			v->setBorderColor(std::stoul(str, NULL, 16));
 		}},
-		{"lineWidth", [](SolidView *v, std::string const &str)
+		{"borderWidth", [](SolidView *v, std::string const &str)
 		{
-			v->_params.lineWidth = std::stoi(str, NULL);
+			v->setBorderWidth(std::stoi(str, NULL));
 		}}
 	};
-	auto const	&it = param_map.find(k);
+	auto const		&it = param_map.find(k);
+
 	if (it != param_map.end())
 		it->second(this, v);
 	else
 		AView::setParam(k, v);
+}
+
+ft::Color::t	SolidView::getBackgroundColor(void) const
+{
+	return (_params.fillColor);
+}
+
+ft::Color::t	SolidView::getBorderColor(void) const
+{
+	return (_params.strokeColor);
+}
+
+int				SolidView::getBorderWidth(void) const
+{
+	return (_params.lineWidth);
+}
+
+void			SolidView::setBackgroundColor(ft::Color::t color)
+{
+	_params.fillColor = color;
+}
+
+void			SolidView::setBorderColor(ft::Color::t color)
+{
+	_params.strokeColor = color;
+}
+
+void			SolidView::setBorderWidth(int width)
+{
+	_params.lineWidth = width;
 }
 
 AView			*SolidView::create_view(XmlParser const &xml, Activity &act)

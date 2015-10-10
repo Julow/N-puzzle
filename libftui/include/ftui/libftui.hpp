@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:55:01 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 17:27:20 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 17:30:01 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -74,9 +74,9 @@ namespace ftui
 ** 		mouse_move_target	(bool)
 ** 		keyboard_target		(bool)
 ** ASolidView
-** 		fillColor			(color)	Background color
-** 		strokeColor			(color)	Border color
-** 		lineWidth			(int)	Border width
+** 		backgroundColor		(color)	Background color
+** 		borderColor			(color)	Border color
+** 		borderWidth			(int)	Border width
 ** VerticalLayout's view holder
 ** 		marginTop			(int)	Extra margin with the previous view
 ** 		marginBottom		(int)	Extra margin with the next view
