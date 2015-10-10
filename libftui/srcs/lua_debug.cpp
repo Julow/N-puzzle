@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 15:25:06 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/09 14:35:17 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/10 10:03:34 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -32,15 +32,18 @@ fttostring = function(v)									\
 end															\
 "},
 {"\
-ftpt = function(t, p1, p2, p3)												\n \
+ftpt = function(t, p1, p2, p3, p4)											\n \
 	local maxDepth = p1 or -1;												\n \
 	local curDepth = p2 or 0;												\n \
 	local excludedK = p3 or {[os] = true, [package] = true					\n \
 		, [math] = true, [string] = true, [debug] = true					\n \
 		, [io] = true, [bit32] = true, [table] = true						\n \
 		, [coroutine] = true, [utf8] = true};								\n \
-	local tab = string.format('%1.1d*%s'									\n \
-		, curDepth, string.rep('**', curDepth));							\n \
+	local curTab = p4 or '';												\n \
+	local header = string.format('%1.1d*%s', curDepth, curTab);				\n \
+	local curCol = '\033[4'..tostring(1 + (curDepth) % 5)..'m'				\n \
+	local nextTab = curTab..curCol..'**'..'\033[0m';						\n \
+	local empty = true														\n \
 																			\n \
 	excludedK[t] = true;													\n \
 	if curDepth == 0 then													\n \
@@ -55,22 +58,26 @@ ftpt = function(t, p1, p2, p3)												\n \
 		local rcol = '';													\n \
 		local kstr = string.sub(fttostring(k), -30 + 2 * curDepth);			\n \
 																			\n \
+		empty = false														\n \
 		if type(v) == 'table' then											\n \
 			mt = string.format(' mt{%s}', fttostring(getmetatable(v)))		\n \
 		end																	\n \
 		if expand then														\n \
-			lcol = '\033[3'..tostring(1 + (curDepth) % 5)..'m'				\n \
+			lcol = curCol													\n \
 			rcol = '\033[0m'												\n \
 		end																	\n \
 		kstr = string.format('[%s]', kstr);									\n \
 		kstr = string.format('%32s', kstr);									\n \
 		kstr = string.sub(kstr, -32 + 2 * curDepth);						\n \
-		print(string.format('%s%s%s%s%3.3s/%3.3s{%s}%s'						\n \
-			, lcol, tab, kstr, rcol, type(k), type(v), fttostring(v), mt));	\n \
+		print(string.format('%s%s%s%3.3s/%3.3s{%s}%s%s'						\n \
+		, header, lcol, kstr, type(k), type(v), fttostring(v), rcol, mt));	\n \
 		if expand then														\n \
-			mt = ftpt(v, maxDepth, curDepth + 1, excludedK);				\n \
+			mt = ftpt(v, maxDepth, curDepth + 1, excludedK, nextTab);		\n \
 		end																	\n \
 	end;																	\n \
+	if empty then															\n \
+		print(string.format('%s', header));									\n \
+	end																		\n \
 end;																		\n \
 "
 			}};
