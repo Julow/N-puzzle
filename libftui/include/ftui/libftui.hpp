@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:55:01 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 17:30:01 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 18:11:26 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -27,9 +27,9 @@ namespace ftui
 ** AView inheritance
 ** -
 ** AView							# Base class
-** 	->	ASolidView				# Base class for views with a background (TODO)
-** 		->	SolidView				# Simplest concrete View (TODO)
-** 		->	TextView
+** 	->	ASolidView					# Base class for views with a background
+** 		->	SolidView				# Simplest concrete View
+** 		->	TextView				# (TODO)
 ** 		->	SliderView				# (TODO)
 ** 		->	...
 ** 		->	ALayout					# Base class for layouts

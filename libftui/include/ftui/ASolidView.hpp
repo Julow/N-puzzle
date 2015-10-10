@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:37 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 18:00:26 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 18:23:46 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -52,6 +52,18 @@ private:
 	ASolidView(void);
 	ASolidView(ASolidView const &src);
 	ASolidView			&operator=(ASolidView const &rhs);
+
+/*
+** Static
+*/
+public:
+	static int			getBackgroundColorG(lua_State *l);
+	static int			getBorderColorG(lua_State *l);
+	static int			getBorderWidthG(lua_State *l);
+
+	static int			setBackgroundColorG(lua_State *l);
+	static int			setBorderColorG(lua_State *l);
+	static int			setBorderWidthG(lua_State *l);
 };
 
 };

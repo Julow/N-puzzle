@@ -24,6 +24,7 @@
 			alpha="0.2"
 		/>
 		<SolidView
+			id="solid_test"
 			marginTop="0"
 			marginBottom="10"
 			verticalAlign="CENTER"

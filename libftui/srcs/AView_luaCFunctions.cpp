@@ -6,39 +6,62 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/10 10:21:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/10 18:40:04 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "ftui/AView.hpp"
 #include "ftui/IViewHolder.hpp"
+#include "ftui/ASolidView.hpp"
 #include "ftui/luaCFunctions_helpers.hpp"
 
 namespace ftui
 {
 
-#define DEF_LUACFUN_GSUFFIX(NAME, NUMIN, NUMOUT)			\
-int			AView::NAME##G(lua_State *l)					\
-{															\
-	return luaCFunHelper<NUMIN, NUMOUT>(l, &AView::NAME);	\
+#define DEF_LUACFUN_GSUFFIX(CLASS, NAME, NUMIN, NUMOUT)			\
+int			CLASS::NAME##G(lua_State *l)						\
+{																\
+	return luaCFunHelper<NUMIN, NUMOUT>(l, &CLASS::NAME);		\
 }
 
-// DEF_LUACFUN_GSUFFIX(setRequestedSize, 3, 0) //NYI
-DEF_LUACFUN_GSUFFIX(setAlpha, 2, 0)
-DEF_LUACFUN_GSUFFIX(setVisibility, 2, 0)
-DEF_LUACFUN_GSUFFIX(setParam, 3, 0)
-DEF_LUACFUN_GSUFFIX(hookMouseScroll, 2, 0)
-DEF_LUACFUN_GSUFFIX(hookMouseClick, 2, 0)
-DEF_LUACFUN_GSUFFIX(hookMouseMove, 2, 0)
-DEF_LUACFUN_GSUFFIX(hookMouseCapture, 2, 0)
-DEF_LUACFUN_GSUFFIX(hookKeyboard, 2, 0)
-DEF_LUACFUN_GSUFFIX(queryUpdate, 1, 0)
-DEF_LUACFUN_GSUFFIX(queryMeasure, 1, 0)
-DEF_LUACFUN_GSUFFIX(queryRedraw, 1, 0)
+#define DEF_LUACFUN_G_CAST(CLASS, NAME, NUMIN, NUMOUT, RET, ...)		\
+int			CLASS::NAME##G(lua_State *l)								\
+{																		\
+	return luaCFunHelper<NUMIN, NUMOUT>(l,								\
+		reinterpret_cast<RET (CLASS::*)(__VA_ARGS__)>(&CLASS::NAME));	\
+}
 
-// DEF_LUACFUN_GSUFFIX(getRequestedSize, 1, 2) //NYI
-// DEF_LUACFUN_GSUFFIX(getPos, 1, 2) //NYI
-// DEF_LUACFUN_GSUFFIX(getSize, 1, 2) //NYI
+DEF_LUACFUN_GSUFFIX(AView, setAlpha,				2,	0)
+DEF_LUACFUN_GSUFFIX(AView, setVisibility,			2,	0)
+DEF_LUACFUN_GSUFFIX(AView, setParam,				3,	0)
+DEF_LUACFUN_GSUFFIX(AView, hookMouseScroll,			2,	0)
+DEF_LUACFUN_GSUFFIX(AView, hookMouseClick,			2,	0)
+DEF_LUACFUN_GSUFFIX(AView, hookMouseMove,			2,	0)
+DEF_LUACFUN_GSUFFIX(AView, hookMouseCapture,		2,	0)
+DEF_LUACFUN_GSUFFIX(AView, hookKeyboard,			2,	0)
+DEF_LUACFUN_GSUFFIX(AView, queryUpdate,				1,	0)
+DEF_LUACFUN_GSUFFIX(AView, queryMeasure,			1,	0)
+DEF_LUACFUN_GSUFFIX(AView, queryRedraw,				1,	0)
+DEF_LUACFUN_GSUFFIX(AView, getAlpha,				1,	1)
+DEF_LUACFUN_GSUFFIX(AView, isVisible,				1,	1)
+DEF_LUACFUN_GSUFFIX(AView, isMouseOver,				1,	1)
+DEF_LUACFUN_GSUFFIX(AView, isMouseScrollTargeted,	1,	1)
+DEF_LUACFUN_GSUFFIX(AView, isMouseClickTargeted,	1,	1)
+DEF_LUACFUN_GSUFFIX(AView, isMouseCaptureTargeted,	1,	1)
+DEF_LUACFUN_GSUFFIX(AView, isKeyboardTargeted,		1,	1)
+DEF_LUACFUN_GSUFFIX(AView, isUpdateQueried,			1,	1)
+DEF_LUACFUN_GSUFFIX(AView, isMeasureQueried,		1,	1)
+DEF_LUACFUN_GSUFFIX(AView, isRedrawQueried,			1,	1)
+DEF_LUACFUN_GSUFFIX(AView, getParent,				1,	1) //TODO untested
+
+DEF_LUACFUN_GSUFFIX(ASolidView, getBorderWidth,		1,	1) // TODO: untested
+DEF_LUACFUN_GSUFFIX(ASolidView, setBorderWidth,		2,	0) // TODO: untested
+
+DEF_LUACFUN_G_CAST(ASolidView, getBackgroundColor,	1,	1, int) // TODO: untested
+DEF_LUACFUN_G_CAST(ASolidView, getBorderColor,		1,	1, int) // TODO: untested
+DEF_LUACFUN_G_CAST(ASolidView, setBackgroundColor,	2,	0, void, int) // TODO: untested
+DEF_LUACFUN_G_CAST(ASolidView, setBorderColor,		2,	0, void, int) // TODO: untested
+
 int			AView::getIdG(lua_State *l)
 {
 	AView *const				i = luaCFunRetreiveSelf<AView>(l, -1);
@@ -51,7 +74,6 @@ int			AView::getIdG(lua_State *l)
 	return (1);
 }
 
-DEF_LUACFUN_GSUFFIX(getParent, 1, 1) //TODO untested
 // int			AView::getParentG(lua_State *l)
 // {
 // 	AView *const	i = luaCFunRetreiveSelf<AView>(l, -1);
@@ -67,17 +89,6 @@ DEF_LUACFUN_GSUFFIX(getParent, 1, 1) //TODO untested
 // 	}
 // 	return (1);
 // }
-
-DEF_LUACFUN_GSUFFIX(getAlpha, 1, 1)
-DEF_LUACFUN_GSUFFIX(isVisible, 1, 1)
-DEF_LUACFUN_GSUFFIX(isMouseOver, 1, 1)
-DEF_LUACFUN_GSUFFIX(isMouseScrollTargeted, 1, 1)
-DEF_LUACFUN_GSUFFIX(isMouseClickTargeted, 1, 1)
-DEF_LUACFUN_GSUFFIX(isMouseCaptureTargeted, 1, 1)
-DEF_LUACFUN_GSUFFIX(isKeyboardTargeted, 1, 1)
-DEF_LUACFUN_GSUFFIX(isUpdateQueried, 1, 1)
-DEF_LUACFUN_GSUFFIX(isMeasureQueried, 1, 1)
-DEF_LUACFUN_GSUFFIX(isRedrawQueried, 1, 1)
 
 int			AView::getRequestedSizeG(lua_State *l)
 {

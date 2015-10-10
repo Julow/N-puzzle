@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 17:44:45 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/10 18:51:15 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -135,10 +135,8 @@ public:
 		lua_State *l = _act.getLuaState(); //don't remove please
 
 		std::cout <<  std::endl;
-		std::cout <<  std::endl;
 
 		luaL_dostring(l, "for k, v in ipairs(UIParent) do print('salut', k, v); end");
-		std::cout <<  std::endl;
 		std::cout <<  std::endl;
 		luaL_dostring(l, "ft_ptab(UIParent);");
 		luaL_dostring(l, "ft_ptab(ALayout);");
@@ -146,6 +144,8 @@ public:
 		luaL_dostring(l, "ft_pchildren(UIParent);");
 		// luaL_dostring(l, "ft_ptab(_G);");
 		// std::cout << "caca4" << std::endl;
+
+		luaL_dostring(l, "print('backgroundColor:'..solid_test:getBackgroundColor())");
 	}
 
 	void				loop(void)
