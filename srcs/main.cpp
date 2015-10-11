@@ -6,11 +6,12 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 18:51:15 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/11 11:32:17 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "ft/utils.hpp"
+#include "config_window.hpp"
 
 #include <iostream>
 #include <iomanip>
@@ -81,19 +82,15 @@ void		printViewTree(ftui::AView const *view, int indent = 0)
 ** -
 */
 
-#define WIDTH		500
-#define HEIGHT		400
-
 class Main
 {
 public:
 	Main(void) :
-		_canvasHolder(WIDTH, HEIGHT),
-		_act(ft::Vec2<int>(WIDTH, HEIGHT)),
+		_canvasHolder(WIN_WIDTHI, WIN_HEIGHTI),
+		_act(WIN_SIZEVI),
 		_puzzleSize(42)
 	{
 		std::ifstream			stream("res/layout/npuzzleui.xml");
-
 		Main::_instance = this;
 		_act.inflate(stream);
 		_act.registerLuaCFun_global("getPuzzleSize", &Main::getPuzzleSize);
@@ -111,12 +108,12 @@ public:
 			glfwWindowHint(GLFW_DOUBLEBUFFER, GL_TRUE);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, OPENGL_PROFILE);
-		if ((_window = glfwCreateWindow(WIDTH, HEIGHT, "npuzzle", NULL, NULL)) == NULL)
+		if ((_window = glfwCreateWindow(WIN_WIDTHI, WIN_HEIGHTI, "npuzzle", NULL, NULL)) == NULL)
 			throw std::runtime_error("Cannot create GLFW window");
 		glfwMakeContextCurrent(_window);
 		if (!INIT_GLEW)
 			throw std::runtime_error("Cannot load GLEW");
-		glViewport(0, 0, WIDTH, HEIGHT);
+		glViewport(0, 0, WIN_WIDTHI, WIN_HEIGHTI);
 		glfwSetWindowUserPointer(_window, this);
 		glfwSetKeyCallback(_window, &Main::handleKeyEvents);
 		glEnable(GL_BLEND);
