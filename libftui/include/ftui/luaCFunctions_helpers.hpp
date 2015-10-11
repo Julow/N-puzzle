@@ -6,14 +6,14 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/05 14:23:58 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/07 18:55:17 by juloo            ###   ########.fr       //
+//   Updated: 2015/10/11 17:57:35 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef LUACFUNCTIONS_HELPERS_HPP
 # define LUACFUNCTIONS_HELPERS_HPP
 
-# include "ftui/lua.hpp"
+# include "lua/lua.hpp"
 
 namespace ftui
 {

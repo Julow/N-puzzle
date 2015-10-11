@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 15:25:06 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/11 17:12:14 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/11 17:58:56 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,7 +16,7 @@
 #include <iostream>//de
 
 #include "ftui/Activity.hpp"
-#include "ftui/lua.hpp"
+#include "lua.hpp"
 
 #define TOSTRING(...) #__VA_ARGS__
 
@@ -83,27 +83,22 @@ ft_ptab = function(t, p1, p2, p3, p4)										\n \
 end;																		\n \
 "},
 {TOSTRING(
-		ft_pchildren = function(t, tab)
-		tab = tab or '**';
-		
-		if t == nil or t[0] == nil or type(t[0]) ~= 'userdata' then
-			print('wrong ft_pchildren Argument:', t);
-			return ;
-		end
-		n = t.size and t:size() or 0;
-		print(string.format('%s %s(%s) %dchildren'
-							, tab
-							, ft_tostring(t:getId())
-							, ft_tostring(t)
-							, n
-				  ));
-		tab = tab..'**';
-		for i=0,n - 1 do
-			ft_pchildren(t:at(i), tab);
-		end
-		// print('salut, ici');
-		end;
-		)}
+ft_pchildren = function(t, tab)
+	tab = tab or '**';
+
+	if t == nil or t[0] == nil or type(t[0]) ~= 'userdata' then
+		print('wrong ft_pchildren Argument:', t);
+		return ;
+	end
+	n = t.size and t:size() or 0;
+	print(string.format('%s %s(%s) %dchildren'
+		, tab, ft_tostring(t:getId()), ft_tostring(t), n));
+	tab = tab..'**';
+	for i=0,n - 1 do
+		ft_pchildren(t:at(i), tab);
+	end
+end;
+)}
 };
 
 namespace ftui

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/11 11:32:38 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/11 11:32:56 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/11 17:53:46 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -53,7 +53,7 @@ constexpr T			factorial(T x)
 }
 
 template<typename T>
-constexpr T			sqrt(T z)
+constexpr T			sqrt(T z)// TO-DO improve
 {
 	static_assert(std::is_floating_point<T>::value, "ftce::sqrt only takes floating points types");
 	T const		pow10[] = {1, 10, 100, 1000, 10000,
@@ -108,9 +108,9 @@ template<typename T>
 constexpr T			cos(T x)
 {
 	static_assert(std::is_floating_point<T>::value, "ftce::cos only takes floating points types");
-	while (x > M_PI)
+	while (x > M_PI)// TO-DO improve
 		x -= static_cast<T>(2. * M_PI);
-	while (x < -M_PI)
+	while (x < -M_PI)// TO-DO improve
 		x += static_cast<T>(2. * M_PI);
 	return (static_cast<T>(1)
 		- (ftce::pow<T>(x, 2) / static_cast<T>(2))
@@ -128,9 +128,9 @@ template<typename T>
 constexpr T			sin(T x) // untested
 {
 	static_assert(std::is_floating_point<T>::value, "ftce::sin only takes floating points types");
-	while (x > M_PI)
+	while (x > M_PI)// TO-DO improve
 		x -= static_cast<T>(2. * M_PI);
-	while (x < -M_PI)
+	while (x < -M_PI)// TO-DO improve
 		x += static_cast<T>(2. * M_PI);
 	return (x
 		- (ftce::pow<T>(x, 3) / static_cast<T>(6))
@@ -147,7 +147,7 @@ constexpr T			ceil(T x)
 {
 	const T		r = static_cast<T>(static_cast<int>(x));
 
-	return ((r == x) ? r : (x > zeroi_t()) ? r + onei_t() : r); //A VERIFIER !!
+	return ((r == x) ? r : (x > zeroi_t()) ? r + onei_t() : r);
 }
 
 template<typename T>
@@ -155,7 +155,7 @@ constexpr T			floor(T x)
 {
 	const T		r = static_cast<T>(static_cast<int>(x));
 
-	return ((r == x) ? r : (x > zeroi_t()) ? r : r - onei_t()); //A VERIFIER !!
+	return ((r == x) ? r : (x > zeroi_t()) ? r : r - onei_t());
 }
 
 template<typename T>
@@ -177,11 +177,11 @@ constexpr T const	&max(T const &x, T const &y)
 }
 
 template<typename T>
-constexpr T			fmod(T x, T y)
+constexpr T			mod_pos(T x, T y)
 {
-	while(x < static_cast<T>(0))
+	while(x < static_cast<T>(0))// TO-DO improve
 		x += y;
-	while(x > y)
+	while(x > y)// TO-DO improve
 		x -= y;
 	return (x);
 }
