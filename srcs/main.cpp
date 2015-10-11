@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/11 11:32:17 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/11 12:28:21 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,6 +24,8 @@
 #include "ftui/ALayout.hpp"
 #include "ftui/luaCFunctions_helpers.hpp"
 #include "ftui/lua.hpp"
+
+#include "tiles/Tiles.hpp"
 
 #include "GlCanvasHolder.hpp"
 #include "gl.hpp"
@@ -82,6 +84,8 @@ void		printViewTree(ftui::AView const *view, int indent = 0)
 ** -
 */
 
+#include "tiles/Tiles.hpp"
+
 class Main
 {
 public:
@@ -90,6 +94,9 @@ public:
 		_act(WIN_SIZEVI),
 		_puzzleSize(42)
 	{
+		
+		Tiles		tiles{WIN_SIZEVI};
+
 		std::ifstream			stream("res/layout/npuzzleui.xml");
 		Main::_instance = this;
 		_act.inflate(stream);
