@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/11 11:52:03 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/11 12:27:38 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/11 13:34:33 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -26,7 +26,7 @@ class Tiles
 public:
 	Tiles(ft::Vec2<int> const rectSize
 		  , ft::Vec2<int> const triangleSize = ft::Vec2<int>(100, 100)
-		  , int const pointRandomRange = 30);
+		  , int const pointRandomRadius = 30);
 	virtual ~Tiles();
 
 	void			render(void);
@@ -43,11 +43,37 @@ private:
 	typedef std::vector<point_t>				tmp_line_t;
 	typedef std::vector<tmp_line_t>				tmp_grid_t;
 
+	class Tmp
+	{
+	public:
+		
+		ft::Vec2<int> const		rectSize;
+		ft::Vec2<int> const		triangleSize;
+		int const				pointRandomRadius;
+
+		ft::Vec2<int>			gridDim;
+		tmp_grid_t				grid;
+
+		Tmp(ft::Vec2<int> const rectSize
+			, ft::Vec2<int> const triangleSize
+			, int const pointRandomRadius);
+		~Tmp();
+		
+	private:
+		void					_buildGridDim(void);
+		void					_buildGrid(void);
+
+		ft::Vec2<float>			_pointDeltaPos(void);
+
+		Tmp() = delete;
+		Tmp(Tmp const &src) = delete;
+		Tmp						&operator=(Tmp const &rhs) = delete;
+	};
+	
 	unsigned int								_p;
 	unsigned int								_me;
 	mesh_t										_mesh;
 
-	tmp_grid_t			_build_tmp_grid(ft::Vec2<int> const gridDim);
 	
 	Tiles() = delete;
 	Tiles(Tiles const &src) = delete;
