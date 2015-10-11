@@ -112,6 +112,7 @@ endif
 	else																\
 		make $${LUA_FILES};												\
 	fi;																	\
+	ranlib $(NAME)
 
 # Include $(O_FILES) and dependencies
 -include $(DEPEND)
@@ -128,7 +129,7 @@ $(LUA_LIB):
 	make -C $(LUA_DIR) $(LUA_PLATFORM)
 	$(LUA_LINK)
 $(NAME)(%.o): $(LUA_SRC)/%.o
-	ar rcs $@ $<
+	ar rcS $@ $<
 
 # Compiling
 $(O_DIR)/%.o: %.c
