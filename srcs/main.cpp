@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/11 12:28:21 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/11 16:08:41 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -84,19 +84,19 @@ void		printViewTree(ftui::AView const *view, int indent = 0)
 ** -
 */
 
-#include "tiles/Tiles.hpp"
 
 class Main
 {
 public:
+	Tiles		tiles;
 	Main(void) :
 		_canvasHolder(WIN_WIDTHI, WIN_HEIGHTI),
 		_act(WIN_SIZEVI),
 		_puzzleSize(42)
 	{
 		
-		Tiles		tiles{WIN_SIZEVI};
 
+		std::srand(time(NULL));
 		std::ifstream			stream("res/layout/npuzzleui.xml");
 		Main::_instance = this;
 		_act.inflate(stream);
@@ -131,6 +131,7 @@ public:
 */
 		_canvasHolder.init();
 
+		tiles.init(WIN_SIZEVI);
 		printViewTree(_act.getRoot());
 
 /*
@@ -161,6 +162,7 @@ public:
 			glClearColor(0.2f, 0.8f, 0.9f, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 			// canvas.clear();
+			tiles.render();
 			_act.render(canvas);
 			_canvasHolder.render();
 			glfwSwapBuffers(_window);

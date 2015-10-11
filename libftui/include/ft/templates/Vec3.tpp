@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/05 14:45:49 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/11 14:03:08 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/11 14:21:57 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,14 +108,13 @@ DECLARE_OPERATOR(/)
 
 # undef DECLARE_OPERATOR
 
-// template <typename T>
-// std::ostream&   operator<<(std::ostream &o, Vec3<T> const &rhs)
-// {
-// 	return (o << std::string("(")
-// 			<< rhs.x << std::string("/")
-// 			<< rhs.y << std::string("/")
-// 			<< rhs.z << std::string(")"));
-// }
-
+template <typename T>
+std::ostream&   operator<<(std::ostream &o, Vec3<T> const &rhs)
+{
+	return (o << std::string("(")
+			<< rhs.x << std::string("/")
+			<< rhs.y << std::string("/")
+			<< rhs.z << std::string(")"));
+}
 
 };

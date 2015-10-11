@@ -6,7 +6,7 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 15:04:00 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/11 14:04:48 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/11 14:21:53 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ protected:
 private:
 };
 
-// template <typename T>
-// std::ostream&	operator<<(std::ostream &o, Vec3<T> const &rhs);
+template <typename T>
+std::ostream&	operator<<(std::ostream &o, Vec3<T> const &rhs);
 
 template <typename T>
 class	Vec4
