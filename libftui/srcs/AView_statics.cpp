@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/10 18:44:51 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/11 17:11:51 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -64,8 +64,8 @@ AView::views_info_t				AView::viewsInfo
 	}}},
 	{"ALayout", {"ASolidView", nullptr, {
 		// std::make_tuple("setParam", &ALayout::setParamG) // CHECK HERITAGE
-		std::make_tuple("size", &ALayout::sizeG)
-		// std::make_tuple("at", &ALayout::atG),
+		std::make_tuple("size", &ALayout::sizeG),
+		std::make_tuple("at", &ALayout::atG)
 		// std::make_tuple("addView", &ALayout::addViewG),
 		// std::make_tuple("popView", &ALayout::popViewG)
 			}}},

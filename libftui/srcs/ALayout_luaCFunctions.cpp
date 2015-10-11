@@ -1,12 +1,12 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   AView_luaCFunctions.cpp                            :+:      :+:    :+:   //
+//   ALayout_luaCFunctions.cpp                          :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/10/04 11:52:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/10 11:06:17 by ngoguey          ###   ########.fr       //
+//   Created: 2015/10/11 17:10:07 by ngoguey           #+#    #+#             //
+//   Updated: 2015/10/11 17:12:08 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -25,8 +25,7 @@ int			ALayout::NAME##G(lua_State *l)					\
 // DEF_LUACFUN_GSUFFIX(setParam, 1, 0)
 DEF_LUACFUN_GSUFFIX(size, 1, 1)
 int			ALayout::atG(lua_State *l)					
-{															
-	// std::cout << "salutBORDEL DE MERDE" << std::endl;
+{
 	return luaCFunHelper<2, 1>(
 		l, static_cast<AView*(ALayout::*)(int)>(&ALayout::at));
 }

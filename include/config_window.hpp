@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/11 11:03:51 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/11 11:30:04 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/11 16:29:10 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,7 +21,7 @@
 /*
 ** LITERAL
 */
-typedef std::integral_constant<int, 1000>	win_width_t;
+typedef std::integral_constant<int, 1200>	win_width_t;
 # define WIN_RATIOF (4.f / 3.f)
 
 /*

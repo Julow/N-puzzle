@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 15:25:06 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/10 13:07:03 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/11 17:12:14 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -87,21 +87,19 @@ end;																		\n \
 		tab = tab or '**';
 		
 		if t == nil or t[0] == nil or type(t[0]) ~= 'userdata' then
-		print('wrong ft_pchildren Argument:', t);
-		return ;
+			print('wrong ft_pchildren Argument:', t);
+			return ;
 		end
+		n = t.size and t:size() or 0;
 		print(string.format('%s %s(%s) %dchildren'
 							, tab
 							, ft_tostring(t:getId())
 							, ft_tostring(t)
-							, (t.size and t:size() or 0)
+							, n
 				  ));
-		if type(t.size) == 'function' then
 		tab = tab..'**';
-		for i=0,t:size() - 1 do
-					--print('SALUT BORDEL', t:size(), i);\n
-					ft_pchildren(t:at(i), tab);
-		end
+		for i=0,n - 1 do
+			ft_pchildren(t:at(i), tab);
 		end
 		// print('salut, ici');
 		end;

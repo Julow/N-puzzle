@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/11 16:08:41 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/11 17:13:20 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -137,20 +137,15 @@ public:
 /*
 ** test
 */
-		lua_State *l = _act.getLuaState(); //don't remove please
+		lua_State *l = _act.getLuaState(); //don't remove please ;'(
 
-		std::cout <<  std::endl;
-
-		luaL_dostring(l, "for k, v in ipairs(UIParent) do print('salut', k, v); end");
-		std::cout <<  std::endl;
-		luaL_dostring(l, "ft_ptab(UIParent);");
-		luaL_dostring(l, "ft_ptab(ALayout);");
-		luaL_dostring(l, "ft_ptab(VerticalLayout);");
+		// luaL_dostring(l, "ft_ptab(UIParent);");
+		// luaL_dostring(l, "ft_ptab(ALayout);");
+		// luaL_dostring(l, "ft_ptab(VerticalLayout);");
 		luaL_dostring(l, "ft_pchildren(UIParent);");
 		// luaL_dostring(l, "ft_ptab(_G);");
 		// std::cout << "caca4" << std::endl;
-
-		luaL_dostring(l, "print('backgroundColor:'..solid_test:getBackgroundColor())");
+		// luaL_dostring(l, "print('backgroundColor:'..solid_test:getBackgroundColor())");
 	}
 
 	void				loop(void)
