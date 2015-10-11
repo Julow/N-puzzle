@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 15:25:06 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/11 17:58:56 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/11 18:04:11 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,7 +16,7 @@
 #include <iostream>//de
 
 #include "ftui/Activity.hpp"
-#include "lua.hpp"
+#include "ftui/lua/lua.hpp"
 
 #define TOSTRING(...) #__VA_ARGS__
 

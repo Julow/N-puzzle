@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/11 18:00:41 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/11 18:04:55 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,7 +21,7 @@
 # include <istream>
 
 # include "ftui/IViewHolder.hpp"
-# include "lua.hpp" //TODO change to # include "lua/lua.hpp"
+# include "lua/lua.hpp"
 
 namespace ftui
 {
