@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/11 11:52:03 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/11 13:34:33 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/11 14:00:28 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -26,11 +26,14 @@ class Tiles
 public:
 	Tiles(ft::Vec2<int> const rectSize
 		  , ft::Vec2<int> const triangleSize = ft::Vec2<int>(100, 100)
-		  , int const pointRandomRadius = 30);
+		  , int const pointRandomRadius = 30
+		  , float const percentGray = 33
+		  , ft::Vec3<int> const gray = ft::Vec3<int>(150, 150, 150)
+		  , ft::Vec3<int> const pink = ft::Vec3<int>(140, 212, 202)
+		  , ft::Vec3<int> const deltaPink = ft::Vec3<int>(10, 10, 52));
 	virtual ~Tiles();
 
 	void			render(void);
-
 	
 protected:
 private:
@@ -50,13 +53,22 @@ private:
 		ft::Vec2<int> const		rectSize;
 		ft::Vec2<int> const		triangleSize;
 		int const				pointRandomRadius;
-
+		int const				percentGray;
+		ft::Vec3<float> const	gray;
+		ft::Vec3<float> const	pink;
+		ft::Vec3<float> const	deltaPink;
+		
+		
 		ft::Vec2<int>			gridDim;
 		tmp_grid_t				grid;
 
 		Tmp(ft::Vec2<int> const rectSize
 			, ft::Vec2<int> const triangleSize
-			, int const pointRandomRadius);
+			, int const pointRandomRadius
+			, int const percentGray
+			, ft::Vec3<float> const gray
+			, ft::Vec3<float> const pink
+			, ft::Vec3<float> const deltaPink);
 		~Tmp();
 		
 	private:
@@ -64,6 +76,7 @@ private:
 		void					_buildGrid(void);
 
 		ft::Vec2<float>			_pointDeltaPos(void);
+		ft::Vec3<float>			_pointDeltaPink(void);
 
 		Tmp() = delete;
 		Tmp(Tmp const &src) = delete;
