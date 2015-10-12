@@ -1,19 +1,17 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Vec.hpp                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 15:04:00 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/11 14:21:53 by ngoguey          ###   ########.fr       //
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   Vec.hpp                                            :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/09/22 15:04:00 by jaguillo          #+#    #+#             //
+//   Updated: 2015/10/12 16:00:11 by jaguillo         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #ifndef VEC_HPP
 # define VEC_HPP
-
-# include "ftui/libftui.hpp"
 
 namespace ft
 {
@@ -24,12 +22,14 @@ namespace ft
 ** Vec4 (x, y, z, w)
 ** -
 ** Support a lot of constructor and operator
+** -
+** TODO: constexpr
 */
 
 # define _OPERATORS(TYPE,OP) \
-	TYPE<T>	&operator OP##=(TYPE<T> const &rhs);		\
-	TYPE<T>	&operator OP##=(T v);				\
-	TYPE<T>	operator OP(TYPE<T> const &rhs) const;		\
+	TYPE<T>	&operator OP##=(TYPE<T> const &rhs);	\
+	TYPE<T>	&operator OP##=(T v);					\
+	TYPE<T>	operator OP(TYPE<T> const &rhs) const;	\
 	TYPE<T>	operator OP(T v) const;
 # define OPERATORS(TYPE) \
 	_OPERATORS(TYPE, +)								\
@@ -45,7 +45,7 @@ public:
 	Vec2(Vec2<T> const &src);
 	Vec2(T v);
 	Vec2(T x, T y);
-	virtual ~Vec2(void);
+	~Vec2(void);
 
 	T			x;
 	T			y;
@@ -61,7 +61,7 @@ private:
 };
 
 template <typename T>
-std::ostream&	operator<<(std::ostream &o, Vec2<T> const &rhs);
+Vec2<T>			make_vec(T x, T y);
 
 template <typename T>
 class	Vec3
@@ -72,7 +72,7 @@ public:
 	Vec3(Vec3<T> const &src);
 	Vec3(T v);
 	Vec3(T x, T y, T z);
-	virtual ~Vec3(void);
+	~Vec3(void);
 
 	T			x;
 	T			y;
@@ -89,7 +89,7 @@ private:
 };
 
 template <typename T>
-std::ostream&	operator<<(std::ostream &o, Vec3<T> const &rhs);
+Vec3<T>			make_vec(T x, T y, T z);
 
 template <typename T>
 class	Vec4
@@ -101,7 +101,7 @@ public:
 	Vec4(Vec4<T> const &src);
 	Vec4(T v);
 	Vec4(T x, T y, T z, T w);
-	virtual ~Vec4(void);
+	~Vec4(void);
 
 	T			x;
 	T			y;
@@ -117,6 +117,9 @@ public:
 protected:
 private:
 };
+
+template <typename T>
+Vec4<T>			make_vec(T x, T y, T z, T w);
 
 # undef _OPERATORS
 # undef OPERATORS

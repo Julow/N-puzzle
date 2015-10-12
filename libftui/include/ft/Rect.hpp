@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/02 18:43:04 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/08 14:52:46 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 15:57:16 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -31,7 +31,7 @@ public:
 	Rect(Rect<T> const &src);
 	Rect(T left, T top, T right, T bottom);
 	Rect(Vec2<T> pos, Vec2<T> size);
-	virtual ~Rect(void);
+	~Rect(void);
 
 	T			left;
 	T			top;
@@ -112,6 +112,11 @@ public:
 protected:
 private:
 };
+
+template<typename T>
+Rect<T>		make_rect(T left, T top, T right, T bottom);
+template<typename T>
+Rect<T>		make_rect(Vec2<T> pos, Vec2<T> size);
 
 };
 

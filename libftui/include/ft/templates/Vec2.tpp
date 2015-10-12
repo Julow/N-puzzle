@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Vec2.tpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/10/05 14:45:51 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/05 17:21:07 by jaguillo         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   Vec2.tpp                                           :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/10/05 14:45:51 by jaguillo          #+#    #+#             //
+//   Updated: 2015/10/12 15:59:33 by jaguillo         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 namespace ft
 {
@@ -94,12 +94,11 @@ DECLARE_OPERATOR(/)
 # undef DECLARE_OPERATOR
 
 template <typename T>
-std::ostream&   operator<<(std::ostream &o, Vec2<T> const &rhs)
+Vec2<T>		make_vec(T x, T y)
 {
-	return (o << std::string("(")
-			<< rhs.x << std::string("/")
-			<< rhs.y << std::string(")"));
+	return (Vec2<T>(x, y));
 }
 
+static_assert(!std::is_polymorphic<Vec2<int>>(), "It shouldn't be!");
 	
 };

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 09:38:59 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/09 13:29:01 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 15:51:31 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -45,7 +45,9 @@ AView const		*Activity::RootViewHolder::getView(void) const
 { return (this->_view); }
 
 ft::Vec2<int>	Activity::RootViewHolder::getPos(void) const
-{ return (ft::Vec2<int>(0, 0)); }
+{
+	return (ft::make_vec(0, 0));
+}
 
 ft::Vec2<int>	Activity::RootViewHolder::getSize(void) const
 { return (this->_size); }

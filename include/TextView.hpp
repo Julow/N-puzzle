@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/12 08:49:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 13:59:04 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 16:09:05 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,11 +19,8 @@ namespace ftui
 {
 
 /*
-** TODO: text view
 ** TODO: textAlign
 ** TODO: \n
-** TODO: ft::make_vec
-** TODO: ft::make_rect
 ** text			(string)
 ** font			(string)
 ** textColor	(color)

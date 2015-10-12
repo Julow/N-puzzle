@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 13:19:26 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 16:07:57 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -65,11 +65,8 @@ void		printViewTree(ftui::AView const *view, int indent = 0)
 	if (view->getId() != NULL)
 		std::cout << " #" << *(view->getId());
 	if (view->getViewHolder() != nullptr)
-		ft::f(std::cout, " <(%, %) / (%, %)>",
-			view->getViewHolder()->getPos().x,
-			view->getViewHolder()->getPos().y,
-			view->getViewHolder()->getSize().x,
-			view->getViewHolder()->getSize().y);
+		std::cout << " " << ft::make_rect(view->getViewHolder()->getPos(),
+			view->getViewHolder()->getSize());
 	if (view->getAlpha() < 1.f)
 		std::cout << " alpha=" << view->getAlpha();
 	layout = dynamic_cast<ftui::ALayout const*>(view);

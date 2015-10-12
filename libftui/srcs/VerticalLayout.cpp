@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 18:07:07 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 15:57:41 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -100,7 +100,7 @@ void			VerticalLayout::onMeasure(void)
 		offsetTop += h->getVerticalMargin().y;
 		offsetTop += requestedSize.y;
 	}
-	_holder->setRequestedSize(ft::Vec2<int>(maxWidth, offsetTop));
+	_holder->setRequestedSize(ft::make_vec(maxWidth, offsetTop));
 	alignChilds();
 }
 
@@ -124,7 +124,7 @@ void			VerticalLayout::onDraw(Canvas &canvas)
 		if (h->getView()->isRedrawQueried())
 		{
 			canvas.applyAlpha(h->getView()->getAlpha());
-			canvas.applyClip(ft::Rect<int>(h->getPos(), h->getSize()));
+			canvas.applyClip(ft::make_rect(h->getPos(), h->getSize()));
 			h->getView()->onDraw(canvas);
 			canvas.setClip(old_clip);
 			canvas.setAlpha(old_alpha);

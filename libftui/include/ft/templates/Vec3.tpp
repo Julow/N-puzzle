@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Vec3.tpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/10/05 14:45:49 by jaguillo          #+#    #+#             */
-//   Updated: 2015/10/11 14:21:57 by ngoguey          ###   ########.fr       //
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   Vec3.tpp                                           :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/10/05 14:45:49 by jaguillo          #+#    #+#             //
+//   Updated: 2015/10/12 15:59:46 by jaguillo         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 namespace ft
 {
@@ -109,12 +109,11 @@ DECLARE_OPERATOR(/)
 # undef DECLARE_OPERATOR
 
 template <typename T>
-std::ostream&   operator<<(std::ostream &o, Vec3<T> const &rhs)
+Vec3<T>		make_vec(T x, T y, T z)
 {
-	return (o << std::string("(")
-			<< rhs.x << std::string("/")
-			<< rhs.y << std::string("/")
-			<< rhs.z << std::string(")"));
+	return (Vec3<T>(x, y, z));
 }
+
+static_assert(!std::is_polymorphic<Vec3<int>>(), "It shouldn't be!");
 
 };

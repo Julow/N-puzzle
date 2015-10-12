@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 13:36:00 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 15:58:07 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -20,7 +20,7 @@ namespace ftui
 {
 
 ASolidView::ASolidView(XmlParser const &xml, Activity &act) :
-	AView(xml, act), _bgParams{0x0, 0x0, 1}
+	AView(xml, act), _bgParams{0x0, 0x0, 1, 0}
 {
 }
 
@@ -31,7 +31,7 @@ ASolidView::~ASolidView(void)
 void			ASolidView::onDraw(Canvas &canvas)
 {
 	AView::onDraw(canvas);
-	canvas.drawRect(ft::Rect<int>(ft::Vec2<int>(0, 0), _holder->getSize()),
+	canvas.drawRect(ft::make_rect(ft::make_vec(0, 0), _holder->getSize()),
 			_bgParams);
 }
 

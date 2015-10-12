@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 15:44:22 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 15:52:52 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -128,7 +128,7 @@ void			Canvas::applyClip(ft::Rect<int> const &rect)
 {
 	_clip.top += rect.top;
 	_clip.left += rect.left;
-	_clip.setSize(ft::Vec2<int>(rect.getWidth(), rect.getHeight()));
+	_clip.setSize(ft::make_vec(rect.getWidth(), rect.getHeight()));
 }
 
 void			Canvas::setClip(ft::Rect<int> const &rect)
@@ -216,7 +216,7 @@ void			Canvas::drawText(ft::Vec2<int> pos, std::string const &text,
 	if (ft::Color::a(opt.fillColor) == 0 || opt.lineWidth <= 0
 		|| opt.font >= g_faces.size())
 		return ;
-	pos += ft::Vec2<int>(_clip.left, _clip.top);
+	pos += ft::make_vec(_clip.left, _clip.top);
 	face = g_faces[opt.font];
 	if (FT_Set_Pixel_Sizes(face, 0, opt.lineWidth))
 		throw std::runtime_error("Cannot resize font (drawText)");

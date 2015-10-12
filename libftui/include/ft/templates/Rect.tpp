@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/05 14:06:16 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/08 14:53:42 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 15:57:05 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -207,5 +207,19 @@ bool		Rect<T>::operator==(Rect<T> const &rhs) const
 	return (left == rhs.left && top == rhs.top
 		&& right == rhs.right && bottom == rhs.bottom);
 }
+
+template<typename T>
+Rect<T>		make_rect(T left, T top, T right, T bottom)
+{
+	return (Rect<T>(left, top, right, bottom));
+}
+
+template<typename T>
+Rect<T>		make_rect(Vec2<T> pos, Vec2<T> size)
+{
+	return (Rect<T>(pos, size));
+}
+
+static_assert(!std::is_polymorphic<Rect<int>>(), "It shouldn't be!");
 
 };

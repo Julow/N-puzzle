@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils.hpp                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/25 13:42:20 by jaguillo          #+#    #+#             */
-//   Updated: 2015/09/29 07:38:19 by ngoguey          ###   ########.fr       //
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   utils.hpp                                          :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/09/25 13:42:20 by jaguillo          #+#    #+#             //
+//   Updated: 2015/10/12 16:05:49 by jaguillo         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #ifndef UTILS_H
 # define UTILS_H
@@ -16,6 +16,8 @@
 # include <ostream>
 # include <sstream>
 # include <string>
+# include "Vec.hpp"
+# include "Rect.hpp"
 
 namespace ft
 {
@@ -33,6 +35,21 @@ std::string			f(char const *format, ARGS ...args);
 */
 template<typename ... ARGS>
 void				f(std::ostream &out, char const *format, ARGS ...args);
+
+/*
+** -
+*/
+template <typename T>
+std::ostream		&operator<<(std::ostream &o, Vec2<T> const &rhs);
+
+template <typename T>
+std::ostream		&operator<<(std::ostream &o, Vec3<T> const &rhs);
+
+template <typename T>
+std::ostream		&operator<<(std::ostream &o, Vec4<T> const &rhs);
+
+template <typename T>
+std::ostream		&operator<<(std::ostream &o, Rect<T> const &rhs);
 
 /*
 ** Impl
@@ -74,6 +91,32 @@ template<typename ... ARGS>
 void				f(std::ostream &out, char const *format, ARGS ...args)
 {
 	f_loop(out, f_print(out, format), std::forward<ARGS>(args)...);
+}
+
+template <typename T>
+std::ostream		&operator<<(std::ostream &o, Vec2<T> const &rhs)
+{
+	return (o << "{ " << rhs.x << ", " << rhs.y << " }");
+}
+
+template <typename T>
+std::ostream		&operator<<(std::ostream &o, Vec3<T> const &rhs)
+{
+	return (o << "{ " << rhs.x << ", " << rhs.y << ", " << rhs.z << " }");
+}
+
+template <typename T>
+std::ostream		&operator<<(std::ostream &o, Vec4<T> const &rhs)
+{
+	return (o << "{ " << rhs.x << ", " << rhs.y << ", " << rhs.z << ", "
+		<< rhs.w << " }");
+}
+
+template <typename T>
+std::ostream		&operator<<(std::ostream &o, Rect<T> const &rhs)
+{
+	return (o << "{ " << rhs.left << ", " << rhs.top << " / "
+		<< rhs.right << ", " << rhs.bottom << " }");
 }
 
 };
