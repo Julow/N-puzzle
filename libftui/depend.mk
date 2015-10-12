@@ -99,8 +99,10 @@ o/srcs/SolidView.o: srcs/SolidView.cpp include/ft/Color.hpp \
 	include/ft/templates/Vec4.tpp include/ftui/ASolidView.hpp \
 	include/ftui/AView.hpp include/ftui/Canvas.hpp include/ftui/SolidView.hpp \
 	include/ftui/libftui.hpp | o/srcs/
-o/srcs/TextView.o: srcs/TextView.cpp include/ft/assert.hpp \
-	include/ftui/TextView.hpp include/ftui/libftui.hpp | o/srcs/
+o/srcs/TextView.o: srcs/TextView.cpp include/ft/Vec.hpp include/ft/assert.hpp \
+	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
+	include/ft/templates/Vec4.tpp include/ftui/IViewHolder.hpp \
+	include/ftui/libftui.hpp | o/srcs/
 o/srcs/VerticalLayout.o: srcs/VerticalLayout.cpp include/ft/Color.hpp \
 	include/ft/Rect.hpp include/ft/Vec.hpp include/ft/assert.hpp \
 	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \

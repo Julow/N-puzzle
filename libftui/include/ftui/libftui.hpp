@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:55:01 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 18:11:26 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 16:11:29 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -29,7 +29,7 @@ namespace ftui
 ** AView							# Base class
 ** 	->	ASolidView					# Base class for views with a background
 ** 		->	SolidView				# Simplest concrete View
-** 		->	TextView				# (TODO)
+** 		->	TextView				# Draw text
 ** 		->	SliderView				# (TODO)
 ** 		->	...
 ** 		->	ALayout					# Base class for layouts
@@ -83,6 +83,11 @@ namespace ftui
 ** 		verticalAlign		(enum)	LEFT, CENTER or RIGHT
 ** 		width				(uint)	Requested width
 ** 		height				(uint)	Requested height
+** TextView
+** 		text				(str)	Text to be render
+** 		textFont			(str)	Font
+** 		textColor			(color)
+** 		textSize			(int)
 */
 
 /*

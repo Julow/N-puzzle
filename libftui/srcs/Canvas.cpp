@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 15:52:52 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 16:13:15 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -228,7 +228,9 @@ void			Canvas::drawText(ft::Vec2<int> pos, std::string const &text,
 		if (FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL))
 			continue ;
 		{
-			std::cout << "render char " << text[i] << std::endl;
+			/*
+			** TODO: move (putGreyBitmap)
+			*/
 			uint8_t const	*greyMap = face->glyph->bitmap.buffer;
 
 			if (face->glyph->bitmap.pixel_mode != FT_PIXEL_MODE_GRAY)

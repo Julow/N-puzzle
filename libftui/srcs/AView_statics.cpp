@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/11 17:55:58 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/12 16:15:31 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -17,6 +17,7 @@
 #include "ftui/VerticalLayout.hpp"
 #include "ftui/SolidView.hpp"
 #include "ftui/ASolidView.hpp"
+#include "ftui/TextView.hpp"
 
 namespace ftui
 {
@@ -61,6 +62,9 @@ AView::views_info_t				AView::viewsInfo
 		std::make_tuple("setBackgroundColor", &ASolidView::setBackgroundColorG),
 		std::make_tuple("setBorderColor", &ASolidView::setBorderColorG),
 		std::make_tuple("setBorderWidth", &ASolidView::setBorderWidthG),
+	}}},
+	{"TextView", {"ASolidView", &TextView::createView, {
+		// TODO: TextView's lua cfuncs
 	}}},
 	{"ALayout", {"ASolidView", nullptr, {
 		// std::make_tuple("setParam", &ALayout::setParamG) // CHECK HERITAGE
