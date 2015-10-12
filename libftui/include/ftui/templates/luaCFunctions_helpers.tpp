@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/10 16:20:58 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 18:17:25 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -98,6 +98,7 @@ inline TYPE				popStack<TYPE>(lua_State *l, int numIn)	\
 }
 
 BASICPOPSTACK(int, luaL_checkinteger)
+BASICPOPSTACK(uint32_t, luaL_checkinteger)
 BASICPOPSTACK(bool, luaL_checkinteger)
 BASICPOPSTACK(float, luaL_checknumber)
 BASICPOPSTACK(double, luaL_checknumber)
@@ -155,6 +156,7 @@ inline void				pushStack<1, TYPE>(lua_State *l, TYPE &&r)	\
 }
 
 BASICPUSHSTACK(int, lua_pushinteger)
+BASICPUSHSTACK(uint32_t, lua_pushinteger)
 BASICPUSHSTACK(bool, lua_pushinteger)
 BASICPUSHSTACK(float, lua_pushnumber)
 BASICPUSHSTACK(double, lua_pushnumber)

@@ -6,13 +6,14 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/10 18:56:55 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 18:18:27 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "ftui/AView.hpp"
 #include "ftui/IViewHolder.hpp"
 #include "ftui/ASolidView.hpp"
+#include "ftui/TextView.hpp"
 #include "ftui/luaCFunctions_helpers.hpp"
 
 namespace ftui
@@ -30,6 +31,41 @@ int			CLASS::NAME##G(lua_State *l)								\
 	return luaCFunHelper<NUMIN, NUMOUT>(l,								\
 		reinterpret_cast<RET (CLASS::*)(__VA_ARGS__)>(&CLASS::NAME));	\
 }
+
+/*
+** TextView
+*/
+
+DEF_LUACFUN_GSUFFIX(TextView, setText,				2, 0)
+DEF_LUACFUN_GSUFFIX(TextView, getFont,				1,	1)
+DEF_LUACFUN_GSUFFIX(TextView, setFont,				2, 0)
+DEF_LUACFUN_GSUFFIX(TextView, getTextColor,			1, 1)
+DEF_LUACFUN_GSUFFIX(TextView, setTextColor,			2, 0)
+DEF_LUACFUN_GSUFFIX(TextView, getTextSize,			1, 1)
+DEF_LUACFUN_GSUFFIX(TextView, setTextSize,			2, 0)
+
+int			TextView::getTextG(lua_State *l)
+{
+	TextView *const				i = luaCFunRetreiveSelf<TextView>(l, -1);
+
+	lua_pushstring(l, i->getText().c_str());
+	return (1);
+}
+
+/*
+** ASolidView
+*/
+
+DEF_LUACFUN_GSUFFIX(ASolidView, getBorderWidth,		1,	1)
+DEF_LUACFUN_GSUFFIX(ASolidView, setBorderWidth,		2,	0)
+DEF_LUACFUN_GSUFFIX(ASolidView, getBackgroundColor,	1,	1)
+DEF_LUACFUN_GSUFFIX(ASolidView, getBorderColor,		1,	1)
+DEF_LUACFUN_GSUFFIX(ASolidView, setBackgroundColor,	2,	0)
+DEF_LUACFUN_GSUFFIX(ASolidView, setBorderColor,		2,	0)
+
+/*
+** AView
+*/
 
 DEF_LUACFUN_GSUFFIX(AView, setAlpha,				2,	0)
 DEF_LUACFUN_GSUFFIX(AView, setVisibility,			2,	0)
@@ -53,15 +89,6 @@ DEF_LUACFUN_GSUFFIX(AView, isUpdateQueried,			1,	1)
 DEF_LUACFUN_GSUFFIX(AView, isMeasureQueried,		1,	1)
 DEF_LUACFUN_GSUFFIX(AView, isRedrawQueried,			1,	1)
 DEF_LUACFUN_GSUFFIX(AView, getParent,				1,	1)
-
-DEF_LUACFUN_GSUFFIX(ASolidView, getBorderWidth,		1,	1)
-DEF_LUACFUN_GSUFFIX(ASolidView, setBorderWidth,		2,	0)
-
-// TODO: unsigned int
-DEF_LUACFUN_G_CAST(ASolidView, getBackgroundColor,	1,	1, int)
-DEF_LUACFUN_G_CAST(ASolidView, getBorderColor,		1,	1, int)
-DEF_LUACFUN_G_CAST(ASolidView, setBackgroundColor,	2,	0, void, int)
-DEF_LUACFUN_G_CAST(ASolidView, setBorderColor,		2,	0, void, int)
 
 int			AView::getIdG(lua_State *l)
 {

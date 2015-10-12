@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/12 16:15:31 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 18:11:08 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -64,7 +64,14 @@ AView::views_info_t				AView::viewsInfo
 		std::make_tuple("setBorderWidth", &ASolidView::setBorderWidthG),
 	}}},
 	{"TextView", {"ASolidView", &TextView::createView, {
-		// TODO: TextView's lua cfuncs
+		std::make_tuple("getText", &TextView::getTextG),
+		std::make_tuple("setText", &TextView::setTextG),
+		std::make_tuple("getFont", &TextView::getFontG),
+		std::make_tuple("setFont", &TextView::setFontG),
+		std::make_tuple("getTextColor", &TextView::getTextColorG),
+		std::make_tuple("setTextColor", &TextView::setTextColorG),
+		std::make_tuple("getTextSize", &TextView::getTextSizeG),
+		std::make_tuple("setTextSize", &TextView::setTextSizeG),
 	}}},
 	{"ALayout", {"ASolidView", nullptr, {
 		// std::make_tuple("setParam", &ALayout::setParamG) // CHECK HERITAGE

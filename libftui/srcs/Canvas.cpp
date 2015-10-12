@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 17:57:32 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 17:58:58 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,8 +24,6 @@ extern "C"
 #include <cstring>
 #include <vector>
 #include <unordered_map>
-
-#include <iostream> // TODO remove
 
 namespace ftui
 {
@@ -278,7 +276,6 @@ ft::Vec2<int>	Canvas::measureText(std::string const &text, Params const &opt)
 		size.x += face->glyph->advance.x >> 6;
 	}
 	size.y = (face->height + face->ascender + face->descender) >> 6;
-	std::cout << "text size: " << size << std::endl;
 	return (size);
 }
 

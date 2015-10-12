@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/12 08:49:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 16:11:34 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 18:03:41 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -44,8 +44,6 @@ public:
 
 	virtual void		setParam(std::string const &k, std::string const &v);
 
-	static AView		*createView(XmlParser const &xml, Activity &a);
-
 protected:
 
 	std::string			_text;
@@ -55,6 +53,22 @@ private:
 	TextView(void);
 	TextView(TextView const &src);
 	TextView			&operator=(TextView const &rhs);
+
+/*
+** Static
+*/
+public:
+	static AView		*createView(XmlParser const &xml, Activity &a);
+
+	static int			getTextG(lua_State *l);
+	static int			setTextG(lua_State *l);
+	static int			getFontG(lua_State *l);
+	static int			setFontG(lua_State *l);
+	static int			getTextColorG(lua_State *l);
+	static int			setTextColorG(lua_State *l);
+	static int			getTextSizeG(lua_State *l);
+	static int			setTextSizeG(lua_State *l);
+	static int			setParamG(lua_State *l);
 };
 
 };
