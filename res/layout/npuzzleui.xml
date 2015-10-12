@@ -65,7 +65,7 @@
 			verticalAlign="CENTER"
 			marginBottom="20"
 			text="milol"
-			textFont="/Library/Fonts/Trebuchet MS Bold.ttf"
+			textFont="/Library/Fonts/Arial Black.ttf"
 			textSize="64"
 			textColor="0xFFFF0000"
 			backgroundColor="0x20000000"

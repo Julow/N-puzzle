@@ -6,13 +6,14 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/11 11:58:44 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/11 16:12:38 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/12 16:44:27 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include <cmath>
 #include <cfenv>
 #include <cstdlib>
+#include <string>
 #include "Tiles.hpp"
 #include "gl.hpp"
 

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 16:13:15 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 17:57:32 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -84,6 +84,26 @@ int				Canvas::getBitmapWidth(void) const
 int				Canvas::getBitmapHeight(void) const
 {
 	return (_height);
+}
+
+void			Canvas::putAlphaBitmap(ft::Vec2<int> pos, uint8_t const *bitmap,
+					ft::Rect<int> const &rect, int pitch, ft::Color::t color)
+{
+	int				x;
+	int				y;
+
+	y = rect.top;
+	while (y < rect.bottom)
+	{
+		x = rect.left;
+		while (x < rect.right)
+		{
+			putPixel(x + pos.x, y + pos.y, ft::Color::alpha(color, bitmap[x]));
+			x++;
+		}
+		y++;
+		bitmap += pitch;
+	}
 }
 
 void			Canvas::clear(void)
@@ -212,6 +232,7 @@ void			Canvas::drawText(ft::Vec2<int> pos, std::string const &text,
 {
 	FT_Face			face;
 	FT_UInt			glyph_index;
+	ft::Rect<int>	glyph_rect;
 
 	if (ft::Color::a(opt.fillColor) == 0 || opt.lineWidth <= 0
 		|| opt.font >= g_faces.size())
@@ -220,6 +241,7 @@ void			Canvas::drawText(ft::Vec2<int> pos, std::string const &text,
 	face = g_faces[opt.font];
 	if (FT_Set_Pixel_Sizes(face, 0, opt.lineWidth))
 		throw std::runtime_error("Cannot resize font (drawText)");
+	pos.y += (face->descender * 2 + face->height + face->ascender) >> 6;
 	for (uint32_t i = 0; i < text.size(); i++)
 	{
 		glyph_index = FT_Get_Char_Index(face, text[i]);
@@ -227,31 +249,12 @@ void			Canvas::drawText(ft::Vec2<int> pos, std::string const &text,
 			continue ;
 		if (FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL))
 			continue ;
-		{
-			/*
-			** TODO: move (putGreyBitmap)
-			*/
-			uint8_t const	*greyMap = face->glyph->bitmap.buffer;
-
-			if (face->glyph->bitmap.pixel_mode != FT_PIXEL_MODE_GRAY)
-				throw std::runtime_error("Unsupported font (drawText)");
-			uint32_t	x = 0;
-			uint32_t	y = face->glyph->bitmap.rows;
-			uint32_t	dst_y = pos.y + (face->descender >> 6);
-			uint32_t	height = (face->height + face->ascender + face->descender) >> 6;
-			uint32_t	dst_x = pos.x + face->glyph->bitmap_left;
-			while (y-- > 0)
-			{
-				x = 0;
-				while (x < face->glyph->bitmap.width)
-				{
-					putPixel(x + dst_x, height - y + dst_y,
-						ft::Color::alpha(opt.fillColor, greyMap[x]));
-					x++;
-				}
-				greyMap += face->glyph->bitmap.pitch;
-			}
-		}
+		glyph_rect.right = face->glyph->bitmap.width;
+		glyph_rect.bottom = face->glyph->bitmap.rows;
+		putAlphaBitmap(pos + ft::make_vec(face->glyph->bitmap_left,
+				-face->glyph->bitmap_top),
+			face->glyph->bitmap.buffer, glyph_rect, face->glyph->bitmap.pitch,
+			opt.fillColor);
 		pos.x += face->glyph->advance.x >> 6;
 	}
 }

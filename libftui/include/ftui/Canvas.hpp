@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 14:17:13 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 17:40:51 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -82,6 +82,18 @@ public:
 			while (x < n)
 				_bitmap[x++] = color;
 	}
+
+	/*
+	** Put 'color' applying alpha in 'bitmap'
+	** 'pos'	Where to put
+	** 'bitmap'	Alpha bitmap (1 byte per px)
+	** 'rect'	The rect in 'bitmap' to put
+	** 'pitch'	Size of a row (in bitmap)
+	** 'color'	The color to put after applying alpha
+	*/
+	void				putAlphaBitmap(ft::Vec2<int> pos, uint8_t const *bitmap,
+							ft::Rect<int> const &rect, int pitch,
+							ft::Color::t color);
 
 	void				clear(void);
 	void				clear(ft::Rect<int> const &rect);
