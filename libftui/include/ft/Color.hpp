@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 17:05:13 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 15:42:28 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 18:55:25 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,7 +24,7 @@ namespace ft
 ** Color::t can safely be used as base type for color buffers
 ** (OpenGL handle it as GL_BGRA)
 ** -
-** Can be safely writen as 0xFFFFFFFF (0xAARRGGBB) style
+** Can safely be writen in 0xFFFFFFFF (0xAARRGGBB) style
 **  (2 digit per component)
 ** -
 ** TODO: handle gamma
@@ -35,6 +35,11 @@ public:
 	virtual ~Color(void);
 
 	typedef uint32_t	t;
+
+	static inline t			make(uint32_t a, uint32_t r, uint32_t g, uint32_t b)
+	{
+		return ((a << 24) | (r << 16) | (g << 8) | (b << 0));
+	}
 
 	/*
 	** Return the corresponding color component (r, g, b, a)
@@ -66,20 +71,21 @@ public:
 	}
 
 	/*
-	** Return the result of putting 'src' in front of 'dst'
+	** Return the result of putting 'src' over 'dst'
 	** -
 	** out_alpha = src_a + (dst_a * (256 - src_a) / 256)
 	** out_rgb = ((dst_rgb * dst_a / 256) + (src_rgb * src_a / 256))
-	**                 * (256 - dst_a) / out_alpha
+	** 					* (256 - dst_a) / out_alpha
+	** -
+	** Warning:	Should never be call with a(src) == 0
+	** 			(floating point exception)
 	*/
-
 	static inline t			put(t dst, t src)
 	{
 		uint32_t const	dst_a = a(dst);
 		uint32_t const	src_a = a(src);
 		uint32_t const	out_a = src_a + (dst_a * (256 - src_a) / 256);
-		uint32_t const	tmp = out_a * 256 / (256 - ((dst_a < src_a) ? dst_a : src_a))
-			+ 1; // <--- TODO: fix
+		uint32_t const	tmp = out_a * 256 / (256 - ((dst_a < src_a) ? dst_a : src_a));
 
 		return ((out_a << 24)
 			| (((dst_a * r(dst) + (src_a * r(src))) / tmp) << 16)

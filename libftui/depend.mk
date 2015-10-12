@@ -53,7 +53,8 @@ o/srcs/AView_luaCFunctions.o: srcs/AView_luaCFunctions.cpp \
 	include/ft/Vec.hpp include/ft/templates/Vec2.tpp \
 	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
 	include/ftui/IViewHolder.hpp include/ft/Color.hpp include/ft/Rect.hpp \
-	include/ftui/ASolidView.hpp include/ftui/Canvas.hpp include/ft/utils.hpp \
+	include/ftui/ASolidView.hpp include/ftui/Canvas.hpp \
+	include/ftui/TextView.hpp include/ft/utils.hpp \
 	include/ftui/luaCFunctions_helpers.hpp \
 	include/ftui/templates/luaCFunctions_helpers.tpp | o/srcs/
 o/srcs/AView_statics.o: srcs/AView_statics.cpp include/ft/utils.hpp \
@@ -63,7 +64,7 @@ o/srcs/AView_statics.o: srcs/AView_statics.cpp include/ft/utils.hpp \
 	include/ft/templates/Vec4.tpp include/ftui/ALayout.hpp \
 	include/ftui/ASolidView.hpp include/ftui/Canvas.hpp \
 	include/ftui/IViewHolder.hpp include/ftui/VerticalLayout.hpp \
-	include/ftui/SolidView.hpp | o/srcs/
+	include/ftui/SolidView.hpp include/ftui/TextView.hpp | o/srcs/
 o/srcs/AbsoluteLayout.o: srcs/AbsoluteLayout.cpp include/ft/assert.hpp \
 	include/ftui/AbsoluteLayout.hpp include/ftui/libftui.hpp | o/srcs/
 o/srcs/Activity.o: srcs/Activity.cpp include/ft/utils.hpp include/ft/Vec.hpp \
@@ -99,10 +100,12 @@ o/srcs/SolidView.o: srcs/SolidView.cpp include/ft/Color.hpp \
 	include/ft/templates/Vec4.tpp include/ftui/ASolidView.hpp \
 	include/ftui/AView.hpp include/ftui/Canvas.hpp include/ftui/SolidView.hpp \
 	include/ftui/libftui.hpp | o/srcs/
-o/srcs/TextView.o: srcs/TextView.cpp include/ft/Vec.hpp include/ft/assert.hpp \
-	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
-	include/ft/templates/Vec4.tpp include/ftui/IViewHolder.hpp \
-	include/ftui/libftui.hpp | o/srcs/
+o/srcs/TextView.o: srcs/TextView.cpp include/ft/Color.hpp include/ft/Rect.hpp \
+	include/ft/Vec.hpp include/ft/assert.hpp include/ft/templates/Vec2.tpp \
+	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
+	include/ftui/ASolidView.hpp include/ftui/AView.hpp include/ftui/Canvas.hpp \
+	include/ftui/TextView.hpp include/ftui/libftui.hpp \
+	include/ftui/IViewHolder.hpp | o/srcs/
 o/srcs/VerticalLayout.o: srcs/VerticalLayout.cpp include/ft/Color.hpp \
 	include/ft/Rect.hpp include/ft/Vec.hpp include/ft/assert.hpp \
 	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
