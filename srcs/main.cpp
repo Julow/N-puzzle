@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/11 18:04:22 by juloo            ###   ########.fr       //
+//   Updated: 2015/10/12 13:19:26 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,6 +19,7 @@
 #include <stdexcept>
 #include <string>     // std::string, std::to_string
 
+#include "TextView.hpp"
 #include "ftui/Activity.hpp"
 #include "ftui/AView.hpp"
 #include "ftui/ALayout.hpp"
@@ -266,6 +267,7 @@ Main			*Main::_instance;
 
 int				main(void)
 {
+	ftui::AView::defineView("TextView", "ASolidView", &ftui::TextView::createView, {});
 	try
 	{
 		Main		main;

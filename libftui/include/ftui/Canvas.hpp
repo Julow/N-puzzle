@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/09 18:01:16 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 14:17:13 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -33,30 +33,33 @@ namespace ftui
 class	Canvas
 {
 public:
+	typedef uint32_t	font_t;
+
 	struct	Params
 	{
 	public:
-		ft::Color::t	strokeColor;
-		ft::Color::t	fillColor;
-		int32_t			lineWidth;
-		// float		borderRound;
+		ft::Color::t		strokeColor;
+		ft::Color::t		fillColor;
+		int32_t				lineWidth;
+		font_t				font;
+		// float			borderRound;
 	};
 
 	Canvas(ft::Color::t *bitmap, int width, int height);
 	Canvas(Canvas const &src);
 	virtual ~Canvas(void);
 
-	Canvas			&operator=(Canvas const &rhs);
+	Canvas				&operator=(Canvas const &rhs);
 
 /*
 ** Bitmap
 */
 	ft::Color::t const	*getBitmap(void) const;
 
-	int				getBitmapWidth(void) const;
-	int				getBitmapHeight(void) const;
+	int					getBitmapWidth(void) const;
+	int					getBitmapHeight(void) const;
 
-	inline void		putPixel(int x, int y, ft::Color::t color)
+	inline void			putPixel(int x, int y, ft::Color::t color)
 	{
 		y = y * _width + x;
 		if (ft::Color::a(color) < 255)
@@ -65,7 +68,7 @@ public:
 			_bitmap[y] = color;
 	}
 
-	inline void		putPixel(int x, int y, ft::Color::t color, int n)
+	inline void			putPixel(int x, int y, ft::Color::t color, int n)
 	{
 		x += y * _width;
 		n += x;
@@ -80,8 +83,8 @@ public:
 				_bitmap[x++] = color;
 	}
 
-	void			clear(void);
-	void			clear(ft::Rect<int> const &rect);
+	void				clear(void);
+	void				clear(ft::Rect<int> const &rect);
 
 /*
 ** Clip
@@ -93,40 +96,73 @@ public:
 */
 	ft::Rect<int> const	&getClip(void) const;
 
-	int				getWidth(void) const;
-	int				getHeight(void) const;
+	int					getWidth(void) const;
+	int					getHeight(void) const;
 
-	void			applyClip(ft::Rect<int> const &rect);
-	void			setClip(ft::Rect<int> const &rect);
+	void				applyClip(ft::Rect<int> const &rect);
+	void				setClip(ft::Rect<int> const &rect);
 
-	void			clearClip(void);
+	void				clearClip(void);
 
 /*
 ** Alpha
 */
-	float			getAlpha(void) const;
+	float				getAlpha(void) const;
 
-	void			applyAlpha(float alpha);
-	void			setAlpha(float alpha);
+	void				applyAlpha(float alpha);
+	void				setAlpha(float alpha);
 
 /*
 ** Drawing
 */
-	void			strokeRect(ft::Rect<int> const &rect, Params const &opt);
-	void			fillRect(ft::Rect<int> const &rect, Params const &opt);
+	/*
+	** Draw a rect
+	*/
+	void				drawRect(ft::Rect<int> const &rect, Params const &opt);
+
+	/*
+	** Draw text
+	** -
+	** opt.fillColor is used as text color
+	** opt.lineWidth is used as font size
+	*/
+	void				drawText(ft::Vec2<int> pos, std::string const &text,
+							Params const &opt);
 
 	// void		strokeLine(Vec2<int> a, Vec2<int> b, Params const &opt);
 	// void		strokeText(Vec2<int> pos, std::string const &text, Params const &opt);
 
+/*
+** Font
+*/
+	/*
+	** Return a font handler
+	*/
+	static font_t		getFont(std::string const &file);
+
+	/*
+	** Return the size of the text
+	** -
+	** opt.lineWidth is used as font size
+	*/
+	static ft::Vec2<int>	measureText(std::string const &text,
+								Params const &opt);
+
 protected:
 
-	ft::Color::t	*_bitmap;
-	int				_width;
-	int				_height;
+	ft::Color::t		*_bitmap;
+	int					_width;
+	int					_height;
 
-	ft::Rect<int>	_clip;
+	ft::Rect<int>		_clip;
 
-	float			_alpha;
+	float				_alpha;
+
+	void				_strokeRect(ft::Rect<int> const &rect, ft::Color::t color,
+							int lineWidth);
+	void				_fillRect(ft::Rect<int> const &rect, ft::Color::t color);
+
+	static font_t		loadFont(std::string const &file);
 
 private:
 	Canvas(void);

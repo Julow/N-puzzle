@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 17:05:13 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 17:36:10 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 15:42:28 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -60,6 +60,11 @@ public:
 		return (a(color, a(color) * alpha));
 	}
 
+	static inline t			alpha(t color, uint8_t alpha)
+	{
+		return (a(color, a(color) * alpha / 256));
+	}
+
 	/*
 	** Return the result of putting 'src' in front of 'dst'
 	** -
@@ -73,7 +78,8 @@ public:
 		uint32_t const	dst_a = a(dst);
 		uint32_t const	src_a = a(src);
 		uint32_t const	out_a = src_a + (dst_a * (256 - src_a) / 256);
-		uint32_t const	tmp = out_a * 256 / (256 - ((dst_a < src_a) ? dst_a : src_a));
+		uint32_t const	tmp = out_a * 256 / (256 - ((dst_a < src_a) ? dst_a : src_a))
+			+ 1; // <--- TODO: fix
 
 		return ((out_a << 24)
 			| (((dst_a * r(dst) + (src_a * r(src))) / tmp) << 16)

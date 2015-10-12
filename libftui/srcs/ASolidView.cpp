@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 17:53:58 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 13:36:00 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -20,7 +20,7 @@ namespace ftui
 {
 
 ASolidView::ASolidView(XmlParser const &xml, Activity &act) :
-	AView(xml, act), _params{0x0, 0x0, 1}
+	AView(xml, act), _bgParams{0x0, 0x0, 1}
 {
 }
 
@@ -31,12 +31,8 @@ ASolidView::~ASolidView(void)
 void			ASolidView::onDraw(Canvas &canvas)
 {
 	AView::onDraw(canvas);
-	if (ft::Color::a(_params.fillColor) != 0)
-		canvas.fillRect(ft::Rect<int>(ft::Vec2<int>(0, 0), _holder->getSize()),
-			_params);
-	if (ft::Color::a(_params.strokeColor) != 0)
-		canvas.strokeRect(ft::Rect<int>(ft::Vec2<int>(0, 0),
-			_holder->getSize()), _params);
+	canvas.drawRect(ft::Rect<int>(ft::Vec2<int>(0, 0), _holder->getSize()),
+			_bgParams);
 }
 
 void			ASolidView::setParam(std::string const &k, std::string const &v)
@@ -67,32 +63,32 @@ void			ASolidView::setParam(std::string const &k, std::string const &v)
 
 ft::Color::t	ASolidView::getBackgroundColor(void) const
 {
-	return (_params.fillColor);
+	return (_bgParams.fillColor);
 }
 
 ft::Color::t	ASolidView::getBorderColor(void) const
 {
-	return (_params.strokeColor);
+	return (_bgParams.strokeColor);
 }
 
 int				ASolidView::getBorderWidth(void) const
 {
-	return (_params.lineWidth);
+	return (_bgParams.lineWidth);
 }
 
 void			ASolidView::setBackgroundColor(ft::Color::t color)
 {
-	_params.fillColor = color;
+	_bgParams.fillColor = color;
 }
 
 void			ASolidView::setBorderColor(ft::Color::t color)
 {
-	_params.strokeColor = color;
+	_bgParams.strokeColor = color;
 }
 
 void			ASolidView::setBorderWidth(int width)
 {
-	_params.lineWidth = width;
+	_bgParams.lineWidth = width;
 }
 
 };

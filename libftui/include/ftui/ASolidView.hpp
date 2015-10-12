@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:37 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 18:23:46 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/12 13:37:20 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -46,7 +46,7 @@ protected:
 
 	ASolidView(XmlParser const &xml, Activity &act);
 
-	Canvas::Params		_params;
+	Canvas::Params		_bgParams;
 
 private:
 	ASolidView(void);

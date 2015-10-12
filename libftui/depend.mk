@@ -87,7 +87,8 @@ o/srcs/Activity_RootViewHolder.o: srcs/Activity_RootViewHolder.cpp \
 o/srcs/Canvas.o: srcs/Canvas.cpp include/ft/Color.hpp include/ft/Rect.hpp \
 	include/ft/Vec.hpp include/ft/assert.hpp include/ft/templates/Vec2.tpp \
 	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
-	include/ftui/Canvas.hpp include/ftui/libftui.hpp | o/srcs/
+	include/ftui/Canvas.hpp include/ftui/libftui.hpp include/ft/utils.hpp \
+	| o/srcs/
 o/srcs/RelativeLayout.o: srcs/RelativeLayout.cpp include/ft/assert.hpp \
 	include/ftui/RelativeLayout.hpp include/ftui/libftui.hpp | o/srcs/
 o/srcs/SliderView.o: srcs/SliderView.cpp include/ft/assert.hpp \

@@ -61,6 +61,15 @@
 			backgroundColor="0xFFFF0000"
 			alpha="0.5"
 		/>
+		<TextView
+			verticalAlign="CENTER"
+			marginBottom="20"
+			text="milol"
+			textFont="/Library/Fonts/Trebuchet MS Bold.ttf"
+			textSize="64"
+			textColor="0xFFFF0000"
+			backgroundColor="0x20000000"
+		/>
 	</VerticalLayout>
 	<SolidView
 		id="mdr"
