@@ -6,12 +6,11 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/13 07:41:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 09:25:37 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/13 14:12:51 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include <vector>
-#include <iostream>//de
 
 #include "ftui/lua/lua.hpp"
 #include "ft/assert.hpp"
@@ -81,23 +80,44 @@ ft.ptab = function(t, p1, p2, p3, p4)										\n \
 	end																		\n \
 end;																		\n \
 "},
-{TOSTRING(
-ft.pchildren = function(t, tab)
-	tab = tab or '**';
-
-	if t == nil or t[0] == nil or type(t[0]) ~= 'userdata' then
-		print('wrong ft.pchildren Argument:', t);
-		return ;
-	end
-	n = t.size and t:size() or 0;
-	print(string.format('%s %s(%s) %dchildren'
-		, tab, ft.tostring(t:getId()), ft.tostring(t), n));
-	tab = tab..'**';
-	for i=0,n - 1 do
-		ft.pchildren(t:at(i), tab);
-	end
-end;
-		)},
+{"\
+ft.pchildren = function(t, tab)										\
+	tab = tab or '**';												\
+																	\
+	if t == nil or t[0] == nil or type(t[0]) ~= 'userdata' then		\
+		print('wrong ft.pchildren Argument:', t);					\
+		return ;													\
+	end																\
+	n = t.size and t:size() or 0;									\
+	print(string.format('%s %s(%s) %dchildren'						\
+		, tab, ft.tostring(t:getId()), ft.tostring(t), n));			\
+	tab = tab..'**';												\
+	for _, v in ipairs(t) do										\
+		ft.pchildren(v, tab);										\
+	end																\
+end;																\
+		"},
+{"\
+ft.pparents = function(t)											\
+	if t == nil or t[0] == nil or type(t[0]) ~= 'userdata' then		\
+		print('wrong ft.pparents Argument:', t);					\
+		return ;													\
+	end																\
+	p = t:getParent()												\
+	n = t.size and t:size() or 0;									\
+	if p == nil then												\
+		print(string.format('** %s(%s) %dchildren'					\
+			, ft.tostring(t:getId()), ft.tostring(t), n));			\
+		return 2;													\
+	else															\
+		i = ft.pparents(p);											\
+		tab = string.rep('**', i);									\
+		print(string.format('%s %s(%s) %dchildren'					\
+			,tab , ft.tostring(t:getId()), ft.tostring(t), n));		\
+		return i + 1;												\
+	end																\
+end;																\
+		"},
 {"\
 ft.finalize_template = function(t, p)						\
         t.__index = t;                                      \

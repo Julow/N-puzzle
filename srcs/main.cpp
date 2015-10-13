@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 09:26:11 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/13 14:57:58 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -142,7 +142,9 @@ public:
 		luaL_dostring(l, "ft.pchildren(UIParent);");
 		// luaL_dostring(l, "setmetatable(ft, ft);");
 		// luaL_dostring(l, "ft.ptab(ft);");
-
+		std::cout << std::endl;
+			
+		luaL_dostring(l, "ft.pparents(solid_test);");
 		ftlua::stackdump(l);
 		
 		// luaL_dostring(l, "ft.ptab(_G);");
