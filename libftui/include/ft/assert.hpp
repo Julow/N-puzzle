@@ -6,12 +6,13 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/29 07:32:08 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 09:57:55 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/13 09:10:06 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef ASSERT_H
 # define ASSERT_H
+
 # include <string>
 
 namespace ft

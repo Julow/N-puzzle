@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/12 18:11:08 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 09:00:04 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -79,7 +79,7 @@ AView::views_info_t				AView::viewsInfo
 		std::make_tuple("at", &ALayout::atG)
 		// std::make_tuple("addView", &ALayout::addViewG),
 		// std::make_tuple("popView", &ALayout::popViewG)
-			}}},
+	}}},
 	{"VerticalLayout", {"ALayout", &VerticalLayout::createView, {}}},
 	{"SolidView", {"ASolidView", &SolidView::createView, {}}},
 };
