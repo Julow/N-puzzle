@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 10:00:28 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 09:26:11 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -141,12 +141,17 @@ public:
 		// luaL_dostring(l, "ft.ptab(VerticalLayout);");
 		luaL_dostring(l, "ft.pchildren(UIParent);");
 		// luaL_dostring(l, "setmetatable(ft, ft);");
-		luaL_dostring(l, "ft.ptab(ft);");
-		luaL_dostring(l, "ft['salut'];");
+		// luaL_dostring(l, "ft.ptab(ft);");
+
+		ftlua::stackdump(l);
 		
 		// luaL_dostring(l, "ft.ptab(_G);");
 		// std::cout << "caca4" << std::endl;
 		// luaL_dostring(l, "print('backgroundColor:'..solid_test:getBackgroundColor())");
+/*
+** - end
+*/
+		FTASSERT(lua_gettop(_act.getLuaState()) == 0);
 	}
 
 	void				loop(void)

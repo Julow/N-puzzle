@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/13 07:59:27 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 08:04:02 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/13 09:11:48 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -30,8 +30,8 @@ void		stackdump(lua_State *L) //TODO move luaFT_stackdump
 		[=, &i](){std::cout << " lusrd" << "\n";},
 		[=, &i](){std::cout << "   nbr: " << lua_tonumber(L, i) <<  "\n";},
 		[=, &i](){std::cout << "   str: " << lua_tostring(L, i) << "\n";},
-		[=, &i](){std::cout << "   tab" << "\n";},
-		[=, &i](){std::cout << "  func: " << (void*)lua_tocfunction(L, i) << "\n";},
+		[=, &i](){std::cout << "   tab: "<<(void*)lua_topointer(L, i) << "\n";},
+		[=, &i](){std::cout << "  func: "<<(void*)lua_tocfunction(L, i) << "\n";},
 		[=, &i](){std::cout << "  usrd" << "\n";},
 		[=, &i](){std::cout << "thread" << "\n";},
 	};

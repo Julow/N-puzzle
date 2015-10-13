@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 08:04:52 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/13 11:46:10 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,7 +14,7 @@
 
 #include "ft/Vec.hpp"
 #include "ft/utils.hpp"
-#include "ft/assert.hpp"
+// #include "ft/assert.hpp"
 
 namespace ftlua
 {
@@ -42,15 +42,6 @@ inline T				popStack(lua_State *, int)
 }
 
 template <>
-inline std::string		popStack<std::string>(lua_State *l, int numIn)
-{
-	std::string			v(luaL_checklstring(l, -numIn, NULL));
-
-	lua_remove(l, -numIn);
-	return v;
-}
-
-template <>
 inline ft::Vec2<int>	popStack<ft::Vec2<int>>(lua_State *l, int numIn)
 {
 	ft::Vec2<int>		v(
@@ -71,8 +62,10 @@ inline TYPE				popStack<TYPE>(lua_State *l, int numIn)	\
 	return v;													\
 }
 
+BASICPOPSTACK(std::string, luaL_checkstring)
 BASICPOPSTACK(int, luaL_checkinteger)
-BASICPOPSTACK(uint32_t, luaL_checkinteger)
+BASICPOPSTACK(unsigned int, luaL_checkinteger)
+// BASICPOPSTACK(uint32_t, luaL_checkinteger)
 BASICPOPSTACK(bool, luaL_checkinteger)
 BASICPOPSTACK(float, luaL_checknumber)
 BASICPOPSTACK(double, luaL_checknumber)
@@ -105,19 +98,24 @@ void					pushStack(lua_State *l, Ret&& r)
 	lua_pushglobaltable(l);
 	lua_pushlightuserdata(l, ptr);
 	lua_gettable(l, -2);
-
 	lua_remove(l, -2);
-	FTASSERT(!lua_isnil(l, -1), "lightuserdata not found in _G");
+
+	if (lua_isnil(l, -1))
+	{
+		lua_pop(l, 1);
+		lua_pushlightuserdata(l, ptr);
+	}
+	// FTASSERT(!lua_isnil(l, -1), "lightuserdata not found in _G");
 	return ;
 }
 
 template <> inline void	pushStack<1, std::string>(lua_State *l, std::string&& r)
-{ lua_pushstring(l, r.c_str()); }
+{ (void)lua_pushstring(l, r.c_str()); }
 template <> inline void	pushStack<2, ft::Vec2<int> >(
 	lua_State *l, ft::Vec2<int>&& r)
 {
-	lua_pushinteger(l, r.x);//TODO right order ?
-	lua_pushinteger(l, r.y);
+	(void)lua_pushinteger(l, r.x);//TODO right order ?
+	(void)lua_pushinteger(l, r.y);
 	return ;
 }
 
@@ -125,12 +123,13 @@ template <> inline void	pushStack<2, ft::Vec2<int> >(
 template <>															\
 inline void				pushStack<1, TYPE>(lua_State *l, TYPE &&r)	\
 {																	\
-	FUNCTION(l, r);													\
+	(void)FUNCTION(l, r);											\
 	return ;														\
 }
 
 BASICPUSHSTACK(int, lua_pushinteger)
-BASICPUSHSTACK(uint32_t, lua_pushinteger)
+BASICPUSHSTACK(unsigned int, lua_pushinteger) //TODO regler les PB?
+// BASICPUSHSTACK(uint32_t, lua_pushinteger)
 BASICPUSHSTACK(bool, lua_pushinteger)
 BASICPUSHSTACK(float, lua_pushnumber)
 BASICPUSHSTACK(double, lua_pushnumber)
@@ -295,12 +294,10 @@ inline T	*luaCFunRetreiveSelf(lua_State *l, int index)
 	void		*i;
 
 	if (!lua_istable(l, index))
-		throw std::runtime_error(ft::f("Lua stack: bad argument at index %",
-			index));
+		luaL_error(l, "Lua stack: bad argument at index %d", index);
 	lua_pushinteger(l, 0);
 	if (lua_gettable(l, index - 1) != LUA_TLIGHTUSERDATA)
-		throw std::runtime_error(
-			ft::f("Missing luserdata at self[0] in table"));
+		luaL_error(l, "Missing luserdata at self[0] in table");
 	i = lua_touserdata(l, -1);
 	lua_pop(l, 1);
 	lua_remove(l, index);

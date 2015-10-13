@@ -42,12 +42,17 @@ Activity::~Activity(void)
 static void		finalize_table(
 	lua_State *l, std::string const &name, AView::view_info_s const &i)
 {
+	int		err;
+
+	err = 0;
 	(void)lua_getglobal(l, "ft");
 	lua_pushstring(l, "finalize_template");
-	lua_gettable(l, -2);
+	(void)lua_gettable(l, -2);
 	(void)lua_getglobal(l, name.c_str());
 	(void)lua_getglobal(l, i.parent.c_str());
-	lua_call(l, 2, 0);	
+	err |= lua_pcall(l, 2, 0, 0);
+	FTASSERT(err == 0);
+	lua_pop(l, 1);
 	return ;
 }
 
@@ -182,8 +187,8 @@ void			Activity::registerLuaCFun_table(
 	t = lua_getglobal(_l, tabName.c_str());
 	if (t != LUA_TTABLE)
 		throw std::runtime_error(ft::f("Lua: Corrupted table (%)", tabName));
-	lua_pushstring(_l, funName.c_str());
-	lua_pushcfunction(_l, f);
+	(void)lua_pushstring(_l, funName.c_str());
+	(void)lua_pushcfunction(_l, f);
 	lua_settable(_l, -3);
 	lua_setglobal(_l, tabName.c_str());
 	return ;
