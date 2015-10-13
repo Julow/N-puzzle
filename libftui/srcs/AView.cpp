@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 13:19:58 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 16:03:00 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -23,6 +23,8 @@
 #include "ftui/EventParams.hpp"
 #include "ftui/XmlParser.hpp"
 #include "ftui/VerticalLayout.hpp"
+
+#include "ftui/templates/AView_callLuaCallback.tpp"
 
 using std::string;
 
@@ -155,22 +157,6 @@ bool				AView::isMouseOver(void) const
 	return (this->_flags & AView::MOUSE_OVER);
 }
 
-void				AView::setLuaCallback(lua_State *l)
-{
-	char const *const	callback = luaL_checkstring(l, -2);
-	auto const			&it = AView::callback_map.find(std::string(callback));
-	uint32_t			callbackId;
-
-	if (it == AView::callback_map.end())
-		luaL_error(l, "Unknow lua callback: %s", callback);
-	callbackId = it->second;
-	lua_pushinteger(l, callbackId);		// <-	id, f, name, view_table
-	lua_pushvalue(l, -2);				// <-	f, ...
-	lua_settable(l, -4);				// <-	f, name, view_table
-	_luaCallbacks |= 1 << callbackId;
-	lua_pop(l, 3);
-}
-
 void				AView::setParam(string const &k, string const &v)
 {
 	static std::unordered_map<std::string, void (*)(AView*,
@@ -220,7 +206,7 @@ void				AView::setParam(string const &k, string const &v)
 void				AView::onUpdate(void)
 {
 	this->_flags &= ~AView::UPDATE_QUERY;
-	// TODO call lua if registered AView::onUpdate
+	callLuaCallback(_act.getLuaState(), LuaCallback::UPDATE);
 	return ;
 }
 
@@ -516,6 +502,32 @@ void			AView::queryRedraw(void)
 
 /*
 ** ========================================================================== **
+** Lua callback
+*/
+
+/*
+** LuaCFunction: AView::setCallback(callback_name, function)
+*/
+void				AView::setLuaCallback(lua_State *l)
+{
+	char const *const	callback = luaL_checkstring(l, -2);
+	auto const			&it = AView::callback_map.find(std::string(callback));
+	uint32_t			callbackId;
+
+	if (it == AView::callback_map.end())
+		luaL_error(l, "Unknow lua callback: %s", callback);
+	callbackId = it->second;
+	lua_pushinteger(l, callbackId);		// <-	id, f, name, view_table
+	lua_pushvalue(l, -2);				// <-	f, id, f, name, view_table
+	lua_settable(l, -5);				// <-	f, name, view_table
+	if (lua_isfunction(l, -1))
+		_luaCallbacks |= 1 << callbackId;
+	else
+		_luaCallbacks &= ~(1 << callbackId);
+	lua_pop(l, 3);
+}
+
+/*
 ** Register lua callback
 */
 #define LUA_CALLBACK_ID(NAME)	static_cast<uint32_t>(AView::LuaCallback::NAME)

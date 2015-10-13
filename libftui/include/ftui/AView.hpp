@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 13:13:23 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 15:52:36 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -56,7 +56,7 @@ public:
 	};
 	enum class	LuaCallback : uint32_t
 	{
-		MOUSE_SCROLL,
+		MOUSE_SCROLL = 1,
 		MOUSE_DOWN,
 		MOUSE_UP,
 		MOUSE_MOVE,
@@ -154,7 +154,7 @@ public:
 	virtual void				onVisibilityChange(bool hidden);
 
 	/*
-	** Used to add/remove a lua callback (from lua)
+	** Used to set/unset a lua callback (from lua)
 	*/
 	void						setLuaCallback(lua_State *l);
 
@@ -209,6 +209,21 @@ protected:
 	float						_alpha;
 
 	void						setMouseOver(bool state);
+
+/*
+** Callbacks
+*/
+	/*
+	** Return false and do nothing if the callback is not registered
+	** otherwise call the lua callback and return true
+	** Call luaL_error on error
+	*/
+	template<typename ...ARGS>
+	bool						callLuaCallback(lua_State *l, LuaCallback id,
+									ARGS ...args);
+	template<typename ...ARGS>
+	bool						callLuaCallback(lua_State *l, uint32_t id,
+									ARGS ...args);
 
 /*
 ** Static
