@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 09:25:26 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/13 11:52:08 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -49,13 +49,13 @@ AView::AView(XmlParser const &xml, Activity &act) :
 	int					err;
 
 	(void)lua_getglobal(l, "ft");
-	lua_pushstring(l, "push_view");
-	lua_gettable(l, -2);
+	(void)lua_pushstring(l, "push_view");
+	(void)lua_gettable(l, -2);
 	err = lua_getglobal(l, xml.getMarkupName().c_str());
 	FTASSERT(err == LUA_TTABLE);
 	lua_pushlightuserdata(l, this);
 	if (_id != nullptr)
-		lua_pushstring(l, _id->c_str());
+		(void)lua_pushstring(l, _id->c_str());
 	else
 		lua_pushnil(l);
 	err = lua_pcall(l, 3, 0, 0);

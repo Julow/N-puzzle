@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 15:58:07 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 08:42:09 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,7 +14,7 @@
 #include "ftui/IViewHolder.hpp"
 #include "ftui/XmlParser.hpp"
 
-#include <cstring>
+#include <string>
 
 namespace ftui
 {

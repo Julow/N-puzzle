@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 15:57:41 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 08:46:03 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -118,7 +118,8 @@ void			VerticalLayout::onDraw(Canvas &canvas)
 	float const			old_alpha = canvas.getAlpha();
 	ft::Rect<int> const	old_clip = canvas.getClip();
 
-	ASolidView::onDraw(canvas);
+	if (AView::isRedrawQueried())
+		ASolidView::onDraw(canvas);
 	for (ViewHolder *h : _childs)
 	{
 		if (h->getView()->isRedrawQueried())

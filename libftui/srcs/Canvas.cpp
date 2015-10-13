@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 17:58:58 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 08:42:39 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,7 +21,6 @@ extern "C"
 
 }
 
-#include <cstring>
 #include <vector>
 #include <unordered_map>
 

@@ -6,14 +6,14 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/12 08:49:42 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 16:15:58 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 08:41:44 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "ftui/TextView.hpp"
 #include "ftui/IViewHolder.hpp"
 
-#include <iostream> // TODO remove
+#include <string>
 
 namespace ftui
 {

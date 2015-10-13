@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 09:22:53 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/13 11:49:21 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -47,13 +47,14 @@ static void		finalize_table(
 {
 	int		err;
 
+	err = 0;
 	(void)lua_getglobal(l, "ft");
 	lua_pushstring(l, "finalize_template");
-	lua_gettable(l, -2);
+	(void)lua_gettable(l, -2);
 	(void)lua_getglobal(l, name.c_str());
 	(void)lua_getglobal(l, i.parent.c_str());
-	err = lua_pcall(l, 2, 0, 0);
-	FTASSERT(err == LUA_OK);
+	err |= lua_pcall(l, 2, 0, 0);
+	FTASSERT(err == 0);
 	lua_pop(l, 1);
 	return ;
 }
@@ -189,8 +190,8 @@ void			Activity::registerLuaCFun_table(
 	t = lua_getglobal(_l, tabName.c_str());
 	if (t != LUA_TTABLE)
 		throw std::runtime_error(ft::f("Lua: Corrupted table (%)", tabName));
-	lua_pushstring(_l, funName.c_str());
-	lua_pushcfunction(_l, f);
+	(void)lua_pushstring(_l, funName.c_str());
+	(void)lua_pushcfunction(_l, f);
 	lua_settable(_l, -3);
 	lua_setglobal(_l, tabName.c_str());
 	return ;
