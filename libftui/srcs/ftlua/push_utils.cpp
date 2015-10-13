@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/13 07:41:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 07:43:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/13 09:25:37 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,6 +14,7 @@
 #include <iostream>//de
 
 #include "ftui/lua/lua.hpp"
+#include "ft/assert.hpp"
 
 #define TOSTRING(...) #__VA_ARGS__
 
@@ -56,11 +57,11 @@ ft.ptab = function(t, p1, p2, p3, p4)										\n \
 		local mt = '';														\n \
 		local lcol = '';													\n \
 		local rcol = '';													\n \
-		local kstr = string.sub(ft_tostring(k), -30 + 2 * curDepth);		\n \
+		local kstr = string.sub(ft.tostring(k), -30 + 2 * curDepth);		\n \
 																			\n \
 		empty = false														\n \
 		if type(v) == 'table' then											\n \
-			mt = string.format(' mt{%s}', ft_tostring(getmetatable(v)))		\n \
+			mt = string.format(' mt{%s}', ft.tostring(getmetatable(v)))		\n \
 		end																	\n \
 		if expand then														\n \
 			lcol = curCol													\n \
@@ -70,9 +71,9 @@ ft.ptab = function(t, p1, p2, p3, p4)										\n \
 		kstr = string.format('%32s', kstr);									\n \
 		kstr = string.sub(kstr, -32 + 2 * curDepth);						\n \
 		print(string.format('%s%s%s%3.3s/%3.3s{%s}%s%s'						\n \
-		, header, lcol, kstr, type(k), type(v), ft_tostring(v), rcol, mt));	\n \
+		, header, lcol, kstr, type(k), type(v), ft.tostring(v), rcol, mt));	\n \
 		if expand then														\n \
-			mt = ft_ptab(v, maxDepth, curDepth + 1, excludedK, nextTab);	\n \
+			mt = ft.ptab(v, maxDepth, curDepth + 1, excludedK, nextTab);	\n \
 		end																	\n \
 	end;																	\n \
 	if empty then															\n \
@@ -85,15 +86,15 @@ ft.pchildren = function(t, tab)
 	tab = tab or '**';
 
 	if t == nil or t[0] == nil or type(t[0]) ~= 'userdata' then
-		print('wrong ft_pchildren Argument:', t);
+		print('wrong ft.pchildren Argument:', t);
 		return ;
 	end
 	n = t.size and t:size() or 0;
 	print(string.format('%s %s(%s) %dchildren'
-		, tab, ft_tostring(t:getId()), ft_tostring(t), n));
+		, tab, ft.tostring(t:getId()), ft.tostring(t), n));
 	tab = tab..'**';
 	for i=0,n - 1 do
-		ft_pchildren(t:at(i), tab);
+		ft.pchildren(t:at(i), tab);
 	end
 end;
 		)},
@@ -106,7 +107,19 @@ ft.finalize_template = function(t, p)						\
                 t.__ipairs = p.__ipairs                     \
             end                                             \
         end                                                 \
-    end"}
+    end"},
+{"\
+ft.push_view = function(metatab, ud, id)		\
+	local t = {};								\
+												\
+	setmetatable(t, metatab);					\
+	t.__index = t;								\
+	t[0] = ud;									\
+	if id ~= nil then							\
+		_G[id] = t;								\
+	end											\
+	_G[ud] = t;									\
+end"},
 };
 
 namespace ftlua
@@ -114,13 +127,12 @@ namespace ftlua
 
 void		pushUtils(lua_State *l)
 {
+	int		err;
+
 	for (auto const &it : funs)
 	{
-		if (luaL_dostring(l, it.c_str()))
-		{
-			std::cout << luaL_checkstring(l, -1) << std::endl;
-			throw std::exception(); //TODO throw message
-		}
+		err = luaL_dostring(l, it.c_str());
+		FTASSERT(err == LUA_OK);			
 	}
 	return ;
 }

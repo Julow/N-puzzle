@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 07:23:51 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/13 09:25:26 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,6 +15,7 @@
 #include <cstdlib>
 
 #include "ft/utils.hpp"
+#include "ftlua/ftlua.hpp"
 #include "ftui/AView.hpp"
 #include "ftui/Activity.hpp"
 #include "ftui/ALayout.hpp"
@@ -45,34 +46,22 @@ AView::AView(XmlParser const &xml, Activity &act) :
 	_alpha(1.f)
 {
 	lua_State *const	l = act.getLuaState();
+	int					err;
 
-	lua_pushglobaltable(l);							// _G
-	lua_createtable(l, 0, 0);						// {}, _G
-	lua_getglobal(l, xml.getMarkupName().c_str());	// parent, {}, _G
-	if (!lua_istable(l, -1))
-		throw std::runtime_error(ft::f("Error: cannot retrieve table '%'",
-			xml.getMarkupName()));
-	lua_setmetatable(l, -2);						// [{}], _G
-	lua_pushstring(l, "__index");					// __index, {}, _G
-	lua_pushvalue(l, -2);							// {}, __index, [{}], _G
-	lua_settable(l, -3);							// [{}], _G
-
-	lua_pushinteger(l, 0);							// 0, {}, _G
-	lua_pushlightuserdata(l, this);					// ptr, 0, {}, _G
-	lua_settable(l, -3);							// [{}], _G
-	
-	lua_pushlightuserdata(l, this);					// ptr, {}, _G
-	lua_pushvalue(l, -2);							// {}, ptr, [{}], _G
-	lua_settable(l, -4);							// {}, [_G]
-	
+	(void)lua_getglobal(l, "ft");
+	lua_pushstring(l, "push_view");
+	lua_gettable(l, -2);
+	err = lua_getglobal(l, xml.getMarkupName().c_str());
+	FTASSERT(err == LUA_TTABLE);
+	lua_pushlightuserdata(l, this);
 	if (_id != nullptr)
-	{
-		lua_pushstring(l, _id->c_str());			// id, {}, _G
-		lua_pushvalue(l, -2);						// {}, id, [{}], [_G]
-		lua_settable(l, -4);						// {}, [_G]
-	}
-	lua_pop(l, 2);
-
+		lua_pushstring(l, _id->c_str());
+	else
+		lua_pushnil(l);
+	err = lua_pcall(l, 3, 0, 0);
+	FTASSERT(err == LUA_OK);
+	lua_pop(l, 1);
+	return ;
 }
 
 AView::~AView(void)

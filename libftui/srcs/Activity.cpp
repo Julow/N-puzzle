@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 07:45:13 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/13 09:22:53 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -45,12 +45,16 @@ Activity::~Activity(void)
 static void		finalize_table(
 	lua_State *l, std::string const &name, AView::view_info_s const &i)
 {
+	int		err;
+
 	(void)lua_getglobal(l, "ft");
 	lua_pushstring(l, "finalize_template");
 	lua_gettable(l, -2);
 	(void)lua_getglobal(l, name.c_str());
 	(void)lua_getglobal(l, i.parent.c_str());
-	lua_call(l, 2, 0);	
+	err = lua_pcall(l, 2, 0, 0);
+	FTASSERT(err == LUA_OK);
+	lua_pop(l, 1);
 	return ;
 }
 
