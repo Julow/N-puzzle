@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 18:08:25 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 19:08:42 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,7 +24,7 @@ namespace ftlua
 
 /*
 ** ************************************************************************** //
-** * luaCFunHelper ********************************************************** //
+** * handle ***************************************************************** //
 ** ************************************************************************** //
 */
 // * STEP 2 HELPERS ********************************************************* //
@@ -247,7 +247,7 @@ void		helperLoop(
 // * STEP 1 *** Call the helperLoop ***************************************** //
 // * Function *** //
 template <int NumIn, int NumOut, typename Ret, typename... Args>
-int		luaCFunHelper(lua_State *l, Ret (*f)(Args...))
+int		handle(lua_State *l, Ret (*f)(Args...))
 {
 	internal::helperLoop<NumIn, NumOut>(l, f);
 	return (NumOut);
@@ -255,13 +255,13 @@ int		luaCFunHelper(lua_State *l, Ret (*f)(Args...))
 
 // * MemFun ***** //
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
-int		luaCFunHelper(lua_State *l, C *i, Ret (C::*f)(Args...))
+int		handle(lua_State *l, C *i, Ret (C::*f)(Args...))
 {
 	internal::helperLoop<NumIn, NumOut>(l, i, f);
 	return (NumOut);
 }
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
-int		luaCFunHelper(lua_State *l, C const *i, Ret (C::*f)(Args...) const)
+int		handle(lua_State *l, C const *i, Ret (C::*f)(Args...) const)
 {
 	using F = Ret (C::*)(Args...);
 	using FClean = typename std::remove_cv<F>::type;
@@ -271,28 +271,28 @@ int		luaCFunHelper(lua_State *l, C const *i, Ret (C::*f)(Args...) const)
 	return (NumOut);
 }
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
-int		luaCFunHelper(lua_State *l, Ret (C::*f)(Args...))
+int		handle(lua_State *l, Ret (C::*f)(Args...))
 {
 	internal::helperLoop<NumIn - 1, NumOut>(
-		l, luaCFunRetreiveSelf<C>(l, -NumIn), f);
+		l, retrieveSelf<C>(l, -NumIn), f);
 	return (NumOut);
 }
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
-int		luaCFunHelper(lua_State *l, Ret (C::*f)(Args...) const)
+int		handle(lua_State *l, Ret (C::*f)(Args...) const)
 {
 	using F = Ret (C::*)(Args...);
 	using FClean = typename std::remove_cv<F>::type;
-	return (luaCFunHelper<NumIn, NumOut>(l, reinterpret_cast<FClean>(f)));
+	return (handle<NumIn, NumOut>(l, reinterpret_cast<FClean>(f)));
 }
 
 /*
 ** ************************************************************************** //
-** * luaCFunRetreiveSelf **************************************************** //
+** * retrieveSelf *********************************************************** //
 ** ************************************************************************** //
 */
 
 template <typename T>
-inline T	*luaCFunRetreiveSelf(lua_State *l, int index, bool pop)
+inline T	*retrieveSelf(lua_State *l, int index, bool pop)
 {
 	void		*i;
 

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/13 07:39:43 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 18:08:05 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 19:09:00 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -117,14 +117,14 @@ static inline void		push(lua_State *l, void *v)
 }
 
 /*
-** 'luaCFunRetreiveSelf'		1. Looks for a table at index.		(may throw)
+** 'retrieveSelf'				1. Looks for a table at index.		(may throw)
 **								2. Looks for a userdata at tab[0]	(may throw)
 **								3. Pops it from the stack
 **								4. Returns it
 */
 
 template <typename T>
-T		*luaCFunRetreiveSelf(lua_State *l, int index, bool pop = true);
+T					*retrieveSelf(lua_State *l, int index, bool pop = true);
 
 void	pushUtils(lua_State *l);
 void	stackdump(lua_State *l);

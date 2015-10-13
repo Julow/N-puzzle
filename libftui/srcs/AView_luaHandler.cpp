@@ -1,12 +1,12 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   AView_luaCFunctions.cpp                            :+:      :+:    :+:   //
+//   AView_luaHandler.cpp                               :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 18:10:44 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 19:17:04 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,22 +16,19 @@
 #include "ftui/TextView.hpp"
 #include "ftlua/ftlua.hpp"
 
-using ftlua::luaCFunRetreiveSelf;
-using ftlua::luaCFunHelper;
-
 namespace ftui
 {
 
 #define DEF_LUACFUN_GSUFFIX(CLASS, NAME, NUMIN, NUMOUT)			\
 int			CLASS::NAME##G(lua_State *l)						\
 {																\
-	return luaCFunHelper<NUMIN, NUMOUT>(l, &CLASS::NAME);		\
+	return ftlua::handle<NUMIN, NUMOUT>(l, &CLASS::NAME);		\
 }
 
 #define DEF_LUACFUN_G_CAST(CLASS, NAME, NUMIN, NUMOUT, RET, ...)		\
 int			CLASS::NAME##G(lua_State *l)								\
 {																		\
-	return luaCFunHelper<NUMIN, NUMOUT>(l,								\
+	return ftlua::handle<NUMIN, NUMOUT>(l,								\
 		reinterpret_cast<RET (CLASS::*)(__VA_ARGS__)>(&CLASS::NAME));	\
 }
 
@@ -49,7 +46,7 @@ DEF_LUACFUN_GSUFFIX(TextView, setTextSize,			2, 0)
 
 int			TextView::getTextG(lua_State *l)
 {
-	TextView *const				i = luaCFunRetreiveSelf<TextView>(l, -1);
+	TextView *const				i = ftlua::retrieveSelf<TextView>(l, -1);
 
 	(void)lua_pushstring(l, i->getText().c_str());
 	return (1);
@@ -95,7 +92,7 @@ DEF_LUACFUN_GSUFFIX(AView, getParent,				1,	1)
 
 int			AView::setCallbackG(lua_State *l)
 {
-	AView *const		i = luaCFunRetreiveSelf<AView>(l, -3, false);
+	AView *const		i = ftlua::retrieveSelf<AView>(l, -3, false);
 
 	i->setLuaCallback(l);
 	return (0);
@@ -103,7 +100,7 @@ int			AView::setCallbackG(lua_State *l)
 
 int			AView::getIdG(lua_State *l)
 {
-	AView *const				i = luaCFunRetreiveSelf<AView>(l, -1);
+	AView *const				i = ftlua::retrieveSelf<AView>(l, -1);
 	std::string const *const	s = i->getId();
 
 	if (s == nullptr)
@@ -115,7 +112,7 @@ int			AView::getIdG(lua_State *l)
 
 int			AView::getRequestedSizeG(lua_State *l)
 {
-	IViewHolder *const	h = luaCFunRetreiveSelf<AView>(l, -1)->getViewHolder();
+	IViewHolder *const	h = ftlua::retrieveSelf<AView>(l, -1)->getViewHolder();
 	ft::Vec2<int>		s;
 
 	if (h == nullptr)
@@ -128,7 +125,7 @@ int			AView::getRequestedSizeG(lua_State *l)
 
 int			AView::getPosG(lua_State *l)
 {
-	IViewHolder *const	h = luaCFunRetreiveSelf<AView>(l, -1)->getViewHolder();
+	IViewHolder *const	h = ftlua::retrieveSelf<AView>(l, -1)->getViewHolder();
 	ft::Vec2<int>		s;
 
 	if (h == nullptr)
@@ -141,7 +138,7 @@ int			AView::getPosG(lua_State *l)
 
 int			AView::getSizeG(lua_State *l)
 {
-	IViewHolder *const	h = luaCFunRetreiveSelf<AView>(l, -1)->getViewHolder();
+	IViewHolder *const	h = ftlua::retrieveSelf<AView>(l, -1)->getViewHolder();
 	ft::Vec2<int>		s;
 
 	if (h == nullptr)
@@ -154,7 +151,7 @@ int			AView::getSizeG(lua_State *l)
 
 int			AView::setRequestedSizeG(lua_State *l)
 {
-	IViewHolder *const	h = luaCFunRetreiveSelf<AView>(l, -3)->getViewHolder();
+	IViewHolder *const	h = ftlua::retrieveSelf<AView>(l, -3)->getViewHolder();
 	ft::Vec2<int>		s;
 
 	s.x = luaL_checkinteger(l, -1);

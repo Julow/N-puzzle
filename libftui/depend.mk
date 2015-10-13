@@ -1,5 +1,5 @@
-O_FILES :=	o/srcs/ALayout.o o/srcs/ALayout_luaCFunctions.o o/srcs/ASolidView.o \
-			o/srcs/AView.o o/srcs/AView_luaCFunctions.o o/srcs/AView_statics.o \
+O_FILES :=	o/srcs/ALayout.o o/srcs/ALayout_luaHandler.o o/srcs/ASolidView.o \
+			o/srcs/AView.o o/srcs/AView_luaHandler.o o/srcs/AView_statics.o \
 			o/srcs/Activity.o o/srcs/Activity_RootViewHolder.o o/srcs/Canvas.o \
 			o/srcs/SolidView.o o/srcs/TextView.o o/srcs/VerticalLayout.o \
 			o/srcs/VerticalLayout_ViewHolder.o o/srcs/XmlParser.o \
@@ -21,13 +21,12 @@ o/srcs/ALayout.o: srcs/ALayout.cpp include/ft/Color.hpp include/ft/Rect.hpp \
 	include/ftui/AView.hpp include/ftui/Canvas.hpp include/ftui/libftui.hpp \
 	include/ftui/XmlParser.hpp include/ftui/XmlTokenizer.hpp \
 	include/ftui/IViewHolder.hpp | o/srcs/
-o/srcs/ALayout_luaCFunctions.o: srcs/ALayout_luaCFunctions.cpp \
-	include/ft/Color.hpp include/ft/Rect.hpp include/ft/Vec.hpp \
-	include/ft/assert.hpp include/ft/templates/Vec2.tpp \
-	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
-	include/ftui/ALayout.hpp include/ftui/ASolidView.hpp \
-	include/ftui/AView.hpp include/ftui/Canvas.hpp include/ftui/libftui.hpp \
-	include/ft/utils.hpp include/ftlua/ftlua.hpp \
+o/srcs/ALayout_luaHandler.o: srcs/ALayout_luaHandler.cpp include/ft/Color.hpp \
+	include/ft/Rect.hpp include/ft/Vec.hpp include/ft/assert.hpp \
+	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
+	include/ft/templates/Vec4.tpp include/ftui/ALayout.hpp \
+	include/ftui/ASolidView.hpp include/ftui/AView.hpp include/ftui/Canvas.hpp \
+	include/ftui/libftui.hpp include/ft/utils.hpp include/ftlua/ftlua.hpp \
 	include/ftlua/templates/ftlua_caller.tpp \
 	include/ftlua/templates/ftlua_handler.tpp | o/srcs/
 o/srcs/ASolidView.o: srcs/ASolidView.cpp include/ft/Color.hpp \
@@ -52,14 +51,13 @@ o/srcs/AView.o: srcs/AView.cpp include/ft/utils.hpp include/ft/Vec.hpp \
 	include/ftui/XmlParser.hpp include/ftui/XmlTokenizer.hpp \
 	include/ftui/VerticalLayout.hpp \
 	include/ftui/templates/AView_callLuaCallback.tpp | o/srcs/
-o/srcs/AView_luaCFunctions.o: srcs/AView_luaCFunctions.cpp \
-	include/ft/assert.hpp include/ftui/AView.hpp include/ftui/libftui.hpp \
-	include/ft/Vec.hpp include/ft/templates/Vec2.tpp \
-	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
-	include/ftui/IViewHolder.hpp include/ft/Color.hpp include/ft/Rect.hpp \
-	include/ftui/ASolidView.hpp include/ftui/Canvas.hpp \
-	include/ftui/TextView.hpp include/ft/utils.hpp include/ftlua/ftlua.hpp \
-	include/ftlua/templates/ftlua_caller.tpp \
+o/srcs/AView_luaHandler.o: srcs/AView_luaHandler.cpp include/ft/assert.hpp \
+	include/ftui/AView.hpp include/ftui/libftui.hpp include/ft/Vec.hpp \
+	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
+	include/ft/templates/Vec4.tpp include/ftui/IViewHolder.hpp \
+	include/ft/Color.hpp include/ft/Rect.hpp include/ftui/ASolidView.hpp \
+	include/ftui/Canvas.hpp include/ftui/TextView.hpp include/ft/utils.hpp \
+	include/ftlua/ftlua.hpp include/ftlua/templates/ftlua_caller.tpp \
 	include/ftlua/templates/ftlua_handler.tpp | o/srcs/
 o/srcs/AView_statics.o: srcs/AView_statics.cpp include/ft/utils.hpp \
 	include/ft/assert.hpp include/ftui/AView.hpp include/ftui/libftui.hpp \
