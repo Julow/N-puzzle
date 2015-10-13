@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 13:56:57 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/13 17:47:33 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -143,6 +143,20 @@ void			Activity::render(Canvas &canvas)
 	if (rv->isRedrawQueried())
 		rv->onDraw(canvas);
 	return ;
+}
+
+bool			Activity::onKeyUp(int key_code)
+{
+	if (_rootView != NULL && _rootView->getView()->isKeyboardTargeted())
+		return (_rootView->getView()->onKeyUp(key_code));
+	return (false);
+}
+
+bool			Activity::onKeyDown(int key_code)
+{
+	if (_rootView != NULL && _rootView->getView()->isKeyboardTargeted())
+		return (_rootView->getView()->onKeyDown(key_code));
+	return (false);
 }
 
 void			Activity::unregisterEvent(std::string const &event, AView *v)

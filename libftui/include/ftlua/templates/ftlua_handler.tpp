@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 15:48:38 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 18:08:25 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -292,7 +292,7 @@ int		luaCFunHelper(lua_State *l, Ret (C::*f)(Args...) const)
 */
 
 template <typename T>
-inline T	*luaCFunRetreiveSelf(lua_State *l, int index)
+inline T	*luaCFunRetreiveSelf(lua_State *l, int index, bool pop)
 {
 	void		*i;
 
@@ -303,7 +303,9 @@ inline T	*luaCFunRetreiveSelf(lua_State *l, int index)
 		luaL_error(l, "Missing luserdata at self[0] in table");
 	i = lua_touserdata(l, -1);
 	lua_pop(l, 1);
-	lua_remove(l, index);
+	if (pop)
+		lua_remove(l, index);
 	return (reinterpret_cast<T*>(i));
 }
+
 };

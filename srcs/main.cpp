@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 17:42:01 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 18:41:27 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -151,11 +151,13 @@ public:
 		// std::cout << "caca4" << std::endl;
 		// luaL_dostring(l, "print('backgroundColor:'..solid_test:getBackgroundColor())");
 
-		// luaL_dostring(l, "test:setCallback('onKeyDown', function () print 'mdr' end)");
+		// luaL_dostring(l, "test:setCallback('onKeyDown', nil)");
+		// luaL_dostring(l, "test:setCallback('onKeyDown', function (...) for i,v in ipairs(arg) do print(tostring(v)) end end)");
 /*
 ** - end
 */
-		FTASSERT(lua_gettop(_act.getLuaState()) == 0);
+		int top = lua_gettop(_act.getLuaState());
+		FTASSERT(top == 0, ft::f("Top not 0: %", top));
 	}
 
 	void				loop(void)
@@ -202,18 +204,16 @@ public:
 		if (key == GLFW_KEY_ESCAPE)
 			glfwSetWindowShouldClose(_window, true);
 		else
-		{
 			_act.onKeyUp(key);
-			ft::f(std::cout, "Key up; key: %, scancode: %, mods: %\n",
-				key, scancode, mods);
-		}
+		(void)scancode;
+		(void)mods;
 	}
 
 	void				onKeyDown(int key, int scancode, int mods)
 	{
 		_act.onKeyDown(key);
-		ft::f(std::cout, "Key down; key: %, scancode: %, mods: %\n",
-			key, scancode, mods);
+		(void)scancode;
+		(void)mods;
 	}
 
 /*

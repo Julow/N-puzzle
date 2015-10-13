@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 17:33:39 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 18:13:20 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -284,13 +284,12 @@ void				AView::onMouseEnter(void)
 void				AView::onMouseLeave(void)
 {
 	callLuaCallback(_act.getLuaState(), LuaCallback::MOUSE_LEAVE);
-	// TODO call lua
 	return ;
 }
 void				AView::onEvent(std::string const &event, IEventParams *p)
 {
 	callLuaCallback(_act.getLuaState(), LuaCallback::EVENT, event);
-	// TODO: onEvent IEventParams
+	(void)p;// TODO: onEvent IEventParams
 	return ;
 }
 void				AView::onPositionChange(void)
