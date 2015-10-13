@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 11:48:54 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 13:13:23 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -153,6 +153,11 @@ public:
 	virtual void				onSizeChange(void);
 	virtual void				onVisibilityChange(bool hidden);
 
+	/*
+	** Used to add/remove a lua callback (from lua)
+	*/
+	void						setLuaCallback(lua_State *l);
+
 /*
 ** Layout system
 */
@@ -237,8 +242,8 @@ public:
 							, std::vector<view_info_s::luamethod_t> luaMethods);
 
 protected:
-	typedef std::unordered_map<std::string, AView::LuaCallback>	callback_map_t;
-	static callback_map_t const		callback_map;
+	typedef std::unordered_map<std::string, uint32_t>	callback_map_t;
+	static callback_map_t			callback_map;
 
 	/*
 	** Register a lua callback
@@ -247,30 +252,31 @@ protected:
 										uint32_t id);
 
 public:
-
-	static int				setAlphaG(lua_State *l);
+	static int				getIdG(lua_State *l);
+	static int				getParentG(lua_State *l);
+	static int				getAlphaG(lua_State *l);
+	static int				isVisibleG(lua_State *l);
+	static int				isMouseOverG(lua_State *l);
 	static int				setVisibilityG(lua_State *l);
+	static int				setAlphaG(lua_State *l);
+
+	static int				getPosG(lua_State *l);
+	static int				getSizeG(lua_State *l);
+	static int				getRequestedSizeG(lua_State *l);
+	static int				setRequestedSizeG(lua_State *l);
+
 	static int				setParamG(lua_State *l);
+	static int				setCallbackG(lua_State *l);
 
 	static int				hookMouseScrollG(lua_State *l);
 	static int				hookMouseClickG(lua_State *l);
 	static int				hookMouseMoveG(lua_State *l);
 	static int				hookMouseCaptureG(lua_State *l);
 	static int				hookKeyboardG(lua_State *l);
+
 	static int				queryUpdateG(lua_State *l);
 	static int				queryMeasureG(lua_State *l);
 	static int				queryRedrawG(lua_State *l);
-
-	static int				setRequestedSizeG(lua_State *l);
-	static int				getRequestedSizeG(lua_State *l);
-	static int				getPosG(lua_State *l);
-	static int				getSizeG(lua_State *l);
-
-	static int				getIdG(lua_State *l);
-	static int				getParentG(lua_State *l);
-	static int				getAlphaG(lua_State *l);
-	static int				isVisibleG(lua_State *l);
-	static int				isMouseOverG(lua_State *l);
 
 	static int				isMouseScrollTargetedG(lua_State *l);
 	static int				isMouseClickTargetedG(lua_State *l);

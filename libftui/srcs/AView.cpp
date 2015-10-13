@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 12:01:25 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 13:19:58 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -157,7 +157,7 @@ bool				AView::isMouseOver(void) const
 
 void				AView::setLuaCallback(lua_State *l)
 {
-	char const *const	callback = luaL_checkstring(l, -2, NULL);
+	char const *const	callback = luaL_checkstring(l, -2);
 	auto const			&it = AView::callback_map.find(std::string(callback));
 	uint32_t			callbackId;
 
@@ -518,30 +518,32 @@ void			AView::queryRedraw(void)
 ** ========================================================================== **
 ** Register lua callback
 */
-callback_map_t	AView::callback_map
+#define LUA_CALLBACK_ID(NAME)	static_cast<uint32_t>(AView::LuaCallback::NAME)
+
+AView::callback_map_t	AView::callback_map
 {
-	{"onMouseScroll", AView::LuaCallback::MOUSE_SCROLL},
-	{"onUpdate", AView::LuaCallback::UPDATE},
-	{"onMeasure", AView::LuaCallback::MEASURE},
-	{"onDraw", AView::LuaCallback::DRAW},
-	{"onMouseScroll", AView::LuaCallback::MOUSE_SCROLL},
-	{"onMouseDown", AView::LuaCallback::MOUSE_DOWN},
-	{"onMouseUp", AView::LuaCallback::MOUSE_UP},
-	{"onMouseMove", AView::LuaCallback::MOUSE_MOVE},
-	{"onKeyDown", AView::LuaCallback::KEY_DOWN},
-	{"onKeyUp", AView::LuaCallback::KEY_UP},
-	{"onMouseEnter", AView::LuaCallback::MOUSE_ENTER},
-	{"onMouseLeave", AView::LuaCallback::MOUSE_LEAVE},
-	{"onEvent", AView::LuaCallback::EVENT},
-	{"onPositionChange", AView::LuaCallback::POSITION_CHANGE},
-	{"onCaptureChange", AView::LuaCallback::CAPTURE_CHANGE},
-	{"onSizeChange", AView::LuaCallback::SIZE_CHANGE},
-	{"onVisibilityChange", AView::LuaCallback::VISIBILITY_CHANGE},
+	{"onMouseScroll",		LUA_CALLBACK_ID(MOUSE_SCROLL)},
+	{"onUpdate",			LUA_CALLBACK_ID(UPDATE)},
+	{"onMeasure",			LUA_CALLBACK_ID(MEASURE)},
+	{"onDraw",				LUA_CALLBACK_ID(DRAW)},
+	{"onMouseScroll",		LUA_CALLBACK_ID(MOUSE_SCROLL)},
+	{"onMouseDown",			LUA_CALLBACK_ID(MOUSE_DOWN)},
+	{"onMouseUp",			LUA_CALLBACK_ID(MOUSE_UP)},
+	{"onMouseMove",			LUA_CALLBACK_ID(MOUSE_MOVE)},
+	{"onKeyDown",			LUA_CALLBACK_ID(KEY_DOWN)},
+	{"onKeyUp",				LUA_CALLBACK_ID(KEY_UP)},
+	{"onMouseEnter",		LUA_CALLBACK_ID(MOUSE_ENTER)},
+	{"onMouseLeave",		LUA_CALLBACK_ID(MOUSE_LEAVE)},
+	{"onEvent",				LUA_CALLBACK_ID(EVENT)},
+	{"onPositionChange",	LUA_CALLBACK_ID(POSITION_CHANGE)},
+	{"onCaptureChange",		LUA_CALLBACK_ID(CAPTURE_CHANGE)},
+	{"onSizeChange",		LUA_CALLBACK_ID(SIZE_CHANGE)},
+	{"onVisibilityChange",	LUA_CALLBACK_ID(VISIBILITY_CHANGE)},
 };
 
 void			AView::registerLuaCallback(std::string const &name, uint32_t id)
 {
-	if (callback_map.insert(name, id) == callback_map.end())
+	if (callback_map.insert(std::make_pair(name, id)).second)
 		throw std::domain_error(ft::f("lua callback registered twice (%)",
 			name));
 }
