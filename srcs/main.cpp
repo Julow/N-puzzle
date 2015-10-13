@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 16:15:43 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 07:48:22 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -22,7 +22,7 @@
 #include "ftui/Activity.hpp"
 #include "ftui/AView.hpp"
 #include "ftui/ALayout.hpp"
-#include "ftui/luaCFunctions_helpers.hpp"
+#include "ftlua/luaCFunctions_helpers.hpp"
 #include "ftui/lua/lua.hpp"
 
 #include "tiles/Tiles.hpp"
@@ -136,11 +136,15 @@ public:
 */
 		lua_State *l = _act.getLuaState(); //don't remove please ;'(
 
-		// luaL_dostring(l, "ft_ptab(UIParent);");
-		// luaL_dostring(l, "ft_ptab(ALayout);");
-		// luaL_dostring(l, "ft_ptab(VerticalLayout);");
-		luaL_dostring(l, "ft_pchildren(UIParent);");
-		// luaL_dostring(l, "ft_ptab(_G);");
+		// luaL_dostring(l, "ft.ptab(UIParent);");
+		// luaL_dostring(l, "ft.ptab(ALayout);");
+		// luaL_dostring(l, "ft.ptab(VerticalLayout);");
+		luaL_dostring(l, "ft.pchildren(UIParent);");
+		// luaL_dostring(l, "setmetatable(ft, ft);");
+		luaL_dostring(l, "ft.ptab(ft);");
+		luaL_dostring(l, "ft['salut'];");
+		
+		// luaL_dostring(l, "ft.ptab(_G);");
 		// std::cout << "caca4" << std::endl;
 		// luaL_dostring(l, "print('backgroundColor:'..solid_test:getBackgroundColor())");
 	}
@@ -148,11 +152,12 @@ public:
 	void				loop(void)
 	{
 		ftui::Canvas		canvas(_canvasHolder.getCanvas());
+	
 		while (!glfwWindowShouldClose(_window))
 		{
 			glfwPollEvents();
-			glClearColor(0.2f, 0.8f, 0.9f, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
+			// glClearColor(0.f, 0.f, 0.f, c1.f);
+			// glClear(GL_COLOR_BUFFER_BIT);
 			// canvas.clear();
 			tiles.render();
 			_act.render(canvas);
@@ -177,43 +182,6 @@ public:
 		{
 			lua_pushinteger(l, instance()->getPuzzleSize());
 			return (1);
-		}
-
-	static ft::Vec2<int>	ret2(void)
-		{
-			std::cout << "ret2" << std::endl;
-			return {21, 42};
-		}
-
-	static void				give2(ft::Vec2<int> v)
-		{
-			std::cout << "give2 with:" << v.x<< " " << v.y<< std::endl;
-			return ;
-		}
-
-	static void				give4(std::string s
-								  , ft::Vec2<int> v
-								  , double d)
-		{
-			std::cout << "give4 with:"
-					  << s  << " "
-					  << v.x  << " "
-					  << v.y  << " "
-					  << d  << " "
-					  << std::endl;
-			return ;
-		}
-
-	
-	static int				give1ret1(int)
-		{
-			std::cout << "give1ret1" << std::endl;
-			return 84;
-		}
-
-	static int			give6ret5(lua_State *l)
-		{
-			return ftui::luaCFunHelper<0, 2>(l, &Main::ret2);
 		}
 public:
 	

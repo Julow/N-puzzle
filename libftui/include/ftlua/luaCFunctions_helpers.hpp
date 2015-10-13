@@ -6,16 +6,16 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/05 14:23:58 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/11 17:57:35 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/13 07:50:16 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef LUACFUNCTIONS_HELPERS_HPP
 # define LUACFUNCTIONS_HELPERS_HPP
 
-# include "lua/lua.hpp"
+# include "ftui/lua/lua.hpp"
 
-namespace ftui
+namespace ftlua
 {
 
 /*
@@ -71,6 +71,6 @@ T		*luaCFunRetreiveSelf(lua_State *l, int index);
 
 };
 
-# include "ftui/templates/luaCFunctions_helpers.tpp"
+# include "ftlua/templates/luaCFunctions_helpers.tpp"
 
 #endif

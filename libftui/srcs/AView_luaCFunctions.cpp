@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/12 18:18:27 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 07:52:47 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,7 +14,10 @@
 #include "ftui/IViewHolder.hpp"
 #include "ftui/ASolidView.hpp"
 #include "ftui/TextView.hpp"
-#include "ftui/luaCFunctions_helpers.hpp"
+#include "ftlua/luaCFunctions_helpers.hpp"
+
+using ftlua::luaCFunRetreiveSelf;
+using ftlua::luaCFunHelper;
 
 namespace ftui
 {
@@ -22,13 +25,13 @@ namespace ftui
 #define DEF_LUACFUN_GSUFFIX(CLASS, NAME, NUMIN, NUMOUT)			\
 int			CLASS::NAME##G(lua_State *l)						\
 {																\
-	return luaCFunHelper<NUMIN, NUMOUT>(l, &CLASS::NAME);		\
+	return luaCFunHelper<NUMIN, NUMOUT>(l, &CLASS::NAME);	\
 }
 
 #define DEF_LUACFUN_G_CAST(CLASS, NAME, NUMIN, NUMOUT, RET, ...)		\
 int			CLASS::NAME##G(lua_State *l)								\
 {																		\
-	return luaCFunHelper<NUMIN, NUMOUT>(l,								\
+	return luaCFunHelper<NUMIN, NUMOUT>(l,						\
 		reinterpret_cast<RET (CLASS::*)(__VA_ARGS__)>(&CLASS::NAME));	\
 }
 

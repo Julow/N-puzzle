@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/12 18:17:25 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 07:50:24 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,7 +16,7 @@
 # include "ft/Vec.hpp"
 # include "ft/utils.hpp"
 
-namespace ftui
+namespace ftlua
 {
 
 inline void        luaFT_stackdump(lua_State *L) //TODO move luaFT_stackdump

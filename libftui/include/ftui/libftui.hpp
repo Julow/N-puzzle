@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:55:01 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 16:11:29 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 07:40:17 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -116,8 +116,6 @@ class	VerticalLayout;
 
 class	XmlTokenizer;
 class	XmlParser;
-
-void			lua_pushUtils(Activity const &a);
 
 };
 

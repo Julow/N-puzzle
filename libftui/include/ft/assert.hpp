@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/29 07:32:08 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/09 16:14:13 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 07:08:48 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,7 +21,7 @@ namespace Assert
 {
 // # define FTASSERT_IGNORE
 # define FTASSERT_REPORT
-# define FTASSERT_HALT
+// # define FTASSERT_HALT
 
 # if (defined(FTASSERT_IGNORE) &&							\
 	  (defined(FTASSERT_REPORT) || defined(FTASSERT_HALT)))

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 16:28:25 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 07:23:51 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -72,6 +72,7 @@ AView::AView(XmlParser const &xml, Activity &act) :
 		lua_settable(l, -4);						// {}, [_G]
 	}
 	lua_pop(l, 2);
+
 }
 
 AView::~AView(void)

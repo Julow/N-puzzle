@@ -1,28 +1,26 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   lua_debug.cpp                                      :+:      :+:    :+:   //
+//   push_utils.cpp                                     :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/10/04 15:25:06 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/11 18:04:11 by juloo            ###   ########.fr       //
+//   Created: 2015/10/13 07:41:25 by ngoguey           #+#    #+#             //
+//   Updated: 2015/10/13 07:43:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
-
-#include "ftui/libftui.hpp"
 
 #include <vector>
 #include <iostream>//de
 
-#include "ftui/Activity.hpp"
 #include "ftui/lua/lua.hpp"
 
 #define TOSTRING(...) #__VA_ARGS__
 
 static std::vector<std::string> const		funs{ //TODO omg lol mdr
+{"ft = {};"},
 {"															\
-ft_tostring = function(v)									\
+ft.tostring = function(v)									\
 	if type(v) == 'function' then							\
 		return string.gsub(tostring(v), 'function: ', 'FN');\
 	elseif type(v) == 'table' then							\
@@ -34,7 +32,7 @@ ft_tostring = function(v)									\
 end															\
 "},
 {"\
-ft_ptab = function(t, p1, p2, p3, p4)										\n \
+ft.ptab = function(t, p1, p2, p3, p4)										\n \
 	local maxDepth = p1 or -1;												\n \
 	local curDepth = p2 or 0;												\n \
 	local excludedK = p3 or {[os] = true, [package] = true					\n \
@@ -83,7 +81,7 @@ ft_ptab = function(t, p1, p2, p3, p4)										\n \
 end;																		\n \
 "},
 {TOSTRING(
-ft_pchildren = function(t, tab)
+ft.pchildren = function(t, tab)
 	tab = tab or '**';
 
 	if t == nil or t[0] == nil or type(t[0]) ~= 'userdata' then
@@ -98,22 +96,30 @@ ft_pchildren = function(t, tab)
 		ft_pchildren(t:at(i), tab);
 	end
 end;
-)}
+		)},
+{"\
+ft.finalize_template = function(t, p)						\
+        t.__index = t;                                      \
+        if p ~= nil then                                    \
+            setmetatable(t, p);                             \
+            if t.__ipairs == nil then                       \
+                t.__ipairs = p.__ipairs                     \
+            end                                             \
+        end                                                 \
+    end"}
 };
 
-namespace ftui
+namespace ftlua
 {
 
-void		lua_pushUtils(Activity const &a)	// TODO accept luaState, move ftlua
+void		pushUtils(lua_State *l)
 {
-	lua_State	*l = a.getLuaState();
-
 	for (auto const &it : funs)
 	{
 		if (luaL_dostring(l, it.c_str()))
 		{
 			std::cout << luaL_checkstring(l, -1) << std::endl;
-			throw std::exception(); //TODO throw
+			throw std::exception(); //TODO throw message
 		}
 	}
 	return ;

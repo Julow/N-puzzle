@@ -5,7 +5,7 @@ O_FILES :=	o/srcs/ALayout.o o/srcs/ALayout_luaCFunctions.o o/srcs/ASolidView.o \
 			o/srcs/RelativeLayout.o o/srcs/SliderView.o o/srcs/SolidView.o \
 			o/srcs/TextView.o o/srcs/VerticalLayout.o \
 			o/srcs/VerticalLayout_ViewHolder.o o/srcs/XmlParser.o \
-			o/srcs/XmlTokenizer.o o/srcs/ft/assert.o o/srcs/lua_debug.o
+			o/srcs/XmlTokenizer.o o/srcs/ft/assert.o o/srcs/ftlua/push_utils.o
 
 LIBS_DEPEND := 
 
@@ -28,8 +28,7 @@ o/srcs/ALayout_luaCFunctions.o: srcs/ALayout_luaCFunctions.cpp \
 	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
 	include/ftui/ALayout.hpp include/ftui/ASolidView.hpp \
 	include/ftui/AView.hpp include/ftui/Canvas.hpp include/ftui/libftui.hpp \
-	include/ft/utils.hpp include/ftui/luaCFunctions_helpers.hpp \
-	include/ftui/templates/luaCFunctions_helpers.tpp | o/srcs/
+	| o/srcs/
 o/srcs/ASolidView.o: srcs/ASolidView.cpp include/ft/Color.hpp \
 	include/ft/Rect.hpp include/ft/Vec.hpp include/ft/assert.hpp \
 	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
@@ -54,9 +53,7 @@ o/srcs/AView_luaCFunctions.o: srcs/AView_luaCFunctions.cpp \
 	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
 	include/ftui/IViewHolder.hpp include/ft/Color.hpp include/ft/Rect.hpp \
 	include/ftui/ASolidView.hpp include/ftui/Canvas.hpp \
-	include/ftui/TextView.hpp include/ft/utils.hpp \
-	include/ftui/luaCFunctions_helpers.hpp \
-	include/ftui/templates/luaCFunctions_helpers.tpp | o/srcs/
+	include/ftui/TextView.hpp | o/srcs/
 o/srcs/AView_statics.o: srcs/AView_statics.cpp include/ft/utils.hpp \
 	include/ft/assert.hpp include/ftui/AView.hpp include/ftui/libftui.hpp \
 	include/ft/Color.hpp include/ft/Rect.hpp include/ft/Vec.hpp \
@@ -67,15 +64,16 @@ o/srcs/AView_statics.o: srcs/AView_statics.cpp include/ft/utils.hpp \
 	include/ftui/SolidView.hpp include/ftui/TextView.hpp | o/srcs/
 o/srcs/AbsoluteLayout.o: srcs/AbsoluteLayout.cpp include/ft/assert.hpp \
 	include/ftui/AbsoluteLayout.hpp include/ftui/libftui.hpp | o/srcs/
-o/srcs/Activity.o: srcs/Activity.cpp include/ft/utils.hpp include/ft/Vec.hpp \
-	include/ft/assert.hpp include/ft/templates/Vec2.tpp \
-	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
-	include/ftui/Activity.hpp include/ftui/DefaultEventBox.hpp \
-	include/ftui/EventBox.hpp include/ftui/EventParams.hpp \
-	include/ftui/IEventBox.hpp include/ftui/IEventParams.hpp \
-	include/ftui/IViewHolder.hpp include/ftui/libftui.hpp \
-	include/ftui/templates/Activity.tpp include/ftui/AView.hpp \
-	include/ftui/XmlParser.hpp include/ftui/XmlTokenizer.hpp | o/srcs/
+o/srcs/Activity.o: srcs/Activity.cpp include/ft/utils.hpp \
+	include/ftlua/ftlua.hpp include/ft/Vec.hpp include/ft/assert.hpp \
+	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
+	include/ft/templates/Vec4.tpp include/ftui/Activity.hpp \
+	include/ftui/DefaultEventBox.hpp include/ftui/EventBox.hpp \
+	include/ftui/EventParams.hpp include/ftui/IEventBox.hpp \
+	include/ftui/IEventParams.hpp include/ftui/IViewHolder.hpp \
+	include/ftui/libftui.hpp include/ftui/templates/Activity.tpp \
+	include/ftui/AView.hpp include/ftui/XmlParser.hpp \
+	include/ftui/XmlTokenizer.hpp | o/srcs/
 o/srcs/Activity_RootViewHolder.o: srcs/Activity_RootViewHolder.cpp \
 	include/ft/Vec.hpp include/ft/assert.hpp include/ft/templates/Vec2.tpp \
 	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
@@ -134,10 +132,4 @@ o/srcs/XmlTokenizer.o: srcs/XmlTokenizer.cpp include/ft/assert.hpp \
 	include/ft/utils.hpp | o/srcs/
 o/srcs/ft/assert.o: srcs/ft/assert.cpp include/ft/assert.hpp \
 	include/ft/utils.hpp | o/srcs/ft/
-o/srcs/lua_debug.o: srcs/lua_debug.cpp include/ft/assert.hpp \
-	include/ftui/libftui.hpp include/ft/Vec.hpp include/ft/templates/Vec2.tpp \
-	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
-	include/ftui/Activity.hpp include/ftui/DefaultEventBox.hpp \
-	include/ftui/EventBox.hpp include/ftui/EventParams.hpp \
-	include/ftui/IEventBox.hpp include/ftui/IEventParams.hpp \
-	include/ftui/IViewHolder.hpp include/ftui/templates/Activity.tpp | o/srcs/
+o/srcs/ftlua/push_utils.o: srcs/ftlua/push_utils.cpp | o/srcs/ftlua/

@@ -6,13 +6,15 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 15:42:35 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 07:45:13 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include <algorithm>
+#include <iostream> //d
 
 #include "ft/utils.hpp"
+#include "ftlua/ftlua.hpp"
 #include "ftui/Activity.hpp"
 #include "ftui/AView.hpp"
 #include "ftui/XmlParser.hpp"
@@ -43,7 +45,9 @@ Activity::~Activity(void)
 static void		finalize_table(
 	lua_State *l, std::string const &name, AView::view_info_s const &i)
 {
-	(void)lua_getglobal(l, "finalize_template");
+	(void)lua_getglobal(l, "ft");
+	lua_pushstring(l, "finalize_template");
+	lua_gettable(l, -2);
 	(void)lua_getglobal(l, name.c_str());
 	(void)lua_getglobal(l, i.parent.c_str());
 	lua_call(l, 2, 0);	
@@ -63,24 +67,8 @@ static void	load_special_code(lua_State *l)
 	         end										   \
 	     end											   \
 	 end");
-	luaL_dostring(l, "finalize_template = function(t, p)	\
-		t.__index = t;										\
-		if p ~= nil then									\
-			setmetatable(t, p);								\
-			if t.__ipairs == nil then						\
-				t.__ipairs = p.__ipairs						\
-			end												\
-		end													\
-	end");
 	return ;
 }
-
-static void	unload_special_code(lua_State *l)
-{
-	luaL_dostring(l, "finalize_template = nil;");
-	return ;
-}
-
 
 void			Activity::init_lua_env(void)
 {
@@ -89,7 +77,7 @@ void			Activity::init_lua_env(void)
 	if (_l == nullptr)
 		throw std::runtime_error("Error while creating lua state");
 	luaL_openlibs(_l);
-	ftui::lua_pushUtils(*this);
+	ftlua::pushUtils(_l);
 	for (auto it : AView::viewsInfo)
 	{
 		lua_createtable(_l, 0, 0);
@@ -104,7 +92,6 @@ void			Activity::init_lua_env(void)
 	load_special_code(_l);
 	for (auto it : AView::viewsInfo)
 		finalize_table(_l, it.first, it.second);
-	unload_special_code(_l);
 	return ;
 }
 
