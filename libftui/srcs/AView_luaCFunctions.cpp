@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 07:52:47 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/13 07:58:07 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,7 +14,7 @@
 #include "ftui/IViewHolder.hpp"
 #include "ftui/ASolidView.hpp"
 #include "ftui/TextView.hpp"
-#include "ftlua/luaCFunctions_helpers.hpp"
+#include "ftlua/ftlua.hpp"
 
 using ftlua::luaCFunRetreiveSelf;
 using ftlua::luaCFunHelper;

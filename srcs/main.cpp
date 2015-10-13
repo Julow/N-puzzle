@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 07:48:22 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/13 07:58:17 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -22,7 +22,7 @@
 #include "ftui/Activity.hpp"
 #include "ftui/AView.hpp"
 #include "ftui/ALayout.hpp"
-#include "ftlua/luaCFunctions_helpers.hpp"
+#include "ftlua/ftlua.hpp"
 #include "ftui/lua/lua.hpp"
 
 #include "tiles/Tiles.hpp"
