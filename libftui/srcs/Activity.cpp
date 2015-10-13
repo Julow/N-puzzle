@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 09:07:30 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 13:56:57 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -39,7 +39,7 @@ Activity::~Activity(void)
 	return ;
 }
 
-static void		finalize_table(
+static void		finalize_template(
 	lua_State *l, std::string const &name, AView::view_info_s const &i)
 {
 	int		err;
@@ -56,44 +56,36 @@ static void		finalize_table(
 	return ;
 }
 
-static void	load_special_code(lua_State *l)
-{
-	// TODO move this lua function to C or to new htab
-	luaL_dostring(l, "ALayout.__ipairs = function(t)       \
-	 local i, n = -1, t:size()                             \
-	 print('__pairs for ', t, n);						   \
-	 return function()                                     \
-	         i = i + 1                                     \
-	         if i < n then                                 \
-	             return i, t:at(i);						   \
-	         end										   \
-	     end											   \
-	 end");
-	return ;
-}
-
 void			Activity::init_lua_env(void)
 {
+	int		err;
+
 	FTASSERT(_l == nullptr, "lua state already created");
 	this->_l = luaL_newstate();
 	if (_l == nullptr)
 		throw std::runtime_error("Error while creating lua state");
 	luaL_openlibs(_l);
 	ftlua::pushUtils(_l);
-	for (auto it : AView::viewsInfo)
+	for (auto const &it : AView::viewsInfo)
 	{
-		lua_createtable(_l, 0, 0);
-		lua_setglobal(_l, it.first.c_str());
+		err = luaL_dostring(_l, it.second.tableInit.c_str());
+		if (err != LUA_OK)
+			;//TODO throw
+		if (lua_getglobal(_l, it.first.c_str()) != LUA_TTABLE)
+		{
+			lua_createtable(_l, 0, 0);
+			lua_setglobal(_l, it.first.c_str());
+		}
+		lua_pop(_l, 1);
 	}
-	for (auto it : AView::viewsInfo)
+	for (auto const &it : AView::viewsInfo)
 	{
 		for (auto itm : it.second.luaMethods)
 			this->registerLuaCFun_table(
 				it.first, std::get<0>(itm), std::get<1>(itm));
 	}
-	load_special_code(_l);
-	for (auto it : AView::viewsInfo)
-		finalize_table(_l, it.first, it.second);
+	for (auto const &it : AView::viewsInfo)
+		finalize_template(_l, it.first, it.second);
 	return ;
 }
 

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 15:52:36 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 13:29:23 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -237,6 +237,7 @@ public:
 		std::string					parent;
 		factory_t					factory;
 		std::vector<luamethod_t>	luaMethods;
+		std::string					tableInit;
 	};
 
 	typedef std::unordered_map<std::string, view_info_s>	views_info_t;
@@ -251,10 +252,12 @@ public:
 	 *  It should be done once for all custom views,
 	 *    and before any xml inflating.
 	 */
-	static void						defineView(std::string const &name
-										, std::string const &parent
-										, view_info_s::factory_t factory
-							, std::vector<view_info_s::luamethod_t> luaMethods);
+	static void						defineView(
+		std::string const &name
+		, std::string const &parent
+		, view_info_s::factory_t factory
+		, std::vector<view_info_s::luamethod_t> luaMethods = {}
+		, std::string const &tableInit = {});
 
 protected:
 	typedef std::unordered_map<std::string, uint32_t>	callback_map_t;
