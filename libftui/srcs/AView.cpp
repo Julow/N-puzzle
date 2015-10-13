@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 09:03:29 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 12:01:25 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -28,6 +28,9 @@ using std::string;
 namespace ftui
 {
 
+/*
+** TODO: move to a member static
+*/
 static std::string const	*retrieveId(XmlParser const &xml)
 {
 	auto const		&it = xml.getParams().find("id");
@@ -42,6 +45,7 @@ AView::AView(XmlParser const &xml, Activity &act) :
 	_act(act),
 	_id(retrieveId(xml)),
 	_flags(0),
+	_luaCallbacks(0),
 	_alpha(1.f)
 {
 	lua_State *const	l = act.getLuaState();
@@ -72,7 +76,6 @@ AView::AView(XmlParser const &xml, Activity &act) :
 		lua_settable(l, -4);						// {}, [_G]
 	}
 	lua_pop(l, 2);
-
 }
 
 AView::~AView(void)
@@ -82,6 +85,7 @@ AView::~AView(void)
 }
 
 /*
+** ========================================================================== **
 ** View core
 */
 std::string const	*AView::getId(void) const
@@ -124,6 +128,7 @@ void				AView::inflate(XmlParser &xml, Activity &)
 }
 
 /*
+** ========================================================================== **
 ** View properties
 */
 float				AView::getAlpha(void) const
@@ -147,13 +152,9 @@ void				AView::setVisibility(bool hidden)
 	if (static_cast<bool>(this->_flags & AView::HIDDEN) != hidden)
 	{
 		if (hidden == true)
-		{
 			this->_flags |= AView::HIDDEN;
-		}
 		else
-		{
 			this->_flags &= ~AView::HIDDEN;
-		}
 		onVisibilityChange(hidden);
 	}
 	return ;
@@ -162,6 +163,22 @@ void				AView::setVisibility(bool hidden)
 bool				AView::isMouseOver(void) const
 {
 	return (this->_flags & AView::MOUSE_OVER);
+}
+
+void				AView::setLuaCallback(lua_State *l)
+{
+	char const *const	callback = luaL_checkstring(l, -2, NULL);
+	auto const			&it = AView::callback_map.find(std::string(callback));
+	uint32_t			callbackId;
+
+	if (it == AView::callback_map.end())
+		luaL_error(l, "Unknow lua callback: %s", callback);
+	callbackId = it->second;
+	lua_pushinteger(l, callbackId);		// <-	id, f, name, view_table
+	lua_pushvalue(l, -2);				// <-	f, ...
+	lua_settable(l, -4);				// <-	f, name, view_table
+	_luaCallbacks |= 1 << callbackId;
+	lua_pop(l, 3);
 }
 
 void				AView::setParam(string const &k, string const &v)
@@ -204,6 +221,7 @@ void				AView::setParam(string const &k, string const &v)
 }
 
 /*
+** ========================================================================== **
 ** Callbacks
 */
 /*
@@ -241,6 +259,7 @@ bool				AView::onMouseScroll(int x, int y, float delta)
 	(void)delta;
 	return (false);
 }
+
 bool				AView::onMouseDown(int x, int y, int button)
 {
 	// TODO call lua
@@ -249,6 +268,7 @@ bool				AView::onMouseDown(int x, int y, int button)
 	(void)button;
 	return (false);
 }
+
 bool				AView::onMouseUp(int x, int y, int button)
 {
 	// TODO call lua
@@ -257,6 +277,7 @@ bool				AView::onMouseUp(int x, int y, int button)
 	(void)button;
 	return (false);
 }
+
 bool				AView::onMouseMove(int x, int y)
 {
 	// TODO call lua
@@ -264,12 +285,14 @@ bool				AView::onMouseMove(int x, int y)
 	(void)y;
 	return (false);
 }
+
 bool				AView::onKeyDown(int key_code)
 {
 	// TODO call lua
 	(void)key_code;
 	return (false);
 }
+
 bool				AView::onKeyUp(int key_code)
 {
 	// TODO call lua
@@ -315,6 +338,7 @@ void				AView::onVisibilityChange(bool hidden)
 }
 
 /*
+** ========================================================================== **
 ** Layout system
 */
 /*
@@ -363,6 +387,7 @@ void				AView::setMouseOver(bool state)
 }
 
 /*
+** ========================================================================== **
 ** Register target
 ** Some low level callbacks are not enabled by default
 */
@@ -453,6 +478,7 @@ void			AView::hookKeyboard(bool state)
 
 
 /*
+** ========================================================================== **
 ** Query
 ** Queries a callback for the next frame
 */
@@ -496,6 +522,38 @@ void			AView::queryRedraw(void)
 			p->queryRedraw();
 	}	
 	return ;
+}
+
+/*
+** ========================================================================== **
+** Register lua callback
+*/
+callback_map_t	AView::callback_map
+{
+	{"onMouseScroll", AView::LuaCallback::MOUSE_SCROLL},
+	{"onUpdate", AView::LuaCallback::UPDATE},
+	{"onMeasure", AView::LuaCallback::MEASURE},
+	{"onDraw", AView::LuaCallback::DRAW},
+	{"onMouseScroll", AView::LuaCallback::MOUSE_SCROLL},
+	{"onMouseDown", AView::LuaCallback::MOUSE_DOWN},
+	{"onMouseUp", AView::LuaCallback::MOUSE_UP},
+	{"onMouseMove", AView::LuaCallback::MOUSE_MOVE},
+	{"onKeyDown", AView::LuaCallback::KEY_DOWN},
+	{"onKeyUp", AView::LuaCallback::KEY_UP},
+	{"onMouseEnter", AView::LuaCallback::MOUSE_ENTER},
+	{"onMouseLeave", AView::LuaCallback::MOUSE_LEAVE},
+	{"onEvent", AView::LuaCallback::EVENT},
+	{"onPositionChange", AView::LuaCallback::POSITION_CHANGE},
+	{"onCaptureChange", AView::LuaCallback::CAPTURE_CHANGE},
+	{"onSizeChange", AView::LuaCallback::SIZE_CHANGE},
+	{"onVisibilityChange", AView::LuaCallback::VISIBILITY_CHANGE},
+};
+
+void			AView::registerLuaCallback(std::string const &name, uint32_t id)
+{
+	if (callback_map.insert(name, id) == callback_map.end())
+		throw std::domain_error(ft::f("lua callback registered twice (%)",
+			name));
 }
 
 };

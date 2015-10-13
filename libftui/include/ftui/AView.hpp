@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 09:09:28 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 11:48:54 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -35,13 +35,13 @@ namespace ftui
 class	AView
 {
 public:
-	enum	Query
+	enum		Query
 	{
 		UPDATE_QUERY = (1 << 1),
 		MEASURE_QUERY = (1 << 2),
 		REDRAW_QUERY = (1 << 3),
 	};
-	enum	Target
+	enum		Target
 	{
 		MOUSE_SCROLL_TARGET = (1 << 8),
 		MOUSE_CLICK_TARGET = (1 << 9),
@@ -49,10 +49,30 @@ public:
 		MOUSE_CAPTURE_TARGET = (1 << 10),
 		KEYBOARD_TARGET = (1 << 11),
 	};
-	enum	Misc
+	enum		Misc
 	{
 		MOUSE_OVER = (1 << 16),
 		HIDDEN = (1 << 17),
+	};
+	enum class	LuaCallback : uint32_t
+	{
+		MOUSE_SCROLL,
+		MOUSE_DOWN,
+		MOUSE_UP,
+		MOUSE_MOVE,
+		KEY_DOWN,
+		KEY_UP,
+		MOUSE_ENTER,
+		MOUSE_LEAVE,
+		EVENT,
+		POSITION_CHANGE,
+		CAPTURE_CHANGE,
+		SIZE_CHANGE,
+		VISIBILITY_CHANGE,
+		UPDATE,
+		MEASURE,
+		DRAW,
+		__LAST
 	};
 
 	AView(XmlParser const &xml, Activity &a);
@@ -180,6 +200,7 @@ protected:
 
 	std::string const *const	_id;
 	uint32_t					_flags;
+	uint32_t					_luaCallbacks;
 	float						_alpha;
 
 	void						setMouseOver(bool state);
@@ -210,11 +231,20 @@ public:
 	 *  It should be done once for all custom views,
 	 *    and before any xml inflating.
 	 */
-	static void						defineView(
-		std::string const &name
-		, std::string const &parent
-		, view_info_s::factory_t factory
-		, std::vector<view_info_s::luamethod_t> luaMethods);
+	static void						defineView(std::string const &name
+										, std::string const &parent
+										, view_info_s::factory_t factory
+							, std::vector<view_info_s::luamethod_t> luaMethods);
+
+protected:
+	typedef std::unordered_map<std::string, AView::LuaCallback>	callback_map_t;
+	static callback_map_t const		callback_map;
+
+	/*
+	** Register a lua callback
+	*/
+	static void						registerLuaCallback(std::string const &name,
+										uint32_t id);
 
 public:
 
@@ -262,4 +292,4 @@ private:
 
 };
 
-#endif // ********************************************************* AVIEW_HPP //
+#endif

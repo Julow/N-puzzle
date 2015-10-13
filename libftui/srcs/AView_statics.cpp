@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 09:00:04 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 10:37:13 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -54,6 +54,7 @@ AView::views_info_t				AView::viewsInfo
 		std::make_tuple("isUpdateQueried", &AView::isUpdateQueriedG),
 		std::make_tuple("isMeasureQueried", &AView::isMeasureQueriedG),
 		std::make_tuple("isRedrawQueried", &AView::isRedrawQueriedG),
+		std::make_tuple("setCallback", &AView::setCallbackG),
 	}}},
 	{"ASolidView", {"AView", nullptr, {
 		std::make_tuple("getBackgroundColor", &ASolidView::getBackgroundColorG),
