@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 13:29:23 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/13 17:29:05 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -217,6 +217,8 @@ protected:
 	** Return false and do nothing if the callback is not registered
 	** otherwise call the lua callback and return true
 	** Call luaL_error on error
+	** -
+	** Warning: ftui/templates/AView_callLuaCallback.tpp have to be included
 	*/
 	template<typename ...ARGS>
 	bool						callLuaCallback(lua_State *l, LuaCallback id,

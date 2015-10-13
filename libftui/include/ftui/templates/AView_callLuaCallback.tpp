@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/13 14:01:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 16:05:25 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 17:27:57 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -27,16 +27,16 @@ bool		AView::callLuaCallback(lua_State *l, uint32_t id, ARGS ...args)
 {
 	if (!(_luaCallbacks & (1 << id)))
 		return (false);
-	lua_pushglobaltable(l);						// <-	_G
-	lua_pushlightuserdata(l, this);				// <-	view_ptr, _G
-	if (lua_gettable(l, -2) != LUA_TTABLE)		// <-	view_table, _G
+	lua_pushglobaltable(l);					// <-	_G
+	lua_pushlightuserdata(l, this);			// <-	view_ptr, _G
+	if (lua_gettable(l, -2) != LUA_TTABLE)	// <-	view_table, _G
 		luaL_error(l, "Lua missing table");
-	lua_pushinteger(l, id);						// <-	callback_id, view_table, _G
+	lua_pushinteger(l, id);					// <-	callback_id, view_table, _G
 	if (lua_gettable(l, -2) != LUA_TFUNCTION)	// <-	function, view_table, _G
 		luaL_error(l, "Lua missing callback");
-	lua_pushvalue(l, -2);						// <-	view_table, function, view_table, _G
-	ftlua::call<1>(l, args...);					// <-	view_table, _G
-	lua_pop(l, 2);								// <-	empty
+	lua_pushvalue(l, -2);					// <-	view_table, function, ...
+	ftlua::call<1>(l, args...);				// <-	view_table, _G
+	lua_pop(l, 2);							// <-	empty
 	return (true);
 }
 

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 14:57:58 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/13 17:42:01 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -150,6 +150,8 @@ public:
 		// luaL_dostring(l, "ft.ptab(_G);");
 		// std::cout << "caca4" << std::endl;
 		// luaL_dostring(l, "print('backgroundColor:'..solid_test:getBackgroundColor())");
+
+		// luaL_dostring(l, "test:setCallback('onKeyDown', function () print 'mdr' end)");
 /*
 ** - end
 */
@@ -200,12 +202,16 @@ public:
 		if (key == GLFW_KEY_ESCAPE)
 			glfwSetWindowShouldClose(_window, true);
 		else
+		{
+			_act.onKeyUp(key);
 			ft::f(std::cout, "Key up; key: %, scancode: %, mods: %\n",
 				key, scancode, mods);
+		}
 	}
 
 	void				onKeyDown(int key, int scancode, int mods)
 	{
+		_act.onKeyDown(key);
 		ft::f(std::cout, "Key down; key: %, scancode: %, mods: %\n",
 			key, scancode, mods);
 	}
