@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 17:05:13 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 07:13:18 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/13 08:14:54 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -78,18 +78,15 @@ public:
 	** out_alpha = src_a + (dst_a * (256 - src_a) / 256)
 	** out_rgb = ((dst_rgb * dst_a / 256) + (src_rgb * src_a / 256))
 	** 					* (256 - dst_a) / out_alpha
-	** -
-	** Warning:	Should never be call with a(src) == 0
-	** 			(floating point exception)
 	*/
 	static inline t			put(t dst, t src)
 	{
 		uint32_t const	dst_a = a(dst);
 		uint32_t const	src_a = a(src);
 		uint32_t const	out_a = src_a + (dst_a * (256 - src_a) / 256);
-		uint32_t 	tmp = out_a * 256 / (256 - ((dst_a < src_a) ? dst_a : src_a));
+		uint32_t const	tmp = out_a * 256 / (256
+								- ((dst_a < src_a) ? dst_a : src_a)) + 1;
 
-		FTASSERT(tmp != 0, "Not cool bro."); tmp = tmp == 0 ? 1 : tmp; //debug
 		return ((out_a << 24)
 			| (((dst_a * r(dst) + (src_a * r(src))) / tmp) << 16)
 			| (((dst_a * g(dst) + (src_a * g(src))) / tmp) << 8)
