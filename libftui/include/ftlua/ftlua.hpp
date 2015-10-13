@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/13 07:39:43 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 16:08:32 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 17:26:14 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -73,10 +73,9 @@ int			handle(lua_State *l, Ret (C::*f)(Args...) const);
 ** Call the function 'name' in the table currently on the top of the stack
 ** -
 ** A table or the global table have to be on the top of the stack
-** TODO
 */
-// template<typename ...ARGS>
-// void		call(lua_State *l, std::string const &name, ARGS ...args);
+template<typename ...ARGS>
+void		call(lua_State *l, std::string const &name, ARGS ...args);
 
 /*
 ** Call a lua function that is already on the top of the lua stack
@@ -94,22 +93,22 @@ void		call(lua_State *l, ARGS ...args);
 /*
 ** Push a value on the top of the stack
 */
-void		push(lua_State *l, int8_t v) { lua_pushinteger(l, v); }
-void		push(lua_State *l, int16_t v) { lua_pushinteger(l, v); }
-void		push(lua_State *l, int32_t v) { lua_pushinteger(l, v); }
-void		push(lua_State *l, int64_t v) { lua_pushinteger(l, v); }
-void		push(lua_State *l, uint8_t v) { lua_pushinteger(l, v); }
-void		push(lua_State *l, uint16_t v) { lua_pushinteger(l, v); }
-void		push(lua_State *l, uint32_t v) { lua_pushinteger(l, v); }
-void		push(lua_State *l, uint64_t v) { lua_pushinteger(l, v); }
-void		push(lua_State *l, float v) { lua_pushnumber(l, v); }
-void		push(lua_State *l, double v) { lua_pushnumber(l, v); }
-void		push(lua_State *l, std::string const &v)
+static inline void		push(lua_State *l, int8_t v) { lua_pushinteger(l, v); }
+static inline void		push(lua_State *l, int16_t v) { lua_pushinteger(l, v); }
+static inline void		push(lua_State *l, int32_t v) { lua_pushinteger(l, v); }
+static inline void		push(lua_State *l, int64_t v) { lua_pushinteger(l, v); }
+static inline void		push(lua_State *l, uint8_t v) { lua_pushinteger(l, v); }
+static inline void		push(lua_State *l, uint16_t v) { lua_pushinteger(l, v); }
+static inline void		push(lua_State *l, uint32_t v) { lua_pushinteger(l, v); }
+static inline void		push(lua_State *l, uint64_t v) { lua_pushinteger(l, v); }
+static inline void		push(lua_State *l, float v) { lua_pushnumber(l, v); }
+static inline void		push(lua_State *l, double v) { lua_pushnumber(l, v); }
+static inline void		push(lua_State *l, std::string const &v)
 {
 	lua_pushstring(l, v.c_str());
 }
-void		push(lua_State *l, char const *v) { lua_pushstring(l, v); }
-void		push(lua_State *l, void *v)
+static inline void		push(lua_State *l, char const *v) { lua_pushstring(l, v); }
+static inline void		push(lua_State *l, void *v)
 {
 	if (v == nullptr)
 		lua_pushnil(l);

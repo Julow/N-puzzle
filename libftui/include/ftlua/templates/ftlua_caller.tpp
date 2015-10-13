@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/13 15:44:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 16:08:25 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 17:25:50 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -32,11 +32,13 @@ void			call(lua_State *l, ARGS ...args)
 	_call<N>(l, args...);
 }
 
-// template<typename ...ARGS>
-// void			call(lua_State *l, std::string const &name ARGS ...args)
-// {
-// 	push(l, name);
-// 	_call<N>(l, args...);
-// }
+template<typename ...ARGS>
+void			call(lua_State *l, std::string const &name, ARGS ...args)
+{
+	push(l, name);
+	if (lua_gettable(l, -2) != LUA_TFUNCTION)
+		luaL_error(l, "Lua missing function");
+	_call<0>(l, args...);
+}
 
 };
