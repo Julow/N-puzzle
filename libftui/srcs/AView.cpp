@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 08:42:03 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 09:03:29 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -85,15 +85,24 @@ AView::~AView(void)
 ** View core
 */
 std::string const	*AView::getId(void) const
-{ return (this->_id); }
+{
+	return (this->_id);
+}
 
 ALayout				*AView::getParent(void)
-{ return (this->_holder == nullptr ? nullptr : this->_holder->getParent()); }
+{
+	return ((this->_holder == nullptr) ? nullptr : this->_holder->getParent());
+}
 
 IViewHolder			*AView::getViewHolder(void)
-{ return (this->_holder); }
+{
+	return (this->_holder);
+}
+
 IViewHolder const	*AView::getViewHolder(void) const
-{ return (this->_holder); }
+{
+	return (this->_holder);
+}
 
 void				AView::setViewHolder(IViewHolder *holder)
 {	
@@ -118,15 +127,18 @@ void				AView::inflate(XmlParser &xml, Activity &)
 ** View properties
 */
 float				AView::getAlpha(void) const
-{ return (this->_alpha); }
+{
+	return (this->_alpha);
+}
 
 bool				AView::isVisible(void) const
-{ return (this->_flags & AView::HIDDEN); }
+{
+	return (this->_flags & AView::HIDDEN);
+}
 
 void				AView::setAlpha(float value)
 {
 	this->_alpha = value;
-	//TODO finish AView::setAlpha
 	return ;
 }
 
@@ -142,13 +154,15 @@ void				AView::setVisibility(bool hidden)
 		{
 			this->_flags &= ~AView::HIDDEN;
 		}
-		//TODO finish AView::setVisibility
+		onVisibilityChange(hidden);
 	}
 	return ;
 }
 
 bool				AView::isMouseOver(void) const
-{ return (this->_flags & AView::MOUSE_OVER); }
+{
+	return (this->_flags & AView::MOUSE_OVER);
+}
 
 void				AView::setParam(string const &k, string const &v)
 {
@@ -180,7 +194,7 @@ void				AView::setParam(string const &k, string const &v)
 			view->hookKeyboard(p == "true");
 		}},
 	};
-	auto const	&it = param_map.find(k);
+	auto const		&it = param_map.find(k);
 
 	if (it != param_map.end())
 		it->second(this, v);
@@ -344,7 +358,6 @@ void				AView::setMouseOver(bool state)
 			this->_flags &= ~AView::MOUSE_OVER;
 			this->onMouseLeave();
 		}
-		// TODO more AView::setMouseOver
 	}
 	return ;
 }
@@ -360,13 +373,9 @@ void			AView::hookMouseScroll(bool state)
 	if (static_cast<bool>(this->_flags & AView::MOUSE_SCROLL_TARGET) != state)
 	{
 		if (state == true)
-		{
 			this->_flags |= AView::MOUSE_SCROLL_TARGET;
-		}
 		else
-		{
 			this->_flags &= ~AView::MOUSE_SCROLL_TARGET;
-		}
 		p = this->getParent();
 		if (p != nullptr)
 			p->spreadTargetMouseScroll(state);
@@ -381,13 +390,9 @@ void			AView::hookMouseClick(bool state)
 	if (static_cast<bool>(this->_flags & AView::MOUSE_CLICK_TARGET) != state)
 	{
 		if (state == true)
-		{
 			this->_flags |= AView::MOUSE_CLICK_TARGET;
-		}
 		else
-		{
 			this->_flags &= ~AView::MOUSE_CLICK_TARGET;
-		}
 		p = this->getParent();
 		if (p != nullptr)
 			p->spreadTargetMouseClick(state);
@@ -402,13 +407,9 @@ void			AView::hookMouseMove(bool state)
 	if (static_cast<bool>(this->_flags & AView::MOUSE_MOVE_TARGET) != state)
 	{
 		if (state == true)
-		{
 			this->_flags |= AView::MOUSE_MOVE_TARGET;
-		}
 		else
-		{
 			this->_flags &= ~AView::MOUSE_MOVE_TARGET;
-		}
 		p = this->getParent();
 		if (p != nullptr)
 			p->spreadTargetMove(state);
@@ -423,13 +424,9 @@ void			AView::hookMouseCapture(bool state)
 	if (static_cast<bool>(this->_flags & AView::MOUSE_CAPTURE_TARGET) != state)
 	{
 		if (state == true)
-		{
 			this->_flags |= AView::MOUSE_CAPTURE_TARGET;
-		}
 		else
-		{
 			this->_flags &= ~AView::MOUSE_CAPTURE_TARGET;
-		}
 		p = this->getParent();
 		if (p != nullptr)
 			p->spreadTargetMouseCapture(state);
@@ -444,13 +441,9 @@ void			AView::hookKeyboard(bool state)
 	if (static_cast<bool>(this->_flags & AView::KEYBOARD_TARGET) != state)
 	{
 		if (state == true)
-		{
 			this->_flags |= AView::KEYBOARD_TARGET;
-		}
 		else
-		{
 			this->_flags &= ~AView::KEYBOARD_TARGET;
-		}
 		p = this->getParent();
 		if (p != nullptr)
 			p->spreadTargetKeyboard(state);

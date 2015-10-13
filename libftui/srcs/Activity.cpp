@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 07:45:13 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/13 09:07:30 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -22,9 +22,6 @@
 namespace ftui
 {
 
-/*
-** TODO: Allow to call AView::defineView after Activity constructor
-*/
 Activity::Activity(ft::Vec2<int> size) :
 	_rootView(NULL),
 	_eventMap(),
@@ -115,7 +112,7 @@ void			Activity::inflate(std::istream &stream)
 
 lua_State		*Activity::getLuaState(void) const
 {
-	return _l;
+	return (_l);
 }
 
 AView			*Activity::getRoot(void)

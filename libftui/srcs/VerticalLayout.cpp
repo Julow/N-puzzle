@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 08:46:03 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/13 08:58:05 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -143,7 +143,7 @@ void			VerticalLayout::addView(AView *view)
 	
 	if (view->getViewHolder() != NULL)
 		throw std::invalid_argument(ft::f("View (#%) already has a parent",
-		view->getViewHolder()->getParent()));
+			view->getViewHolder()->getParent()));
 	holder = new ViewHolder(this, view);
 	view->setViewHolder(holder);
 	_childs.push_back(holder);
@@ -158,11 +158,12 @@ AView			*VerticalLayout::popView(AView *view)
 	child_container_t::iterator	it;
 
 	holder = dynamic_cast<ViewHolder*>(view->getViewHolder());
-	if (holder == nullptr || (it = std::find(_childs.begin(), _childs.end(),
-		holder)) == _childs.end())
+	if (holder == nullptr
+		|| (it = std::find(_childs.begin(), _childs.end(), holder))
+			== _childs.end())
 		throw std::domain_error(ft::f("Invalid pop view"));
 	this->_childs.erase(it);
-	delete (holder);
+	delete holder;
 	view->setViewHolder(nullptr);
 	return (view);
 }

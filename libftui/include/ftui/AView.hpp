@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/11 17:57:16 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/13 09:09:28 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -55,8 +55,8 @@ public:
 		HIDDEN = (1 << 17),
 	};
 
-	virtual ~AView(void);
 	AView(XmlParser const &xml, Activity &a);
+	virtual ~AView(void);
 
 /*
 ** View core
