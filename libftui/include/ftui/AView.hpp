@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 17:29:05 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/14 08:23:50 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -29,8 +29,6 @@ namespace ftui
 ** Represents an UI component
 ** -
 ** This is the base class for any UI component
-** -
-** TODO: Call lua callbacks
 */
 class	AView
 {

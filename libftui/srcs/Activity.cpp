@@ -6,12 +6,11 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 17:47:33 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/14 09:20:24 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include <algorithm>
-#include <iostream> //d
 
 #include "ft/utils.hpp"
 #include "ftlua/ftlua.hpp"
@@ -70,7 +69,7 @@ void			Activity::init_lua_env(void)
 	{
 		err = luaL_dostring(_l, it.second.tableInit.c_str());
 		if (err != LUA_OK)
-			;//TODO throw
+			throw std::runtime_error(ft::f("Cannot init table (%)", it.first));
 		if (lua_getglobal(_l, it.first.c_str()) != LUA_TTABLE)
 		{
 			lua_createtable(_l, 0, 0);
@@ -161,8 +160,8 @@ bool			Activity::onKeyDown(int key_code)
 
 void			Activity::unregisterEvent(std::string const &event, AView *v)
 {
-	auto                    it = this->_eventMap.find(event);
-	auto const              ite = this->_eventMap.cend();
+	auto			it = this->_eventMap.find(event);
+	auto const		ite = this->_eventMap.cend();
 
 	while (it != ite)
 	{

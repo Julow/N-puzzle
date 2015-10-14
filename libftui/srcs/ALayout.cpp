@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 17:48:45 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/14 08:23:07 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,7 +15,6 @@
 #include "ftui/IViewHolder.hpp"
 
 #include <algorithm>
-#include <iostream> //TODO lol
 
 using std::string;
 

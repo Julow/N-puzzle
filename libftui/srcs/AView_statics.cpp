@@ -6,11 +6,9 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 14:57:38 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/14 09:13:16 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
-
-#include <iostream> //debug
 
 #include "ft/utils.hpp"
 #include "ftui/AView.hpp"
@@ -20,11 +18,11 @@
 #include "ftui/ASolidView.hpp"
 #include "ftui/TextView.hpp"
 
-#define INSG(T, N) std::make_tuple(#N, &T::N##G)
-#define INSG_AV(N) INSG(AView, N)
-
 namespace ftui
 {
+
+#define INSG(T, N) std::make_tuple(#N, &T::N##G)
+#define INSG_AV(N) INSG(AView, N)
 
 AView::views_info_t				AView::viewsInfo
 {
@@ -71,6 +69,29 @@ AView::views_info_t				AView::viewsInfo
 	{"SolidView", {"ASolidView", &SolidView::createView, {}, {}}},
 };
 
+#define LUA_CALLBACK_ID(NAME)	static_cast<uint32_t>(AView::LuaCallback::NAME)
+
+AView::callback_map_t	AView::callback_map
+{
+	{"onMouseScroll",		LUA_CALLBACK_ID(MOUSE_SCROLL)},
+	{"onUpdate",			LUA_CALLBACK_ID(UPDATE)},
+	{"onMeasure",			LUA_CALLBACK_ID(MEASURE)},
+	{"onDraw",				LUA_CALLBACK_ID(DRAW)},
+	{"onMouseScroll",		LUA_CALLBACK_ID(MOUSE_SCROLL)},
+	{"onMouseDown",			LUA_CALLBACK_ID(MOUSE_DOWN)},
+	{"onMouseUp",			LUA_CALLBACK_ID(MOUSE_UP)},
+	{"onMouseMove",			LUA_CALLBACK_ID(MOUSE_MOVE)},
+	{"onKeyDown",			LUA_CALLBACK_ID(KEY_DOWN)},
+	{"onKeyUp",				LUA_CALLBACK_ID(KEY_UP)},
+	{"onMouseEnter",		LUA_CALLBACK_ID(MOUSE_ENTER)},
+	{"onMouseLeave",		LUA_CALLBACK_ID(MOUSE_LEAVE)},
+	{"onEvent",				LUA_CALLBACK_ID(EVENT)},
+	{"onPositionChange",	LUA_CALLBACK_ID(POSITION_CHANGE)},
+	{"onCaptureChange",		LUA_CALLBACK_ID(CAPTURE_CHANGE)},
+	{"onSizeChange",		LUA_CALLBACK_ID(SIZE_CHANGE)},
+	{"onVisibilityChange",	LUA_CALLBACK_ID(VISIBILITY_CHANGE)},
+};
+
 AView::view_info_s::factory_t	AView::getFactory(std::string const &name)
 {
 	AView::view_info_s		f;
@@ -79,11 +100,6 @@ AView::view_info_s::factory_t	AView::getFactory(std::string const &name)
 	return (f.factory);
 }
 
-/*
-** TODO: improve this system
-** TODO: move a part of this in the Activity
-**        to allow user to define view after Activity init
-*/
 void				AView::defineView(
 	std::string const &name,
 	std::string const &parent,
@@ -95,6 +111,13 @@ void				AView::defineView(
 			AView::view_info_s{parent, factory, luaMethods, tableInit})).second)
 		throw std::domain_error(ft::f("View % already defined", name));
 	return ;
+}
+
+void			AView::registerLuaCallback(std::string const &name, uint32_t id)
+{
+	if (callback_map.insert(std::make_pair(name, id)).second)
+		throw std::domain_error(ft::f("lua callback registered twice (%)",
+			name));
 }
 
 };

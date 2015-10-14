@@ -6,11 +6,10 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 18:13:20 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/14 09:21:25 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#include <iostream>
 #include <exception>
 #include <cstdlib>
 
@@ -309,6 +308,28 @@ void				AView::onVisibilityChange(bool hidden)
 }
 
 /*
+** set callback
+*/
+void				AView::setLuaCallback(lua_State *l)
+{
+	char const *const	callback = luaL_checkstring(l, -2);
+	auto const			&it = AView::callback_map.find(std::string(callback));
+	uint32_t			callbackId;
+
+	if (it == AView::callback_map.end())
+		luaL_error(l, "Unknow lua callback: %s", callback);
+	callbackId = it->second;
+	lua_pushinteger(l, callbackId);		// <-	id, f, name, view_table
+	lua_pushvalue(l, -2);				// <-	f, id, f, name, view_table
+	lua_settable(l, -5);				// <-	f, name, view_table
+	if (lua_isfunction(l, -1))
+		_luaCallbacks |= 1 << callbackId;
+	else
+		_luaCallbacks &= ~(1 << callbackId);
+	lua_pop(l, 3);
+}
+
+/*
 ** ========================================================================== **
 ** Layout system
 */
@@ -447,7 +468,6 @@ void			AView::hookKeyboard(bool state)
 	return ;
 }
 
-
 /*
 ** ========================================================================== **
 ** Query
@@ -493,66 +513,6 @@ void			AView::queryRedraw(void)
 			p->queryRedraw();
 	}	
 	return ;
-}
-
-/*
-** ========================================================================== **
-** Lua callback
-*/
-
-/*
-** LuaCFunction: AView::setCallback(callback_name, function)
-*/
-void				AView::setLuaCallback(lua_State *l)
-{
-	char const *const	callback = luaL_checkstring(l, -2);
-	auto const			&it = AView::callback_map.find(std::string(callback));
-	uint32_t			callbackId;
-
-	if (it == AView::callback_map.end())
-		luaL_error(l, "Unknow lua callback: %s", callback);
-	callbackId = it->second;
-	lua_pushinteger(l, callbackId);		// <-	id, f, name, view_table
-	lua_pushvalue(l, -2);				// <-	f, id, f, name, view_table
-	lua_settable(l, -5);				// <-	f, name, view_table
-	if (lua_isfunction(l, -1))
-		_luaCallbacks |= 1 << callbackId;
-	else
-		_luaCallbacks &= ~(1 << callbackId);
-	lua_pop(l, 3);
-}
-
-/*
-** Register lua callback
-*/
-#define LUA_CALLBACK_ID(NAME)	static_cast<uint32_t>(AView::LuaCallback::NAME)
-
-AView::callback_map_t	AView::callback_map
-{
-	{"onMouseScroll",		LUA_CALLBACK_ID(MOUSE_SCROLL)},
-	{"onUpdate",			LUA_CALLBACK_ID(UPDATE)},
-	{"onMeasure",			LUA_CALLBACK_ID(MEASURE)},
-	{"onDraw",				LUA_CALLBACK_ID(DRAW)},
-	{"onMouseScroll",		LUA_CALLBACK_ID(MOUSE_SCROLL)},
-	{"onMouseDown",			LUA_CALLBACK_ID(MOUSE_DOWN)},
-	{"onMouseUp",			LUA_CALLBACK_ID(MOUSE_UP)},
-	{"onMouseMove",			LUA_CALLBACK_ID(MOUSE_MOVE)},
-	{"onKeyDown",			LUA_CALLBACK_ID(KEY_DOWN)},
-	{"onKeyUp",				LUA_CALLBACK_ID(KEY_UP)},
-	{"onMouseEnter",		LUA_CALLBACK_ID(MOUSE_ENTER)},
-	{"onMouseLeave",		LUA_CALLBACK_ID(MOUSE_LEAVE)},
-	{"onEvent",				LUA_CALLBACK_ID(EVENT)},
-	{"onPositionChange",	LUA_CALLBACK_ID(POSITION_CHANGE)},
-	{"onCaptureChange",		LUA_CALLBACK_ID(CAPTURE_CHANGE)},
-	{"onSizeChange",		LUA_CALLBACK_ID(SIZE_CHANGE)},
-	{"onVisibilityChange",	LUA_CALLBACK_ID(VISIBILITY_CHANGE)},
-};
-
-void			AView::registerLuaCallback(std::string const &name, uint32_t id)
-{
-	if (callback_map.insert(std::make_pair(name, id)).second)
-		throw std::domain_error(ft::f("lua callback registered twice (%)",
-			name));
 }
 
 };
