@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/14 08:23:07 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/14 13:33:21 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -145,6 +145,28 @@ void				ALayout::spreadTargetKeyboard(bool state)
 
 	return ;
 }
+
+void				ALayout::spreadQueryUpdate(void)
+{
+	_layoutFlags |= AView::UPDATE_QUERY;
+	if (getParent() != nullptr)
+		getParent()->spreadQueryUpdate();
+}
+
+void				ALayout::spreadQueryMeasure(void)
+{
+	_layoutFlags |= AView::MEASURE_QUERY;
+	if (getParent() != nullptr)
+		getParent()->spreadQueryMeasure();
+}
+
+void				ALayout::spreadQueryRedraw(void)
+{
+	_layoutFlags |= AView::REDRAW_QUERY;
+	if (getParent() != nullptr)
+		getParent()->spreadQueryRedraw();
+}
+
 
 /*
 ** * AView legacy *********************************************************** **
@@ -313,6 +335,24 @@ bool				ALayout::isKeyboardTargeted(void) const
 {
 	return ((this->_layoutFlags & AView::KEYBOARD_TARGET)
 			|| AView::isKeyboardTargeted());
+}
+
+bool				ALayout::isUpdateQueried(void) const
+{
+	return ((_layoutFlags & AView::UPDATE_QUERY)
+		|| AView::isUpdateQueried());
+}
+
+bool				ALayout::isMeasureQueried(void) const
+{
+	return ((_layoutFlags & AView::MEASURE_QUERY)
+		|| AView::isMeasureQueried());
+}
+
+bool				ALayout::isRedrawQueried(void) const
+{
+	return ((_layoutFlags & AView::REDRAW_QUERY)
+		|| AView::isRedrawQueried());
 }
 
 };

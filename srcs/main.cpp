@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 18:41:27 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/14 13:04:56 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -152,7 +152,8 @@ public:
 		// luaL_dostring(l, "print('backgroundColor:'..solid_test:getBackgroundColor())");
 
 		// luaL_dostring(l, "test:setCallback('onKeyDown', nil)");
-		// luaL_dostring(l, "test:setCallback('onKeyDown', function (...) for i,v in ipairs(arg) do print(tostring(v)) end end)");
+		luaL_dostring(l, "test:setCallback('onKeyUp', function (self, key) print('onKeyUp'..tostring(key)..' #'..self:getId()); self:queryRedraw() end)");
+		luaL_dostring(l, "test:setCallback('onKeyDown', function (self, key) print('onKeyDown'..tostring(key)..' #'..self:getId()) end)");
 /*
 ** - end
 */

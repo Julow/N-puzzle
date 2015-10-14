@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 13:42:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 16:05:49 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/14 13:40:56 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -67,7 +67,8 @@ static inline void			f_loop(std::ostream &out, char const *format)
 }
 
 template<typename HEAD, typename ... TAIL>
-void				f_loop(std::ostream &out, char const *format, HEAD&& arg, TAIL&& ...tail)
+void				f_loop(std::ostream &out, char const *format,
+						HEAD&& arg, TAIL&& ...tail)
 {
 	if (*format != '%')
 	{
@@ -115,8 +116,8 @@ std::ostream		&operator<<(std::ostream &o, Vec4<T> const &rhs)
 template <typename T>
 std::ostream		&operator<<(std::ostream &o, Rect<T> const &rhs)
 {
-	return (o << "{ " << rhs.left << ", " << rhs.top << " / "
-		<< rhs.right << ", " << rhs.bottom << " }");
+	return (o << "{ " << rhs.left << ", " << rhs.top
+		<< " w:" << rhs.getWidth() << " h:" << rhs.getHeight() << " }");
 }
 
 };

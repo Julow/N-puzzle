@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 08:58:05 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/14 13:52:00 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,6 +16,7 @@
 #include "ft/utils.hpp"
 
 #include <algorithm>
+#include <iostream> // TODO lol
 
 namespace ftui
 {
@@ -117,12 +118,12 @@ void			VerticalLayout::onDraw(Canvas &canvas)
 {
 	float const			old_alpha = canvas.getAlpha();
 	ft::Rect<int> const	old_clip = canvas.getClip();
+	ft::Rect<int>		to_redraw;
 
 	if (AView::isRedrawQueried())
-		ASolidView::onDraw(canvas);
-	for (ViewHolder *h : _childs)
 	{
-		if (h->getView()->isRedrawQueried())
+		ASolidView::onDraw(canvas);
+		for (ViewHolder *h : _childs)
 		{
 			canvas.applyAlpha(h->getView()->getAlpha());
 			canvas.applyClip(ft::make_rect(h->getPos(), h->getSize()));
@@ -131,6 +132,34 @@ void			VerticalLayout::onDraw(Canvas &canvas)
 			canvas.setAlpha(old_alpha);
 		}
 	}
+	else if (_layoutFlags & AView::REDRAW_QUERY)
+	{
+		for (ViewHolder *h : _childs)
+			if (h->getView()->isRedrawQueried())
+			{
+				if (to_redraw.getWidth() == 0 || to_redraw.getHeight() == 0)
+					to_redraw = ft::make_rect(h->getPos(), h->getSize());
+				else
+					to_redraw.merge(ft::make_rect(h->getPos(), h->getSize()));
+			}
+		// canvas.setClip(to_redraw);
+		// ASolidView::onDraw(canvas);
+		// canvas.setClip(old_clip);
+		for (ViewHolder *h : _childs)
+		{
+			ft::Rect<int>	tmp = ft::make_rect(h->getPos(), h->getSize());
+
+			if (to_redraw.collides(tmp))
+			{
+				canvas.applyAlpha(h->getView()->getAlpha());
+				canvas.applyClip(tmp);
+				h->getView()->onDraw(canvas);
+				canvas.setClip(old_clip);
+				canvas.setAlpha(old_alpha);
+			}
+		}
+	}
+	_layoutFlags &= ~AView::REDRAW_QUERY;
 }
 
 /*

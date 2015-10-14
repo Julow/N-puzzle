@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 17:40:51 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/14 13:13:12 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -114,7 +114,7 @@ public:
 	void				applyClip(ft::Rect<int> const &rect);
 	void				setClip(ft::Rect<int> const &rect);
 
-	void				clearClip(void);
+	// void				clearClip(void);
 
 /*
 ** Alpha

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/14 09:21:25 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/14 13:19:19 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -482,7 +482,7 @@ void			AView::queryUpdate(void)
 		this->_flags |= AView::UPDATE_QUERY;
 		p = this->getParent();
 		if (p != nullptr)
-			p->queryUpdate();
+			p->spreadQueryUpdate();
 	}	
 	return ;
 }
@@ -496,7 +496,7 @@ void			AView::queryMeasure(void)
 		this->_flags |= AView::MEASURE_QUERY;
 		p = this->getParent();
 		if (p != nullptr)
-			p->queryMeasure();
+			p->spreadQueryMeasure();
 	}	
 	return ;
 }
@@ -510,7 +510,7 @@ void			AView::queryRedraw(void)
 		this->_flags |= AView::REDRAW_QUERY;
 		p = this->getParent();
 		if (p != nullptr)
-			p->queryRedraw();
+			p->spreadQueryRedraw();
 	}	
 	return ;
 }

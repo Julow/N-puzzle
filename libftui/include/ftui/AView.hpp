@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/14 08:23:50 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/14 13:23:46 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -171,9 +171,9 @@ public:
 	/*
 	** Queries
 	*/
-	bool						isUpdateQueried(void) const;
-	bool						isMeasureQueried(void) const;
-	bool						isRedrawQueried(void) const;
+	virtual bool				isUpdateQueried(void) const;
+	virtual bool				isMeasureQueried(void) const;
+	virtual bool				isRedrawQueried(void) const;
 
 /*
 ** Register target

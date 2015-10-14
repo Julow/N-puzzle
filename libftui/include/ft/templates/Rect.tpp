@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/05 14:06:16 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 15:57:05 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/14 13:48:54 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -173,6 +173,7 @@ Rect<T>		&Rect<T>::operator+=(Vec2<T> offset)
 	top += offset.y;
 	right += offset.x;
 	bottom += offset.y;
+	return (*this);
 }
 
 template<typename T>
@@ -189,6 +190,7 @@ Rect<T>		&Rect<T>::operator-=(Vec2<T> offset)
 	top -= offset.y;
 	right -= offset.x;
 	bottom -= offset.y;
+	return (*this);
 }
 
 template<typename T>
