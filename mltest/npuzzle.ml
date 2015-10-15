@@ -187,114 +187,124 @@ module Grid = struct
 		a = b
 end
 
+(* Heuristics *)
+module type HEURISTIC =
+sig
+	val calc      : Grid.t -> int
+end
 
-module type GRIDEVALUATOR =
-	sig
-		val calc      : Grid.t -> int
-	end
-
-module MakeHeuristic (Ev : GRIDEVALUATOR) =
-	struct
-		let calc = Ev.calc
-	end
-
-module ManhattanEval : GRIDEVALUATOR =
-	struct
-		let calc g =
-			let s = Array.length g in
-			let rec foreach_line y acc =
-				let rec foreach_cell x acc =
-					if x == s
-					then acc
-					else (
-						let v = g.(y).(x) in
-						let dstx = v mod s in
-						let dsty = v / s in
-						let dx = abs(x - dstx) in
-						let dy = abs(y - dsty) in
-						foreach_cell (x + 1) (acc + dx + dy)
-					)
-				in
-				if y == s
+module ManhattanHeuristic : HEURISTIC =
+struct
+	let calc g =
+		let s = Array.length g in
+		let rec foreach_line y acc =
+			let rec foreach_cell x acc =
+				if x == s
 				then acc
-				else foreach_line (y + 1) (foreach_cell 0 acc)
+				else (
+					let v = g.(y).(x) in
+					let dstx = v mod s in
+					let dsty = v / s in
+					let dx = abs(x - dstx) in
+					let dy = abs(y - dsty) in
+					foreach_cell (x + 1) (acc + dx + dy)
+				)
 			in
-			foreach_line 0 0
-	end
-	
-module ManhattanH = MakeHeuristic(ManhattanEval)
+			if y == s
+			then acc
+			else foreach_line (y + 1) (foreach_cell 0 acc)
+		in
+		foreach_line 0 0
+end
 
 (* State representation as grid, g so far, h current *)
-type state = {
-	grid : Grid.t;
-	g : int;
-	h : int;
-}
+module type STATE =
+sig
+	type t = {
+		grid : Grid.t;
+		g : int;
+		h : int;
+	}
+	val create	: Grid.t -> int -> int -> t
+	val grid	: t -> Grid.t
+	val h		: t -> int
+	val g		: t -> int
+	val compare	: t -> t -> int
+	
+end
 
-(* module StateOrderedType : (ORDEREDTYPE with type t = state) = *)
-module StateOrderedType =
-	struct
-		type t = state
-		let compare = fun a b -> a.g - b.g
-	end
+(* module State : (STATE with type STATE.t := t) = *)
+module State : STATE =
+struct
+	type t = {
+		grid : Grid.t;
+		g : int;
+		h : int;
+	}
+	let create grid g h =
+		{grid = grid; g = g; h = h}
+	let grid t =
+		t.grid
+	let h t =
+		t.h
+	let g t =
+		t.g
+	let compare (a:t) (b:t) =
+		a.g - b.g
+end
+
 
 (* BatHeap of states *)
 (* module StateBatHeap : (BATHEAP with type elem := StateOrderedType.t) = MakeBatHeap(StateOrderedType) *)
-module StateBatHeap = MakeBatHeap(StateOrderedType)
+module StateBatHeap = MakeBatHeap(State)
 
-(* Solve infos *)
-type info = {
-	width : int;
-	total : int;
-	goal : Grid.t;
-	closed : (Grid.t, unit) Hashtbl.t;
-	opened : StateBatHeap.t;
-}
 
-let is_solved (s:state) (i:info) =
-	i.goal = s.grid
+module MakeAStar (He : HEURISTIC) =
+	struct
+		type closedContainer = (Grid.t, unit) Hashtbl.t
+		type openedContainer = StateBatHeap.t
+		type data = {
+			width : int;
+			total : int;
+			goal : Grid.t;
+			closed : closedContainer;
+			opened : openedContainer;
+		}
 
-let build_goal w =
-	let mat = (Array.make_matrix w w 0) in
-	let rec line y acc =
-		let rec col x acc = 
-		if x < w then
-			(mat.(y).(x) <- acc;
-			 col (x + 1) (acc + 1))
-		else acc
-		in
-		if y < w then
-			line (y + 1) (col 0 acc);
-	in
-	line 0 0;
-	mat
+		let build_goal w =
+			let mat = (Array.make_matrix w w 0) in
+			let rec line y acc =
+				let rec col x acc = 
+				if x < w then
+					(mat.(y).(x) <- acc;
+					 col (x + 1) (acc + 1))
+				else acc
+				in
+				if y < w then
+					line (y + 1) (col 0 acc);
+			in
+			line 0 0;
+			mat
+	
+		let create_info (w:int) (i_gr:Grid.t) =
+			let total = w * w in
+			let goal = build_goal w in
+			let closed = Hashtbl.create 10000 in
+			let i_st = State.create i_gr 0 (He.calc i_gr) in
+			let opened = StateBatHeap.insert StateBatHeap.empty i_st in
+			{width = w ; total = total ; goal = goal ; closed = closed; opened = opened}
+		
+		let goal d = d.goal
+		
+		(* let solve (i: info *)
+		
+		let is_solved (s:State.t) (d:data) =
+			d.goal = (State.grid s)
+		
+	end
 
-(* w : width, is : Initial State *)
-let make_info (w:int) (is:state) =
-	let total = w * w in
-	let goal = build_goal w in
-	let closed = Hashtbl.create 10000 in
-	let opened = StateBatHeap.insert StateBatHeap.empty is in
-	{width = w ; total = total ; goal = goal ; closed = closed; opened = opened}
-(* 
-let printGrid g =
-	let s = Array.length g in
-	let rec helper y =
-	if y >= s
-	then ()
-	else (
-		let rec helper2 x =
-		if x < s
-		then (Printf.printf "%2d " g.(y).(x);
-				helper2 (x + 1))
-		in
-		helper2 0;
-		Printf.printf "\n%!";
-		helper (y + 1)
-	)
-	in
-	helper 0
- *)
+module ManhattanAStar = MakeAStar(ManhattanHeuristic)
+
 
 let scanGrid chan g s =
 	let rec line y =
@@ -310,18 +320,6 @@ let scanGrid chan g s =
 	in
 	line 0
 
-(* let ins bh v =
-	let bh = insert bh v in
-	print bh;
-	Printf.printf "\n";
-	bh
-
-let del bh v =
-	let bh = del_min bh in
-	print bh;
-	Printf.printf "\n";
-	bh *)
-
 let () =
 	(* let chan = open_in Sys.argv.(1) in *)
 	(* let chan = open_in "lol3solved.np" in *)
@@ -335,31 +333,18 @@ let () =
 	scanGrid chan grid size;
 	close_in chan;
 	
-	let init = {grid = grid; g = 0; h = 42} in
-	let i = make_info size init in
+	(* let init = {grid = grid; g = 0; h = 42} in *)
+	let init = State.create grid 0 42 in
+	(* let i = make_info size init in *)
+	let i = ManhattanAStar.create_info size grid in
 	
-	Printf.printf "%b\n" (is_solved init i);
+	Printf.printf "%b\n" (ManhattanAStar.is_solved init i);
 	
 	(* Printf.printf "salut: %b\n" (min init init); *)
 	
-	Grid.print i.goal;
-	Printf.printf "%d\n" (ManhattanH.calc i.goal);
-	Grid.print init.grid;
-	Printf.printf "%d\n" (ManhattanH.calc init.grid);
-	
-(*	 
-	let bh = ref (ins empty 42) in
-	for i = 41 downto 25 do
-	bh := ins !bh i
-	done;
-	for i = 41 downto 25 do
-	bh := del !bh i
-	done; *)
-	
-	(* 
-	let bh = ins bh 40 in
-	let bh = ins bh 39 in
-	let bh = ins bh 38 in
-	let bh = ins bh 37 in
-	let bh = ins bh 36 in *)
+	Grid.print (ManhattanAStar.goal i);
+	Printf.printf "%d\n" (ManhattanHeuristic.calc (ManhattanAStar.goal i));
+	Grid.print (State.grid init);
+	(* Grid.print init.grid; *)
+	Printf.printf "%d\n" (ManhattanHeuristic.calc (State.grid init));
 	()
