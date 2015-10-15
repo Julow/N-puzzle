@@ -30,8 +30,15 @@ module type BATHEAP = sig
   val to_list   : t -> elem list
   val elems     : t -> elem list
 end
-
-module MakeBatHeap (Ord : ORDEREDTYPE) = struct
+(* 
+module type MAKEBATHEAP =
+  functor (Ord: ORDEREDTYPE) ->
+  BATHEAP with type elem := Ord.t
+  *)
+module MakeBatHeap (Ord : ORDEREDTYPE) =
+(* module MakeBatHeap : MAKEBATHEAP =
+functor (Ord: ORDEREDTYPE) -> *)
+struct
   type elem = Ord.t
 
   let ord_min x y =
@@ -233,8 +240,8 @@ sig
 	
 end
 
-(* module State : (STATE with type STATE.t := t) = *)
 module State : STATE =
+(* module State : (STATE with type t = t) = *)
 struct
 	type t = {
 		grid : Grid.t;
@@ -255,7 +262,7 @@ end
 
 
 (* BatHeap of states *)
-(* module StateBatHeap : (BATHEAP with type elem := StateOrderedType.t) = MakeBatHeap(StateOrderedType) *)
+(* module StateBatHeap : (BATHEAP with type elem := State.t) = MakeBatHeap(State) *)
 module StateBatHeap = MakeBatHeap(State)
 
 
@@ -264,13 +271,18 @@ module MakeAStar (He : HEURISTIC) =
 		type closedContainer = (Grid.t, unit) Hashtbl.t
 		type openedContainer = StateBatHeap.t
 		type data = {
-			width : int;
-			total : int;
-			goal : Grid.t;
-			closed : closedContainer;
-			opened : openedContainer;
+			width 			: int;
+			total 			: int;
+			goal 			: Grid.t;
+			mutable closed	: closedContainer;
+			mutable opened	: openedContainer;
 		}
+		type state = Solved | Unsolved
 
+		(* let is_solved (s:State.t) (d:data) = *)
+		let is_solved s (d:data) =
+			d.goal = (State.grid s)
+		
 		let build_goal w =
 			let mat = (Array.make_matrix w w 0) in
 			let rec line y acc =
@@ -296,10 +308,27 @@ module MakeAStar (He : HEURISTIC) =
 		
 		let goal d = d.goal
 		
-		(* let solve (i: info *)
+
 		
-		let is_solved (s:State.t) (d:data) =
-			d.goal = (State.grid s)
+		let solve (i: data) =
+		
+			let expand s d =
+				()
+			in
+			let rec aux () =
+				Printf.printf "aux loop\n";
+				let cur = StateBatHeap.find_min i.opened in
+				i.opened <- StateBatHeap.del_min i.opened;
+				if is_solved cur i
+				then ()
+				else (expand cur i;
+					  aux ()
+				)
+			in
+			aux ();
+			()
+			
+		
 		
 	end
 
@@ -347,4 +376,5 @@ let () =
 	Grid.print (State.grid init);
 	(* Grid.print init.grid; *)
 	Printf.printf "%d\n" (ManhattanHeuristic.calc (State.grid init));
+	ManhattanAStar.solve i;
 	()
