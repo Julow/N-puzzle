@@ -10,13 +10,28 @@
 (*																																						*)
 (* ************************************************************************** *)
 
-module type OrderedType =
+module type ORDEREDTYPE =
 sig
   type t
   val compare : t -> t -> int
 end
 
-module Make (Ord : OrderedType) = struct
+module type BATHEAP = sig
+  type elem
+  type t
+  val empty     : t
+  val size      : t -> int
+  val insert    : t -> elem -> t
+  val add       : elem -> t -> t
+  val merge     : t -> t -> t
+  val find_min  : t -> elem
+  val del_min   : t -> t
+  val of_list   : elem list -> t
+  val to_list   : t -> elem list
+  val elems     : t -> elem list
+end
+
+module MakeBatHeap (Ord : ORDEREDTYPE) = struct
   type elem = Ord.t
 
   let ord_min x y =
@@ -133,142 +148,6 @@ module Make (Ord : OrderedType) = struct
 
 end
 
-
-
-
-(* TEST 2 *)
-(* 
-let min x y = if Pervasives.compare x y <= 0 then x else y
-
-(** binomial trees *)
-type 'a bt = {
-	rank : int ;
-	root : 'a ;
-	kids : 'a bt list ;
-}
-
-type 'a t = {
-	size : int ;
-	data : 'a bt list ;
-	mind : 'a option ; (** cached minimal element *)
-}
-
-let empty = { size = 0 ; data = [] ; mind = None }
-
-let size bh = bh.size
-
-let link bt1 bt2 =
-	assert (bt1.rank = bt2.rank) ;
-	let rank = bt1.rank + 1 in
-	let leq = Pervasives.compare bt1.root bt2.root <= 0 in
-	let root = if leq then bt1.root else bt2.root in
-	let kids = if leq then bt2 :: bt1.kids else bt1 :: bt2.kids in
-	{ rank = rank ; root = root ; kids = kids }
-
-let rec add_tree t = function
-	| [] -> [t]
-	| (ut :: uts) as ts ->
-		assert (t.rank <= ut.rank) ;
-		if t.rank < ut.rank then t :: ts
-		else add_tree (link t ut) uts
-
-let insert bh x =
-	let size = bh.size + 1 in
-	let data = add_tree { rank = 0 ; root = x ; kids = [] } bh.data in
-	let mind = match bh.mind with
-		| None -> Some x
-		| Some mind -> Some (min x mind)
-	in {
-		size = size ; data = data ; mind = mind
-	}
-
-(*$T size ; empty
-	size (insert empty 3) = 1
-	size empty = 0
-*)
-
-let add x bh = insert bh x
-
-(*$T
-	find_min (add 3 (add 2 (add 1 empty))) = 1
-*)
-
-let rec merge_data ts1 ts2 = match ts1, ts2 with
-	| _, [] -> ts1
-	| [], _ -> ts2
-	| t1 :: tss1, t2 :: tss2 ->
-		if t1.rank < t2.rank then
-			t1 :: merge_data tss1 ts2
-		else if t1.rank > t2.rank then
-			t2 :: merge_data ts1 tss2
-		else
-			add_tree (link t1 t2) (merge_data tss1 tss2)
-
-let merge bh1 bh2 =
-	let size = bh1.size + bh2.size in
-	let data = merge_data bh1.data bh2.data in
-	let mind = match bh1.mind, bh2.mind with
-		| Some m1, Some m2 -> Some (min m1 m2)
-		| m, None | None, m -> m
-	in
-	{ size = size ; data = data ; mind = mind }
-
-(*$T
-	merge (of_list [3;2]) (of_list [4;1]) |> to_list = [1;2;3;4]
-*)
-
-let find_min bh = match bh.mind with
-	| None -> invalid_arg "find_min"
-	| Some d -> d
-
-(*$T find_min ; insert ; empty
-	 find_min (insert (insert empty 3) 5) = 3
-	 find_min (insert (insert empty 5) 3) = 3
-*)
-
-
-let rec find_min_tree ts k = match ts with
-	| [] -> failwith "find_min_tree"
-	| [t] -> k t
-	| t :: ts ->
-		find_min_tree ts begin
-			fun u ->
-				if Pervasives.compare t.root u.root <= 0
-				then k t else k u
-		end
-
-let rec del_min_tree bts k = match bts with
-	| [] -> invalid_arg "del_min"
-	| [t] -> k t []
-	| t :: ts ->
-		del_min_tree ts begin
-			fun u uts ->
-				if Pervasives.compare t.root u.root <= 0
-				then k t ts
-				else k u (t :: uts)
-		end
-
-let del_min bh =
-	del_min_tree bh.data begin
-		fun bt data ->
-			let size = bh.size - 1 in
-			let data = merge_data (List.rev bt.kids) data in
-			let mind = if size = 0 then None else Some (find_min_tree data (fun t -> t)).root in
-			{ size = size ; data = data ; mind = mind }
-	end
-
-let of_list l = List.fold_left insert empty l
-
-let to_list bh =
-	let rec aux acc bh =
-		if size bh = 0 then acc else
-			let m = find_min bh in
-			let bh = del_min bh in
-			aux (m :: acc) bh
-	in
-	List.rev (aux [] bh)
- *)
-
 (* let print bh =	
 	let print_one bt lvl =
 		Printf.printf "%s %u(%d)\n" (String.make(lvl * 4) '*') bt.rank bt.root
@@ -284,28 +163,91 @@ let to_list bh =
 	Printf.printf "Size: %u\n" bh.size;
 	foreach_t bh.data 0
  *)
+
+(* Grid representation as 2d array *)
+module Grid = struct
+	type t = (int array) array
+
+	let print g =
+		let s = Array.length g in
+		let rec line y =
+			let rec cell x =
+				if x < s
+				then (Printf.printf "%2d " g.(y).(x);
+					  cell (x + 1))
+			in
+			if y < s
+			then (cell 0;
+				  Printf.printf "\n%!";
+				  line (y + 1))
+		in
+		line 0
 	
-type grid = (int array) array
+	let equal a b =
+		a = b
+end
 
-(* type closed = (int, int) Hashtbl.t *)
 
+module type GRIDEVALUATOR =
+	sig
+		val calc      : Grid.t -> int
+	end
+
+module MakeHeuristic (Ev : GRIDEVALUATOR) =
+	struct
+		let calc = Ev.calc
+	end
+
+module ManhattanEval : GRIDEVALUATOR =
+	struct
+		let calc g =
+			let s = Array.length g in
+			let rec foreach_line y acc =
+				let rec foreach_cell x acc =
+					if x == s
+					then acc
+					else (
+						let v = g.(y).(x) in
+						let dstx = v mod s in
+						let dsty = v / s in
+						let dx = abs(x - dstx) in
+						let dy = abs(y - dsty) in
+						foreach_cell (x + 1) (acc + dx + dy)
+					)
+				in
+				if y == s
+				then acc
+				else foreach_line (y + 1) (foreach_cell 0 acc)
+			in
+			foreach_line 0 0
+	end
+	
+module ManhattanH = MakeHeuristic(ManhattanEval)
+
+(* State representation as grid, g so far, h current *)
 type state = {
-	grid : grid;
+	grid : Grid.t;
 	g : int;
 	h : int;
 }
 
-module StateBatHeap =
-	Make(struct
+(* module StateOrderedType : (ORDEREDTYPE with type t = state) = *)
+module StateOrderedType =
+	struct
 		type t = state
 		let compare = fun a b -> a.g - b.g
-	end)
+	end
 
+(* BatHeap of states *)
+(* module StateBatHeap : (BATHEAP with type elem := StateOrderedType.t) = MakeBatHeap(StateOrderedType) *)
+module StateBatHeap = MakeBatHeap(StateOrderedType)
+
+(* Solve infos *)
 type info = {
 	width : int;
 	total : int;
-	goal : grid;
-	closed : (grid, unit) Hashtbl.t;
+	goal : Grid.t;
+	closed : (Grid.t, unit) Hashtbl.t;
 	opened : StateBatHeap.t;
 }
 
@@ -326,15 +268,15 @@ let build_goal w =
 	in
 	line 0 0;
 	mat
-	
 
-let make_info w =
+(* w : width, is : Initial State *)
+let make_info (w:int) (is:state) =
 	let total = w * w in
 	let goal = build_goal w in
 	let closed = Hashtbl.create 10000 in
-	let opened = StateBatHeap.empty in
+	let opened = StateBatHeap.insert StateBatHeap.empty is in
 	{width = w ; total = total ; goal = goal ; closed = closed; opened = opened}
-
+(* 
 let printGrid g =
 	let s = Array.length g in
 	let rec helper y =
@@ -352,7 +294,7 @@ let printGrid g =
 	)
 	in
 	helper 0
-
+ *)
 
 let scanGrid chan g s =
 	let rec line y =
@@ -393,15 +335,18 @@ let () =
 	scanGrid chan grid size;
 	close_in chan;
 	
-	let i = make_info size in
 	let init = {grid = grid; g = 0; h = 42} in
+	let i = make_info size init in
 	
 	Printf.printf "%b\n" (is_solved init i);
 	
 	(* Printf.printf "salut: %b\n" (min init init); *)
 	
-	printGrid i.goal;
-	printGrid init.grid;
+	Grid.print i.goal;
+	Printf.printf "%d\n" (ManhattanH.calc i.goal);
+	Grid.print init.grid;
+	Printf.printf "%d\n" (ManhattanH.calc init.grid);
+	
 (*	 
 	let bh = ref (ins empty 42) in
 	for i = 41 downto 25 do
