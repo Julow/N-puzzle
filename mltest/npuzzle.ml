@@ -192,6 +192,25 @@ module Grid = struct
 	
 	let equal a b =
 		a = b
+	
+	let zero g s =
+		let rec line y =
+			assert (y < s);
+			let rec cell x =
+				match g.(y).(x) with
+				| 0				-> (x, y)
+				| _ when x < s	-> cell (x + 1)
+				| _				-> line (y + 1)
+			in
+			cell 0
+		in
+		line 0
+	
+	let swap g (xa, ya) (xb, yb) =
+		let v = g.(ya).(xa) in
+		g.(ya).(xa) <- g.(yb).(xb);
+		g.(yb).(xb) <- v
+		
 end
 
 (* Heuristics *)
@@ -312,7 +331,44 @@ module MakeAStar (He : HEURISTIC) =
 		
 		let solve (i: data) =
 		
-			let expand s d =
+			let expand s =
+				Printf.printf "Expanding: \n";
+				let px, py = Grid.zero (State.grid s) i.width in
+				let move dx dy =
+					let grid = Array.copy (State.grid s) in
+					Grid.swap grid (px, py) (dx, dy);
+					Grid.print grid;
+					Printf.printf "\n";
+					let h = He.calc grid in
+					State.create grid (State.g s + h) h
+				in
+				let move_valid x y =
+					Printf.printf "valid ? %d %d\n" x y;
+					if x < 0 || y < 0 || x >= i.width || y >= i.width
+					then false
+					else true
+				in
+				let dirs = [(1, 0); (0, 1); (-1, 0); (0, -1)] in
+				let rec foreach_dirs dirs new_states =
+					match dirs with
+					| (dx, dy)::tl when move_valid (dx + px) (dy + py)	->
+						foreach_dirs tl ((move dx dy)::new_states)
+					| _::tl												->
+						foreach_dirs tl new_states
+					| _													-> new_states
+				in
+				let valid_moves = foreach_dirs dirs [] in
+				
+				let rec foreach_valid_moves = function
+					| ({State.grid = g} as mv)::tl	->
+						(* Grid.print g; *)
+						i.opened <- StateBatHeap.insert i.opened mv;
+						Printf.printf "Size: %d\n" (StateBatHeap.size i.opened);
+						foreach_valid_moves tl
+					| _								-> ()
+				in
+				foreach_valid_moves valid_moves;
+				Printf.printf "Size: %d\n" (StateBatHeap.size i.opened);
 				()
 			in
 			let rec aux () =
@@ -320,8 +376,8 @@ module MakeAStar (He : HEURISTIC) =
 				let cur = StateBatHeap.find_min i.opened in
 				i.opened <- StateBatHeap.del_min i.opened;
 				if is_solved cur i
-				then ()
-				else (expand cur i;
+				then () (* TRY  *)
+				else (expand cur;
 					  aux ()
 				)
 			in
@@ -371,8 +427,8 @@ let () =
 	
 	(* Printf.printf "salut: %b\n" (min init init); *)
 	
-	Grid.print (ManhattanAStar.goal i);
-	Printf.printf "%d\n" (ManhattanHeuristic.calc (ManhattanAStar.goal i));
+	(* Grid.print (ManhattanAStar.goal i); *)
+	(* Printf.printf "%d\n" (ManhattanHeuristic.calc (ManhattanAStar.goal i)); *)
 	Grid.print (State.grid init);
 	(* Grid.print init.grid; *)
 	Printf.printf "%d\n" (ManhattanHeuristic.calc (State.grid init));
