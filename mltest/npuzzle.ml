@@ -10,7 +10,134 @@
 (*																																						*)
 (* ************************************************************************** *)
 
+module type OrderedType =
+sig
+  type t
+  val compare : t -> t -> int
+end
 
+module Make (Ord : OrderedType) = struct
+  type elem = Ord.t
+
+  let ord_min x y =
+    if Ord.compare x y <= 0 then x else y
+
+  type bt = {
+    rank : int ;
+    root : Ord.t ;
+    kids : bt list ;
+  }
+
+  type t = {
+    size : int ;
+    data : bt list ;
+    mind : Ord.t option ;
+  }
+
+  let empty = { size = 0 ; data = [] ; mind = None }
+
+  let size bh = bh.size
+
+  let link bt1 bt2 =
+    assert (bt1.rank = bt2.rank) ;
+    let rank = bt1.rank + 1 in
+    let leq = Ord.compare bt1.root bt2.root <= 0 in
+    let root = if leq then bt1.root else bt2.root in
+    let kids = if leq then bt2 :: bt1.kids else bt1 :: bt2.kids in
+    { rank = rank ; root = root ; kids = kids }
+
+  let rec add_tree t = function
+    | [] -> [t]
+    | (ut :: uts) as ts ->
+      assert (t.rank <= ut.rank) ;
+      if t.rank < ut.rank then t :: ts
+      else add_tree (link t ut) uts
+
+  let insert bh x =
+    let data = add_tree { rank = 0 ; root = x ; kids = [] } bh.data in
+    let mind = match bh.mind with
+      | None -> Some x
+      | Some mind -> Some (ord_min x mind)
+    in {
+      size = bh.size + 1 ; data = data ; mind = mind
+    }
+
+  let add x bh = insert bh x
+
+  let rec merge_data ts1 ts2 = match ts1, ts2 with
+    | _, [] -> ts1
+    | [], _ -> ts2
+    | t1 :: tss1, t2 :: tss2 ->
+      if t1.rank < t2.rank then
+        t1 :: merge_data tss1 ts2
+      else if t1.rank > t2.rank then
+        t2 :: merge_data ts1 tss2
+      else
+        add_tree (link t1 t2) (merge_data tss1 tss2)
+
+  let merge bh1 bh2 =
+    let size = bh1.size + bh2.size in
+    let data = merge_data bh1.data bh2.data in
+    let mind = match bh1.mind, bh2.mind with
+      | Some m1, Some m2 -> Some (ord_min m1 m2)
+      | m, None | None, m -> m
+    in
+    { size = size ; data = data ; mind = mind }
+
+  let find_min bh = match bh.mind with
+    | None -> invalid_arg "find_min"
+    | Some d -> d
+
+  let rec find_min_tree ts k = match ts with
+    | [] -> failwith "find_min_tree"
+    | [t] -> k t
+    | t :: ts ->
+      find_min_tree ts begin
+        fun u ->
+          if Ord.compare t.root u.root <= 0
+          then k t else k u
+      end
+
+  let rec del_min_tree bts k = match bts with
+    | [] -> invalid_arg "del_min"
+    | [t] -> k t []
+    | t :: ts ->
+      del_min_tree ts begin
+        fun u uts ->
+          if Ord.compare t.root u.root <= 0
+          then k t ts
+          else k u (t :: uts)
+      end
+
+  let del_min bh =
+    del_min_tree bh.data begin
+      fun bt data ->
+        let size = bh.size - 1 in
+        let data = merge_data (List.rev bt.kids) data in
+        let mind = if size = 0 then None else Some (find_min_tree data (fun t -> t)).root in
+        { size = size ; data = data ; mind = mind }
+    end
+
+  let to_list bh =
+    let rec aux acc bh =
+      if size bh = 0 then acc else
+        let m = find_min bh in
+        let bh = del_min bh in
+        aux (m :: acc) bh
+    in
+    List.rev (aux [] bh)
+
+  let elems = to_list
+
+  let of_list l = List.fold_left insert empty l
+
+end
+
+
+
+
+(* TEST 2 *)
+(* 
 let min x y = if Pervasives.compare x y <= 0 then x else y
 
 (** binomial trees *)
@@ -140,8 +267,9 @@ let to_list bh =
 			aux (m :: acc) bh
 	in
 	List.rev (aux [] bh)
+ *)
 
-let print bh =	
+(* let print bh =	
 	let print_one bt lvl =
 		Printf.printf "%s %u(%d)\n" (String.make(lvl * 4) '*') bt.rank bt.root
 	in
@@ -155,18 +283,34 @@ let print bh =
 	in
 	Printf.printf "Size: %u\n" bh.size;
 	foreach_t bh.data 0
-
+ *)
 	
 type grid = (int array) array
 
 (* type closed = (int, int) Hashtbl.t *)
+
+type state = {
+	grid : grid;
+	g : int;
+	h : int;
+}
+
+module StateBatHeap =
+	Make(struct
+		type t = state
+		let compare = fun a b -> a.g - b.g
+	end)
 
 type info = {
 	width : int;
 	total : int;
 	goal : grid;
 	closed : (grid, unit) Hashtbl.t;
+	opened : StateBatHeap.t;
 }
+
+let is_solved (s:state) (i:info) =
+	i.goal = s.grid
 
 let build_goal w =
 	let mat = (Array.make_matrix w w 0) in
@@ -185,10 +329,11 @@ let build_goal w =
 	
 
 let make_info w =
-	(* let total = w * w in *)
+	let total = w * w in
 	let goal = build_goal w in
 	let closed = Hashtbl.create 10000 in
-	{width = w ; total = w * w ; goal = goal ; closed = closed}
+	let opened = StateBatHeap.empty in
+	{width = w ; total = total ; goal = goal ; closed = closed; opened = opened}
 
 let printGrid g =
 	let s = Array.length g in
@@ -223,7 +368,7 @@ let scanGrid chan g s =
 	in
 	line 0
 
-let ins bh v =
+(* let ins bh v =
 	let bh = insert bh v in
 	print bh;
 	Printf.printf "\n";
@@ -233,19 +378,30 @@ let del bh v =
 	let bh = del_min bh in
 	print bh;
 	Printf.printf "\n";
-	bh
+	bh *)
 
 let () =
 	(* let chan = open_in Sys.argv.(1) in *)
-	let chan = open_in "lol.np" in
+	(* let chan = open_in "lol3solved.np" in *)
+	let chan = open_in "lol3.np" in
+	(* let chan = open_in "lol3solved.np" in *)
 	(* Printf.printf "%s\n%!" Sys.argv.(1); *)
 	Printf.printf "%s\n%!" (input_line chan);
 	let size = (Scanf.fscanf chan "%d\n" (fun x _ -> x))() in
 	Printf.printf "%d\n" size;
 	let grid = Array.make_matrix size size 42 in
 	scanGrid chan grid size;
-	printGrid grid;
 	close_in chan;
+	
+	let i = make_info size in
+	let init = {grid = grid; g = 0; h = 42} in
+	
+	Printf.printf "%b\n" (is_solved init i);
+	
+	(* Printf.printf "salut: %b\n" (min init init); *)
+	
+	printGrid i.goal;
+	printGrid init.grid;
 (*	 
 	let bh = ref (ins empty 42) in
 	for i = 41 downto 25 do
