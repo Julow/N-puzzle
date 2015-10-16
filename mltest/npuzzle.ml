@@ -1,13 +1,13 @@
 (* ************************************************************************** *)
-(*																																						*)
-(*																												:::			::::::::	 *)
-(*	 npuzzle.ml																				 :+:			:+:		:+:	 *)
-(*																										+:+ +:+				 +:+		 *)
-(*	 By: ngoguey <ngoguey@student.42.fr>						+#+	+:+			 +#+				*)
-(*																								+#+#+#+#+#+	 +#+					 *)
-(*	 Created: 2015/10/14 13:06:34 by ngoguey					 #+#		#+#						 *)
-(*   Updated: 2015/10/16 09:27:54 by ngoguey          ###   ########.fr       *)
-(*																																						*)
+(*                                                                            *)
+(*                                                        :::      ::::::::   *)
+(*   npuzzle.ml                                         :+:      :+:    :+:   *)
+(*                                                    +:+ +:+         +:+     *)
+(*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
+(*                                                +#+#+#+#+#+   +#+           *)
+(*   Created: 2015/10/16 09:40:19 by ngoguey           #+#    #+#             *)
+(*   Updated: 2015/10/16 11:56:10 by ngoguey          ###   ########.fr       *)
+(*                                                                            *)
 (* ************************************************************************** *)
 
 module type ORDEREDTYPE =
@@ -155,6 +155,7 @@ functor (Ord: ORDEREDTYPE) -> *)
 
   end
 
+	
 (* let print bh =	
 	let print_one bt lvl =
 		Printf.eprintf "%s %u(%d)\n" (String.make(lvl * 4) '*') bt.rank bt.root
@@ -174,6 +175,9 @@ functor (Ord: ORDEREDTYPE) -> *)
 (* Grid representation as 2d array *)
 module Grid = struct
 	type t = (int array) array
+
+	let transp_table_ptr_tosnail = ref [|0|]
+	let transp_table_ptr_toabs = ref [|0|]
 
 	let print g =
 	  let s = Array.length g in
@@ -208,15 +212,23 @@ module Grid = struct
 		cell 0
 	  in
 	  line 0
-		   
+
 	let swap g (xa, ya) (xb, yb) =
 	  let v = g.(ya).(xa) in
 	  g.(ya).(xa) <- g.(yb).(xb);
 	  g.(yb).(xb) <- v
 
-	let build_transp_table w =
-	  let a = Array.make (w * w) 0 in
+	let init_transp_tables w =
+	  let a = Array.make (w * w) 42 in
 
+	  let save x y v inset f =
+		let i = x + y * w in
+		if v == w * w
+		then a.(i) <- 0
+		else (a.(i) <- v;
+			  f x y v inset)
+	  in
+	  
 	  let rec inc_x x y v inset =
 		let x = x + 1 in
 		let maxx = w - 1 - inset in
@@ -240,7 +252,7 @@ module Grid = struct
 		if x = minx
 		then save x y (v + 1) inset dec_y
 		else save x y (v + 1) inset dec_x
-		
+
 	  and dec_y x y v inset =
 		let y = y - 1 in
 		let miny = 1 + inset in
@@ -248,19 +260,65 @@ module Grid = struct
 		if y = miny
 		then save x y (v + 1) (inset + 1) inc_x
 		else save x y (v + 1) inset dec_y
-		
-	  and save x y v inset f =
-		let i = x + y * w in
-		if v == w * w
-		then a.(i) <- 0
-		else (a.(i) <- v;
-			  f x y v inset)
+
 	  in
 
+	  let k_of_v a v =
+	  	let k = ref 42 in
+	  	Array.iteri (fun k' v' -> if v' = v then k := k') a;
+	  	!k
+	  in
+	  
 	  save 0 0 1 0 inc_x;
-	  a
-  end
+	  transp_table_ptr_tosnail := a;
+	  transp_table_ptr_toabs := Array.map (fun v -> k_of_v a v) a;
+	  ()
 
+	  
+	(* Absolute-coords matrix to Snail-coords matrix *)
+	let absolute_to_snail abs_m =
+	  let transp_a = !transp_table_ptr_tosnail in
+	  let w = Array.length abs_m in
+	  let snail_m = Array.make_matrix w w 0 in
+
+	  let rec is_valid i =
+		let x = i mod w in
+		let y = i / w in
+
+		if i = w * w
+		then ()
+		else save i x y
+	  and save i x y =
+		let cell_v = abs_m.(y).(x) in
+		snail_m.(y).(x) <- transp_a.(cell_v);
+		is_valid (i + 1)
+	  in
+	  save 0 0 0;
+	  snail_m
+
+	(* Snail-coords matrix to Absolute-coords matrix *)
+	(* let sail_to_absolute snail_m = *)
+	(*   let transp_a = !transp_table_ptr_tosnail in *)
+	(*   let w = Array.length abs_m in *)
+	(*   let abs_m = Array.make_matrix w w 0 in *)
+
+	(*   let rec is_valid i = *)
+	(* 	let x = i mod w in *)
+	(* 	let y = i / w in *)
+
+	(* 	if i = w * w *)
+	(* 	then () *)
+	(* 	else save i x y *)
+	(*   and save i x y = *)
+	(* 	let cell_v = abs_m.(y).(x) in *)
+	(* 	snail_m.(y).(x) <- transp_a.(cell_v); *)
+	(* 	is_valid (i + 1) *)
+	(*   in *)
+	(*   save 0 0 0; *)
+	(*   abs_m *)
+
+
+  end
 				
 (* Heuristics *)
 module type HEURISTIC =
@@ -403,6 +461,8 @@ module MakeAStar (He : HEURISTIC) =
   struct
 	type closedContainer = (Grid.t, unit) Hashtbl.t
 	type openedContainer = StateBatHeap.t
+
+							 
 	type data = {
 		width 			: int;
 		total 			: int;
@@ -415,19 +475,20 @@ module MakeAStar (He : HEURISTIC) =
 	(* let is_solved (s:State.t) (d:data) = *)
 	let is_solved s (d:data) =
 	  d.goal = s.State.grid
-				 
-				 
+
+
 	let create_info (w:int) (i_gr:Grid.t) =
 	  let total = w * w in
 	  let goal = He.build_goal w in
 	  let closed = Hashtbl.create 10000 in
-	  let i_st = State.create i_gr 0 (He.calc i_gr) in
+	  let i_st = State.create i_gr 0 (He.calc i_gr) in	  
 	  let opened = StateBatHeap.insert StateBatHeap.empty i_st in
 	  {width = w ; total = total ; goal = goal ; closed = closed; opened = opened}
-
+		
 
 	let solve (i: data) =
 	  (* Printf.eprintf "SOLVE START...\n%!"; *)
+
 	  
 	  let expand s =
 		(* Printf.eprintf "Expanding START**************** \n%!"; *)
@@ -444,10 +505,8 @@ module MakeAStar (He : HEURISTIC) =
 			 let h = He.calc grid in
 			 let st = State.create grid (s.State.g + 1) h in
 			 if (st.State.h < 3)
-			 then State.print st;
+			 then State.print st;			 
 			 i.opened <- StateBatHeap.insert i.opened st;
-			 (* State.print st; *)
-			 (* st *)
 			 ()
 		in
 		let move_valid x y =
@@ -469,21 +528,7 @@ module MakeAStar (He : HEURISTIC) =
 		  | _													-> ()
 		in
 		(* let valid_moves = foreach_dirs dirs [] in *)
-		foreach_dirs dirs;
-		
-		(* let rec foreach_valid_moves = function *)
-		(* | ({State.grid = g} as mv)::tl	-> *)
-		(* if (mv.State.h < 3) *)
-		(* then State.print mv; *)
-		
-		(* i.opened <- StateBatHeap.insert i.opened mv; *)
-		(* Printf.eprintf "Size: %d\n" (StateBatHeap.size i.opened); *)
-		(* foreach_valid_moves tl *)
-		(* | _								-> () *)
-		(* in *)
-		(* foreach_valid_moves valid_moves; *)
-		(* Printf.eprintf "Expanding DONE*****************\n%!"; *)
-		(* Printf.eprintf "Size: %d\n" (StateBatHeap.size i.opened); *)
+		foreach_dirs dirs;		
 		()
 	  in
 	  
@@ -502,12 +547,13 @@ module MakeAStar (He : HEURISTIC) =
 	  ()
   end
 
-module ManhattanAStar = MakeAStar(Manhattan0lastHeuristic)
-(* module ManhattanAStar = MakeAStar(ManhattanHeuristic) *)
+(* module ManhattanAStar = MakeAStar(Manhattan0lastHeuristic) *)
+module ManhattanAStar = MakeAStar(ManhattanHeuristic)
+
 
 let scanGrid chan g s =
   let rec line y =
-	let rec col x = 
+	let rec col x =
 	  if x < s then
 		(let v = (Scanf.fscanf chan " %u " (fun x _ -> x))() in
 		 g.(y).(x) <- v;
@@ -528,13 +574,32 @@ let () =
   Printf.eprintf "opened: %s\n%!" fname;
   Printf.eprintf "%s\n%!" (input_line chan);
   let size = (Scanf.fscanf chan "%d\n" (fun x _ -> x))() in
+
+
+ 
+  
+  Grid.init_transp_tables size;
+  Array.iteri (fun i v -> Printf.printf "%2d %d\n%!" i v) !Grid.transp_table_ptr_tosnail;
+  Printf.printf "\n%!";
+  Array.iteri (fun i v -> Printf.printf "%2d %d\n%!" i v) !Grid.transp_table_ptr_toabs;
+
+  
   Printf.eprintf "size: %d\n" size;
   let grid = Array.make_matrix size size 42 in
   scanGrid chan grid size;
   close_in chan;
   let init = State.create grid 0 42 in
   let i = ManhattanAStar.create_info size grid in
+  Printf.printf "\n%!";
   Grid.print init.State.grid;
+  Printf.printf "\n%!";
+  Grid.print (Grid.absolute_to_snail init.State.grid);
+  Printf.printf "\n%!";
+  Grid.print i.ManhattanAStar.goal;
+  Printf.printf "\n%!";
+  Grid.print (Grid.absolute_to_snail  i.ManhattanAStar.goal);
+  Printf.printf "\n%!";
+  
   Printf.eprintf "%d\n" (ManhattanHeuristic.calc init.State.grid);
   ManhattanAStar.solve i;
   ()
