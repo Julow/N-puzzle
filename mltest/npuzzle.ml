@@ -6,7 +6,7 @@
 (*	 By: ngoguey <ngoguey@student.42.fr>						+#+	+:+			 +#+				*)
 (*																								+#+#+#+#+#+	 +#+					 *)
 (*	 Created: 2015/10/14 13:06:34 by ngoguey					 #+#		#+#						 *)
-(*   Updated: 2015/10/16 08:37:09 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/16 09:27:54 by ngoguey          ###   ########.fr       *)
 (*																																						*)
 (* ************************************************************************** *)
 
@@ -213,9 +213,55 @@ module Grid = struct
 	  let v = g.(ya).(xa) in
 	  g.(ya).(xa) <- g.(yb).(xb);
 	  g.(yb).(xb) <- v
-					   
+
+	let build_transp_table w =
+	  let a = Array.make (w * w) 0 in
+
+	  let rec inc_x x y v inset =
+		let x = x + 1 in
+		let maxx = w - 1 - inset in
+		assert (x <= maxx);
+		if x = maxx
+		then save x y (v + 1) inset inc_y
+		else save x y (v + 1) inset inc_x
+
+	  and inc_y x y v inset =
+		let y = y + 1 in
+		let maxy = w - 1 - inset in
+		assert (y <= maxy);
+		if y = maxy
+		then save x y (v + 1) inset dec_x
+		else save x y (v + 1) inset inc_y
+
+	  and dec_x x y v inset =
+		let x = x - 1 in
+		let minx = 0 + inset in
+		assert (x >= minx);
+		if x = minx
+		then save x y (v + 1) inset dec_y
+		else save x y (v + 1) inset dec_x
+		
+	  and dec_y x y v inset =
+		let y = y - 1 in
+		let miny = 1 + inset in
+		assert (y >= miny);
+		if y = miny
+		then save x y (v + 1) (inset + 1) inc_x
+		else save x y (v + 1) inset dec_y
+		
+	  and save x y v inset f =
+		let i = x + y * w in
+		if v == w * w
+		then a.(i) <- 0
+		else (a.(i) <- v;
+			  f x y v inset)
+	  in
+
+	  save 0 0 1 0 inc_x;
+	  a
   end
 
+				
 (* Heuristics *)
 module type HEURISTIC =
   sig
@@ -475,6 +521,7 @@ let scanGrid chan g s =
 
 let () =
   (* let fname = "lol3almost.np" in *)
+  
   let fname = "lol3_2.np" in
   (* let fname = "lol3.np" in *)
   let chan = open_in fname in
