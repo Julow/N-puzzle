@@ -6,7 +6,7 @@
 (*	 By: ngoguey <ngoguey@student.42.fr>						+#+	+:+			 +#+				*)
 (*																								+#+#+#+#+#+	 +#+					 *)
 (*	 Created: 2015/10/14 13:06:34 by ngoguey					 #+#		#+#						 *)
-(*	 Updated: 2015/10/14 13:45:02 by ngoguey					###	 ########.fr			 *)
+(*   Updated: 2015/10/16 07:54:37 by ngoguey          ###   ########.fr       *)
 (*																																						*)
 (* ************************************************************************** *)
 
@@ -157,7 +157,7 @@ end
 
 (* let print bh =	
 	let print_one bt lvl =
-		Printf.printf "%s %u(%d)\n" (String.make(lvl * 4) '*') bt.rank bt.root
+		Printf.eprintf "%s %u(%d)\n" (String.make(lvl * 4) '*') bt.rank bt.root
 	in
 	let rec foreach_t btl lvl = 
 		match btl with
@@ -167,7 +167,7 @@ end
 			foreach_t hd.kids (lvl + 1);
 			foreach_t tl lvl
 	in
-	Printf.printf "Size: %u\n" bh.size;
+	Printf.eprintf "Size: %u\n" bh.size;
 	foreach_t bh.data 0
  *)
 
@@ -180,27 +180,30 @@ module Grid = struct
 		let rec line y =
 			let rec cell x =
 				if x < s
-				then (Printf.printf "%2d " g.(y).(x);
+				then (Printf.eprintf "%-2d %!" g.(y).(x);
 					  cell (x + 1))
 			in
 			if y < s
 			then (cell 0;
-				  Printf.printf "\n%!";
+				  Printf.eprintf "\n%!";
 				  line (y + 1))
 		in
 		line 0
 	
 	let equal a b =
-		a = b
+	  a = b
+
+	let copy src =
+	  Array.map (fun line -> Array.copy line) src
 	
 	let zero g s =
 		let rec line y =
 			assert (y < s);
 			let rec cell x =
 				match g.(y).(x) with
-				| 0				-> (x, y)
-				| _ when x < s	-> cell (x + 1)
-				| _				-> line (y + 1)
+				| 0					-> (x, y)
+				| _ when x = s - 1	-> line (y + 1)
+				| _					-> cell (x + 1)
 			in
 			cell 0
 		in
@@ -220,28 +223,32 @@ sig
 end
 
 module ManhattanHeuristic : HEURISTIC =
-struct
+  struct
 	let calc g =
-		let s = Array.length g in
-		let rec foreach_line y acc =
-			let rec foreach_cell x acc =
-				if x == s
-				then acc
-				else (
-					let v = g.(y).(x) in
-					let dstx = v mod s in
-					let dsty = v / s in
-					let dx = abs(x - dstx) in
-					let dy = abs(y - dsty) in
-					foreach_cell (x + 1) (acc + dx + dy)
-				)
-			in
-			if y == s
-			then acc
-			else foreach_line (y + 1) (foreach_cell 0 acc)
+	  let s = Array.length g in
+	  let rec foreach_line y acc =
+		let rec foreach_cell x acc =
+		  if x == s
+		  then acc
+		  else (
+			let v = g.(y).(x) in
+			(* if v = 0 *)
+			(* then foreach_cell (x + 1) acc *)
+			(* else ( *)
+			  let dstx = v mod s in
+			  let dsty = v / s in
+			  let dx = abs(x - dstx) in
+			  let dy = abs(y - dsty) in
+			  foreach_cell (x + 1) (acc + dx + dy)
+			(* ) *)
+		  )
 		in
-		foreach_line 0 0
-end
+		if y == s
+		then acc
+		else foreach_line (y + 1) (foreach_cell 0 acc)
+	  in
+	  foreach_line 0 0
+  end
 
 (* State representation as grid, g so far, h current *)
 module type STATE =
@@ -252,9 +259,7 @@ sig
 		h : int;
 	}
 	val create	: Grid.t -> int -> int -> t
-	val grid	: t -> Grid.t
-	val h		: t -> int
-	val g		: t -> int
+	val print	: t -> unit
 	val compare	: t -> t -> int
 	
 end
@@ -266,15 +271,15 @@ struct
 		grid : Grid.t;
 		g : int;
 		h : int;
-	}
+	  }
+	let print st =
+	  let x0, y0 = Grid.zero st.grid (Array.length st.grid) in
+	  Printf.eprintf "State: g(%3d) h(%3d) zero(%d, %d)\n%!" st.g st.h x0 y0;
+	  Grid.print st.grid;
+	  ()
+				 
 	let create grid g h =
 		{grid = grid; g = g; h = h}
-	let grid t =
-		t.grid
-	let h t =
-		t.h
-	let g t =
-		t.g
 	let compare (a:t) (b:t) =
 		a.g - b.g
 end
@@ -300,7 +305,7 @@ module MakeAStar (He : HEURISTIC) =
 
 		(* let is_solved (s:State.t) (d:data) = *)
 		let is_solved s (d:data) =
-			d.goal = (State.grid s)
+			d.goal = s.State.grid
 		
 		let build_goal w =
 			let mat = (Array.make_matrix w w 0) in
@@ -330,54 +335,74 @@ module MakeAStar (He : HEURISTIC) =
 
 		
 		let solve (i: data) =
-		
-			let expand s =
-				Printf.printf "Expanding: \n";
-				let px, py = Grid.zero (State.grid s) i.width in
-				let move dx dy =
-					let grid = Array.copy (State.grid s) in
-					Grid.swap grid (px, py) (dx, dy);
-					Grid.print grid;
-					Printf.printf "\n";
-					let h = He.calc grid in
-					State.create grid (State.g s + h) h
-				in
-				let move_valid x y =
-					Printf.printf "valid ? %d %d\n" x y;
-					if x < 0 || y < 0 || x >= i.width || y >= i.width
-					then false
-					else true
-				in
-				let dirs = [(1, 0); (0, 1); (-1, 0); (0, -1)] in
-				let rec foreach_dirs dirs new_states =
-					match dirs with
-					| (dx, dy)::tl when move_valid (dx + px) (dy + py)	->
-						foreach_dirs tl ((move dx dy)::new_states)
-					| _::tl												->
-						foreach_dirs tl new_states
-					| _													-> new_states
-				in
-				let valid_moves = foreach_dirs dirs [] in
-				
-				let rec foreach_valid_moves = function
-					| ({State.grid = g} as mv)::tl	->
-						(* Grid.print g; *)
-						i.opened <- StateBatHeap.insert i.opened mv;
-						Printf.printf "Size: %d\n" (StateBatHeap.size i.opened);
-						foreach_valid_moves tl
-					| _								-> ()
-				in
-				foreach_valid_moves valid_moves;
-				Printf.printf "Size: %d\n" (StateBatHeap.size i.opened);
-				()
+		  (* Printf.eprintf "SOLVE START...\n%!"; *)
+		  
+		  let expand s =
+			(* Printf.eprintf "Expanding START**************** \n%!"; *)
+			let x0, y0 = Grid.zero s.State.grid i.width in
+			
+			let move x y = (* RENAME TRY-ADD *)
+			  (* Printf.eprintf "Yes !\n%!"; *)
+			  let grid = Grid.copy s.State.grid in
+			  Grid.swap grid (x0, y0) (x, y);
+			  try
+				Hashtbl.find i.closed grid
+			  with
+			  | Not_found		->
+				 let h = He.calc grid in
+				 let st = State.create grid (s.State.g + h) h in
+				 if (st.State.h < 3)
+				 then State.print st;
+				 i.opened <- StateBatHeap.insert i.opened st;
+			  (* State.print st; *)
+			  (* st *)
+			  ()
 			in
+			let move_valid x y =
+			  (* Printf.eprintf "IS VALID ? x(%+d) y(%+d): " x y; *)
+			  if x < 0 || y < 0 || x >= i.width || y >= i.width
+			  then false
+			  else true
+			in
+			let dirs = [(1, 0); (0, 1); (-1, 0); (0, -1)] in
+			let rec foreach_dirs dirs =
+			  (* Printf.eprintf "FOREACH_DIRS\n%!"; *)
+			  match dirs with
+			  | (dx, dy)::tl when move_valid (dx + x0) (dy + y0)	->
+				 move (dx + x0) (dy + y0);
+				 foreach_dirs tl
+			  | _::tl												->
+				 (* Printf.eprintf "no\n%!"; *)
+				 foreach_dirs tl
+			  | _													-> ()
+			in
+			(* let valid_moves = foreach_dirs dirs [] in *)
+			foreach_dirs dirs;
+			
+			(* let rec foreach_valid_moves = function *)
+			  (* | ({State.grid = g} as mv)::tl	-> *)
+				 (* if (mv.State.h < 3) *)
+				 (* then State.print mv; *)
+					
+				 (* i.opened <- StateBatHeap.insert i.opened mv; *)
+			(* Printf.eprintf "Size: %d\n" (StateBatHeap.size i.opened); *)
+				 (* foreach_valid_moves tl *)
+			  (* | _								-> () *)
+			(* in *)
+			(* foreach_valid_moves valid_moves; *)
+			(* Printf.eprintf "Expanding DONE*****************\n%!"; *)
+			(* Printf.eprintf "Size: %d\n" (StateBatHeap.size i.opened); *)
+			()
+		  in
+		  
 			let rec aux () =
-				Printf.printf "aux loop\n";
-				let cur = StateBatHeap.find_min i.opened in
-				i.opened <- StateBatHeap.del_min i.opened;
+			  let cur = StateBatHeap.find_min i.opened in
+			  (* State.print cur; *)
+			  i.opened <- StateBatHeap.del_min i.opened;
 				if is_solved cur i
 				then () (* TRY  *)
 				else (expand cur;
+					  Hashtbl.add i.closed cur.State.grid ();
 					  aux ()
 				)
 			in
@@ -390,47 +415,33 @@ module MakeAStar (He : HEURISTIC) =
 
 module ManhattanAStar = MakeAStar(ManhattanHeuristic)
 
-
 let scanGrid chan g s =
-	let rec line y =
+  let rec line y =
 	let rec col x = 
-	if x < s then
+	  if x < s then
 		(let v = (Scanf.fscanf chan " %u " (fun x _ -> x))() in
 		 g.(y).(x) <- v;
 		 col (x + 1))
 	in
 	if y < s then
-		(col 0;
-		 line (y + 1))
-	in
-	line 0
+	  (col 0;
+	   line (y + 1))
+  in
+  line 0
 
 let () =
-	(* let chan = open_in Sys.argv.(1) in *)
-	(* let chan = open_in "lol3solved.np" in *)
-	let chan = open_in "lol3.np" in
-	(* let chan = open_in "lol3solved.np" in *)
-	(* Printf.printf "%s\n%!" Sys.argv.(1); *)
-	Printf.printf "%s\n%!" (input_line chan);
-	let size = (Scanf.fscanf chan "%d\n" (fun x _ -> x))() in
-	Printf.printf "%d\n" size;
-	let grid = Array.make_matrix size size 42 in
-	scanGrid chan grid size;
-	close_in chan;
-	
-	(* let init = {grid = grid; g = 0; h = 42} in *)
-	let init = State.create grid 0 42 in
-	(* let i = make_info size init in *)
-	let i = ManhattanAStar.create_info size grid in
-	
-	Printf.printf "%b\n" (ManhattanAStar.is_solved init i);
-	
-	(* Printf.printf "salut: %b\n" (min init init); *)
-	
-	(* Grid.print (ManhattanAStar.goal i); *)
-	(* Printf.printf "%d\n" (ManhattanHeuristic.calc (ManhattanAStar.goal i)); *)
-	Grid.print (State.grid init);
-	(* Grid.print init.grid; *)
-	Printf.printf "%d\n" (ManhattanHeuristic.calc (State.grid init));
-	ManhattanAStar.solve i;
-	()
+  let fname = "lol3.np" in
+  let chan = open_in fname in
+  Printf.eprintf "opened: %s\n%!" fname;
+  Printf.eprintf "%s\n%!" (input_line chan);
+  let size = (Scanf.fscanf chan "%d\n" (fun x _ -> x))() in
+  Printf.eprintf "size: %d\n" size;
+  let grid = Array.make_matrix size size 42 in
+  scanGrid chan grid size;
+  close_in chan;
+  let init = State.create grid 0 42 in
+  let i = ManhattanAStar.create_info size grid in		
+  Grid.print init.State.grid;
+  Printf.eprintf "%d\n" (ManhattanHeuristic.calc init.State.grid);
+  ManhattanAStar.solve i;
+  ()
