@@ -44,8 +44,13 @@ else
 	LINK_FLAGS	+= -lglfw -lGL -lGLEW -ldl
 endif
 
+OCAML_FLAGS		:= $(shell ocamlc -where)
+
+HEAD_FLAGS		+= -I$(OCAML_FLAGS)
+LINK_FLAGS		+= -L$(OCAML_FLAGS) -lcamlrun -lncurses
+
 # Jobs
-JOBS		:= 4
+JOBS			:= 4
 
 # Column output
 COLUMN_OUTPUT	:= 1
@@ -98,9 +103,25 @@ endif
 # Include $(O_FILES) and dependencies
 -include $(DEPEND)
 
+# Ocaml
+# TODO: improve
+
+ML_OBJS = $(addprefix $(ML_DIR)/,npuzzle.cmi solver.cmo)
+ML_DIR = srcs/solver
+SOLVER = $(ML_DIR)/solver.o
+
+$(ML_DIR)/%.cmi: $(ML_DIR)/%.mli
+	ocamlc -o $@ $<
+
+$(ML_DIR)/%.cmo: $(ML_DIR)/%.ml
+	ocamlc -I $(ML_DIR) -o $@ -c $<
+
+$(SOLVER): $(ML_OBJS)
+	ocamlc -output-obj $(filter %.cmo,$^) -o $@
+
 # Linking
-$(NAME): $(LIBS_DEPEND) $(O_FILES)
-	clang++ -o $@ $(O_FILES) $(LINK_FLAGS) && $(PRINT_LINK)
+$(NAME): $(LIBS_DEPEND) $(O_FILES) $(SOLVER)
+	clang++ -o $@ $(O_FILES) $(SOLVER) $(LINK_FLAGS) && $(PRINT_LINK)
 
 # Compiling
 $(O_DIR)/%.o: %.c
@@ -127,6 +148,7 @@ rebug: fclean debug
 clean:
 	rm -f $(PRINT_FILE)
 	rm -f $(O_FILES)
+	rm -f $(ML_OBJS) $(SOLVER)
 
 # Clean everything
 fclean: clean

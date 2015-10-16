@@ -1,4 +1,6 @@
-O_FILES :=	o/include/tiles/Tiles.o o/srcs/GlCanvasHolder.o o/srcs/main.o
+O_FILES :=	o/include/tiles/Tiles.o o/srcs/GlCanvasHolder.o o/srcs/main.o \
+			o/srcs/solver/Grid.o o/srcs/solver/Solver.o \
+			o/srcs/solver/Solver_hooks.o
 
 LIBS_DEPEND := libftui/libftui.a
 
@@ -8,7 +10,7 @@ libs:
 
 
 
-MAX_SOURCE_LEN := 23
+MAX_SOURCE_LEN := 28
 o/include/tiles/Tiles.o: include/tiles/Tiles.cpp include/gl.hpp \
 	| o/include/tiles/
 o/srcs/GlCanvasHolder.o: srcs/GlCanvasHolder.cpp include/GlCanvasHolder.hpp \
@@ -36,3 +38,8 @@ o/srcs/main.o: srcs/main.cpp libftui/include/ft/utils.hpp \
 	libftui/include/ftlua/templates/ftlua_caller.tpp \
 	libftui/include/ftlua/templates/ftlua_handler.tpp include/tiles/Tiles.hpp \
 	include/GlCanvasHolder.hpp include/gl.hpp | o/srcs/
+o/srcs/solver/Grid.o: srcs/solver/Grid.cpp include/Grid.hpp | o/srcs/solver/
+o/srcs/solver/Solver.o: srcs/solver/Solver.cpp include/Grid.hpp \
+	include/ISolverListener.hpp include/Solver.hpp | o/srcs/solver/
+o/srcs/solver/Solver_hooks.o: srcs/solver/Solver_hooks.cpp include/Grid.hpp \
+	include/ISolverListener.hpp include/Solver.hpp | o/srcs/solver/
