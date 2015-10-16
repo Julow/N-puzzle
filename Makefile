@@ -111,10 +111,10 @@ ML_DIR = srcs/solver
 SOLVER = $(ML_DIR)/solver.o
 
 $(ML_DIR)/%.cmi: $(ML_DIR)/%.mli
-	ocamlc -o $@ $<
+	ocamlc -o $@ $< && $(PRINT_OK)
 
 $(ML_DIR)/%.cmo: $(ML_DIR)/%.ml
-	ocamlc -I $(ML_DIR) -o $@ -c $<
+	ocamlc -I $(ML_DIR) -o $@ -c $< && $(PRINT_OK)
 
 $(SOLVER): $(ML_OBJS)
 	ocamlc -output-obj $(filter %.cmo,$^) -o $@

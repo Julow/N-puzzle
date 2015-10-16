@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/16 19:47:13 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/16 20:03:59 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -169,16 +169,20 @@ public:
 */
 	void				solve(void)
 	{
-		int const			puzzle_size = 3;
+		int const			puzzle_size = 4;
 		int					*puzzle[puzzle_size] = {
-			(int[]){1, 2, 3},
-			(int[]){4, 5, 6},
-			(int[]){7, 8, 9}
+			new int[puzzle_size]{ 1, 2, 3, 4},
+			new int[puzzle_size]{ 5, 6, 7, 8},
+			new int[puzzle_size]{ 9,10,11,12},
+			new int[puzzle_size]{13,14,15,16}
 		};
-		npuzzle::Grid		grid(puzzle, 3);
+		npuzzle::Grid		grid(puzzle, puzzle_size);
 		npuzzle::Solver		solver(grid, this);
 
 		solver.solve();
+		for (int i = 0; i < puzzle_size; i++)
+			delete puzzle[i];
+		std::cout << "Solving done" << std::endl;
 	}
 
 	virtual void	put_progress(float progress)

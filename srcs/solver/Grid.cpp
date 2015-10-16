@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:12 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/16 19:39:36 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/16 19:53:27 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -39,9 +39,8 @@ Grid::Grid(int const* const* data, int size) :
 
 Grid::~Grid(void)
 {
-	// TODO: lol
-	// for (int i = 0; i < _size; i++)
-		// delete [] _data[i];
+	for (int i = 0; i < _size; i++)
+		delete [] _data[i];
 	delete [] _data;
 }
 

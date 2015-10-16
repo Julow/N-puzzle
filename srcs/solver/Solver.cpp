@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 15:43:35 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/16 19:46:53 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/16 20:03:05 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -31,17 +31,28 @@ Solver::~Solver(void)
 {
 }
 
-void			Solver::solve(void)
-{
-	value *const	f = caml_named_value("solve");
-	value			res; // TODO: memory leak ?
+#define FUCK(a)
+#define if			if(
+#define then		)
+#define raise		throw
+#define let
+#define in			;
+#define begin		{ FUCK(})
+#define end			}
 
-	if (f == NULL)
-		throw std::runtime_error("Cannot start solver");
-	res = caml_callback_exn(*f, (value)this); // TODO: memory leak ?
-	if (Is_exception_result(res))
-		throw std::runtime_error("Fail to solve");
-}
+let void		Solver::solve(void)
+begin
+	let value *const	f = caml_named_value("solve") in
+	let value			res in // TODO: memory leak ?
+
+	if f == NULL then
+		raise std::runtime_error("Cannot start solver");
+	else begin
+		let res = caml_callback_exn(*f, (value)this) in // TODO: memory leak ?
+		if Is_exception_result(res) then
+			raise std::runtime_error("Fail to solve");
+	end
+end
 
 Grid const		&Solver::getGrid(void) const
 {
