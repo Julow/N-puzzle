@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 09:40:19 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/16 13:37:57 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/16 18:06:30 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -175,10 +175,9 @@ functor (Ord: ORDEREDTYPE) -> *)
 (* Grid representation as 2d array *)
 module Grid = struct
 	type t = (int array) array
-	type option = Snail | Absolute
 
-	let transp_table_ptr_tosnail = ref [|0|]
-	let transp_table_ptr_toabs = ref [|0|]
+	let transp_table_ptr_tosnail = ref [|42|]
+	let transp_table_ptr_toabs = ref [|42|]
 
 	let print g =
 	  let s = Array.length g in
@@ -198,25 +197,27 @@ module Grid = struct
 	  in
 	  line 0
 
-		   
 	let equal a b =
 	  a = b
 
 	let copy src =
 	  Array.map (fun line -> Array.copy line) src
 
-	(* let zero g s = *)
-	(*   let rec line y = *)
-	(* 	assert (y < s); *)
-	(* 	let rec cell x = *)
-	(* 	  match g.(y).(x) with *)
-	(* 	  | 0					-> (x, y) *)
-	(* 	  | _ when x = s - 1	-> line (y + 1) *)
-	(* 	  | _					-> cell (x + 1) *)
-	(* 	in *)
-	(* 	cell 0 *)
-	(*   in *)
-	(*   line 0 *)
+	let build_goal w =
+	  let mat = (Array.make_matrix w w 0) in
+	  let rec line y acc =
+		let rec col x acc = 
+		  if x < w then
+			(mat.(y).(x) <- acc;
+			 col (x + 1) (acc + 1))
+		  else acc
+		in
+		if y < w then
+		  line (y + 1) (col 0 acc);
+	  in
+	  line 0 0;
+	  mat
+
 	let find gr s v =
 	  let rec line y =
 		assert (y < s);
@@ -231,8 +232,7 @@ module Grid = struct
 		cell 0
 	  in
 	  line 0
-	  
-				
+
 	let swap g (xa, ya) (xb, yb) =
 	  let va = g.(ya).(xa) in
 	  g.(ya).(xa) <- g.(yb).(xb);
@@ -294,7 +294,7 @@ module Grid = struct
 	  transp_table_ptr_toabs := Array.mapi (fun k _ -> k_of_v a k) a;
 	  ()
 
-	  
+		
 	(* Absolute-coords matrix to Snail-coords matrix *)
 	let absolute_to_snail abs_m =
 	  let transp_a = !transp_table_ptr_tosnail in
@@ -344,16 +344,13 @@ module Grid = struct
 	let print_abs_to_snail g =
 	  Printf.printf "ABS TO SNAIL\n%!";
 	  print (absolute_to_snail g)
-
-
-
   end
+
 				
 (* Heuristics *)
 module type HEURISTIC =
   sig
 	val calc      	: Grid.t	-> int
-	val build_goal	: int		-> Grid.t
   end
 
 module ManhattanHeuristic : HEURISTIC =
@@ -371,31 +368,25 @@ module ManhattanHeuristic : HEURISTIC =
 			let dx = abs(x - dstx) in
 			let dy = abs(y - dsty) in
 			foreach_cell (x + 1) (acc + dx + dy))
-			in
+		in
 		if y == s
 		then acc
 		else foreach_line (y + 1) (foreach_cell 0 acc)
 	  in
 	  foreach_line 0 0
 
-	let build_goal w =
-	  let mat = (Array.make_matrix w w 0) in
-	  let rec line y acc =
-		let rec col x acc = 
-		  if x < w then
-			(mat.(y).(x) <- acc;
-			 col (x + 1) (acc + 1))
-		  else acc
-		in
-		if y < w then
-		  line (y + 1) (col 0 acc);
-	  in
-	  line 0 0;
-	  mat
-
 
   end
 
+module DijkstraHeuristic : HEURISTIC =
+  struct
+	let calc g =
+	  ignore(g);
+	  0
+  end
+
+(* let tab = [|DijkstraHeuristic|] *)
+	
 (* State representation as grid, g so far, h current *)
 module type STATE =
   sig
@@ -428,36 +419,33 @@ module State : STATE =
 	  (a.g + a.h) - (b.g + b.h)
   end
 
-
 (* BatHeap of states *)
 (* module StateBatHeap : (BATHEAP with type elem := State.t) = MakeBatHeap(State) *)
 module StateBatHeap = MakeBatHeap(State)
 
+module type SOLVER =
+  sig
+	val solve		: int -> Grid.t -> bool
+  end
 
-module MakeAStar (He : HEURISTIC) =
+module MakeAStar (He: HEURISTIC) :SOLVER =
   struct
-	type closedContainer = (Grid.t, unit) Hashtbl.t
-	type openedContainer = StateBatHeap.t
 
-							 
 	type data = {
 		width 			: int;
 		total 			: int;
 		goal 			: Grid.t;
 		zero_abs_alias	: int;
-		mutable closed	: closedContainer;
-		mutable opened	: openedContainer;
+		mutable closed	: (Grid.t, unit) Hashtbl.t;
+		mutable opened	: StateBatHeap.t;
 	  }
-	type state = Solved | Unsolved
 
-	(* let is_solved (s:State.t) (d:data) = *)
-	let is_solved s (d:data) =
+	let is_goal s (d:data) =
 	  d.goal = s.State.grid
-
 
 	let create_info (w:int) (i_gr:Grid.t) =
 	  let total = w * w in
-	  let goal = He.build_goal w in
+	  let goal = Grid.build_goal w in
 	  let zero_abs_alias = !Grid.transp_table_ptr_toabs.(0) in
 	  Printf.printf "ALIAS: %d \n%!" zero_abs_alias;
 	  
@@ -468,28 +456,23 @@ module MakeAStar (He : HEURISTIC) =
 	   ; closed = closed; opened = opened}
 		
 
-	let solve (i: data) =
+	let solve (w:int) (i_gr:Grid.t) =
 	  Printf.eprintf "SOLVE START...............................................\n%!";
+	  let i = create_info w i_gr in
 
-	  
-	  let expand s =
-		(* Printf.eprintf "Expanding START**************** \n%!"; *)
-		let x0, y0 = Grid.find s.State.grid i.width i.zero_abs_alias in
-		(* Printf.printf "%d %d\n%!" x0 y0; *)
-		(* assert(false); *)
-		
-		let move x y = (* RENAME TRY-ADD *)
-		  (* Printf.eprintf "Yes !\n%!"; *)
-		  let grid = Grid.copy s.State.grid in
+	  let expand cur =
+		let x0, y0 = Grid.find cur.State.grid i.width i.zero_abs_alias in
+		let try_add x y =
+		  let grid = Grid.copy cur.State.grid in
 		  Grid.swap grid (x0, y0) (x, y);
 		  try
 			Hashtbl.find i.closed grid
 		  with
 		  | Not_found		->
 			 let h = He.calc grid in
-			 let st = State.create grid (s.State.g + 1) h in
-			 if (st.State.h < 3)
-			 then State.print st;			 
+			 let st = State.create grid (cur.State.g + 1) h in
+			 if (st.State.h < 0)
+			 then State.print st;
 			 i.opened <- StateBatHeap.insert i.opened st;
 			 ()
 		in
@@ -502,36 +485,35 @@ module MakeAStar (He : HEURISTIC) =
 		let rec foreach_dirs dirs =
 		  match dirs with
 		  | (dx, dy)::tl when is_in_bounds (dx + x0) (dy + y0)	->
-			 move (dx + x0) (dy + y0);
+			 try_add (dx + x0) (dy + y0);
 			 foreach_dirs tl
 		  | _::tl												->
 			 foreach_dirs tl
 		  | _													-> ()
 		in
-		foreach_dirs dirs;		
+		foreach_dirs dirs;
 		()
 	  in
-	  
+
 	  let rec aux () =
 		let cur = StateBatHeap.find_min i.opened in
-		(* State.print cur; *)
 		i.opened <- StateBatHeap.del_min i.opened;
-		if is_solved cur i 
-		then (
-		  Printf.printf "OVER ?!\n%!";
-		  State.print cur;
-		  Grid.print_abs_to_snail cur.State.grid;
-		  ()
-		)
+		Hashtbl.add i.closed cur.State.grid ();
+		if is_goal cur i
+		then (Printf.printf "SOLVED\n%!";
+			  State.print cur;
+			  Grid.print_abs_to_snail cur.State.grid;
+			  true)
 		else (expand cur;
-			  Hashtbl.add i.closed cur.State.grid ();
-			  aux ()
-			 )
+			  aux ())
 	  in
-	  aux ();
-	  ()
+	  try
+		aux ()
+	  with
+	  | Invalid_argument("find_min") -> false
   end
 
+(* module ManhattanAStar = MakeAStar(DijkstraHeuristic) *)
 module ManhattanAStar = MakeAStar(ManhattanHeuristic)
 
 let scanGrid chan g s =
@@ -562,30 +544,12 @@ let () =
   let grid = Array.make_matrix size size 42 in
   scanGrid chan grid size;
   close_in chan;
-  (* let init = State.create grid 0 42 in *)
 
   Printf.printf "PARSED MATRIX (PRINT RAW):\n%!";
   Grid.print grid;
   let grid = Grid.snail_to_absolute grid in
   Printf.printf "PARSED MATRIX TO ABS (PRINT RAW):\n%!";
   Grid.print grid;
-
-  let i = ManhattanAStar.create_info size grid in
   
-  Printf.printf "GOAL MATRIX (PRINT RAW)\n%!";
-  Grid.print i.ManhattanAStar.goal;
-  Printf.printf "GOAL MATRIX (PRINT ABS_TO_SNAIL)\n%!";
-  Grid.print_abs_to_snail i.ManhattanAStar.goal;
-
-
-
-  (* Grid.print ~opt:(Grid.Snail) grid; *)
-  
-  
-  (* Printf.printf "GO GO GO\n%!"; *)
-  (* Grid.print grid; *)
-  (* Printf.printf "GO GO GO\n%!"; *)
-  
-  (* Printf.eprintf "%d\n" (ManhattanHeuristic.calc init.State.grid); *)
-  ManhattanAStar.solve i;
+  Printf.printf "Solved: %b\n%!" (ManhattanAStar.solve size grid); 
   ()
