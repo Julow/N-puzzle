@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/14 13:04:56 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/16 19:47:13 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -29,6 +29,9 @@
 
 #include "GlCanvasHolder.hpp"
 #include "gl.hpp"
+
+#include "Solver.hpp"
+#include "ISolverListener.hpp"
 
 /*
 ** init glfw
@@ -82,7 +85,7 @@ void		printViewTree(ftui::AView const *view, int indent = 0)
 */
 
 
-class Main
+class Main : npuzzle::ISolverListener
 {
 public:
 	Tiles		tiles;
@@ -160,6 +163,31 @@ public:
 		int top = lua_gettop(_act.getLuaState());
 		FTASSERT(top == 0, ft::f("Top not 0: %", top));
 	}
+
+/*
+** Test solver api
+*/
+	void				solve(void)
+	{
+		int const			puzzle_size = 3;
+		int					*puzzle[puzzle_size] = {
+			(int[]){1, 2, 3},
+			(int[]){4, 5, 6},
+			(int[]){7, 8, 9}
+		};
+		npuzzle::Grid		grid(puzzle, 3);
+		npuzzle::Solver		solver(grid, this);
+
+		solver.solve();
+	}
+
+	virtual void	put_progress(float progress)
+	{
+		std::cout << "Put progress: " << progress << std::endl;
+	}
+/*
+** -
+*/
 
 	void				loop(void)
 	{
@@ -249,6 +277,7 @@ int				main(void)
 	{
 		Main		main;
 
+		main.solve();
 		main.loop();
 	}
 	catch (std::exception const &e)

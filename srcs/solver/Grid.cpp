@@ -6,12 +6,14 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:12 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/16 18:34:43 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/16 19:39:36 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "Grid.hpp"
 #include <cstring>
+#include <stdexcept>
+#include <iostream> // TODO
 
 namespace npuzzle
 {
@@ -31,13 +33,15 @@ Grid::Grid(int size) :
 Grid::Grid(int const* const* data, int size) :
 	Grid(size)
 {
-	std::memcpy(_data, data, size * size * sizeof(int));
+	for (int i = 0; i < size; i++)
+		std::memcpy(_data[i], data[i], size * sizeof(int));
 }
 
 Grid::~Grid(void)
 {
-	for (int i = 0; i < _size; i++)
-		delete [] _data[i];
+	// TODO: lol
+	// for (int i = 0; i < _size; i++)
+		// delete [] _data[i];
 	delete [] _data;
 }
 
@@ -58,7 +62,9 @@ int					Grid::getSize(void) const
 
 int					Grid::get(int x, int y) const
 {
-	return (_data[x][y]);
+	if (x >= _size || y >= _size)
+		throw std::out_of_range("Unbound value for Grid::get");
+	return (_data[y][x]);
 }
 
 int					&Grid::get(int x, int y)

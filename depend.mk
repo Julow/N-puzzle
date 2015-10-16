@@ -37,7 +37,8 @@ o/srcs/main.o: srcs/main.cpp libftui/include/ft/utils.hpp \
 	libftui/include/ftui/Canvas.hpp libftui/include/ftlua/ftlua.hpp \
 	libftui/include/ftlua/templates/ftlua_caller.tpp \
 	libftui/include/ftlua/templates/ftlua_handler.tpp include/tiles/Tiles.hpp \
-	include/GlCanvasHolder.hpp include/gl.hpp | o/srcs/
+	include/GlCanvasHolder.hpp include/gl.hpp include/Grid.hpp \
+	include/ISolverListener.hpp include/Solver.hpp | o/srcs/
 o/srcs/solver/Grid.o: srcs/solver/Grid.cpp include/Grid.hpp | o/srcs/solver/
 o/srcs/solver/Solver.o: srcs/solver/Solver.cpp include/Grid.hpp \
 	include/ISolverListener.hpp include/Solver.hpp | o/srcs/solver/

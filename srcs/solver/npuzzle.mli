@@ -2,10 +2,10 @@
 type t
 
 (* return initial grid size *)
-external get_size : unit -> int = "solver_hook_get_size"
+external get_size : t -> int = "solver_hook_get_size"
 
 (* retrieve a value from the initial grid *)
-external get : int -> int -> int = "solver_hook_get"
+external get : t -> int -> int -> int = "solver_hook_get"
 
 (* TODO: get_algo (VARIANT) *)
 (* TODO: get_heuristic (VARIANT) *)

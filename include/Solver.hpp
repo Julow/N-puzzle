@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 15:40:32 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/16 18:41:45 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/16 19:44:49 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -25,7 +25,7 @@ public:
 	Solver(Grid const &grid, ISolverListener *listener);
 	virtual ~Solver(void);
 
-	bool			solve(void);
+	void			solve(void);
 
 	Grid const		&getGrid(void) const;
 
