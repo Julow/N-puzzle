@@ -2,3 +2,4 @@ npuzzle
 *.o
 *.cmo
 *.cmi
+*.cmx
