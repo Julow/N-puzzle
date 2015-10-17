@@ -50,7 +50,7 @@ HEAD_FLAGS		+= -I$(OCAML_FLAGS)
 LINK_FLAGS		+= -L$(OCAML_FLAGS) -lunix -lasmrun -lncurses
 
 # Jobs
-JOBS			:= 4
+JOBS			:= 1
 
 # Column output
 COLUMN_OUTPUT	:= 1
@@ -106,12 +106,18 @@ endif
 # Ocaml
 # TODO: improve
 
-ML_OBJS = $(addprefix $(ML_DIR)/,npuzzle.cmi solver.cmx)
+ML_OBJS = $(addprefix $(ML_DIR)/,\
+	npuzzle.cmi\
+	Grid.cmi\
+	Grid.cmx\
+	GRIDHEURISTIC.cmi\
+	solver.cmx\
+)
 ML_DIR = srcs/solver
 SOLVER = $(ML_DIR)/solver.o
 
 $(ML_DIR)/%.cmi: $(ML_DIR)/%.mli
-	ocamlopt $< && $(PRINT_OK)
+	ocamlopt -I $(ML_DIR) $< && $(PRINT_OK)
 
 $(ML_DIR)/%.cmx: $(ML_DIR)/%.ml
 	ocamlopt -I $(ML_DIR) -c $< && $(PRINT_OK)
@@ -161,5 +167,5 @@ re: fclean all
 _debug:
 	$(eval DEBUG_MODE = 1)
 
-.SILENT:
+# .SILENT:
 .PHONY: all clean fclean re debug rebug _debug

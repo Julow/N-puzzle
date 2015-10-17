@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/16 20:03:59 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/17 15:31:30 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -175,7 +175,7 @@ public:
 			new int[puzzle_size]{ 1, 2, 3, 4},
 			new int[puzzle_size]{ 5, 6, 7, 8},
 			new int[puzzle_size]{ 9,10,11,12},
-			new int[puzzle_size]{13,14,15,16}
+			new int[puzzle_size]{13,14,15,0}
 		};
 		npuzzle::Grid		grid(puzzle, puzzle_size);
 		npuzzle::Solver		solver(grid, this);
