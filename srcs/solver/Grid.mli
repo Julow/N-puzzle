@@ -6,11 +6,16 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:12 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/17 16:16:14 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/17 16:51:58 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
 type t = (int array) array
+
+module type HEURISTIC =
+  sig
+	val calc        : t	-> int
+  end
 
 (* Perf critical *)
 val equal			: t -> t -> bool

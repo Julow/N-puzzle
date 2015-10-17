@@ -112,6 +112,8 @@ ML_OBJS = $(addprefix $(ML_DIR)/,\
 	BatHeap.cmx\
 	Grid.cmi\
 	Grid.cmx\
+	Heuristics.cmi\
+	Heuristics.cmx\
 	solver.cmx\
 )
 ML_DIR = srcs/solver
