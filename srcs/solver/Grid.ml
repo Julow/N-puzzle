@@ -6,15 +6,43 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:58 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/17 15:32:48 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/17 16:19:34 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
 type t = (int array) array
 
-let transposition_toreal = ref [|42|]
-let transposition_toabstract = ref [|42|]
+(* ************************************************************************** *)
 
+let equal gra grb =
+  gra = grb
+
+let copy gr =
+  Array.map (fun line -> Array.copy line) gr
+
+let swap g (xa, ya) (xb, yb) =
+  let va = g.(ya).(xa) in
+  g.(ya).(xa) <- g.(yb).(xb);
+  g.(yb).(xb) <- va
+
+let find gr v =
+  let w = Array.length gr in
+  let rec line y =
+	assert (y < w);
+	let rec cell x =
+	  if gr.(y).(x) = v then
+		(x, y)
+	  else if x = w - 1 then
+		line (y + 1)
+	  else
+		cell (x + 1)
+	in
+	cell 0
+  in
+  line 0
+
+(* ************************************************************************** *)
+	   
 let iter_cells gr f =
   let w = Array.length gr in
   let rec line y i =
@@ -28,48 +56,11 @@ let iter_cells gr f =
 	then line (y + 1) (cell 0 i)
   in
   line 0 0
+
+(* ************************************************************************** *)
 	   
-let print gr =
-  let last = Array.length gr - 1 in
-  let aux i x y v =
-	if x = last
-	then Printf.eprintf "%2d\n%!" v
-	else Printf.eprintf "%2d " v
-  in
-  iter_cells gr aux
-
-let equal gra grb =
-  gra = grb
-
-
-let copy gr =
-  Array.map (fun line -> Array.copy line) gr
-
-let goal w =
-  let gr = (Array.make_matrix w w 0) in
-  let aux i x y v =
-	gr.(y).(x) <- i;
-  in
-  iter_cells gr aux;
-  gr
-
-let of_cgrid cgrid =
-  let w = Npuzzle.get_size cgrid in
-  let gr = Array.make_matrix w w (-1) in
-  let aux i x y v =
-	let v = Npuzzle.get cgrid x y in
-	gr.(y).(x) <- v;
-  in
-  if w <= 0 then
-	failwith "Invalid size"
-  else
-	iter_cells gr aux;
-  gr
-
-let swap g (xa, ya) (xb, yb) =
-  let va = g.(ya).(xa) in
-  g.(ya).(xa) <- g.(yb).(xb);
-  g.(yb).(xb) <- va
+let transposition_toreal = ref [|42|]
+let transposition_toabstract = ref [|42|]
 
 let init_transp_tables w =
   let a = Array.make (w * w) 42 in
@@ -127,44 +118,62 @@ let init_transp_tables w =
   transposition_toabstract := Array.mapi (fun k _ -> k_of_v a k) a;
   ()
 
-(* Absolute-coords matrix to Snail-coords matrix *)
-let to_real abs_m =
+let to_real abstgr =
   let transp_a = !transposition_toreal in
-  let w = Array.length abs_m in
-  let snail_m = Array.make_matrix w w 0 in
-
-  let rec is_valid i =
-	let x = i mod w in
-	let y = i / w in
-
-	if i = w * w
-	then ()
-	else save i x y
-  and save i x y =
-	let cell_v = abs_m.(y).(x) in
-	snail_m.(y).(x) <- transp_a.(cell_v);
-	is_valid (i + 1)
+  let realgr = copy abstgr in
+  let aux i x y v =
+	realgr.(y).(x) <- transp_a.(v);
   in
-  save 0 0 0;
-  snail_m
+  iter_cells abstgr aux;
+  realgr
 
-(* Snail-coords matrix to Absolute-coords matrix *)
-let to_abstract snail_m =
+let to_abstract realgr =
   let transp_a = !transposition_toabstract in
-  let w = Array.length snail_m in
-  let abs_m = Array.make_matrix w w 0 in
-  
-  let rec is_valid i =
-	let x = i mod w in
-	let y = i / w in
-
-	if i = w * w
-	then ()
-	else save i x y
-  and save i x y =
-	let cell_v = snail_m.(y).(x) in
-	abs_m.(y).(x) <- transp_a.(cell_v);
-	is_valid (i + 1)
+  let abstgr = copy realgr in
+  let aux i x y v =
+	abstgr.(y).(x) <- transp_a.(v);
   in
-  save 0 0 0;
-  abs_m
+  iter_cells realgr aux;
+  abstgr
+
+let of_cgrid cgrid =
+  let w = Npuzzle.get_size cgrid in
+  let gr = Array.make_matrix w w (-1) in
+  let aux i x y v =
+	let v = Npuzzle.get cgrid x y in
+	gr.(y).(x) <- v;
+  in
+  if w <= 0 then
+	failwith "Invalid size"
+  else
+	iter_cells gr aux;
+  gr
+
+(* ************************************************************************** *)
+	
+let print gr =
+  let last = Array.length gr - 1 in
+  let aux i x y v =
+	if x = last
+	then Printf.eprintf "%2d\n%!" v
+	else Printf.eprintf "%2d " v
+  in
+  iter_cells gr aux
+
+let print_real_to_abst gr =
+  Printf.printf "REAL TO ABST:\n%!";
+  print (to_abstract gr)
+
+let print_abst_to_real gr =
+  Printf.printf "ABST TO REAL\n%!";
+  print (to_real gr)
+
+(* ************************************************************************** *)
+		
+let goal w =
+  let gr = (Array.make_matrix w w 0) in
+  let aux i x y v =
+	gr.(y).(x) <- i;
+  in
+  iter_cells gr aux;
+  gr
