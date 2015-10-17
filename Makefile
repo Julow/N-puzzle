@@ -108,9 +108,10 @@ endif
 
 ML_OBJS = $(addprefix $(ML_DIR)/,\
 	npuzzle.cmi\
+	BatHeap.cmi\
+	BatHeap.cmx\
 	Grid.cmi\
 	Grid.cmx\
-	GRIDHEURISTIC.cmi\
 	solver.cmx\
 )
 ML_DIR = srcs/solver
@@ -167,5 +168,5 @@ re: fclean all
 _debug:
 	$(eval DEBUG_MODE = 1)
 
-.SILENT:
+# .SILENT:
 .PHONY: all clean fclean re debug rebug _debug
