@@ -17,6 +17,7 @@
 #include <iomanip>
 #include <fstream>
 #include <stdexcept>
+#include <typeinfo>
 #include <string>     // std::string, std::to_string
 
 #include "ftui/Activity.hpp"
