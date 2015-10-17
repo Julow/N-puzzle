@@ -50,10 +50,10 @@ HEAD_FLAGS		+= -I$(OCAML_FLAGS)
 LINK_FLAGS		+= -L$(OCAML_FLAGS) -lunix -lasmrun -lncurses
 
 # Jobs
-JOBS			:= 1
+JOBS			:= 4
 
 # Column output
-COLUMN_OUTPUT	:= 0
+COLUMN_OUTPUT	:= 1
 
 ifeq ($(COLUMN_OUTPUT),0)
 	PRINT_OK	= printf '\033[32m$<\033[0m\n'
@@ -117,11 +117,11 @@ $(ML_DIR)/%.cmx: $(ML_DIR)/%.ml
 	ocamlopt -I $(ML_DIR) -c $< && $(PRINT_OK)
 
 $(SOLVER): $(ML_OBJS)
-	ocamlopt -output-obj -o camlcode.o unix.cmxa $(filter %.cmx,$^)
+	ocamlopt -output-obj -o ./o/camlcode.o unix.cmxa $(filter %.cmx,$^)
 
 # Linking
 $(NAME): $(LIBS_DEPEND) $(O_FILES) $(SOLVER)
-	clang++ -o $@ $(O_FILES) camlcode.o $(LINK_FLAGS) && $(PRINT_LINK)
+	clang++ -o $@ $(O_FILES) ./o/camlcode.o $(LINK_FLAGS) && $(PRINT_LINK)
 
 # Compiling
 $(O_DIR)/%.o: %.c
@@ -161,5 +161,5 @@ re: fclean all
 _debug:
 	$(eval DEBUG_MODE = 1)
 
-
+.SILENT:
 .PHONY: all clean fclean re debug rebug _debug
