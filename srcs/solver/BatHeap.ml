@@ -36,7 +36,6 @@ module type H = sig
   val del_min   : t -> t
   val of_list   : elem list -> t
   val to_list   : t -> elem list
-  val elems     : t -> elem list
 end
 
 module Make (Ord : ORDEREDTYPE) = struct
@@ -149,8 +148,6 @@ module Make (Ord : ORDEREDTYPE) = struct
         aux (m :: acc) bh
     in
     List.rev (aux [] bh)
-
-  let elems = to_list
 
   let of_list l = List.fold_left insert empty l
 

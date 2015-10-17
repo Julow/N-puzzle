@@ -49,8 +49,6 @@ sig
   (** See {!BatHeap.of_list}. *)
   val to_list   : t -> elem list
   (** See {!BatHeap.to_list}. *)
-  val elems     : t -> elem list
-  (** @deprecated Same as [to_list]. *)
 end
 
 module Make (Ord : ORDEREDTYPE) : H with type elem = Ord.t
