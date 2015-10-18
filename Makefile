@@ -7,7 +7,7 @@ NAME		:= npuzzle
 DIRS		:= srcs include libftui/include
 
 # Git submodule to init
-MODULES		:= 
+MODULES		:=
 # Makefiles to call
 LIBS		:= libftui
 
@@ -108,6 +108,8 @@ endif
 
 ML_OBJS = $(addprefix $(ML_DIR)/,\
 	npuzzle.cmi\
+	GenericInterfaces.cmi\
+	GenericInterfaces.cmx\
 	BatHeap.cmi\
 	BatHeap.cmx\
 	Grid.cmi\

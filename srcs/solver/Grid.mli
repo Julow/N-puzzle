@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:12 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/17 17:26:14 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/18 15:40:39 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -14,7 +14,7 @@ type t = (int array) array
 
 module type HEURISTIC =
   sig
-	val calc        : t	-> int
+	include GenericInterfaces.HEURISTIC with type elt := t
   end
 
 (* Perf critical *)
