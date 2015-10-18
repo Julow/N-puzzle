@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 09:40:19 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/17 17:06:02 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/18 13:46:25 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -58,7 +58,7 @@ module MakeAStar (He: HEURISTIC) :SOLVER =
 		width 			: int;
 		total 			: int;
 		goal 			: Grid.t;
-		zero_abs_alias	: int;
+		zero_abs_alias	: int; (* Pivot index *)
 		mutable closed	: (Grid.t, unit) Hashtbl.t;
 		mutable opened	: StateBatHeap.t;
 	  }
