@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/19 17:34:55 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/19 18:12:29 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/19 18:28:33 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -63,10 +63,10 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 			 let succ_h = he succ_gra in
 			 let succ_sta = {
 				 State.graph    = succ_gra;
-				 State.g        = par_g + succ_h;
+				 State.g        = par_g + 1;
 				 State.h        = succ_h;
 			   } in
-			 if succ_h < 6 then
+			 if succ_h < 4 then
 			   State.print succ_sta;
 			 opened := StateBatHeap.insert !opened succ_sta
 		in
@@ -80,7 +80,7 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 		Hashtbl.add closed sta.State.graph ();
 		if Graph.equal sta.State.graph gragoal
 		then (
-		  Printf.eprintf "SOLVED\n%!";
+		  Printf.eprintf "AStar: SOLVED\n%!";
 		  [])
 		else (expand sta;
 			  aux ())
@@ -89,6 +89,6 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 		aux ()
 	  with
 	  | Invalid_argument("find_min") ->
-		 Printf.eprintf "NOT SOLVED\n%!";
+		 Printf.eprintf "AStar: NOT SOLVED\n%!";
 		 []
   end

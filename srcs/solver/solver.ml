@@ -6,12 +6,14 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/10/19 17:59:55 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/19 18:26:23 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
 module GridAStar : (GenericInterfaces.HEPATHFINDER
 					with type graph := Grid.t) = AStar.Make(Grid)
+module GridIDAStar : (GenericInterfaces.HEPATHFINDER
+					  with type graph := Grid.t) = IDAStar.Make(Grid)
 
 (* Solve *)
 let solve npuzzle =
@@ -37,6 +39,7 @@ let solve npuzzle =
   Printf.eprintf "\n%!";
 
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
+  GridIDAStar.solve abstgr goalgr GridHeuristics.Manhattan.calc;
   GridAStar.solve abstgr goalgr GridHeuristics.Manhattan.calc;
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
   ()

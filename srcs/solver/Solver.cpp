@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 15:43:35 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/16 20:03:05 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/10/19 18:21:29 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -51,7 +51,8 @@ begin
 		let res = caml_callback_exn(*f, (value)this) in // TODO: memory leak ?
 		if Is_exception_result(res) then
 			raise std::runtime_error("Fail to solve");
-	end
+end
+	throw std::runtime_error("Debug");
 end
 
 Grid const		&Solver::getGrid(void) const
