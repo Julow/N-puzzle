@@ -6,11 +6,9 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/18 13:09:04 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/19 16:35:38 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/19 16:37:23 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
-
-
 
 module GenericInterfaces =
   struct(* FILE ml *)

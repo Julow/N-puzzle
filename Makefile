@@ -172,5 +172,5 @@ re: fclean all
 _debug:
 	$(eval DEBUG_MODE = 1)
 
-# .SILENT:
+.SILENT:
 .PHONY: all clean fclean re debug rebug _debug

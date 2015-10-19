@@ -6,20 +6,20 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 17:10:40 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/18 15:42:10 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/19 17:04:48 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
 module Manhattan : Grid.HEURISTIC =
   struct
-	let calc gr =
-	  let s = Array.length gr in
+	let calc (mat, _) =
+	  let s = Array.length mat in
 	  let rec foreach_line y acc =
 		let rec foreach_cell x acc =
 		  if x == s
 		  then acc
 		  else (
-			let v = gr.(y).(x) in
+			let v = mat.(y).(x) in
 			let dstx = v mod s in
 			let dsty = v / s in
 			let dx = abs(x - dstx) in
@@ -36,7 +36,7 @@ module Manhattan : Grid.HEURISTIC =
 
 module Dijkstra : Grid.HEURISTIC =
   struct
-	let calc gr =
+	let calc _ =
 	  42
 
   end
