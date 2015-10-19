@@ -6,9 +6,11 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/18 13:09:04 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/19 15:14:17 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/19 15:38:45 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
+
+
 
 module GenericInterfaces =
   struct(* FILE ml *)
@@ -95,15 +97,9 @@ module Grid =
 
   end(* END OF FILE ml *)
 
-
-
-
-
 module type IDASTAR =
   sig(* FILE mli *)
-	(* include GenericInterfaces.HEPATHFINDER *)
 	module Make : GenericInterfaces.MAKE_HEPATHFINDER
-
   end(* END OF FILE mli *)
 
 
@@ -171,6 +167,76 @@ module IDAStar : IDASTAR =
 
   end(* END OF FILE ml *)
 
-(* module GridIDAStar = IDAStar.Make(Grid) *)
 module GridIDAStar : (GenericInterfaces.HEPATHFINDER
 					  with type graph := Grid.t) = IDAStar.Make(Grid)
+
+
+module type ASTAR =
+  sig(* FILE mli *)
+	module Make : GenericInterfaces.MAKE_HEPATHFINDER
+  end(* END OF FILE mli *)
+
+
+module AStar : ASTAR =
+  struct(* FILE ml *)
+
+	module Make : GenericInterfaces.MAKE_HEPATHFINDER =
+	  functor (Graph : GenericInterfaces.PATHFINDER_GRAPH) ->
+	  struct
+
+		type graph = Graph.t
+		module type STATE =
+		  sig
+			type t = {
+				graph	: graph;
+				g		: int;
+				h		: int;
+			  }
+			include GenericInterfaces.ORDEREDTYPE
+					with type t := t
+		  end
+		module State : STATE =
+		  struct
+			type t = {
+				graph	: graph;
+				g		: int;
+				h		: int;
+			  }
+			let compare a b =
+			  (a.g + a.h) - (b.g + b.h)
+		  end
+		module StateBatHeap = BatHeap.Make(State)
+
+		type opened = StateBatHeap.t
+
+		let solve grainit gragoal he =
+		  let stainit = {
+			  State.graph = grainit;
+			  State.g = 0;
+			  State.h = he grainit;
+			} in
+		  let opened = StateBatHeap.insert StateBatHeap.empty stainit in
+		  (* let rec aux () = *)
+		  (* 	let cur = StateBatHeap.find_min i.opened in *)
+		  (* 	i.opened <- StateBatHeap.del_min i.opened; *)
+		  (* 	Hashtbl.add i.closed cur.State.grid (); *)
+		  (* 	if is_goal cur i *)
+		  (* 	then (Printf.printf "SOLVED\n%!"; *)
+		  (* 		  State.print cur; *)
+		  (* 		  Grid.print_abs_to_snail cur.State.grid; *)
+		  (* 		  true) *)
+		  (* 	else (expand cur; *)
+		  (* 		  aux ()) *)
+		  (* in *)
+		  (* try *)
+		  (* aux (); *)
+		  (* with *)
+		  (* | Invalid_argument("find_min") -> false *)
+		  []
+
+	  end
+
+  end(* END OF FILE ml *)
+
+module GridAStar : (GenericInterfaces.HEPATHFINDER
+					with type graph := Grid.t) = AStar.Make(Grid)
