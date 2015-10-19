@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/18 13:09:04 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/19 14:36:45 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/19 15:14:17 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -17,31 +17,36 @@ module GenericInterfaces =
 		type t
 		val compare : t -> t -> int
 	  end
-	module type PATHFINDER =
+
+	module type HEPATHFINDER =
 	  sig
 		type graph
-		val solve : graph -> graph -> graph list
-	  end
-
-	module type HEURISTIC_PATHFINDER =
-	  sig
-		include PATHFINDER
 		val solve : graph -> graph -> (graph -> int) -> graph list
 	  end
+
+	module type PATHFINDER_GRAPH =
+	  sig
+		type t
+		val cost		: t -> t -> int
+		val equal		: t -> t -> bool
+		val successors	: t -> t list
+	  end
+
+	module type MAKE_HEPATHFINDER =
+	  functor (Graph : PATHFINDER_GRAPH) ->
+	  HEPATHFINDER with type graph := Graph.t
   end(* END OF FILE ml *)
 
 module Grid =
   struct(* FILE ml *)
 	type t = int array array * int
 
+	(* Perf critical *)
 	let pivxy piv =
 	  piv land 0xFF, piv lsr 8
 
 	let pivv x y =
 	  x + y lsl 8
-
-	let equal (gra, piva) (grb, pivb) =
-	  piva = pivb && gra = grb
 
 	let copy_mat mat =
 	  Array.map (fun line -> Array.copy line) mat
@@ -58,8 +63,13 @@ module Grid =
 	  mat'.(y).(x) <- v0;
 	  mat', pivv x y
 
+
+	(* Required by pathfinder *)
 	let cost _ _ =
 	  1
+
+	let equal (gra, piva) (grb, pivb) =
+	  piva = pivb && gra = grb
 
 	let successors ((mat, piv) as gr) =
 	  let w = Array.length mat in
@@ -89,94 +99,78 @@ module Grid =
 
 
 
-	(* module type ASTAR = *)
-	(*   sig(\* FILE mli *\) *)
-	(* 	include Grid.HEURISTIC_PATHFINDER *)
+module type IDASTAR =
+  sig(* FILE mli *)
+	(* include GenericInterfaces.HEPATHFINDER *)
+	module Make : GenericInterfaces.MAKE_HEPATHFINDER
 
-	(*   end(\* END OF FILE mli *\) *)
-
-
-	(* module AStar : ASTAR = *)
-	(*   struct(\* FILE ml *\) *)
-	(* 	type graph = Grid.t *)
-	(* 	module type STATE = *)
-	(* 	  sig *)
-	(* 		type t = { *)
-	(* 			graph	: graph; *)
-	(* 			g		: int; *)
-	(* 			h		: int; *)
-	(* 		  } *)
-	(* 		val compare : t -> t -> int *)
-	(* 	  end *)
-	(* 	module State : STATE = *)
-	(* 	  struct *)
-	(* 		type t = { *)
-	(* 			graph	: graph; *)
-	(* 			g		: int; *)
-	(* 			h		: int; *)
-	(* 		  } *)
-	(* 		let compare a b = *)
-	(* 		  (a.g + a.h) - (b.g + b.h) *)
-	(* 	  end *)
-
-	(* 	let solve (grinit:graph) grgoal he = *)
-	(* 	  [] *)
-
-	(*   end(\* END OF FILE ml *\) *)
-
-	(* module type IDASTAR = *)
-	(*   sig(\* FILE mli *\) *)
-	(* 	include Grid.HEURISTIC_PATHFINDER *)
-
-	(*   end(\* END OF FILE mli *\) *)
+  end(* END OF FILE mli *)
 
 
-	(* let equal gra grb = *)
-	(*   gra = grb *)
+module IDAStar : IDASTAR =
+  struct(* FILE ml *)
 
-	(* let cost gra grb = *)
-	(*   1 *)
+	module Make : GenericInterfaces.MAKE_HEPATHFINDER =
+	  functor (Graph : GenericInterfaces.PATHFINDER_GRAPH) ->
+	  struct
 
-	(* let successors gr = *)
-	(*   [] *)
+		type graph = Graph.t
+		(* 	module type STATE = *)
+		(* 	  sig *)
+		(* 		type t = { *)
+		(* 			graph	: graph; *)
+		(* 			g		: int; *)
+		(* 			h		: int; *)
+		(* 		  } *)
+		(* 		val compare : t -> t -> int *)
+		(* 	  end *)
+		(* 	module State : STATE = *)
+		(* 	  struct *)
+		(* 		type t = { *)
+		(* 			graph	: graph; *)
+		(* 			g		: int; *)
+		(* 			h		: int; *)
+		(* 		  } *)
+		(* 		let compare a b = *)
+		(* 		  (a.g + a.h) - (b.g + b.h) *)
+		(* 	  end *)
 
-	(* module IDAStar : IDASTAR = *)
-	(*   struct(\* FILE ml *\) *)
-	(* 	type graph = Grid.t *)
+		let solve grainit gragoal he =
 
-	(* 	let solve grinit grgoal he = *)
-	(* 	  (\* let bound = he grinit in *\) *)
+		  let rec search gra g threshold =
+		  	let f = g + (he gra) in
+		  	if f > threshold then
+		  	  f
+		  	else if Graph.equal gra gragoal then
+		  	  42
+		  	else
+		  	  min_successor gra g threshold
+		  and min_successor gra g threshold =
+		  	let rec aux successors decr =
+		  	  match successors with
+		  	  | hd::tl			->
+		  		 let v = search hd (g + (Graph.cost gra hd)) threshold in
+		  		 if v = 42
+		  		 then 42
+		  		 else aux tl (min v decr)
+		  	  | _				-> decr
+		  	in
+		  	aux (Graph.successors gra) max_int
+		  in
 
-	(* 	  let rec search gr g bound = *)
-	(* 		let f = g + (he gr) in *)
-	(* 		if f > bound then *)
-	(* 		  f *)
-	(* 		else if equal gr grgoal then *)
-	(* 		  42 *)
-	(* 		else *)
-	(* 		  min_successor gr g bound *)
-	(* 	  and min_successor gr g bound = *)
-	(* 		let rec aux successors decr = *)
-	(* 		  match successors with *)
-	(* 		  | hd::tl			-> *)
-	(* 			 let v = search hd (g + (cost gr hd)) bound in *)
-	(* 			 if v = 42 *)
-	(* 			 then 42 *)
-	(* 			 else aux tl (min v decr) *)
-	(* 		  | _				-> decr *)
-	(* 		in *)
-	(* 		aux (successors gr) max_int *)
+		  let rec aux threshold =
+		  	let threshold' = search grainit 0 threshold in
+		  	if threshold' = 42
+		  	then ()
+		  	else aux threshold'
+		  in
+		  aux (he grainit);
+		  []
 
-	(* 	  in *)
+	  end
 
-	(* 	  let rec aux bound = *)
-	(* 		let threshold = search grinit 0 bound in *)
-	(* 		if threshold = 42 *)
-	(* 		then () *)
-	(* 		else aux threshold *)
-	(* 	  in *)
-	(* 	  aux (he grinit); *)
+  end(* END OF FILE ml *)
 
-	(* 	  [] *)
-
-	(*   end(\* END OF FILE ml *\) *)
+(* module GridIDAStar = IDAStar.Make(Grid) *)
+module GridIDAStar : (GenericInterfaces.HEPATHFINDER
+					  with type graph := Grid.t) = IDAStar.Make(Grid)
