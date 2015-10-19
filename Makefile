@@ -112,6 +112,8 @@ ML_OBJS = $(addprefix $(ML_DIR)/,\
 	GenericInterfaces.cmx\
 	BatHeap.cmi\
 	BatHeap.cmx\
+	AStar.cmi\
+	AStar.cmx\
 	Grid.cmi\
 	Grid.cmx\
 	GridHeuristics.cmi\

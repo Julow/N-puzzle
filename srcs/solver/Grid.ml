@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:58 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/19 17:29:48 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/19 18:11:33 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -20,11 +20,12 @@ module type HEURISTIC =
 
 (* ************************************************************************** *)
 
+(* TODO: Protect versus x-overflow at 16383=2^(15-1)-1*)
 let pivxy piv =
-  piv land 0xFFFF, piv lsr 16
+  piv land 0x7FFF, piv lsr 15
 
 let pivv (x, y) =
-  x + y lsl 16
+  x + y lsl 15
 
 let copy_mat mat =
   Array.map (fun line -> Array.copy line) mat
@@ -35,9 +36,9 @@ let copy (mat, piv) =
 let copy_swap (mat, piv) (dx, dy) =
   let mat' = copy_mat mat in
   let x0, y0 = pivxy piv in
-  let v0 = mat'.(y0).(x0) in
+  let v0 = mat.(y0).(x0) in
   let (x, y) as pos = x0 + dx, y0 + dy in
-  mat'.(y0).(x0) <- mat'.(y0).(x0);
+  mat'.(y0).(x0) <- mat.(y).(x);
   mat'.(y).(x) <- v0;
   mat', pivv pos
 

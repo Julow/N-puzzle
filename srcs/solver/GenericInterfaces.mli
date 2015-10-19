@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/18 15:36:53 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/19 16:38:38 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/19 18:08:42 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -34,6 +34,7 @@ module type PATHFINDER_GRAPH =
 	val cost        : t -> t -> int
 	val equal       : t -> t -> bool
 	val successors  : t -> t list
+	val print		: t -> unit
   end
 
 module type MAKE_HEPATHFINDER =

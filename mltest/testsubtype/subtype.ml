@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/18 13:09:04 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/19 16:37:23 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/19 18:02:38 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -209,6 +209,7 @@ module AStar : ASTAR =
 		type closed = (graph, unit) Hashtbl.t
 
 		let solve grainit gragoal he =
+		  Printf.eprintf "AStar Solve begin!!\n%!";
 		  let stainit = {
 			  State.graph	= grainit;
 			  State.g		= 0;
@@ -240,15 +241,18 @@ module AStar : ASTAR =
 		  	opened := StateBatHeap.del_min !opened;
 		  	Hashtbl.add closed sta.State.graph ();
 		  	if Graph.equal sta.State.graph gragoal
-		  	then (Printf.printf "SOLVED\n%!";
-		  		  [])
+		  	then (
+			  Printf.eprintf "SOLVED!\n%!";
+		  	  [])
 		  	else (expand sta;
 		  		  aux ())
 		  in
 		  try
 			aux ()
 		  with
-		  | Invalid_argument("find_min") -> []
+		  | Invalid_argument("find_min") ->
+			 Printf.eprintf "NOT SOLVED\n%!";
+			 []
 
 	  end
 
