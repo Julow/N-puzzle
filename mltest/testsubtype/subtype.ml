@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/18 13:09:04 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/19 15:38:45 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/19 16:35:38 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -208,31 +208,49 @@ module AStar : ASTAR =
 		module StateBatHeap = BatHeap.Make(State)
 
 		type opened = StateBatHeap.t
+		type closed = (graph, unit) Hashtbl.t
 
 		let solve grainit gragoal he =
 		  let stainit = {
-			  State.graph = grainit;
-			  State.g = 0;
-			  State.h = he grainit;
+			  State.graph	= grainit;
+			  State.g		= 0;
+			  State.h		= he grainit;
 			} in
-		  let opened = StateBatHeap.insert StateBatHeap.empty stainit in
-		  (* let rec aux () = *)
-		  (* 	let cur = StateBatHeap.find_min i.opened in *)
-		  (* 	i.opened <- StateBatHeap.del_min i.opened; *)
-		  (* 	Hashtbl.add i.closed cur.State.grid (); *)
-		  (* 	if is_goal cur i *)
-		  (* 	then (Printf.printf "SOLVED\n%!"; *)
-		  (* 		  State.print cur; *)
-		  (* 		  Grid.print_abs_to_snail cur.State.grid; *)
-		  (* 		  true) *)
-		  (* 	else (expand cur; *)
-		  (* 		  aux ()) *)
-		  (* in *)
-		  (* try *)
-		  (* aux (); *)
-		  (* with *)
-		  (* | Invalid_argument("find_min") -> false *)
-		  []
+		  let opened = ref (StateBatHeap.insert StateBatHeap.empty stainit) in
+		  let closed = Hashtbl.create 10000 in
+
+		  let expand ({State.graph = par_gra; State.g = par_g;}) =
+			let try_add succ_gra =
+			  try
+				Hashtbl.find closed succ_gra
+			  with
+			  | Not_found       ->
+				 let succ_h = he succ_gra in
+				 let succ_sta = {
+					 State.graph	= succ_gra;
+					 State.g		= par_g + succ_h;
+					 State.h		= succ_h;
+				   } in
+				 opened := StateBatHeap.insert !opened succ_sta
+			in
+			List.iter try_add (Graph.successors par_gra);
+			()
+		  in
+
+		  let rec aux () =
+		  	let sta = StateBatHeap.find_min !opened in
+		  	opened := StateBatHeap.del_min !opened;
+		  	Hashtbl.add closed sta.State.graph ();
+		  	if Graph.equal sta.State.graph gragoal
+		  	then (Printf.printf "SOLVED\n%!";
+		  		  [])
+		  	else (expand sta;
+		  		  aux ())
+		  in
+		  try
+			aux ()
+		  with
+		  | Invalid_argument("find_min") -> []
 
 	  end
 
