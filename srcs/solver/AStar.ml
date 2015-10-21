@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/19 17:34:55 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/21 16:45:19 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/21 17:11:11 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -68,25 +68,48 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 
 	  let expand ({Candidate.graph = cur_gra; Candidate.g = cur_g;}) =
 		let try_add neig_gra =
+
+	  	  let neig_h = he neig_gra in
+		  let neig_g = cur_g + (Graph.cost cur_gra neig_gra) in
+		  let add infof =
+			let neig_f = neig_h + neig_g in
+	  		let neig_cdt = { Candidate.graph   = neig_gra;
+	  						 Candidate.g       = neig_g;
+	  						 Candidate.f     	= neig_f; } in
+	  		let neig_info = Opened { parent	= Some cur_gra;
+	  								 g			= neig_g;
+	  								 f			= neig_f; } in
+			if neig_h < 4 then
+			  Candidate.print neig_cdt;
+			candidates := BatHeap.insert !candidates neig_cdt;
+			infof infos neig_gra neig_info;
+			()
+		  in
 		  try
 			let info = Hashtbl.find infos neig_gra in
-			()
+			match info with
+			| Opened {g = g;} when neig_g < g
+			  ->
+			   add Hashtbl.replace;
+			   ()
+			| _ -> ()
 	  	  with
-	  	  | Not_found       ->
-	  		 let neig_h = he neig_gra in
-			 let neig_g = cur_g + (Graph.cost cur_gra neig_gra) in
-			 let neig_f = neig_h + neig_g in
-	  		 let neig_cdt = { Candidate.graph   = neig_gra;
-	  						  Candidate.g       = neig_g;
-	  						  Candidate.f     	= neig_f; } in
-	  		 let neig_info = Opened { parent	= Some neig_gra;
-	  								  g			= neig_g;
-	  								  f			= neig_f; } in
-			 if neig_h < 4 then
-			   Candidate.print neig_cdt;
-			 candidates := BatHeap.insert !candidates neig_cdt;
-			 Hashtbl.add infos neig_gra neig_info;
-			 ()
+	  	  | Not_found
+			-> add Hashtbl.add
+	  			   (* let neig_h = he neig_gra in *)
+				   (* let neig_g = cur_g + (Graph.cost cur_gra neig_gra) in *)
+				   (* let neig_f = neig_h + neig_g in *)
+	  			   (* let neig_cdt = { Candidate.graph   = neig_gra; *)
+	  			   (* 				  Candidate.g       = neig_g; *)
+	  			   (* 				  Candidate.f     	= neig_f; } in *)
+	  			   (* let neig_info = Opened { parent	= Some neig_gra; *)
+	  			   (* 						  g			= neig_g; *)
+	  			   (* 						  f			= neig_f; } in *)
+				   (* if neig_h < 4 then *)
+				   (*   Candidate.print neig_cdt; *)
+				   (* candidates := BatHeap.insert !candidates neig_cdt; *)
+				   (* Hashtbl.add infos neig_gra neig_info; *)
+				   (* () *)
 	  	in
 	  	List.iter try_add (Graph.successors cur_gra);
 	  	()
@@ -94,20 +117,23 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 
 	  let close_info graph =
 		let old_info = Hashtbl.find infos graph in
-		let new_info = match old_info with
-		  | Opened {parent = p; g = g; f = f;}
-			-> Closed {parent = p; g = g; f = f;}
-		  | _
-			->
-			 assert(false)
-			 (* Closed {parent = p; g = g; f = f;} *)
-		in
-		Hashtbl.replace infos graph new_info
-		(* new_info *)
+		match old_info with
+		| Opened {parent = p; g = g; f = f;}
+		  -> Hashtbl.replace infos graph (Closed {parent = p; g = g; f = f;})
+		| _
+		  ->
+		   (* Printf.eprintf "ICI LOL ??\n%!" *)
+		   ()
+						  (* assert(false) *)
+						  (* Closed {parent = p; g = g; f = f;} *)
+						  (* graph new_info *)
+						  (* new_info *)
 	  in
 
 	  let rec aux () =
 		let cdt = BatHeap.find_min !candidates in
+		(* Printf.eprintf "MIN IS: %!"; *)
+		(* Graph.print cdt.Candidate.graph; *)
 		candidates := BatHeap.del_min !candidates;
 		close_info cdt.Candidate.graph;
 		(* let info = get_new_info cdt.Candidate.graph in *)
