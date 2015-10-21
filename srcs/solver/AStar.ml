@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/19 17:34:55 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/21 17:11:11 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/21 18:36:50 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -44,9 +44,8 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 		let compare a b =
 		  a.f - b.f
 		let print sta =
-		  Printf.eprintf "g(%2d) f(%2d)\n%!" sta.g sta.f;
+		  Printf.eprintf "g(%2d) f(%2d) %!" sta.g sta.f;
 		  Graph.print sta.graph
-
 	  end
 	module BatHeap = BatHeap.Make(Candidate)
 
@@ -66,84 +65,56 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	  let infos = Hashtbl.create 10000 in (* Try a lot more *)
 	  Hashtbl.add infos gra_init info_init;
 
+	  (** 2.0 - Trying to expand successors *)
 	  let expand ({Candidate.graph = cur_gra; Candidate.g = cur_g;}) =
+		(** 3.0 - If already opened -> update info and push in opened *)
+		(** 3.1 - If already closed -> discard *)
+		(** 3.2 - If no info about it -> add info and push in opened *)
 		let try_add neig_gra =
-
 	  	  let neig_h = he neig_gra in
 		  let neig_g = cur_g + (Graph.cost cur_gra neig_gra) in
-		  let add infof =
+		  (** 4.0 - Adding in both containers *)
+		  let add info_insert =
 			let neig_f = neig_h + neig_g in
-	  		let neig_cdt = { Candidate.graph   = neig_gra;
-	  						 Candidate.g       = neig_g;
-	  						 Candidate.f     	= neig_f; } in
+	  		let neig_cdt = { Candidate.graph	= neig_gra;
+	  						 Candidate.g		= neig_g;
+	  						 Candidate.f		= neig_f; } in
 	  		let neig_info = Opened { parent	= Some cur_gra;
 	  								 g			= neig_g;
 	  								 f			= neig_f; } in
-			if neig_h < 4 then
+			if neig_h < 2 then
 			  Candidate.print neig_cdt;
 			candidates := BatHeap.insert !candidates neig_cdt;
-			infof infos neig_gra neig_info;
-			()
+			info_insert infos neig_gra neig_info
 		  in
 		  try
 			let info = Hashtbl.find infos neig_gra in
 			match info with
-			| Opened {g = g;} when neig_g < g
-			  ->
-			   add Hashtbl.replace;
-			   ()
-			| _ -> ()
+			| Opened {g = g;} when neig_g < g	-> add Hashtbl.replace
+			| _									-> ()
 	  	  with
-	  	  | Not_found
-			-> add Hashtbl.add
-	  			   (* let neig_h = he neig_gra in *)
-				   (* let neig_g = cur_g + (Graph.cost cur_gra neig_gra) in *)
-				   (* let neig_f = neig_h + neig_g in *)
-	  			   (* let neig_cdt = { Candidate.graph   = neig_gra; *)
-	  			   (* 				  Candidate.g       = neig_g; *)
-	  			   (* 				  Candidate.f     	= neig_f; } in *)
-	  			   (* let neig_info = Opened { parent	= Some neig_gra; *)
-	  			   (* 						  g			= neig_g; *)
-	  			   (* 						  f			= neig_f; } in *)
-				   (* if neig_h < 4 then *)
-				   (*   Candidate.print neig_cdt; *)
-				   (* candidates := BatHeap.insert !candidates neig_cdt; *)
-				   (* Hashtbl.add infos neig_gra neig_info; *)
-				   (* () *)
+	  	  | Not_found							-> add Hashtbl.add
 	  	in
-	  	List.iter try_add (Graph.successors cur_gra);
-	  	()
+	  	List.iter try_add (Graph.successors cur_gra)
 	  in
 
-	  let close_info graph =
-		let old_info = Hashtbl.find infos graph in
-		match old_info with
-		| Opened {parent = p; g = g; f = f;}
-		  -> Hashtbl.replace infos graph (Closed {parent = p; g = g; f = f;})
-		| _
-		  ->
-		   (* Printf.eprintf "ICI LOL ??\n%!" *)
-		   ()
-						  (* assert(false) *)
-						  (* Closed {parent = p; g = g; f = f;} *)
-						  (* graph new_info *)
-						  (* new_info *)
-	  in
-
+	  (** 1.0 - Main loop popping one candidate *)
+	  (** 1.1 - Expanding it if it was not closed in the meantime *)
 	  let rec aux () =
 		let cdt = BatHeap.find_min !candidates in
-		(* Printf.eprintf "MIN IS: %!"; *)
-		(* Graph.print cdt.Candidate.graph; *)
+		let cdt_graph = cdt.Candidate.graph in
 		candidates := BatHeap.del_min !candidates;
-		close_info cdt.Candidate.graph;
-		(* let info = get_new_info cdt.Candidate.graph in *)
-		(* Check cdt.dat = info.dat *)
-		if Graph.equal cdt.Candidate.graph gra_goal
-		then (
-		  Printf.eprintf "AStar: SOLVED\n%!";
+		if Graph.equal cdt_graph gra_goal then (
+		  Printf.eprintf "AStar: SOLVED!!!!!!!!\n%!";
 		  [])
-		else (expand cdt;
-			  aux ())
+		else match Hashtbl.find infos cdt_graph with
+			 | Opened {parent = p; g = g; f = f;} ->
+				let as_closed = Closed {parent = p; g = g; f = f;} in
+				Hashtbl.replace infos cdt_graph as_closed;
+				expand cdt;
+				aux ()
+			 | _ ->
+				aux ()
 	  in
 	  try
 		aux ()
