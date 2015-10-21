@@ -6,20 +6,30 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/19 17:34:55 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/19 18:28:33 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/21 15:29:36 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
+
 
 module Make : GenericInterfaces.MAKE_HEPATHFINDER =
   functor (Graph : GenericInterfaces.PATHFINDER_GRAPH) ->
   struct
 	type graph = Graph.t
+	type test = Closed of { graph	: graph;
+							parent	: graph;
+							g		: int;
+						  }
+			  | Opened of { graph	: graph;
+							parent	: graph;
+							g		: int;
+							f		: int;
+						  }
 	module type STATE =
 	  sig
 		type t = {
 			graph   : graph;
 			g       : int;
-			h       : int;
+			f       : int;
 		  }
 		include GenericInterfaces.ORDEREDTYPE
 				with type t := t
@@ -30,12 +40,12 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 		type t = {
 			graph   : graph;
 			g       : int;
-			h       : int;
+			f       : int;
 		  }
 		let compare a b =
-		  (a.g + a.h) - (b.g + b.h)
+		  a.f - b.f
 		let print sta =
-		  Printf.eprintf "g(%2d) h(%2d)\n%!" sta.g sta.h;
+		  Printf.eprintf "g(%2d) f(%2d)\n%!" sta.g sta.f;
 		  Graph.print sta.graph
 
 	  end
@@ -49,10 +59,10 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	  let stainit = {
 		  State.graph   = grainit;
 		  State.g       = 0;
-		  State.h       = he grainit;
+		  State.f       = he grainit;
 		} in
 	  let opened = ref (StateBatHeap.insert StateBatHeap.empty stainit) in
-	  let closed = Hashtbl.create 10000 in
+	  let closed = Hashtbl.create 10000 in (* Try a lot more *)
 
 	  let expand ({State.graph = par_gra; State.g = par_g;}) =
 		let try_add succ_gra =
@@ -64,7 +74,7 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 			 let succ_sta = {
 				 State.graph    = succ_gra;
 				 State.g        = par_g + 1;
-				 State.h        = succ_h;
+				 State.f        = succ_h + par_g + 1;
 			   } in
 			 if succ_h < 4 then
 			   State.print succ_sta;

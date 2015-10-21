@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/17 15:31:30 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/10/21 14:57:05 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -95,7 +95,7 @@ public:
 		_act(WIN_SIZEVI),
 		_puzzleSize(42)
 	{
-		
+
 
 		std::srand(time(NULL));
 		std::ifstream			stream("res/layout/npuzzleui.xml");
@@ -133,7 +133,7 @@ public:
 		_canvasHolder.init();
 
 		tiles.init(WIN_SIZEVI);
-		printViewTree(_act.getRoot());
+		// printViewTree(_act.getRoot());
 
 /*
 ** test
@@ -143,14 +143,14 @@ public:
 		// luaL_dostring(l, "ft.ptab(UIParent);");
 		// luaL_dostring(l, "ft.ptab(ALayout);");
 		// luaL_dostring(l, "ft.ptab(VerticalLayout);");
-		luaL_dostring(l, "ft.pchildren(UIParent);");
+		// luaL_dostring(l, "ft.pchildren(UIParent);");
 		// luaL_dostring(l, "setmetatable(ft, ft);");
 		// luaL_dostring(l, "ft.ptab(ft);");
-		std::cout << std::endl;
-			
-		luaL_dostring(l, "ft.pparents(solid_test);");
-		ftlua::stackdump(l);
-		
+		// std::cout << std::endl;
+
+		// luaL_dostring(l, "ft.pparents(solid_test);");
+		// ftlua::stackdump(l);
+
 		// luaL_dostring(l, "ft.ptab(_G);");
 		// std::cout << "caca4" << std::endl;
 		// luaL_dostring(l, "print('backgroundColor:'..solid_test:getBackgroundColor())");
@@ -197,7 +197,7 @@ public:
 	void				loop(void)
 	{
 		ftui::Canvas		canvas(_canvasHolder.getCanvas());
-	
+
 		while (!glfwWindowShouldClose(_window))
 		{
 			glfwPollEvents();
@@ -229,7 +229,7 @@ public:
 			return (1);
 		}
 public:
-	
+
 /*
 ** events
 */
