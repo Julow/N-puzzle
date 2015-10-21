@@ -86,7 +86,7 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 			  Candidate.print neig_cdt;
 			candidates := BatHeap.insert !candidates neig_cdt;
 			info_insert infos neig_gra neig_info
-		  in
+		  in (** 4. END *)
 		  try
 			let info = Hashtbl.find infos neig_gra in
 			match info with
@@ -94,9 +94,9 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 			| _									-> ()
 	  	  with
 	  	  | Not_found							-> add Hashtbl.add
-	  	in
+	  	in (** 3. END *)
 	  	List.iter try_add (Graph.successors cur_gra)
-	  in
+	  in (** 2. END *)
 
 	  (** 1.0 - Main loop popping one candidate *)
 	  (** 1.1 - Expanding it if it was not closed in the meantime *)
@@ -115,7 +115,7 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 				aux ()
 			 | _ ->
 				aux ()
-	  in
+	  in  (** 1. END *)
 	  try
 		aux ()
 	  with
