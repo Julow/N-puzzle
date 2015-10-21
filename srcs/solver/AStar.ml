@@ -6,25 +6,24 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/19 17:34:55 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/21 15:29:36 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/21 16:45:19 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
-
 
 module Make : GenericInterfaces.MAKE_HEPATHFINDER =
   functor (Graph : GenericInterfaces.PATHFINDER_GRAPH) ->
   struct
 	type graph = Graph.t
-	type test = Closed of { graph	: graph;
-							parent	: graph;
-							g		: int;
-						  }
-			  | Opened of { graph	: graph;
-							parent	: graph;
-							g		: int;
-							f		: int;
-						  }
-	module type STATE =
+
+	type parent = None | Some of graph
+	type graph_info = Closed of { parent	: parent;
+								  g			: int;
+								  f			: int; }
+					| Opened of { parent	: parent;
+								  g			: int;
+								  f			: int; }
+
+	module type CANDIDATE =
 	  sig
 		type t = {
 			graph   : graph;
@@ -35,7 +34,7 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 				with type t := t
 		val print	: t -> unit
 	  end
-	module State : STATE =
+	module Candidate : CANDIDATE =
 	  struct
 		type t = {
 			graph   : graph;
@@ -49,50 +48,75 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 		  Graph.print sta.graph
 
 	  end
-	module StateBatHeap = BatHeap.Make(State)
+	module BatHeap = BatHeap.Make(Candidate)
 
-	type opened = StateBatHeap.t
-	type closed = (graph, unit) Hashtbl.t
+	type opened_container = BatHeap.t
+	type info_container = (graph, graph_info) Hashtbl.t
 
-	let solve grainit gragoal he =
+	let solve gra_init gra_goal he =
 	  Printf.eprintf "AStar Beginning ...\n%!";
-	  let stainit = {
-		  State.graph   = grainit;
-		  State.g       = 0;
-		  State.f       = he grainit;
-		} in
-	  let opened = ref (StateBatHeap.insert StateBatHeap.empty stainit) in
-	  let closed = Hashtbl.create 10000 in (* Try a lot more *)
+	  let he_init = he gra_init in
+	  let cdt_init = { Candidate.graph  	 	= gra_init;
+					   Candidate.g   	    	= 0;
+					   Candidate.f       		= he_init; } in
+	  let info_init = Opened { parent			= None;
+							   g				= 0;
+							   f				= he_init; } in
+	  let candidates = ref (BatHeap.insert BatHeap.empty cdt_init) in
+	  let infos = Hashtbl.create 10000 in (* Try a lot more *)
+	  Hashtbl.add infos gra_init info_init;
 
-	  let expand ({State.graph = par_gra; State.g = par_g;}) =
-		let try_add succ_gra =
+	  let expand ({Candidate.graph = cur_gra; Candidate.g = cur_g;}) =
+		let try_add neig_gra =
 		  try
-			Hashtbl.find closed succ_gra
-		  with
-		  | Not_found       ->
-			 let succ_h = he succ_gra in
-			 let succ_sta = {
-				 State.graph    = succ_gra;
-				 State.g        = par_g + 1;
-				 State.f        = succ_h + par_g + 1;
-			   } in
-			 if succ_h < 4 then
-			   State.print succ_sta;
-			 opened := StateBatHeap.insert !opened succ_sta
+			let info = Hashtbl.find infos neig_gra in
+			()
+	  	  with
+	  	  | Not_found       ->
+	  		 let neig_h = he neig_gra in
+			 let neig_g = cur_g + (Graph.cost cur_gra neig_gra) in
+			 let neig_f = neig_h + neig_g in
+	  		 let neig_cdt = { Candidate.graph   = neig_gra;
+	  						  Candidate.g       = neig_g;
+	  						  Candidate.f     	= neig_f; } in
+	  		 let neig_info = Opened { parent	= Some neig_gra;
+	  								  g			= neig_g;
+	  								  f			= neig_f; } in
+			 if neig_h < 4 then
+			   Candidate.print neig_cdt;
+			 candidates := BatHeap.insert !candidates neig_cdt;
+			 Hashtbl.add infos neig_gra neig_info;
+			 ()
+	  	in
+	  	List.iter try_add (Graph.successors cur_gra);
+	  	()
+	  in
+
+	  let close_info graph =
+		let old_info = Hashtbl.find infos graph in
+		let new_info = match old_info with
+		  | Opened {parent = p; g = g; f = f;}
+			-> Closed {parent = p; g = g; f = f;}
+		  | _
+			->
+			 assert(false)
+			 (* Closed {parent = p; g = g; f = f;} *)
 		in
-		List.iter try_add (Graph.successors par_gra);
-		()
+		Hashtbl.replace infos graph new_info
+		(* new_info *)
 	  in
 
 	  let rec aux () =
-		let sta = StateBatHeap.find_min !opened in
-		opened := StateBatHeap.del_min !opened;
-		Hashtbl.add closed sta.State.graph ();
-		if Graph.equal sta.State.graph gragoal
+		let cdt = BatHeap.find_min !candidates in
+		candidates := BatHeap.del_min !candidates;
+		close_info cdt.Candidate.graph;
+		(* let info = get_new_info cdt.Candidate.graph in *)
+		(* Check cdt.dat = info.dat *)
+		if Graph.equal cdt.Candidate.graph gra_goal
 		then (
 		  Printf.eprintf "AStar: SOLVED\n%!";
 		  [])
-		else (expand sta;
+		else (expand cdt;
 			  aux ())
 	  in
 	  try
