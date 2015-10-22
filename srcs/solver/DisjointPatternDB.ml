@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/22 09:56:27 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/22 14:05:57 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/22 14:32:45 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -30,10 +30,12 @@ let print dbs =
 	let grid_size = db.grid_w * db.grid_w in
 	let bytes = fact_div grid_size (grid_size - db.n_nbrs) in
 	let bytes = (float bytes) /. 1000000. in
-	Printf.eprintf "%d (was %d) (%6.2fBytes) %2d nbrs: %!"
+	Printf.eprintf "%d (was %d) (%10.6fMBytes) %2d nbrs: %!"
 				   i db.input_id bytes db.n_nbrs;
 	let aux' nbr = Printf.eprintf "%-2d %!" nbr in
 	List.iter aux' db.nbrs;
+	Printf.eprintf "\n\t %d paddings: %!" (Array.length db.paddings);
+	Array.iter aux' db.paddings;
 	Printf.eprintf "\n%!"
   in
   Array.iteri aux dbs
@@ -100,22 +102,22 @@ let build_data db =
 (* List.iter (fun v -> cell_in_pattern.(v) <- true) cell_in_pattern; *)
 
 
-
-
 (** 1.3.2 Build 'paddings' table inside bitfield *)
-let build_paddings w n =
-  let n_cell = w * w in
-  let bytes = fact_div n_cell (n_cell - n) in
-  let a = Array.make (n_cell - n) 0 in
+let build_paddings w ncell_pattern =
+  let ncell = w * w in
+  let bytes = fact_div ncell (ncell - ncell_pattern) in
+  (* Printf.eprintf "ncell=%d  ncell_pattern=%d\n%!" ncell ncell_pattern; *)
+  let a = Array.make ncell_pattern 42 in
   let rec aux i nelt pad =
-	if i < n
+	(* Printf.eprintf "i=%d  pad=%d\n%!" i pad; *)
+	if i < ncell_pattern
 	then (let nelt' = nelt - 1 in
 		  a.(i) <- pad;
 		  assert(pad > 0);
 		  aux (i + 1) nelt' (pad / nelt'))
 	else assert(pad = 0)
   in
-  aux 0 n_cell (bytes / n_cell);
+  aux 0 ncell (bytes / ncell);
   a
 
 (** 1.3.1 Alloc bitfield *)
@@ -155,7 +157,7 @@ let init_pattern_structure grid =
   Grid.iter_cells grid aux;
   (** 1.3 Finalize and reorder patterns *)
   let aux db =
-	assert(db.n_nbrs > 2);
+	(* assert(db.n_nbrs > 0); *)
 	{db with
 	  nbrs = List.rev db.nbrs;
 	  data = alloc_data w db.n_nbrs;
