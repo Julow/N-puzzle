@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/22 09:56:27 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/22 15:57:53 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/22 16:44:18 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -90,18 +90,41 @@ let index_of_rawindices db raw_indices =
   in
   aux 0 0
 
-(* let rawindices_of_matrix mat cell_ownership = *)
+let allrawindices_of_matrix mat dbs =
+  let aux dbid =
+	Array.create dbs.dbs.(dbid).n_nbrs 42
+  in
+  let a = Array.init (Array.length dbs.dbs) aux in
+  let ownership = dbs.cell_ownership in
+  let aux i _ _ v =
+	if v >= 0
+	then (let (dbid, cid) = ownership.(v) in
+		  a.(dbid).(cid) <- i)
+  in
+  Grid.iter_cells mat aux;
+  a
 
+let onerawindices_of_matrix mat dbs dbid =
+  let a = Array.create dbs.dbs.(dbid).n_nbrs 42 in
+  let ownership = dbs.cell_ownership in
+  let aux i _ _ v =
+	if v >= 0
+	then (let (dbid', cid) = ownership.(v) in
+		  if dbid' = dbid
+		  then a.(cid) <- i)
+  in
+  Grid.iter_cells mat aux;
+  a
 
-let get dbs dbid raw_indices =
-  let db = dbs.(dbid) in
-  let i = index_of_rawindices db raw_indices in
-  int_of_char (Bytes.get db.data i)
+(* let get dbs dbid raw_indices = *)
+(*   let db = dbs.(dbid) in *)
+(*   let i = index_of_rawindices db raw_indices in *)
+(*   int_of_char (Bytes.get db.data i) *)
 
 (* ************************************************************************** *)
 
 let build_datas (dbs:t) =
-  let build_data (db:db) =
+  let build_data dbid (db:db) =
 	let (mat, _) as grid = Grid.goal db.grid_w in
 	(** 3.1 Build a grid with uninvolved cells at -1 *)
 	let aux i x y v =
@@ -113,6 +136,24 @@ let build_datas (dbs:t) =
 	in
 	Grid.iter_cells mat aux;
 	Grid.print grid;
+
+	(* let allrawindices = allrawindices_of_matrix mat dbs in *)
+	(* Array.iter (fun rawindices -> *)
+	(* 			Printf.eprintf "SALUT %!"; *)
+	(* 			Printf.eprintf "%d indices: %!" (Array.length rawindices); *)
+	(* 			Array.iter (fun i -> *)
+	(* 						Printf.eprintf "%3d %!" i; *)
+	(* 					   ) rawindices; *)
+	(* 			Printf.eprintf "\n%!"; *)
+	(* 		   ) allrawindices; *)
+
+	(* let rawindices = onerawindices_of_matrix mat dbs dbid in *)
+	(* Printf.eprintf "BONJOUR %!"; *)
+	(* Array.iter (fun i -> *)
+	(* 			Printf.eprintf "%3d %!" i; *)
+	(* 		   ) rawindices; *)
+	(* Printf.eprintf "\n%!"; *)
+
 	(* let i = index_of_rawindices db [|0; 1; 2; 3; 4; 5; 6; 7|] in *)
 	(* let i = index_of_rawindices db [|15; 14; 13; 12; 11; 10; 9; 8|] in *)
 	(* let i = index_of_rawindices db [|1; 5; 6; 7; 2; 10; 15; 14|] in *)
@@ -122,6 +163,7 @@ let build_datas (dbs:t) =
 	let default = 255 in
 	let tot = fact_div ncell (ncell - db.n_nbrs) in
 	let q = Queue.create () in
+
 
 	(* let rec aux inputed = *)
 	(* 	if inputed < tot then ( *)
@@ -133,7 +175,7 @@ let build_datas (dbs:t) =
 	(* aux 0; *)
 	db
   in
-  Array.map build_data dbs.dbs
+  Array.mapi build_data dbs.dbs
 
 (* let cell_in_pattern = Array.make (db.w * db.w) false in *)
 (* List.iter (fun v -> cell_in_pattern.(v) <- true) cell_in_pattern; *)
