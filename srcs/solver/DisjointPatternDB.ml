@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/22 09:56:27 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/22 15:17:54 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/22 15:57:53 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -90,7 +90,7 @@ let index_of_rawindices db raw_indices =
   in
   aux 0 0
 
-(* let index_of_matrix db = *)
+(* let rawindices_of_matrix mat cell_ownership = *)
 
 
 let get dbs dbid raw_indices =
@@ -100,37 +100,41 @@ let get dbs dbid raw_indices =
 
 (* ************************************************************************** *)
 
-let build_data (db:db) =
-  let (mat, _) as grid = Grid.goal db.grid_w in
-  (** 3.1 Build a grid with uninvolved cells at -1 *)
-  let aux i x y v =
-	try
-	  ignore(List.find (fun v' -> v = v') db.nbrs)
-	with
-	| Not_found ->
-	   mat.(y).(x) <- -1;
+let build_datas (dbs:t) =
+  let build_data (db:db) =
+	let (mat, _) as grid = Grid.goal db.grid_w in
+	(** 3.1 Build a grid with uninvolved cells at -1 *)
+	let aux i x y v =
+	  try
+		ignore(List.find (fun v' -> v = v') db.nbrs)
+	  with
+	  | Not_found ->
+		 mat.(y).(x) <- -1;
+	in
+	Grid.iter_cells mat aux;
+	Grid.print grid;
+	(* let i = index_of_rawindices db [|0; 1; 2; 3; 4; 5; 6; 7|] in *)
+	(* let i = index_of_rawindices db [|15; 14; 13; 12; 11; 10; 9; 8|] in *)
+	(* let i = index_of_rawindices db [|1; 5; 6; 7; 2; 10; 15; 14|] in *)
+	(* Printf.eprintf "GOT i=%d\n%!" i; *)
+	let ncell = db.grid_w * db.grid_w in
+	let dat = db.data in
+	let default = 255 in
+	let tot = fact_div ncell (ncell - db.n_nbrs) in
+	let q = Queue.create () in
+
+	(* let rec aux inputed = *)
+	(* 	if inputed < tot then ( *)
+	(* 	  let state = Queue.pop q in *)
+
+	(* 	) *)
+	(* in *)
+	(* Queue.push grid; *)
+	(* aux 0; *)
+	db
   in
-  Grid.iter_cells mat aux;
-  Grid.print grid;
-  (* let i = index_of_rawindices db [|0; 1; 2; 3; 4; 5; 6; 7|] in *)
-  (* let i = index_of_rawindices db [|15; 14; 13; 12; 11; 10; 9; 8|] in *)
-  (* let i = index_of_rawindices db [|1; 5; 6; 7; 2; 10; 15; 14|] in *)
-  (* Printf.eprintf "GOT i=%d\n%!" i; *)
-  let ncell = db.grid_w * db.grid_w in
-  let dat = db.data in
-  let default = 255 in
-  let tot = fact_div ncell (ncell - db.n_nbrs) in
-  let q = Queue.create () in
+  Array.map build_data dbs.dbs
 
-  (* let rec aux inputed = *)
-  (* 	if inputed < tot then ( *)
-  (* 	  let state = Queue.pop q in *)
-
-  (* 	) *)
-  (* in *)
-  (* Queue.push grid; *)
-  (* aux 0; *)
-  db
 (* let cell_in_pattern = Array.make (db.w * db.w) false in *)
 (* List.iter (fun v -> cell_in_pattern.(v) <- true) cell_in_pattern; *)
 
@@ -223,4 +227,4 @@ let build grid =
 	  cell_ownership	= build_ownerships empty_dbs;
 	} in
   print holder;
-  Array.map build_data empty_dbs
+  build_datas holder
