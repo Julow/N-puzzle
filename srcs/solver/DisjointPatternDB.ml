@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/22 09:56:27 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/22 18:32:01 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/22 18:47:42 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -75,14 +75,12 @@ let refine_indices raw =
   a
 
 let index_of_rawindices db raw_indices =
+  let refined_indices = refine_indices raw_indices in
   (* Array.iter (fun v -> Printf.eprintf "%2d %!" v) raw_indices; *)
   (* Printf.eprintf "\n%!"; *)
-  let refined_indices = refine_indices raw_indices in
   (* Array.iter (fun v -> Printf.eprintf "%2d %!" v) refined_indices; *)
   (* Printf.eprintf "\n%!"; *)
   let s = Array.length raw_indices in
-  (* Printf.eprintf "%d Array.length raw_indices \n%!" s; *)
-  (* Printf.eprintf "%d Array.length db.paddings \n%!" (Array.length db.paddings); *)
   assert(s = (Array.length db.paddings));
   let rec aux i acc =
 	if i < s
@@ -139,29 +137,7 @@ let build_datas (dbs:t) =
 	Grid.iter_cells mat aux;
 	Grid.print grid;
 
-	(* let allrawindices = allrawindices_of_matrix mat dbs in *)
-	(* Array.iter (fun rawindices -> *)
-	(* 			Printf.eprintf "SALUT %!"; *)
-	(* 			Printf.eprintf "%d indices: %!" (Array.length rawindices); *)
-	(* 			Array.iter (fun i -> *)
-	(* 						Printf.eprintf "%3d %!" i; *)
-	(* 					   ) rawindices; *)
-	(* 			Printf.eprintf "\n%!"; *)
-	(* 		   ) allrawindices; *)
-
-	(* let rawindices = onerawindices_of_matrix mat dbs dbid in *)
-	(* Printf.eprintf "BONJOUR %!"; *)
-	(* Array.iter (fun i -> *)
-	(* 			Printf.eprintf "%3d %!" i; *)
-	(* 		   ) rawindices; *)
-	(* Printf.eprintf "\n%!"; *)
-
-	(* let i = index_of_rawindices db [|0; 1; 2; 3; 4; 5; 6; 7|] in *)
-	(* let i = index_of_rawindices db [|15; 14; 13; 12; 11; 10; 9; 8|] in *)
-	(* let i = index_of_rawindices db [|1; 5; 6; 7; 2; 10; 15; 14|] in *)
-	(* Printf.eprintf "GOT i=%d\n%!" i; *)
 	let ncell = db.grid_w * db.grid_w in
-	(* let dat = db.data in *)
 	let default = 255 in
 	let tot = fact_div ncell (ncell - db.n_nbrs) in
 	let q = Queue.create () in
@@ -189,15 +165,13 @@ let build_datas (dbs:t) =
 			 (* let i' = index_of_rawindices db rawindices' in *)
 			 (* let v' = get db i' in *)
 			 (* if v' = default then *)
+			 (* if not (mat' = mat) then *)
 			 Queue.push (state', g + 1) q;
 			 aux' tl
 		  | _			-> ()
 		in
 		aux' (Grid.successors state);
 		aux (inputed + 1)
-
-	  (* else *)
-	  (* aux inputed *)
 	  )
 	in
 	Queue.push (grid, 0) q;
@@ -208,18 +182,13 @@ let build_datas (dbs:t) =
   in
   Array.mapi build_data dbs.dbs
 
-(* let cell_in_pattern = Array.make (db.w * db.w) false in *)
-(* List.iter (fun v -> cell_in_pattern.(v) <- true) cell_in_pattern; *)
-
 
 (** 1.3.2 Build 'paddings' table inside bitfield *)
 let build_paddings w ncell_pattern =
   let ncell = w * w in
   let bytes = fact_div ncell (ncell - ncell_pattern) in
-  (* Printf.eprintf "ncell=%d  ncell_pattern=%d\n%!" ncell ncell_pattern; *)
   let a = Array.make ncell_pattern 42 in
   let rec aux i nelt pad =
-	(* Printf.eprintf "i=%d  pad=%d\n%!" i pad; *)
 	if i < ncell_pattern
 	then (let nelt' = nelt - 1 in
 		  a.(i) <- pad;
@@ -268,7 +237,6 @@ let init_pattern_structure grid =
   assert(List.length !dbs > 0);
   (** 1.3 Finalize and reorder patterns *)
   let aux db =
-	(* assert(db.n_nbrs > 0); *)
 	{db with
 	  nbrs = List.rev db.nbrs;
 	  data = alloc_data w db.n_nbrs;
