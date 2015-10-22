@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/22 09:56:27 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/22 16:44:18 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/22 18:32:01 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -62,22 +62,23 @@ let refine_indices raw =
   let a = Array.copy raw in
   for i = 0 to last do
 	let v = a.(i) in
+	assert(v < 16 - i);
 	for j = i + 1 to last do
 	  let v' = a.(j) in
-	  (* Printf.eprintf "v'=%2d  max=%2d\n%!" v' (16 - 1 - j); *)
-	  if v' > v
+	  (* Printf.eprintf "ij(%d,%d) v'(%2d) < max(%2d)\n%!" i j v' (16 - j); *)
+	  (* Printf.eprintf "\n%!"; *)
+	  if v' >= v
 	  then (assert(v' > 0);
 			a.(j) <- v' - 1)
-	  else assert(v' <= 16 - 1 - j)
 	done
   done;
   a
 
 let index_of_rawindices db raw_indices =
-  let rafined_indices = refine_indices raw_indices in
   (* Array.iter (fun v -> Printf.eprintf "%2d %!" v) raw_indices; *)
   (* Printf.eprintf "\n%!"; *)
-  (* Array.iter (fun v -> Printf.eprintf "%2d %!" v) rafined_indices; *)
+  let refined_indices = refine_indices raw_indices in
+  (* Array.iter (fun v -> Printf.eprintf "%2d %!" v) refined_indices; *)
   (* Printf.eprintf "\n%!"; *)
   let s = Array.length raw_indices in
   (* Printf.eprintf "%d Array.length raw_indices \n%!" s; *)
@@ -85,14 +86,14 @@ let index_of_rawindices db raw_indices =
   assert(s = (Array.length db.paddings));
   let rec aux i acc =
 	if i < s
-	then aux (i + 1) (acc + raw_indices.(i) * db.paddings.(i))
+	then aux (i + 1) (acc + refined_indices.(i) * db.paddings.(i))
 	else acc
   in
   aux 0 0
 
 let allrawindices_of_matrix mat dbs =
   let aux dbid =
-	Array.create dbs.dbs.(dbid).n_nbrs 42
+	Array.make dbs.dbs.(dbid).n_nbrs 42
   in
   let a = Array.init (Array.length dbs.dbs) aux in
   let ownership = dbs.cell_ownership in
@@ -105,7 +106,7 @@ let allrawindices_of_matrix mat dbs =
   a
 
 let onerawindices_of_matrix mat dbs dbid =
-  let a = Array.create dbs.dbs.(dbid).n_nbrs 42 in
+  let a = Array.make dbs.dbs.(dbid).n_nbrs 42 in
   let ownership = dbs.cell_ownership in
   let aux i _ _ v =
 	if v >= 0
@@ -116,10 +117,11 @@ let onerawindices_of_matrix mat dbs dbid =
   Grid.iter_cells mat aux;
   a
 
-(* let get dbs dbid raw_indices = *)
-(*   let db = dbs.(dbid) in *)
-(*   let i = index_of_rawindices db raw_indices in *)
-(*   int_of_char (Bytes.get db.data i) *)
+let get db i =
+  int_of_char (Bytes.get db.data i)
+
+let set db i v =
+  Bytes.set db.data i (char_of_int v)
 
 (* ************************************************************************** *)
 
@@ -159,20 +161,49 @@ let build_datas (dbs:t) =
 	(* let i = index_of_rawindices db [|1; 5; 6; 7; 2; 10; 15; 14|] in *)
 	(* Printf.eprintf "GOT i=%d\n%!" i; *)
 	let ncell = db.grid_w * db.grid_w in
-	let dat = db.data in
+	(* let dat = db.data in *)
 	let default = 255 in
 	let tot = fact_div ncell (ncell - db.n_nbrs) in
 	let q = Queue.create () in
+	Printf.eprintf "Looking for %d nodes with bfs :(\n%!" tot;
 
+	let rec aux inputed =
+	  if inputed < tot then (
+		let (((mat, _) as state), g) = Queue.pop q in
 
-	(* let rec aux inputed = *)
-	(* 	if inputed < tot then ( *)
-	(* 	  let state = Queue.pop q in *)
+		if inputed mod 100000 = 0 then
+		  Printf.eprintf "g(%2d) Queue(%9d) Inputed(%9d)(%.6f)\n%!"
+						 g (Queue.length q) inputed
+						 ((float inputed) /. (float tot));
 
-	(* 	) *)
-	(* in *)
-	(* Queue.push grid; *)
-	(* aux 0; *)
+		let rawindices = onerawindices_of_matrix mat dbs dbid in
+		let i = index_of_rawindices db rawindices in
+		let v = get db i in
+		(* Printf.eprintf "\n%!"; *)
+		(* Grid.print state; *)
+		(* Printf.eprintf "i(%9d)->v(%d)\n%!" i v; *)
+		if v = default then set db i g;
+		let rec aux' = function
+		  | ((mat', _) as state')::tl	->
+			 (* let rawindices' = onerawindices_of_matrix mat' dbs dbid in *)
+			 (* let i' = index_of_rawindices db rawindices' in *)
+			 (* let v' = get db i' in *)
+			 (* if v' = default then *)
+			 Queue.push (state', g + 1) q;
+			 aux' tl
+		  | _			-> ()
+		in
+		aux' (Grid.successors state);
+		aux (inputed + 1)
+
+	  (* else *)
+	  (* aux inputed *)
+	  )
+	in
+	Queue.push (grid, 0) q;
+	aux 0;
+	Printf.eprintf "DONE\n%!";
+
 	db
   in
   Array.mapi build_data dbs.dbs
