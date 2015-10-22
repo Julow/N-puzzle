@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/22 09:56:27 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/22 13:47:40 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/22 14:05:57 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -45,16 +45,24 @@ let rafine_indices raw =
 	let v = a.(i) in
 	for j = i + 1 to last do
 	  let v' = a.(j) in
+	  (* Printf.eprintf "v'=%2d  max=%2d\n%!" v' (16 - 1 - j); *)
 	  if v' > v
 	  then (assert(v' > 0);
 			a.(j) <- v' - 1)
+	  else assert(v' <= 16 - 1 - j)
 	done
   done;
   a
 
 let index_of_rawindices db raw_indices =
   let rafined_indices = rafine_indices raw_indices in
+  (* Array.iter (fun v -> Printf.eprintf "%2d %!" v) raw_indices; *)
+  (* Printf.eprintf "\n%!"; *)
+  (* Array.iter (fun v -> Printf.eprintf "%2d %!" v) rafined_indices; *)
+  (* Printf.eprintf "\n%!"; *)
   let s = Array.length raw_indices in
+  (* Printf.eprintf "%d Array.length raw_indices \n%!" s; *)
+  (* Printf.eprintf "%d Array.length db.paddings \n%!" (Array.length db.paddings); *)
   assert(s = (Array.length db.paddings));
   let rec aux i acc =
 	if i < s
@@ -66,10 +74,6 @@ let index_of_rawindices db raw_indices =
 let get dbs dbid raw_indices =
   let db = dbs.(dbid) in
   let i = index_of_rawindices db raw_indices in
-  (* Array.iter (fun v -> Printf.eprintf "%2d %!" v) raw_indices; *)
-  (* Printf.eprintf "\n%!"; *)
-  (* Array.iter (fun v -> Printf.eprintf "%2d %!" v) rafined_indices; *)
-  (* Printf.eprintf "\n%!"; *)
   int_of_char (Bytes.get db.data i)
 
 (* ************************************************************************** *)
@@ -86,7 +90,11 @@ let build_data db =
   in
   Grid.iter_cells mat aux;
   Grid.print grid;
-  (* access [|1; 5; 6; 7; 2; 10; 54|]; *)
+  (* let i = index_of_rawindices db [|0; 1; 2; 3; 4; 5; 6; 7|] in *)
+  (* let i = index_of_rawindices db [|15; 14; 13; 12; 11; 10; 9; 8|] in *)
+  (* let i = index_of_rawindices db [|1; 5; 6; 7; 2; 10; 15; 14|] in *)
+  (* Printf.eprintf "GOT i=%d\n%!" i; *)
+
   db
 (* let cell_in_pattern = Array.make (db.w * db.w) false in *)
 (* List.iter (fun v -> cell_in_pattern.(v) <- true) cell_in_pattern; *)
