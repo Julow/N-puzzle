@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/10/21 18:24:53 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/22 11:28:13 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -71,10 +71,26 @@ let solve npuzzle =
   Printf.eprintf "\n%!";
   Grid.print goalgr;
   Printf.eprintf "\n%!";
+  (* let dps = [|[|-1;-1;-1; 1|]; *)
+  (* 			  [|-1;-1;-1; 1|]; *)
+  (* 			  [|-1;-1;-1; 1|]; *)
+  (* 			  [| 1; 1; 1; 1|];|] in *)
+  let dps = [|[|5 ;5 ;5; 1|];
+  			  [|5; 5; 5; 1|];
+  			  [|5;-1; 5; 1|];
+  			  [|1; 1; 1; 1|];|] in
+  let dpdb = DisjointPatternDB.build dps in
+  Printf.eprintf "RETURN TO MAIN\n%!";
 
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
-  GridIDAStar.solve abstgr goalgr GridHeuristics.Manhattan.calc;
+  let t = Unix.gettimeofday () in
   GridAStar.solve abstgr goalgr GridHeuristics.Manhattan.calc;
+  Printf.eprintf "%f sec to solve\n%!" (Unix.gettimeofday () -. t);
+
+  (* let t = Unix.gettimeofday () in *)
+  (* GridIDAStar.solve abstgr goalgr GridHeuristics.Manhattan.calc; *)
+  (* Printf.eprintf "%f sec to solve\n%!" (Unix.gettimeofday () -. t); *)
+
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
   ()
 
