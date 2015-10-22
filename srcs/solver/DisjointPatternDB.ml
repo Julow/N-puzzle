@@ -6,17 +6,23 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/22 09:56:27 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/22 14:32:45 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/22 15:17:54 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
-type bd = {
+type db = {
 	grid_w			: int;
 	input_id		: int;
 	nbrs			: int list;
 	n_nbrs			: int;
-	data			: bytes;
 	paddings		: int array;
+	data			: bytes;
+  }
+
+type t = {
+	dbs				: db array;
+	(* grid_w			: int; *)
+	cell_ownership	: (int * int) array;
   }
 
 (* ************************************************************************** *)
@@ -24,23 +30,34 @@ type bd = {
 let rec fact_div x y =
   if x <= y then 1 else x * fact_div (x - 1) y
 
-let print dbs =
-  Printf.eprintf "%d Databases\n%!" (Array.length dbs);
-  let aux i db =
-	let grid_size = db.grid_w * db.grid_w in
-	let bytes = fact_div grid_size (grid_size - db.n_nbrs) in
-	let bytes = (float bytes) /. 1000000. in
-	Printf.eprintf "%d (was %d) (%10.6fMBytes) %2d nbrs: %!"
-				   i db.input_id bytes db.n_nbrs;
-	let aux' nbr = Printf.eprintf "%-2d %!" nbr in
-	List.iter aux' db.nbrs;
-	Printf.eprintf "\n\t %d paddings: %!" (Array.length db.paddings);
-	Array.iter aux' db.paddings;
-	Printf.eprintf "\n%!"
-  in
-  Array.iteri aux dbs
+let print_one (db:db) =
+  let grid_size = db.grid_w * db.grid_w in
+  let bytes = fact_div grid_size (grid_size - db.n_nbrs) in
+  let bytes = (float bytes) /. 1000000. in
+  Printf.eprintf "(was %d) (%10.6fMBytes) %2d nbrs: %!"
+				 db.input_id bytes db.n_nbrs;
+  let aux' nbr = Printf.eprintf "%-2d %!" nbr in
+  List.iter aux' db.nbrs;
+  Printf.eprintf "\n\t %d paddings: %!" (Array.length db.paddings);
+  Array.iter aux' db.paddings;
+  Printf.eprintf "\n%!"
 
-let rafine_indices raw =
+let print dbs =
+  Printf.eprintf "%d Databases\n%!" (Array.length dbs.dbs);
+  Printf.eprintf "%6s: %!" "Cells";
+  Array.iteri (fun i _ -> Printf.eprintf "%-3d %!" i) dbs.cell_ownership;
+  Printf.eprintf "\n%!";
+  Printf.eprintf "%6s: %!" "DBid";
+  Array.iter (fun (i, _) -> Printf.eprintf "%-3d %!" i) dbs.cell_ownership;
+  Printf.eprintf "\n%!";
+  Printf.eprintf "%6s: %!" "NBid";
+  Array.iter (fun (_, i) -> Printf.eprintf "%-3d %!" i) dbs.cell_ownership;
+  Printf.eprintf "\n%!";
+  Array.iter print_one dbs.dbs
+
+(* ************************************************************************** *)
+
+let refine_indices raw =
   let last = Array.length raw - 1 in
   let a = Array.copy raw in
   for i = 0 to last do
@@ -57,7 +74,7 @@ let rafine_indices raw =
   a
 
 let index_of_rawindices db raw_indices =
-  let rafined_indices = rafine_indices raw_indices in
+  let rafined_indices = refine_indices raw_indices in
   (* Array.iter (fun v -> Printf.eprintf "%2d %!" v) raw_indices; *)
   (* Printf.eprintf "\n%!"; *)
   (* Array.iter (fun v -> Printf.eprintf "%2d %!" v) rafined_indices; *)
@@ -73,6 +90,9 @@ let index_of_rawindices db raw_indices =
   in
   aux 0 0
 
+(* let index_of_matrix db = *)
+
+
 let get dbs dbid raw_indices =
   let db = dbs.(dbid) in
   let i = index_of_rawindices db raw_indices in
@@ -80,9 +100,9 @@ let get dbs dbid raw_indices =
 
 (* ************************************************************************** *)
 
-let build_data db =
+let build_data (db:db) =
   let (mat, _) as grid = Grid.goal db.grid_w in
-  (** 2.1 Build a grid with uninvolved cells at -1 *)
+  (** 3.1 Build a grid with uninvolved cells at -1 *)
   let aux i x y v =
 	try
 	  ignore(List.find (fun v' -> v = v') db.nbrs)
@@ -96,7 +116,20 @@ let build_data db =
   (* let i = index_of_rawindices db [|15; 14; 13; 12; 11; 10; 9; 8|] in *)
   (* let i = index_of_rawindices db [|1; 5; 6; 7; 2; 10; 15; 14|] in *)
   (* Printf.eprintf "GOT i=%d\n%!" i; *)
+  let ncell = db.grid_w * db.grid_w in
+  let dat = db.data in
+  let default = 255 in
+  let tot = fact_div ncell (ncell - db.n_nbrs) in
+  let q = Queue.create () in
 
+  (* let rec aux inputed = *)
+  (* 	if inputed < tot then ( *)
+  (* 	  let state = Queue.pop q in *)
+
+  (* 	) *)
+  (* in *)
+  (* Queue.push grid; *)
+  (* aux 0; *)
   db
 (* let cell_in_pattern = Array.make (db.w * db.w) false in *)
 (* List.iter (fun v -> cell_in_pattern.(v) <- true) cell_in_pattern; *)
@@ -124,7 +157,7 @@ let build_paddings w ncell_pattern =
 let alloc_data w n =
   let n_cell = w * w in
   let bytes = fact_div n_cell (n_cell - n) in
-  Bytes.make bytes '0'
+  Bytes.make bytes (char_of_int 255)
 
 let init_pattern_structure grid =
   let w = Array.length grid in
@@ -155,6 +188,7 @@ let init_pattern_structure grid =
 		 dbs := db::!dbs
   in
   Grid.iter_cells grid aux;
+  assert(List.length !dbs > 0);
   (** 1.3 Finalize and reorder patterns *)
   let aux db =
 	(* assert(db.n_nbrs > 0); *)
@@ -165,9 +199,28 @@ let init_pattern_structure grid =
   in
   List.rev_map aux !dbs
 
+
+let build_ownerships empty_dbs =
+  let w = empty_dbs.(0).grid_w in
+  let ncell = w * w in
+  let a = Array.make ncell (-1, -1) in
+  let foreachdb i db =
+	let foreachcell i' cell =
+	  a.(cell) <- (i, i');
+	in
+	List.iteri foreachcell db.nbrs;
+  in
+  Array.iteri foreachdb empty_dbs;
+  a
+
 (** 1. Parse/alloc/fill all patterns meta-data *)
-(** 2. Fill patterns data *)
+(** 2. Build patterns holder *)
+(** 3. Fill patterns data *)
 let build grid =
   let empty_dbs = Array.of_list (init_pattern_structure grid) in
-  print empty_dbs;
+  let holder = {
+	  dbs				= empty_dbs;
+	  cell_ownership	= build_ownerships empty_dbs;
+	} in
+  print holder;
   Array.map build_data empty_dbs
