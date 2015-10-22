@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/22 09:56:27 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/22 13:27:58 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/22 13:47:40 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -52,14 +52,25 @@ let rafine_indices raw =
   done;
   a
 
-let access raw_indices =
+let index_of_rawindices db raw_indices =
   let rafined_indices = rafine_indices raw_indices in
+  let s = Array.length raw_indices in
+  assert(s = (Array.length db.paddings));
+  let rec aux i acc =
+	if i < s
+	then aux (i + 1) (acc + raw_indices.(i) * db.paddings.(i))
+	else acc
+  in
+  aux 0 0
 
-  Array.iter (fun v -> Printf.eprintf "%2d %!" v) raw_indices;
-  Printf.eprintf "\n%!";
-  Array.iter (fun v -> Printf.eprintf "%2d %!" v) rafined_indices;
-  Printf.eprintf "\n%!";
-  int_of_char '0'
+let get dbs dbid raw_indices =
+  let db = dbs.(dbid) in
+  let i = index_of_rawindices db raw_indices in
+  (* Array.iter (fun v -> Printf.eprintf "%2d %!" v) raw_indices; *)
+  (* Printf.eprintf "\n%!"; *)
+  (* Array.iter (fun v -> Printf.eprintf "%2d %!" v) rafined_indices; *)
+  (* Printf.eprintf "\n%!"; *)
+  int_of_char (Bytes.get db.data i)
 
 (* ************************************************************************** *)
 
@@ -68,8 +79,7 @@ let build_data db =
   (** 2.1 Build a grid with uninvolved cells at -1 *)
   let aux i x y v =
 	try
-	  List.find (fun v' -> v = v') db.nbrs;
-	  ()
+	  ignore(List.find (fun v' -> v = v') db.nbrs)
 	with
 	| Not_found ->
 	   mat.(y).(x) <- -1;
