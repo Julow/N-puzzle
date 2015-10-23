@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/19 17:34:55 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/23 17:46:00 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/23 18:26:42 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -41,7 +41,8 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 		let compare a b =
 		  a.f - b.f
 		let print sta =
-		  Printf.eprintf "g(%2d) f(%2d) %!" sta.g sta.f;
+		  Printf.eprintf "f(%2d) = g(%2d) + h(%2d)%!"
+						 sta.f sta.g (sta.f - sta.g);
 		  Graph.print sta.graph
 	  end
 	module BatHeap = BatHeap.Make(Candidate)
@@ -88,8 +89,8 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	  		let neig_info = Opened { parent		= Some (cur_gra, info);
 	  								 g			= neig_g;
 	  								 f			= neig_f; } in
-			(* if neig_h < 2 then *)
-			  (* Candidate.print neig_cdt; *)
+			if neig_h <= 4 then
+			  Candidate.print neig_cdt;
 			candidates := BatHeap.insert !candidates neig_cdt;
 			info_insert infos neig_gra neig_info
 		  in (** 4. END *)

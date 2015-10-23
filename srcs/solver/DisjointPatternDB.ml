@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/22 09:56:27 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/23 17:34:53 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/23 19:19:30 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -137,77 +137,96 @@ let set db i v =
 let build_datas (dbs:t) =
   (** 3.0 Foreach database *)
   let build_data dbid (db:db) =
-	let (mat, _) as initgra = Grid.goal db.grid_w in
+	let (mat, piv) as initgra = Grid.goal db.grid_w in
+	let x0, y0 = Grid.pivxy piv in
 	(** 3.1 Build a grid with uninvolved cells at -1 *)
 	let aux _ x y v =
 	  try
 		ignore(List.find (fun v' -> v = v') db.nbrs)
 	  with
 	  | Not_found ->
-		 mat.(y).(x) <- -1;
+		 if x = x0 && y = y0
+		 then mat.(y).(x) <- -2
+		 else mat.(y).(x) <- -1
 	in
 	Grid.iter_cells mat aux;
-	Printf.eprintf "FILLING DATABASE %d:**************************************\n%!" dbid;
+	Printf.eprintf "FILLING DATABASE %d:********************************\n%!" dbid;
 	Grid.print initgra;
 	print_one db;
-	Printf.eprintf "*********************************************************\n%!";
+	Printf.eprintf "***************************************************\n%!";
 
 	let ncell = db.grid_w * db.grid_w in
 	let default = 255 in
 	let tot = fact_div ncell (ncell - db.n_nbrs) in
-	(* let q = Queue.create () in *)
 	Printf.eprintf "Looking for %d nodes with bfs :(\n%!" tot;
 	let indices_field = Array.make db.n_nbrs 42 in
+
+
+
 	let count = ref 0 in
+	let prev = ref (-1) in
+	let q = Queue.create () in
+	let vis = Hashtbl.create 100000 in
+	Queue.push (initgra, 0) q;
+	Hashtbl.add vis initgra ();
+	let rec aux () =
+	  if !count < tot then (
+		let (((mat, _) as state), g) = Queue.pop q in
 
-	(* let rec aux inputed = *)
-	(*   if inputed < tot then ( *)
-	(* 	let (((mat, _) as state), g) = Queue.pop q in *)
+		if (!count mod 100000 = 0) && (not (!count = !prev)) then (
+		  Printf.eprintf "g(%2d) Queue(%9d) Hashtbl(%9d) Count(%9d)(%.6f)\n%!"
+						 g (Queue.length q) (Hashtbl.length vis) !count
+						 ((float !count) /. (float tot));
+		  prev := !count
+		);
+		retreive_db_pos mat dbs.ownerships dbid indices_field;
+		let i = index_of_pos db indices_field in
+		let v = get db i in
+		if v = default then (set db i g;
+							 count := !count + 1);
+		let rec aux' = function
+		  | ((mat', _) as state')::tl	->
+			 if not (Hashtbl.mem vis state') then (
+			   Queue.push (state', g + 1) q;
+			   Hashtbl.add vis state' ()
+			 );
+			 aux' tl
+		  | _							-> ()
+		in
+		aux' (Grid.successors state);
+		aux ()
+	  )
+	in
+	aux ();
 
-	(* 	if inputed mod 100000 = 0 then *)
-	(* 	  Printf.eprintf "g(%2d) Queue(%9d) Inputed(%9d)(%.6f)\n%!" *)
-	(* 					 g (Queue.length q) inputed *)
-	(* 					 ((float inputed) /. (float tot)); *)
-	(* 	retreive_db_pos mat dbs.ownerships dbid indices_field; *)
-	(* 	let i = index_of_pos db indices_field in *)
-	(* 	let v = get db i in *)
-	(* 	if v = default then set db i g; *)
-	(* 	let rec aux' = function *)
-	(* 	  | ((mat', _) as state')::tl	-> *)
-	(* 		 Queue.push (state', g + 1) q; *)
-	(* 		 aux' tl *)
-	(* 	  | _			-> () *)
-	(* 	in *)
-	(* 	aux' (Grid.successors state); *)
-	(* 	aux (inputed + 1) *)
-	(*   ) *)
+
+
+
+	(* let count = ref 0 in *)
+	(* let cost _ _ = *)
+	(*   1 *)
 	(* in *)
-	(* Queue.push (grid, 0) q; *)
+	(* let rec search gra g threshold = *)
+
+	(*   let rec try_successor successors = *)
+	(* 	match successors with *)
+	(* 	| hd::tl                      -> search hd (g + cost gra hd) threshold; *)
+	(* 									 try_successor tl *)
+	(* 	| _                           -> () *)
+	(*   in *)
+	(*   (\* TRY ADD *\) *)
+	(*   if g < threshold *)
+	(*   then try_successor (Grid.successors gra) *)
+	(* in *)
+
+	(* let rec aux threshold = *)
+	(*   Printf.eprintf "IDA* loop %d->threshold \n%!" threshold; *)
+	(*   search initgra 0 threshold; *)
+	(*   if !count = tot *)
+	(*   then Printf.eprintf "IDA*: END !!!\n%!" *)
+	(*   else aux (threshold + 1) *)
+	(* in *)
 	(* aux 0; *)
-	let cost _ _ =
-	  1
-	in
-	let rec search gra g threshold =
-
-	  let rec try_successor successors =
-		match successors with
-		| hd::tl                      -> search hd (g + cost gra hd) threshold;
-										 try_successor tl
-		| _                           -> ()
-	  in
-	  (* TRY ADD *)
-	  if g < threshold
-	  then try_successor (Grid.successors gra)
-	in
-
-	let rec aux threshold =
-	  Printf.eprintf "IDA* loop %d->threshold \n%!" threshold;
-	  search initgra 0 threshold;
-	  if !count = tot
-	  then Printf.eprintf "IDA*: END !!!\n%!"
-	  else aux (threshold + 1)
-	in
-	aux 0;
 	Printf.eprintf "DONE for database %d*************************************\n%!" dbid;
 	db
   in
