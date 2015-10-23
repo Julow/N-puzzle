@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/19 17:34:55 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/23 16:42:11 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/23 16:52:28 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -14,13 +14,11 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
   functor (Graph : GenericInterfaces.PATHFINDER_GRAPH) ->
   struct
 	type graph = Graph.t
-
 	type parent = None | Some of graph * graph_info
 	 and graph_info = { parent		: parent;
 						g			: int;
 						f			: int; }
-	type graph_state = Closed of graph_info
-					 | Opened of graph_info
+	type graph_state = Closed of graph_info | Opened of graph_info
 
 	module type CANDIDATE =
 	  sig
@@ -53,7 +51,6 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 
 	let retreive_steps graph info =
 	  let rec aux info acc =
-		(* ENLEVER DES PARENTHESES ET VIRGULE *)
 	  	match info.parent with
 	  	| Some (graph, info)		-> aux info (graph::acc)
 		| _							-> acc
@@ -70,7 +67,7 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 							   g				= 0;
 							   f				= he_init; } in
 	  let candidates = ref (BatHeap.insert BatHeap.empty cdt_init) in
-	  let infos = Hashtbl.create 10000 in (* Try a lot more *)
+	  let infos = Hashtbl.create 100000 in
 	  Hashtbl.add infos gra_init info_init;
 
 	  (** 2.0 - Trying to expand successors *)
@@ -116,8 +113,7 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 		candidates := BatHeap.del_min !candidates;
 		match Hashtbl.find infos cdt_graph with
 		| Opened info when Graph.equal cdt_graph gra_goal
-		  -> Printf.eprintf "AStar: SOLVED!!!!!!!!\n%!";
-			 retreive_steps cdt_graph info
+		  -> retreive_steps cdt_graph info
 		| Opened info
 		  -> let as_closed = Closed info in
 			 Hashtbl.replace infos cdt_graph as_closed;
@@ -128,6 +124,7 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	  in  (** 1. END *)
 	  try
 		let sol = aux () in
+		Printf.eprintf "AStar: SOLVED!!!!!!!!\n%!";
 		List.iteri (fun i gra -> Printf.eprintf "g(%2d) h(%2d)" i (he gra);
 								 Graph.print gra) sol;
 		sol

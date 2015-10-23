@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/19 18:14:20 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/23 16:41:56 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/23 16:57:38 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -22,8 +22,10 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	  Printf.eprintf "IDAStar Beginning ...\n%!";
 	  let result = ref [] in
 
+	  (** 2.0 - *)
 	  let rec search gra g threshold =
 
+		(** 3.0 - Trying to expand successors *)
 		let rec try_successor successors decr =
 		  match successors with
 		  | hd::tl						->
@@ -46,6 +48,8 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 		  try_successor (Graph.successors gra) max_int
 	  in
 
+	  (** 1.0 - Main loop launches a Depth-first search increasing threshold *)
+	  (** 1.0 - If threshold' = magic solved_val then solution is found *)
 	  let rec aux threshold =
 		Printf.eprintf "IDA* loop %d->threshold \n%!" threshold;
 		let threshold' = search grasrc 0 threshold in
