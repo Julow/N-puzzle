@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/10/22 18:55:45 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/23 15:31:05 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -52,13 +52,13 @@ let grid_from_file fname =
 let solve npuzzle =
   let (realmat, realpiv) as realgr = grid_from_file "lol3.np" in
   (* let (realmat, realpiv) as realgr = Grid.of_cgrid npuzzle in *)
-  (* let realmat = [| *)
-  (* 	  [|3 ;1 ;4|]; *)
-  (* 	  [|2; 0; 6|]; *)
-  (* 	  [|8; 7; 5|]; *)
-  (* 	 |] in *)
-  (* let realpiv = Grid.pivv (1, 1) in *)
-  (* let realgr = realmat, realpiv in *)
+  let realmat = [|
+  	  [|3 ;5 ;4|];
+  	  [|2; 0; 6|];
+  	  [|7; 8; 1|];
+	 |] in
+  let realpiv = Grid.pivv (1, 1) in
+  let realgr = realmat, realpiv in
   let w = Array.length realmat in
   Printf.eprintf "width %u\n%!" w;
   Grid.init_transp_tables w;
@@ -84,18 +84,18 @@ let solve npuzzle =
   			  [|5;-1;-1; 1|];
   			  [|1; 1; 1; 1|];|] in
   let t = Unix.gettimeofday () in
-  let dpdb = DisjointPatternDB.build dps in
-  ignore(dpdb);
+  (* let dpdb = DisjointPatternDB.build dps in *)
+  (* ignore(dpdb); *)
   Printf.eprintf "%f sec to build!!!\n%!" (Unix.gettimeofday () -. t);
 
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
   let t = Unix.gettimeofday () in
   ignore(GridAStar.solve abstgr goalgr GridHeuristics.Manhattan.calc);
-  ignore(Printf.eprintf "%f sec to solve\n%!" (Unix.gettimeofday () -. t));
+  Printf.eprintf "%f sec to solve\n%!" (Unix.gettimeofday () -. t);
 
-  (* let t = Unix.gettimeofday () in *)
-  (* GridIDAStar.solve abstgr goalgr GridHeuristics.Manhattan.calc; *)
-  (* Printf.eprintf "%f sec to solve\n%!" (Unix.gettimeofday () -. t); *)
+  let t = Unix.gettimeofday () in
+  ignore(GridIDAStar.solve abstgr goalgr GridHeuristics.Manhattan.calc);
+  Printf.eprintf "%f sec to solve\n%!" (Unix.gettimeofday () -. t);
 
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
   ()

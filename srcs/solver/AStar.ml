@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/19 17:34:55 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/21 18:36:50 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/23 16:42:11 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -15,13 +15,12 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
   struct
 	type graph = Graph.t
 
-	type parent = None | Some of graph
-	type graph_info = Closed of { parent	: parent;
-								  g			: int;
-								  f			: int; }
-					| Opened of { parent	: parent;
-								  g			: int;
-								  f			: int; }
+	type parent = None | Some of graph * graph_info
+	 and graph_info = { parent		: parent;
+						g			: int;
+						f			: int; }
+	type graph_state = Closed of graph_info
+					 | Opened of graph_info
 
 	module type CANDIDATE =
 	  sig
@@ -52,6 +51,15 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	type opened_container = BatHeap.t
 	type info_container = (graph, graph_info) Hashtbl.t
 
+	let retreive_steps graph info =
+	  let rec aux info acc =
+		(* ENLEVER DES PARENTHESES ET VIRGULE *)
+	  	match info.parent with
+	  	| Some (graph, info)		-> aux info (graph::acc)
+		| _							-> acc
+	  in
+	  aux info [graph]
+
 	let solve gra_init gra_goal he =
 	  Printf.eprintf "AStar Beginning ...\n%!";
 	  let he_init = he gra_init in
@@ -66,7 +74,8 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	  Hashtbl.add infos gra_init info_init;
 
 	  (** 2.0 - Trying to expand successors *)
-	  let expand ({Candidate.graph = cur_gra; Candidate.g = cur_g;}) =
+	  let expand ({Candidate.graph = cur_gra; Candidate.g = cur_g;})
+				 (info:graph_info) =
 		(** 3.0 - If already opened -> update info and push in opened *)
 		(** 3.1 - If already closed -> discard *)
 		(** 3.2 - If no info about it -> add info and push in opened *)
@@ -79,7 +88,7 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	  		let neig_cdt = { Candidate.graph	= neig_gra;
 	  						 Candidate.g		= neig_g;
 	  						 Candidate.f		= neig_f; } in
-	  		let neig_info = Opened { parent	= Some cur_gra;
+	  		let neig_info = Opened { parent		= Some (cur_gra, info);
 	  								 g			= neig_g;
 	  								 f			= neig_f; } in
 			if neig_h < 2 then
@@ -100,24 +109,28 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 
 	  (** 1.0 - Main loop popping one candidate *)
 	  (** 1.1 - Expanding it if it was not closed in the meantime *)
+	  (** 1.2 - Retreive steps if candidate is goal *)
 	  let rec aux () =
 		let cdt = BatHeap.find_min !candidates in
 		let cdt_graph = cdt.Candidate.graph in
 		candidates := BatHeap.del_min !candidates;
-		if Graph.equal cdt_graph gra_goal then (
-		  Printf.eprintf "AStar: SOLVED!!!!!!!!\n%!";
-		  [])
-		else match Hashtbl.find infos cdt_graph with
-			 | Opened {parent = p; g = g; f = f;} ->
-				let as_closed = Closed {parent = p; g = g; f = f;} in
-				Hashtbl.replace infos cdt_graph as_closed;
-				expand cdt;
-				aux ()
-			 | _ ->
-				aux ()
+		match Hashtbl.find infos cdt_graph with
+		| Opened info when Graph.equal cdt_graph gra_goal
+		  -> Printf.eprintf "AStar: SOLVED!!!!!!!!\n%!";
+			 retreive_steps cdt_graph info
+		| Opened info
+		  -> let as_closed = Closed info in
+			 Hashtbl.replace infos cdt_graph as_closed;
+			 expand cdt info;
+			 aux ()
+		| _
+		  -> aux ()
 	  in  (** 1. END *)
 	  try
-		aux ()
+		let sol = aux () in
+		List.iteri (fun i gra -> Printf.eprintf "g(%2d) h(%2d)" i (he gra);
+								 Graph.print gra) sol;
+		sol
 	  with
 	  | Invalid_argument("find_min") ->
 		 Printf.eprintf "AStar: NOT SOLVED\n%!";
