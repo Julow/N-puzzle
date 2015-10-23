@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/19 17:34:55 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/23 16:52:28 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/23 17:46:00 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -58,7 +58,7 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	  aux info [graph]
 
 	let solve gra_init gra_goal he =
-	  Printf.eprintf "AStar Beginning ...\n%!";
+	  (* Printf.eprintf "AStar Beginning ...\n%!"; *)
 	  let he_init = he gra_init in
 	  let cdt_init = { Candidate.graph  	 	= gra_init;
 					   Candidate.g   	    	= 0;
@@ -88,8 +88,8 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	  		let neig_info = Opened { parent		= Some (cur_gra, info);
 	  								 g			= neig_g;
 	  								 f			= neig_f; } in
-			if neig_h < 2 then
-			  Candidate.print neig_cdt;
+			(* if neig_h < 2 then *)
+			  (* Candidate.print neig_cdt; *)
 			candidates := BatHeap.insert !candidates neig_cdt;
 			info_insert infos neig_gra neig_info
 		  in (** 4. END *)
@@ -124,9 +124,9 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	  in  (** 1. END *)
 	  try
 		let sol = aux () in
-		Printf.eprintf "AStar: SOLVED!!!!!!!!\n%!";
-		List.iteri (fun i gra -> Printf.eprintf "g(%2d) h(%2d)" i (he gra);
-								 Graph.print gra) sol;
+		(* Printf.eprintf "AStar: SOLVED!!!!!!!!\n%!"; *)
+		(* List.iteri (fun i gra -> Printf.eprintf "g(%2d) h(%2d)" i (he gra); *)
+		(* 						 Graph.print gra) sol; *)
 		sol
 	  with
 	  | Invalid_argument("find_min") ->

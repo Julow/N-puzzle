@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/10/23 15:31:05 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/23 17:59:53 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -84,18 +84,18 @@ let solve npuzzle =
   			  [|5;-1;-1; 1|];
   			  [|1; 1; 1; 1|];|] in
   let t = Unix.gettimeofday () in
-  (* let dpdb = DisjointPatternDB.build dps in *)
-  (* ignore(dpdb); *)
+  let dpdb = DisjointPatternDB.build dps in
+  ignore(dpdb);
   Printf.eprintf "%f sec to build!!!\n%!" (Unix.gettimeofday () -. t);
 
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
-  let t = Unix.gettimeofday () in
-  ignore(GridAStar.solve abstgr goalgr GridHeuristics.Manhattan.calc);
-  Printf.eprintf "%f sec to solve\n%!" (Unix.gettimeofday () -. t);
+  (* let t = Unix.gettimeofday () in *)
+  (* ignore(GridAStar.solve abstgr goalgr GridHeuristics.Manhattan.calc); *)
+  (* Printf.eprintf "%f sec to solve\n%!" (Unix.gettimeofday () -. t); *)
 
-  let t = Unix.gettimeofday () in
-  ignore(GridIDAStar.solve abstgr goalgr GridHeuristics.Manhattan.calc);
-  Printf.eprintf "%f sec to solve\n%!" (Unix.gettimeofday () -. t);
+  (* let t = Unix.gettimeofday () in *)
+  (* ignore(GridIDAStar.solve abstgr goalgr GridHeuristics.Manhattan.calc); *)
+  (* Printf.eprintf "%f sec to solve\n%!" (Unix.gettimeofday () -. t); *)
 
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
   ()
