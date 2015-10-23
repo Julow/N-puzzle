@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/22 09:56:27 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/23 14:47:33 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/23 14:53:21 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -77,7 +77,7 @@ let print dbs =
  ** 	Current position:		5		8		3		9		14		6
  **		Correction:				0		-1		0		-3		-4		-2
  **		Data index:				5		7		3		6		10		4
- **		Data offsets:			1801800	168168	5148	792		110		4
+ **		Data offset:			1801800	168168	5148	792		110		4
  **		**
  **		Which gives:	db.data.(1976022) = HEURISTIC
  *)
@@ -146,7 +146,10 @@ let build_datas (dbs:t) =
 		 mat.(y).(x) <- -1;
 	in
 	Grid.iter_cells mat aux;
+	Printf.eprintf "FILLING DATABASE %d:**************************************\n%!" dbid;
 	Grid.print grid;
+	print_one db;
+	Printf.eprintf "*********************************************************\n%!";
 
 	let ncell = db.grid_w * db.grid_w in
 	let default = 255 in
@@ -179,7 +182,7 @@ let build_datas (dbs:t) =
 	in
 	Queue.push (grid, 0) q;
 	aux 0;
-	Printf.eprintf "DONE\n%!";
+	Printf.eprintf "DONE for database %d*************************************\n%!" dbid;
 	db
   in
   Array.mapi build_data dbs.dbs
