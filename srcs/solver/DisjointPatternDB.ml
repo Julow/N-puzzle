@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/22 09:56:27 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/23 19:19:30 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/24 13:01:40 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -166,29 +166,48 @@ let build_datas (dbs:t) =
 	let count = ref 0 in
 	let prev = ref (-1) in
 	let q = Queue.create () in
-	let vis = Hashtbl.create 100000 in
+	let h = Hashtbl.create 30_000_000 in
+	let t = ref (Unix.gettimeofday ()) in
 	Queue.push (initgra, 0) q;
-	Hashtbl.add vis initgra ();
+	let sz_qelt = float ((16 + 1 + 1) * 8) in
+	Hashtbl.add h initgra ();
+	let sz_helt = float ((16 + 1) * 8) in
 	let rec aux () =
 	  if !count < tot then (
 		let (((mat, _) as state), g) = Queue.pop q in
 
-		if (!count mod 100000 = 0) && (not (!count = !prev)) then (
-		  Printf.eprintf "g(%2d) Queue(%9d) Hashtbl(%9d) Count(%9d)(%.6f)\n%!"
-						 g (Queue.length q) (Hashtbl.length vis) !count
-						 ((float !count) /. (float tot));
+		let report () =
+		  let lq = float (Queue.length q) /. 1_000_000. in
+		  let lh = float (Hashtbl.length h) /. 1_000_000. in
+		  let c = float !count /. 1_000_000. in
+		  let perc = (float !count) /. (float tot) *. 100. in
+		  let dt_c = float (!count - !prev) in
+		  let t' = Unix.gettimeofday () in
+		  let dt_t = t' -. !t in
+		  let eltps = dt_c /. dt_t in
+		  let eltph = eltps *. 3600. in
+		  let percph = eltph /. (float tot) *. 100. in
+		  Printf.eprintf "g(%2d) q(%9.6fm/%8.2fMB) h(%9.6fm/%8.2fMB)"
+						 g lq (lq *. sz_qelt) lh (lh *. sz_helt);
+		  Printf.eprintf " count(%10.6fm %5.2f%% %.1fpph)\n%!"
+						 c perc percph;
+		  t := t';
 		  prev := !count
-		);
+		in
+
+		if (!count mod 10000 = 0) && (not (!count = !prev)) then report ();
 		retreive_db_pos mat dbs.ownerships dbid indices_field;
 		let i = index_of_pos db indices_field in
 		let v = get db i in
 		if v = default then (set db i g;
-							 count := !count + 1);
+							 count := !count + 1;
+							 if !count > tot - 200 then report ();
+							);
 		let rec aux' = function
 		  | ((mat', _) as state')::tl	->
-			 if not (Hashtbl.mem vis state') then (
+			 if not (Hashtbl.mem h state') then (
 			   Queue.push (state', g + 1) q;
-			   Hashtbl.add vis state' ()
+			   Hashtbl.add h state' ()
 			 );
 			 aux' tl
 		  | _							-> ()
