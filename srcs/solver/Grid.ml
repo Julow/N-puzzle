@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:58 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/24 14:55:00 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/24 16:15:01 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -20,12 +20,12 @@ module type HEURISTIC =
 
 (* ************************************************************************** *)
 
-(* TODO: Protect versus x-overflow at 16383=2^(15-1)-1*)
+(* TODO: Protect versus x-overflow *)
 let pivxy piv =
-  piv land 0x7FFF, piv lsr 15
+  piv land 0xF, piv lsr 4
 
 let pivv (x, y) =
-  x + y lsl 15
+  x + y lsl 4
 
 let copy_mat mat =
   Array.map (fun line -> Array.copy line) mat

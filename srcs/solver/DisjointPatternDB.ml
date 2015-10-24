@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/22 09:56:27 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/24 16:03:41 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/24 18:13:30 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -156,17 +156,37 @@ let alloc_data w n =
   let bytes = fact_div n_cell (n_cell - n) in
   Bytes.make bytes (char_of_int 255)
 
-(** 3.2.1 Fill pattern database with retrograde BFS search*)
-let build_pdb ownerships db goalpattern dbid =
-  Printf.eprintf "FILLING DATABASE %d:********************************\n%!" dbid;
+let warn dbid db ncell nbytes goalpattern =
+  Printf.eprintf "********************************************************\n%!";
+  Printf.eprintf "FILLING DB ** nb(%d) ** cells(%d/%d) ** nbytes(%9d) **\n%!"
+				 dbid db.n_nbrs ncell nbytes;
   Grid.print goalpattern;
   print_one db;
-  Printf.eprintf "***************************************************\n%!";
+  Printf.eprintf "********************************************************\n%!"
 
+let report g q h count nbytes prev t sz_qelt sz_helt =
+  let lq = float (Queue.length q) /. 1_000_000. in
+  let lh = float (Hashtbl.length h) /. 1_000_000. in
+  let c = float !count /. 1_000_000. in
+  let perc = (float !count) /. (float nbytes) *. 100. in
+  let dt_c = float (!count - !prev) in
+  let t' = Unix.gettimeofday () in
+  let dt_t = t' -. !t in
+  let eltps = dt_c /. dt_t in
+  let eltph = eltps *. 3600. in
+  let percph = eltph /. (float nbytes) *. 100. in
+  Printf.eprintf "g(%2d) q(%9.6fm/%8.2fMB) h(%9.6fm/%8.2fMB)"
+				 g lq (lq *. sz_qelt) lh (lh *. sz_helt);
+  Printf.eprintf " count(%10.6fm %5.2f%% %.1fpph)\n%!"
+				 c perc percph;
+  t := t';
+  prev := !count
+
+(** 3.2.1 Fill pattern database with retrograde BFS search *)
+let build_pdb ownerships db goalpattern dbid =
   let ncell = db.grid_w * db.grid_w in
-  let default = 255 in
-  let tot = fact_div ncell (ncell - db.n_nbrs) in
-  Printf.eprintf "Looking for %d nodes with bfs :(\n%!" tot;
+  let nbytes = fact_div ncell (ncell - db.n_nbrs) in
+  warn dbid db ncell nbytes goalpattern;
   let indices_field = Array.make db.n_nbrs 42 in
 
   let data = alloc_data db.grid_w db.n_nbrs in
@@ -185,42 +205,30 @@ let build_pdb ownerships db goalpattern dbid =
   Hashtbl.add h goalpattern ();
 
   let rec aux () =
-	if !count < tot then (
-	  let (((mat, _) as state), g) = Queue.pop q in
+	if !count < nbytes then (
+	  let (((mat, piv) as state), g) = Queue.pop q in
+	  let x0, y0 = Grid.pivxy piv in
 
-	  (* <Debug> *)
-	  let report () =
-		let lq = float (Queue.length q) /. 1_000_000. in
-		let lh = float (Hashtbl.length h) /. 1_000_000. in
-		let c = float !count /. 1_000_000. in
-		let perc = (float !count) /. (float tot) *. 100. in
-		let dt_c = float (!count - !prev) in
-		let t' = Unix.gettimeofday () in
-		let dt_t = t' -. !t in
-		let eltps = dt_c /. dt_t in
-		let eltph = eltps *. 3600. in
-		let percph = eltph /. (float tot) *. 100. in
-		Printf.eprintf "g(%2d) q(%9.6fm/%8.2fMB) h(%9.6fm/%8.2fMB)"
-					   g lq (lq *. sz_qelt) lh (lh *. sz_helt);
-		Printf.eprintf " count(%10.6fm %5.2f%% %.1fpph)\n%!"
-					   c perc percph;
-		t := t';
-		prev := !count
-	  in
-	  if (!count mod 5000 = 0) && (not (!count = !prev)) then report ();
-	  (* </Debug> *)
+	  if (!count mod 5000 = 0) && (not (!count = !prev))
+	  then report g q h count nbytes prev t sz_qelt sz_helt;
 
 	  retreive_db_pos mat ownerships dbid indices_field;
 	  let i = index_of_pos db indices_field in
 	  let v = get data i in
-	  if v = default then (set data i g;
-						   count := !count + 1;
-						   if !count > tot - 5 then report ();
-						  );
+	  if v = 255 then (
+		set data i g;
+		count := !count + 1;
+		if !count > nbytes - 50
+		then report g q h count nbytes prev t sz_qelt sz_helt;
+	  );
 	  let rec aux' = function
 		| ((mat', _) as state')::tl	->
 		   if not (Hashtbl.mem h state') then (
-			 Queue.push (state', g + 1) q;
+			 let g' = if mat'.(y0).(x0) >= 0
+					  then g + 1
+					  else g
+			 in
+			 Queue.push (state', g') q;
 			 Hashtbl.add h state' ()
 		   );
 		   aux' tl
@@ -263,7 +271,6 @@ let fill_datas (dbs:t) =
 	{db with data = data}
   in
   Array.mapi fill_data dbs.dbs
-
 
 (** 1.3.2 Save 'paddings' inside bitfield *)
 let build_paddings w ncell_pat =
