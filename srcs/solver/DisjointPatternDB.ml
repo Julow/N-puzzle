@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/22 09:56:27 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/24 18:13:30 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/24 19:34:38 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -82,6 +82,8 @@ let print dbs =
  **		Which gives:	db.data.(1976022) = HEURISTIC
  *)
 
+(* ********************************** *)
+(* Modulation *)
 let retreive_indices_of_pos field =
   let last = Array.length field - 1 in
   for i = last downto 1 do
@@ -95,6 +97,24 @@ let retreive_indices_of_pos field =
 	assert(field.(i) < 16 - i);
   done
 
+(* Demodulation *)
+let retreive_pos_of_indices pos indices =
+  pos.(0) <- indices.(0);
+  for i = 1 to Array.length pos - 1 do
+	let rec aux j v =
+	  if j = i then
+		v
+	  else if pos.(j) <= v then
+		aux (j + 1) (v + 1)
+	  else
+		aux (j + 1) v
+	in
+	pos.(i) <- aux 0 indices.(i);
+	assert(pos.(i) < 16);
+  done
+
+(* ********************************** *)
+(* Modulation *)
 let index_of_pos db field =
   let s = Array.length field in
   (* Array.iter (fun v->Printf.eprintf "%2d %!" v) field; Printf.eprintf "\n%!"; *)
@@ -108,14 +128,30 @@ let index_of_pos db field =
   in
   aux 0 0
 
+(* Demodulation *)
+let retreive_indices_of_index field i paddings =
+  let n = Array.length paddings in
+  let rec aux j decr =
+	if j < n then (
+	  let pad = paddings.(j) in
+	  field.(j) <- decr / pad;
+	  aux (j + 1) (decr mod pad)
+	)
+	else assert(decr = 0)
+  in
+  aux 0 i;
+  ()
+
+(* ********************************** *)
+(* Modulation *)
 let retreive_dbs_pos mat ownerships fields =
   let aux i _ _ v =
 	if v >= 0
 	then (let (dbid, cid) = ownerships.(v) in
 		  fields.(dbid).(cid) <- i)
   in
-  Grid.iter_cells mat aux
-
+  Grid.iter_cells mat aux;
+  ()
 
 let retreive_db_pos mat ownerships dbid field =
   let aux i _ _ v =
@@ -124,13 +160,41 @@ let retreive_db_pos mat ownerships dbid field =
 		  if dbid' = dbid
 		  then field.(cid) <- i)
   in
-  Grid.iter_cells mat aux
+  Grid.iter_cells mat aux;
+  ()
+
+(* Demodulation *)
+let retreive_mat_of_indexpiv i piv ownerships db posfield indicesfield mat =
+  retreive_indices_of_index indicesfield i db.paddings;
+  Array.iter (fun v->Printf.eprintf "%2d %!" v) indicesfield; Printf.eprintf "\n%!";
+  retreive_pos_of_indices posfield indicesfield;
+  Array.iter (fun v->Printf.eprintf "%2d %!" v) posfield; Printf.eprintf "\n%!";
+  let w = Array.length mat in
+  let last = w - 1 in
+  for y = 0 to last do
+	for x = 0 to last do
+	  mat.(y).(x) <- -1;
+	done;
+  done;
+  let x0, y0 = Grid.pivxy piv in
+  mat.(x0).(y0) <- -2;
+  let rec aux i l =
+	match l with
+	| hd::tl		-> mat.(hd / w).(hd mod w) <- posfield.(i);
+					   aux (i + 1) tl
+	| _				-> ()
+  in
+  aux 0 db.nbrs;
+  ()
+
+
 
 let get data i =
   int_of_char (Bytes.get data i)
 
 let set data i v =
-  Bytes.set data i (char_of_int v)
+  Bytes.set data i (char_of_int v);
+  ()
 
 (* ************************************************************************** *)
 
@@ -182,15 +246,33 @@ let report g q h count nbytes prev t sz_qelt sz_helt =
   t := t';
   prev := !count
 
+
+(**
+ ** I: Computed index for a maximum of 8 tiles pattern (29bits required)
+ ** 	ie : 28 < log2(16!/8!) < 29
+ ** P: Pivot coords
+ ** G: Number of moves
+ ** 0: Unused (Zero)
+ ** 543210 76543210  76543210 76543210  76543210 76543210 76543210 76543210
+ ** ______ ________  ________ ________  ________ ________ ________ ________
+ ** 000000 00000000  GGGGGGGG PPPPPPPP  IIIIIIII IIIIIIII IIIIIIII IIIIIIII
+ *)
+
+let hash_state g piv i =
+  g lsl (32 + 8) + piv lsl 32 + i
+
+let unhash_state s =
+  s lsr (32 + 8), s lsr 32 land 0xFF, s land 0xFFFFFFFF
+
 (** 3.2.1 Fill pattern database with retrograde BFS search *)
-let build_pdb ownerships db goalpattern dbid =
+let build_pdb ownerships db ((goalmat, piv) as goalpattern) dbid =
   let ncell = db.grid_w * db.grid_w in
   let nbytes = fact_div ncell (ncell - db.n_nbrs) in
   warn dbid db ncell nbytes goalpattern;
-  let indices_field = Array.make db.n_nbrs 42 in
-
+  let indicesfield = Array.make db.n_nbrs 42 in
+  let posfield = Array.make db.n_nbrs 42 in
+  let mat = Grid.copy_mat goalmat in
   let data = alloc_data db.grid_w db.n_nbrs in
-
   let count = ref 0 in
   (* <Debug> *)
   let prev = ref (-1) in
@@ -201,6 +283,23 @@ let build_pdb ownerships db goalpattern dbid =
 
   let q = Queue.create () in
   let h = Hashtbl.create 30_000_000 in
+
+  retreive_db_pos mat ownerships dbid indicesfield;
+  let hash = hash_state 0 piv (index_of_pos db indicesfield) in
+  Queue.push hash q;
+  Hashtbl.add h hash ();
+
+  let rec aux () =
+	if !count < nbytes then (
+	  let g, piv, i = unhash_state (Queue.pop q) in
+	  retreive_mat_of_indexpiv i piv ownerships db posfield indicesfield mat;
+	  Grid.print (mat, piv);
+
+	  aux ()
+	)
+  in
+
+  (*
   Queue.push (goalpattern, 0) q;
   Hashtbl.add h goalpattern ();
 
@@ -222,7 +321,7 @@ let build_pdb ownerships db goalpattern dbid =
 		then report g q h count nbytes prev t sz_qelt sz_helt;
 	  );
 	  let rec aux' = function
-		| ((mat', _) as state')::tl	->
+		| ((mat', piv') as state')::tl	->
 		   if not (Hashtbl.mem h state') then (
 			 let g' = if mat'.(y0).(x0) >= 0
 					  then g + 1
@@ -238,15 +337,15 @@ let build_pdb ownerships db goalpattern dbid =
 	  aux ()
 	)
   in
+   *)
   aux ();
-  Printf.eprintf "DONE for database %d*************************************\n%!" dbid;
   data
 
 
 let fill_datas (dbs:t) =
   (** 3.0 Foreach database *)
   (** 3.1 Try to load database from file *)
-  (** 3.2 Create database and export it to file *)
+  (** 3.2 Else create database and export it to file *)
   let fill_data dbid (db:db) =
 	let (mat, _) as goalpattern = goal_pattern db in
 	let fname = Grid.to_filename mat in
@@ -259,7 +358,7 @@ let fill_datas (dbs:t) =
 		data
 	  with
 	  | _ ->
-		 Printf.eprintf "File \"%s\" not found\n%!" fname;
+		 Printf.eprintf "File \"%s\" not found/loadable\n%!" fname;
 		 let data = build_pdb dbs.ownerships db goalpattern dbid in
 		 let ochan = open_out fname in
 		 Printf.eprintf "saving to file \"%s\"\n%!" fname;
