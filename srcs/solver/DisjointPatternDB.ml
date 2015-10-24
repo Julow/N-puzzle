@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/22 09:56:27 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/24 15:23:30 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/24 16:03:41 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -126,128 +126,143 @@ let retreive_db_pos mat ownerships dbid field =
   in
   Grid.iter_cells mat aux
 
-let get db i =
-  int_of_char (Bytes.get db.data i)
+let get data i =
+  int_of_char (Bytes.get data i)
 
-let set db i v =
-  Bytes.set db.data i (char_of_int v)
+let set data i v =
+  Bytes.set data i (char_of_int v)
 
 (* ************************************************************************** *)
 
-let build_datas (dbs:t) =
-  (** 3.0 Foreach database *)
-  let build_data dbid (db:db) =
-	let (mat, piv) as initgra = Grid.goal db.grid_w in
-	let x0, y0 = Grid.pivxy piv in
-	(** 3.1 Build a grid with uninvolved cells at -1 *)
-	let aux _ x y v =
-	  try
-		ignore(List.find (fun v' -> v = v') db.nbrs)
-	  with
-	  | Not_found ->
-		 if x = x0 && y = y0
-		 then mat.(y).(x) <- -2
-		 else mat.(y).(x) <- -1
-	in
-	Grid.iter_cells mat aux;
-	Printf.eprintf "FILLING DATABASE %d:********************************\n%!" dbid;
-	Grid.print initgra;
-	print_one db;
-	Printf.eprintf "***************************************************\n%!";
-
-	let ncell = db.grid_w * db.grid_w in
-	let default = 255 in
-	let tot = fact_div ncell (ncell - db.n_nbrs) in
-	Printf.eprintf "Looking for %d nodes with bfs :(\n%!" tot;
-	let indices_field = Array.make db.n_nbrs 42 in
-
-
-
-	let count = ref 0 in
-	let prev = ref (-1) in
-	let q = Queue.create () in
-	let h = Hashtbl.create 30_000_000 in
-	let t = ref (Unix.gettimeofday ()) in
-	Queue.push (initgra, 0) q;
-	let sz_qelt = float ((16 + 1 + 1) * 8) in
-	Hashtbl.add h initgra ();
-	let sz_helt = float ((16 + 1) * 8) in
-	let rec aux () =
-	  if !count < tot then (
-		let (((mat, _) as state), g) = Queue.pop q in
-
-		let report () =
-		  let lq = float (Queue.length q) /. 1_000_000. in
-		  let lh = float (Hashtbl.length h) /. 1_000_000. in
-		  let c = float !count /. 1_000_000. in
-		  let perc = (float !count) /. (float tot) *. 100. in
-		  let dt_c = float (!count - !prev) in
-		  let t' = Unix.gettimeofday () in
-		  let dt_t = t' -. !t in
-		  let eltps = dt_c /. dt_t in
-		  let eltph = eltps *. 3600. in
-		  let percph = eltph /. (float tot) *. 100. in
-		  Printf.eprintf "g(%2d) q(%9.6fm/%8.2fMB) h(%9.6fm/%8.2fMB)"
-						 g lq (lq *. sz_qelt) lh (lh *. sz_helt);
-		  Printf.eprintf " count(%10.6fm %5.2f%% %.1fpph)\n%!"
-						 c perc percph;
-		  t := t';
-		  prev := !count
-		in
-
-		if (!count mod 5000 = 0) && (not (!count = !prev)) then report ();
-		retreive_db_pos mat dbs.ownerships dbid indices_field;
-		let i = index_of_pos db indices_field in
-		let v = get db i in
-		if v = default then (set db i g;
-							 count := !count + 1;
-							 if !count > tot - 5 then report ();
-							);
-		let rec aux' = function
-		  | ((mat', _) as state')::tl	->
-			 if not (Hashtbl.mem h state') then (
-			   Queue.push (state', g + 1) q;
-			   Hashtbl.add h state' ()
-			 );
-			 aux' tl
-		  | _							-> ()
-		in
-		aux' (Grid.successors state);
-		aux ()
-	  )
-	in
-	aux ();
-
-
-	let fname = Grid.to_filename mat in
-	let ochan = open_out fname in
-	Printf.eprintf "saving to '%s'\n%!" fname;
-	Printf.eprintf "length = %d\n%!" (Bytes.length db.data);
-	Marshal.to_channel ochan db.data [];
-	close_out ochan;
-
-	(* for i=0 to Bytes.length db.data - 1 do *)
-	(*   Printf.eprintf "%2d(%02x) \n%!" i (int_of_char (Bytes.get db.data i)); *)
-	(* done; *)
-
-	let ichan = open_in fname in
-	Printf.eprintf "loading back\n%!";
-	let data2 = (Marshal.from_channel ichan : bytes) in
-	Printf.eprintf "length = %d\n%!" (Bytes.length data2);
-	(* for i=0 to Bytes.length db.data - 1 do *)
-	(*   Printf.eprintf "%2d(%02x) \n%!" i (int_of_char (Bytes.get data2 i)); *)
-	(* done; *)
-	Printf.eprintf "issame ? %d\n%!" (Bytes.compare data2 Bytes.empty);
-	Printf.eprintf "issame ? %d\n%!" (Bytes.compare data2 db.data);
-
-
-	close_in ichan;
-	(* Printf.eprintf "DATA SIZE %d\n%!" (Marshal.data_size ); *)
-	(* Marshal.from_bytes db.data *)
-	Printf.eprintf "DONE for database %d*************************************\n%!" dbid;
-	db
+(** 3.0.0 Build a grid with uninvolved cells at -1 *)
+let goal_pattern db =
+  let (mat, piv) as initgra = Grid.goal db.grid_w in
+  let x0, y0 = Grid.pivxy piv in
+  let aux _ x y v =
+	try
+	  ignore(List.find (fun v' -> v = v') db.nbrs)
+	with
+	| Not_found ->
+	   if x = x0 && y = y0
+	   then mat.(y).(x) <- -2
+	   else mat.(y).(x) <- -1
   in
-  Array.mapi build_data dbs.dbs
+  Grid.iter_cells mat aux;
+  initgra
+
+(** 3.2.0 Alloc bytes for data *)
+let alloc_data w n =
+  let n_cell = w * w in
+  let bytes = fact_div n_cell (n_cell - n) in
+  Bytes.make bytes (char_of_int 255)
+
+(** 3.2.1 Fill pattern database with retrograde BFS search*)
+let build_pdb ownerships db goalpattern dbid =
+  Printf.eprintf "FILLING DATABASE %d:********************************\n%!" dbid;
+  Grid.print goalpattern;
+  print_one db;
+  Printf.eprintf "***************************************************\n%!";
+
+  let ncell = db.grid_w * db.grid_w in
+  let default = 255 in
+  let tot = fact_div ncell (ncell - db.n_nbrs) in
+  Printf.eprintf "Looking for %d nodes with bfs :(\n%!" tot;
+  let indices_field = Array.make db.n_nbrs 42 in
+
+  let data = alloc_data db.grid_w db.n_nbrs in
+
+  let count = ref 0 in
+  (* <Debug> *)
+  let prev = ref (-1) in
+  let sz_qelt = float ((16 + 1 + 1) * 8) in
+  let sz_helt = float ((16 + 1) * 8) in
+  let t = ref (Unix.gettimeofday ()) in
+  (* </Debug> *)
+
+  let q = Queue.create () in
+  let h = Hashtbl.create 30_000_000 in
+  Queue.push (goalpattern, 0) q;
+  Hashtbl.add h goalpattern ();
+
+  let rec aux () =
+	if !count < tot then (
+	  let (((mat, _) as state), g) = Queue.pop q in
+
+	  (* <Debug> *)
+	  let report () =
+		let lq = float (Queue.length q) /. 1_000_000. in
+		let lh = float (Hashtbl.length h) /. 1_000_000. in
+		let c = float !count /. 1_000_000. in
+		let perc = (float !count) /. (float tot) *. 100. in
+		let dt_c = float (!count - !prev) in
+		let t' = Unix.gettimeofday () in
+		let dt_t = t' -. !t in
+		let eltps = dt_c /. dt_t in
+		let eltph = eltps *. 3600. in
+		let percph = eltph /. (float tot) *. 100. in
+		Printf.eprintf "g(%2d) q(%9.6fm/%8.2fMB) h(%9.6fm/%8.2fMB)"
+					   g lq (lq *. sz_qelt) lh (lh *. sz_helt);
+		Printf.eprintf " count(%10.6fm %5.2f%% %.1fpph)\n%!"
+					   c perc percph;
+		t := t';
+		prev := !count
+	  in
+	  if (!count mod 5000 = 0) && (not (!count = !prev)) then report ();
+	  (* </Debug> *)
+
+	  retreive_db_pos mat ownerships dbid indices_field;
+	  let i = index_of_pos db indices_field in
+	  let v = get data i in
+	  if v = default then (set data i g;
+						   count := !count + 1;
+						   if !count > tot - 5 then report ();
+						  );
+	  let rec aux' = function
+		| ((mat', _) as state')::tl	->
+		   if not (Hashtbl.mem h state') then (
+			 Queue.push (state', g + 1) q;
+			 Hashtbl.add h state' ()
+		   );
+		   aux' tl
+		| _							-> ()
+	  in
+	  aux' (Grid.successors state);
+	  aux ()
+	)
+  in
+  aux ();
+  Printf.eprintf "DONE for database %d*************************************\n%!" dbid;
+  data
+
+
+let fill_datas (dbs:t) =
+  (** 3.0 Foreach database *)
+  (** 3.1 Try to load database from file *)
+  (** 3.2 Create database and export it to file *)
+  let fill_data dbid (db:db) =
+	let (mat, _) as goalpattern = goal_pattern db in
+	let fname = Grid.to_filename mat in
+	let data = (
+	  try
+		let ichan = open_in fname in
+		Printf.eprintf "File \"%s\" found\n%!" fname;
+		let data = (Marshal.from_channel ichan : bytes) in
+		close_in ichan;
+		data
+	  with
+	  | _ ->
+		 Printf.eprintf "File \"%s\" not found\n%!" fname;
+		 let data = build_pdb dbs.ownerships db goalpattern dbid in
+		 let ochan = open_out fname in
+		 Printf.eprintf "saving to file \"%s\"\n%!" fname;
+		 Printf.eprintf "length = %d\n%!" (Bytes.length data);
+		 Marshal.to_channel ochan db.data [];
+		 close_out ochan;
+		 data
+	) in
+	{db with data = data}
+  in
+  Array.mapi fill_data dbs.dbs
 
 
 (** 1.3.2 Save 'paddings' inside bitfield *)
@@ -265,12 +280,6 @@ let build_paddings w ncell_pat =
   in
   aux 0 ncell (nbytes / ncell);
   a
-
-(** 1.3.1 Alloc bitfield *)
-let alloc_data w n =
-  let n_cell = w * w in
-  let bytes = fact_div n_cell (n_cell - n) in
-  Bytes.make bytes (char_of_int 255)
 
 let init_pattern_structure grid =
   let w = Array.length grid in
@@ -305,7 +314,6 @@ let init_pattern_structure grid =
   let aux db =
 	{db with
 	  nbrs				= List.rev db.nbrs;
-	  data				= alloc_data w db.n_nbrs;
 	  paddings			= build_paddings w db.n_nbrs;}
   in
   List.rev_map aux !dbs
@@ -334,4 +342,4 @@ let build grid =
 	  ownerships		= build_ownerships empty_dbs;
 	} in
   print holder;
-  build_datas holder
+  fill_datas holder

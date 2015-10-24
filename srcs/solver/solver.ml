@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/10/24 15:16:49 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/24 15:59:15 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -57,7 +57,6 @@ let solve npuzzle =
   	  [|2; 0; 6|];
   	  [|7; 8; 1|];
   	 |] in
-  Printf.eprintf "'%s'\n%!" (Grid.to_filename realmat);
 
   let realpiv = Grid.pivv (1, 1) in
   let realgr = realmat, realpiv in
@@ -78,7 +77,7 @@ let solve npuzzle =
   (* 			  [|-1;-1;-1;-1|]; *)
   (* 			  [| 1; 1; 1; 1|];|] in *)
   let dps = [|[| 5;-1;-5;-1|];
-  			  [| 5; 5;-5;-1|];
+  			  [| 5;-1;-5;-1|];
   			  [| 5;-1;-5;-1|];
   			  [| 5; 5;-1;-1|];|] in
   (* let dps = [|[|5 ;5;-1; 1|]; *)
