@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/10/24 13:20:05 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/24 15:16:49 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -50,15 +50,17 @@ let grid_from_file fname =
 
 (* Solve *)
 let solve npuzzle =
-  let (realmat, realpiv) as realgr = grid_from_file "lol3.np" in
+  (* let (realmat, realpiv) as realgr = grid_from_file "lol3.np" in *)
   (* let (realmat, realpiv) as realgr = Grid.of_cgrid npuzzle in *)
-  (* let realmat = [| *)
-  (* 	  [|3 ;5 ;4|]; *)
-  (* 	  [|2; 0; 6|]; *)
-  (* 	  [|7; 8; 1|]; *)
-  (* 	 |] in *)
-  (* let realpiv = Grid.pivv (1, 1) in *)
-  (* let realgr = realmat, realpiv in *)
+  let realmat = [|
+  	  [|3 ;5 ;4|];
+  	  [|2; 0; 6|];
+  	  [|7; 8; 1|];
+  	 |] in
+  Printf.eprintf "'%s'\n%!" (Grid.to_filename realmat);
+
+  let realpiv = Grid.pivv (1, 1) in
+  let realgr = realmat, realpiv in
   let w = Array.length realmat in
   Printf.eprintf "width %u\n%!" w;
   Grid.init_transp_tables w;
@@ -71,14 +73,14 @@ let solve npuzzle =
   Printf.eprintf "\n%!";
   Grid.print goalgr;
   Printf.eprintf "\n%!";
-  let dps = [|[|-1;-1;-1;-1|];
-  			  [|-1;-1;-1;-1|];
-  			  [|-1;-1;-1; 1|];
-  			  [| 1; 1; 1; 1|];|] in
-  (* let dps = [|[| 5; 5;-5;-1|]; *)
-  (* 			  [| 5;-5;-5;-1|]; *)
-  (* 			  [|-1;-1;-5;-1|]; *)
-  (* 			  [|-1;-1;-1;-1|];|] in *)
+  (* let dps = [|[|-1;-1;-1;-1|]; *)
+  (* 			  [|-1;-1;-1;-1|]; *)
+  (* 			  [|-1;-1;-1;-1|]; *)
+  (* 			  [| 1; 1; 1; 1|];|] in *)
+  let dps = [|[| 5;-1;-5;-1|];
+  			  [| 5; 5;-5;-1|];
+  			  [| 5;-1;-5;-1|];
+  			  [| 5; 5;-1;-1|];|] in
   (* let dps = [|[|5 ;5;-1; 1|]; *)
   (* 			  [|5; 5;-1;-1|]; *)
   (* 			  [|5;-1;-1; 1|]; *)
@@ -96,12 +98,12 @@ let solve npuzzle =
   (* 				 (Unix.gettimeofday () -. t) *)
   (* 				 (List.length stack - 1); *)
 
-  let t = Unix.gettimeofday () in
-  let stack = GridIDAStar.solve abstgr goalgr GridHeuristics.Manhattan.calc in
-  ignore(stack);
-  Printf.eprintf "%f sec to solve (%d steps)\n%!"
-				 (Unix.gettimeofday () -. t)
-				 (List.length stack - 1);
+  (* let t = Unix.gettimeofday () in *)
+  (* let stack = GridIDAStar.solve abstgr goalgr GridHeuristics.Manhattan.calc in *)
+  (* ignore(stack); *)
+  (* Printf.eprintf "%f sec to solve (%d steps)\n%!" *)
+  (* 				 (Unix.gettimeofday () -. t) *)
+  (* 				 (List.length stack - 1); *)
 
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
   ()

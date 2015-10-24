@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:58 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/19 18:11:33 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/24 14:55:00 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -99,7 +99,7 @@ let find mat v =
 	  else
 		cell (x + 1)
 	in
-  cell 0
+	cell 0
   in
   line 0
 
@@ -225,3 +225,15 @@ let goal w =
   in
   iter_cells mat aux;
   mat, pivv (find mat (!transposition_toabstract).(0))
+
+
+let to_filename mat =
+  let str = ref "" in
+  let rec aux i x y v =
+	if v < 0
+	then str := Printf.sprintf "%se" !str
+	else str := Printf.sprintf "%s%02d" !str v
+  in
+  iter_cells mat aux;
+  (* Printf.eprintf "found '%s'\n%!" !str; *)
+  Printf.sprintf "%s.pdb" !str

@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/22 09:56:27 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/24 13:01:40 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/24 15:23:30 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -195,13 +195,13 @@ let build_datas (dbs:t) =
 		  prev := !count
 		in
 
-		if (!count mod 10000 = 0) && (not (!count = !prev)) then report ();
+		if (!count mod 5000 = 0) && (not (!count = !prev)) then report ();
 		retreive_db_pos mat dbs.ownerships dbid indices_field;
 		let i = index_of_pos db indices_field in
 		let v = get db i in
 		if v = default then (set db i g;
 							 count := !count + 1;
-							 if !count > tot - 200 then report ();
+							 if !count > tot - 5 then report ();
 							);
 		let rec aux' = function
 		  | ((mat', _) as state')::tl	->
@@ -219,33 +219,31 @@ let build_datas (dbs:t) =
 	aux ();
 
 
+	let fname = Grid.to_filename mat in
+	let ochan = open_out fname in
+	Printf.eprintf "saving to '%s'\n%!" fname;
+	Printf.eprintf "length = %d\n%!" (Bytes.length db.data);
+	Marshal.to_channel ochan db.data [];
+	close_out ochan;
+
+	(* for i=0 to Bytes.length db.data - 1 do *)
+	(*   Printf.eprintf "%2d(%02x) \n%!" i (int_of_char (Bytes.get db.data i)); *)
+	(* done; *)
+
+	let ichan = open_in fname in
+	Printf.eprintf "loading back\n%!";
+	let data2 = (Marshal.from_channel ichan : bytes) in
+	Printf.eprintf "length = %d\n%!" (Bytes.length data2);
+	(* for i=0 to Bytes.length db.data - 1 do *)
+	(*   Printf.eprintf "%2d(%02x) \n%!" i (int_of_char (Bytes.get data2 i)); *)
+	(* done; *)
+	Printf.eprintf "issame ? %d\n%!" (Bytes.compare data2 Bytes.empty);
+	Printf.eprintf "issame ? %d\n%!" (Bytes.compare data2 db.data);
 
 
-	(* let count = ref 0 in *)
-	(* let cost _ _ = *)
-	(*   1 *)
-	(* in *)
-	(* let rec search gra g threshold = *)
-
-	(*   let rec try_successor successors = *)
-	(* 	match successors with *)
-	(* 	| hd::tl                      -> search hd (g + cost gra hd) threshold; *)
-	(* 									 try_successor tl *)
-	(* 	| _                           -> () *)
-	(*   in *)
-	(*   (\* TRY ADD *\) *)
-	(*   if g < threshold *)
-	(*   then try_successor (Grid.successors gra) *)
-	(* in *)
-
-	(* let rec aux threshold = *)
-	(*   Printf.eprintf "IDA* loop %d->threshold \n%!" threshold; *)
-	(*   search initgra 0 threshold; *)
-	(*   if !count = tot *)
-	(*   then Printf.eprintf "IDA*: END !!!\n%!" *)
-	(*   else aux (threshold + 1) *)
-	(* in *)
-	(* aux 0; *)
+	close_in ichan;
+	(* Printf.eprintf "DATA SIZE %d\n%!" (Marshal.data_size ); *)
+	(* Marshal.from_bytes db.data *)
 	Printf.eprintf "DONE for database %d*************************************\n%!" dbid;
 	db
   in
