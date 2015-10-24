@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/22 09:56:27 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/24 19:34:38 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/24 20:28:51 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -100,8 +100,10 @@ let retreive_indices_of_pos field =
 (* Demodulation *)
 let retreive_pos_of_indices pos indices =
   pos.(0) <- indices.(0);
+  (* PROBLEM IN THIS FUNCTION, MAYBE THIS IS NOT REVERSIBLE *)
   for i = 1 to Array.length pos - 1 do
 	let rec aux j v =
+	  Printf.eprintf "i(%d) v(%d) pos.(%d)(%d)\n%!" i v j pos.(j);
 	  if j = i then
 		v
 	  else if pos.(j) <= v then
@@ -177,10 +179,12 @@ let retreive_mat_of_indexpiv i piv ownerships db posfield indicesfield mat =
 	done;
   done;
   let x0, y0 = Grid.pivxy piv in
-  mat.(x0).(y0) <- -2;
+  Printf.eprintf "LOL ICIIII\n%!";
+  mat.(y0).(x0) <- -2;
   let rec aux i l =
 	match l with
-	| hd::tl		-> mat.(hd / w).(hd mod w) <- posfield.(i);
+	| hd::tl		-> let posi = posfield.(i) in
+					   mat.(posi / w).(posi mod w) <- hd;
 					   aux (i + 1) tl
 	| _				-> ()
   in
@@ -292,9 +296,57 @@ let build_pdb ownerships db ((goalmat, piv) as goalpattern) dbid =
   let rec aux () =
 	if !count < nbytes then (
 	  let g, piv, i = unhash_state (Queue.pop q) in
+	  let x0, y0 = Grid.pivxy piv in
+	  let v = get data i in
+
+	  (* if (!count mod 5000 = 0) && (not (!count = !prev)) then *)
+	  report g q h count nbytes prev t sz_qelt sz_helt;
+
+	  (* Printf.eprintf "v(%d)\n%!" v; *)
+	  if v = 255 then (
+		set data i g;
+		count := !count + 1;
+	  );
+
+	  let rec aux' = function
+		| (mat', piv')::tl
+		  -> retreive_db_pos mat' ownerships dbid indicesfield;
+			 let i' = index_of_pos db indicesfield in
+
+			 Printf.eprintf "piv'(%d) i'(%d)\n%!" piv' i';
+			 Grid.print (mat', piv');
+			 let test = ref 0 in
+			 let f i x y v = test := !test + v; in
+			 Grid.iter_cells mat f; Printf.eprintf "%d\n%!" !test;assert(!test = 59);
+
+			 if not (Hashtbl.mem h i') then (
+			   let g' = if mat'.(y0).(x0) >= 0
+						then g + 1
+						else g
+			   in
+			   (* Printf.eprintf "g'(%d) piv'(%d) i'(%d)\n%!" g' piv' i'; *)
+			   (* Grid.print (mat', piv'); *)
+			   let hash = hash_state g' piv' i' in
+			   Queue.push hash q;
+			   Hashtbl.add h hash ();
+			 );
+			 aux' tl
+		| _
+		  -> ()
+	  in
+	  Printf.eprintf "TREATING g(%d) piv(%d) i(%d)\n%!" g piv i;
 	  retreive_mat_of_indexpiv i piv ownerships db posfield indicesfield mat;
 	  Grid.print (mat, piv);
 
+	  let test = ref 0 in
+	  let f i x y v = test := !test + v; in
+	  Grid.iter_cells mat f; Printf.eprintf "%d\n%!" !test;assert(!test = 59);
+	  (* assert(!test = 59 || !test = 60); *)
+
+	  aux' (Grid.successors (mat, piv));
+	  (* Printf.eprintf "COUNT %d\n%!" !count; *)
+	  (* if !count >= 2 then assert(false); *)
+	  (* Printf.eprintf "\n%!"; *)
 	  aux ()
 	)
   in
