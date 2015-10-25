@@ -247,8 +247,15 @@ let warn dbid db ncell nstring goalpattern =
 module Hash =
   struct
 	type t = int
+	(* TODO, HEAVY TESTS ON OPERATORS PRIORITY *)
+
+	(** Required by hmap functor *)
 	let equal a b =
 	  a land 0x00FF_FFFF_FFFF = b land 0x00FF_FFFF_FFFF
+
+	(** Required by batheap functor *)
+	let compare a b =
+	  a lsr (32 + 8) - b lsr (32 + 8)
 
 	let make g piv i =
 	  g lsl (32 + 8) + piv lsl 32 + i
@@ -262,10 +269,10 @@ module Hash =
   end
 
 module HHashtbl = Hashtbl.Make(Hash)
-
+module HBatHeap = BatHeap.Make(Hash)
 
 let report g q h count nstring prev t sz_qelt sz_helt =
-  let lq = float (Queue.length q) /. 1_000_000. in
+  let lq = float (HBatHeap.size !q) /. 1_000_000. in
   let lh = float (HHashtbl.length h) /. 1_000_000. in
   let c = float !count /. 1_000_000. in
   let perc = (float !count) /. (float nstring) *. 100. in
@@ -312,19 +319,20 @@ let build_pdb ownerships db ((goalmat, piv) as goalpattern) dbid =
   let t = ref (Unix.gettimeofday ()) in
   (* </Debug> *)
 
-  let q = Queue.create () in
-  let h = HHashtbl.create 30_000_000 in
-
   retreive_db_pos mat ownerships dbid field;
   let hash = Hash.make 0 piv (index_of_pos db field) in
-  Queue.push hash q;
+
+
+  let q = ref (HBatHeap.insert HBatHeap.empty hash) in
+  let h = HHashtbl.create 30_000_000 in
   HHashtbl.add h hash ();
 
   let rec aux () =
 	if !count < nstring then (
-	  let g, piv, i = Hash.disass (Queue.pop q) in
+	  let g, piv, i = Hash.disass (HBatHeap.find_min !q) in
 	  let x0, y0 = Grid.pivxy piv in
 	  let v = get data i in
+	  q := HBatHeap.del_min !q;
 
 	  if (!count mod 5000 = 0) && (not (!count = !prev)) then
 		report g q h count nstring prev t sz_qelt sz_helt;
@@ -347,13 +355,13 @@ let build_pdb ownerships db ((goalmat, piv) as goalpattern) dbid =
 			 (* Printf.eprintf "g'(%d) piv'(%d) i'(%d)\n%!" g' piv' i'; *)
 			 (* Grid.print (mat', piv'); *)
 
-
+(*
 			 let test = ref 0 in
 			 let f i x y v = test := !test + v; in
 			 Grid.iter_cells mat f; assert(!test = 59);
-
+ *)
 			 if not (HHashtbl.mem h hash) then (
-			   Queue.push hash q;
+			   q := HBatHeap.insert !q hash;
 			   HHashtbl.add h hash ();
 			 );
 			 aux' tl
@@ -362,7 +370,7 @@ let build_pdb ownerships db ((goalmat, piv) as goalpattern) dbid =
 	  in
 	  retreive_mat_of_indexpiv i piv ownerships db field mat;
 
-	  (
+	  (*
 		let test = ref 0 in
 		let f i x y v = test := !test + v; in
 		Grid.iter_cells mat f; assert(!test = 59);
@@ -385,7 +393,7 @@ let build_pdb ownerships db ((goalmat, piv) as goalpattern) dbid =
 
 
 
-	  );
+	 *)
 
 
 	  (* assert(!test = 59 || !test = 60); *)
