@@ -264,7 +264,7 @@ module Hash =
 	  s lsr (32 + 8), s lsr 32 land 0xFF, s land 0xFFFFFFFF
 
 	let hash i =
-	  i land max_int
+	  i
 
   end
 
@@ -314,9 +314,11 @@ let build_pdb ownerships db ((goalmat, piv) as goalpattern) dbid =
   let count = ref 0 in
   (* <Debug> *)
   let prev = ref (-1) in
-  let sz_qelt = float ((1) * 8) in
-  let sz_helt = float ((1) * 8) in
+  let sz_qelt = float ((1 + 2 + 1) * 8) in
+  let sz_helt = float ((1 + 1) * 8) in
   let t = ref (Unix.gettimeofday ()) in
+  let loops = ref 0 in
+  let prevg = ref (-1) in
   (* </Debug> *)
 
   retreive_db_pos mat ownerships dbid field;
@@ -324,7 +326,7 @@ let build_pdb ownerships db ((goalmat, piv) as goalpattern) dbid =
 
 
   let q = ref (HBatHeap.insert HBatHeap.empty hash) in
-  let h = HHashtbl.create 30_000_000 in
+  let h = HHashtbl.create 150_000_000 in
   HHashtbl.add h hash ();
 
   let rec aux () =
@@ -332,15 +334,48 @@ let build_pdb ownerships db ((goalmat, piv) as goalpattern) dbid =
 	  let g, piv, i = Hash.disass (HBatHeap.find_min !q) in
 	  let x0, y0 = Grid.pivxy piv in
 	  let v = get data i in
+
 	  q := HBatHeap.del_min !q;
+	  retreive_mat_of_indexpiv i piv ownerships db field mat;
 
-	  if (!count mod 5000 = 0) && (not (!count = !prev)) then
+
+	  loops := !loops + 1;
+	  if !loops mod 50000 = 0 then (
 		report g q h count nstring prev t sz_qelt sz_helt;
+	  );
+	  if g != !prevg && g > 12 then (
+		Printf.eprintf "old g was %d \n%!" !prevg;
+		let oldhlen = HHashtbl.length h in
+		let g_kept = g - 1 in
 
-	  (* Printf.eprintf "v(%d)\n%!" v; *)
+		let collect k _ _ =
+		  let g, _, _ = Hash.disass k in
+		  if g < g_kept then
+			HHashtbl.remove h k;
+		  ()
+		in
+		HHashtbl.fold collect h ();
+		let gained = oldhlen - HHashtbl.length h in
+		Printf.eprintf "Removed %d nodes\n%!" gained;
+
+		report g q h count nstring prev t sz_qelt sz_helt;
+		prevg := g;
+		Printf.eprintf "Gc\n%!";
+		Gc.full_major ();
+		Printf.eprintf "Gc p2\n%!";
+		Gc.compact ();
+		Printf.eprintf "Gc done\n%!";
+	  );
+
+
+
+
+		(* Printf.eprintf "v(%d)\n%!" v; *)
 	  if v = 255 then (
 		set data i g;
 		count := !count + 1;
+
+
 	  );
 
 	  let rec aux' = function
@@ -352,8 +387,6 @@ let build_pdb ownerships db ((goalmat, piv) as goalpattern) dbid =
 					  else g
 			 in
 			 let hash = Hash.make g' piv' i' in
-			 (* Printf.eprintf "g'(%d) piv'(%d) i'(%d)\n%!" g' piv' i'; *)
-			 (* Grid.print (mat', piv'); *)
 
 (*
 			 let test = ref 0 in
@@ -368,7 +401,6 @@ let build_pdb ownerships db ((goalmat, piv) as goalpattern) dbid =
 		| _
 		  -> ()
 	  in
-	  retreive_mat_of_indexpiv i piv ownerships db field mat;
 
 	  (*
 		let test = ref 0 in
@@ -403,6 +435,10 @@ let build_pdb ownerships db ((goalmat, piv) as goalpattern) dbid =
 	  (* if !count >= 2 then assert(false); *)
 	  (* Printf.eprintf "\n%!"; *)
 	  aux ()
+
+
+
+
 	)
   in
 
@@ -446,6 +482,7 @@ let build_pdb ownerships db ((goalmat, piv) as goalpattern) dbid =
   in
    *)
   aux ();
+
   data
 
 

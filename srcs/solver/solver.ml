@@ -72,7 +72,7 @@ let solve npuzzle =
   Printf.eprintf "\n%!";
   Grid.print goalgr;
   Printf.eprintf "\n%!";
-  let dps = [|[|-1;-1; 2; 2|];
+  let dps = [|[|-1;-1;-1; 2|];
   			  [|-1;-1; 2; 2|];
   			  [|-1;-9; 2; 2|];
   			  [|-1;-1; 2; 2|];|] in
