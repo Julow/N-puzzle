@@ -6,24 +6,11 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/27 17:05:48 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/27 17:05:52 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/27 17:43:33 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
 include DPatternDB
-
-let alloc_data w n =
-  let n_cell = w * w in
-  let bytes = fact_div n_cell (n_cell - n) in
-  Bytes.make bytes (char_of_int 255)
-
-let warn dbid db ncell nbytes goalpattern =
-  Printf.eprintf "********************************************************\n%!";
-  Printf.eprintf "FILLING DB ** nb(%d) ** cells(%d/%d) ** nbytes(%9d) **\n%!"
-				 dbid db.n_nbrs ncell nbytes;
-  Grid.print goalpattern;
-  print_one db;
-  Printf.eprintf "********************************************************\n%!"
 
 (**
  ** I: Computed index for a maximum of 8 tiles pattern (29bits required)
@@ -39,7 +26,7 @@ let warn dbid db ncell nbytes goalpattern =
 module Hash =
   struct
 	type t = int
-	(* TODO, HEAVY TESTS ON OPERATORS PRIORITY *)
+	(* TODO: HEAVY TESTS ON OPERATORS PRIORITY *)
 
 	(** Required by hmap functor *)
 	let equal a b =
@@ -60,12 +47,22 @@ module Hash =
 
   end
 
-module HHashtbl = Hashtbl.Make(Hash)
-module HBatHeap = BatHeap.Make(Hash)
+module CurHashtbl = Hashtbl.Make(Hash)
+module CurQueue = BatHeap.Make(Hash)
 
-let report g q h count nbytes prev t sz_qelt sz_helt =
-  let lq = float (HBatHeap.size !q) /. 1_000_000. in
-  let lh = float (HHashtbl.length h) /. 1_000_000. in
+(* ************************************************************************** *)
+(* DEBUG *)
+
+let prev = ref (-1)
+let sz_qelt = float ((1 + 2 + 1) * 8)
+let sz_helt = float ((1 + 1) * 8)
+let t = ref (Unix.gettimeofday ())
+let loops = ref 0
+let prevg = ref (-1)
+
+let report (ncell, nbytes, count, q, h) =
+  let lq = float (CurQueue.size !q) /. 1_000_000. in
+  let lh = float (CurHashtbl.length h) /. 1_000_000. in
   let c = float !count /. 1_000_000. in
   let perc = (float !count) /. (float nbytes) *. 100. in
   let dt_c = float (!count - !prev) in
@@ -75,80 +72,91 @@ let report g q h count nbytes prev t sz_qelt sz_helt =
   let eltph = eltps *. 3600. in
   let percph = eltph /. (float nbytes) *. 100. in
   Printf.eprintf "g(%2d) q(%9.6fm/%8.2fMB) h(%9.6fm/%8.2fMB)"
-				 g lq (lq *. sz_qelt) lh (lh *. sz_helt);
+				 !prevg lq (lq *. sz_qelt) lh (lh *. sz_helt);
   Printf.eprintf " count(%10.6fm %5.2f%% %.1fpph)\n%!"
 				 c perc percph;
   t := t';
   prev := !count
 
+let warn dbid db ncell nbytes goalpattern =
+  Printf.eprintf "********************************************************\n%!";
+  Printf.eprintf "FILLING DB ** nb(%d) ** cells(%d/%d) ** nbytes(%9d) **\n%!"
+				 dbid db.n_nbrs ncell nbytes;
+  Grid.print goalpattern;
+  print_one db;
+  Printf.eprintf "********************************************************\n%!"
+
+(* ************************************************************************** *)
+(* LOOP-INIT TIME *)
+
+let alloc_data w n =
+  let n_cell = w * w in
+  let bytes = fact_div n_cell (n_cell - n) in
+  Bytes.make bytes (char_of_int 255)
+
+let init_mem_fields mat db =
+  Array.make db.n_nbrs 42,
+  Grid.copy_mat mat,
+  alloc_data db.grid_w db.n_nbrs
+
+let init_containers (mat, piv) db ownerships dbid field =
+  retreive_db_pos mat ownerships dbid field;
+  let hash = Hash.make 0 piv (index_of_pos db field) in
+  let q = ref (CurQueue.insert CurQueue.empty hash) in
+  let h = CurHashtbl.create 150_000_000 in
+  CurHashtbl.add h hash ();
+  q, h
+
+(* ************************************************************************** *)
+(* LOOP TIME *)
+
+let garbage_collect h g debug_dat =
+  Printf.eprintf "old g was %d \n%!" !prevg;
+  let oldhlen = CurHashtbl.length h in
+  let g_kept = g - 1 in
+
+  let collect k _ _ =
+	let g, _, _ = Hash.disass k in
+	if g < g_kept then
+	  CurHashtbl.remove h k;
+	()
+  in
+  CurHashtbl.fold collect h ();
+  let gained = oldhlen - CurHashtbl.length h in
+  Printf.eprintf "Removed %d nodes\n%!" gained;
+
+  report debug_dat;
+  prevg := g;
+  if gained > 2_000_000 then (
+	Printf.eprintf "Gc\n%!";
+	Gc.compact ();
+	Printf.eprintf "Gc done\n%!";
+  )
 
 let build ownerships db ((goalmat, piv) as goalpattern) dbid =
   let ncell = db.grid_w * db.grid_w in
   let nbytes = fact_div ncell (ncell - db.n_nbrs) in
   warn dbid db ncell nbytes goalpattern;
-  let field = Array.make db.n_nbrs 42 in
 
-  let mat = Grid.copy_mat goalmat in
-  let data = alloc_data db.grid_w db.n_nbrs in
+  let field, mat, data = init_mem_fields goalmat db in
   let count = ref 0 in
-  (* <Debug> *)
-  let prev = ref (-1) in
-  let sz_qelt = float ((1 + 2 + 1) * 8) in
-  let sz_helt = float ((1 + 1) * 8) in
-  let t = ref (Unix.gettimeofday ()) in
-  let loops = ref 0 in
-  let prevg = ref (-1) in
-  (* </Debug> *)
+  let q, h = init_containers goalpattern db ownerships dbid field in
 
-  retreive_db_pos mat ownerships dbid field;
-  let hash = Hash.make 0 piv (index_of_pos db field) in
-
-
-  let q = ref (HBatHeap.insert HBatHeap.empty hash) in
-  let h = HHashtbl.create 150_000_000 in
-  HHashtbl.add h hash ();
+  let debug_dat = ncell, nbytes, count, q, h in
 
   let rec aux () =
 	if !count < nbytes then (
-	  let g, piv, i = Hash.disass (HBatHeap.find_min !q) in
+	  let g, piv, i = Hash.disass (CurQueue.find_min !q) in
 	  let x0, y0 = Grid.pivxy piv in
 	  let v = get data i in
 
-	  q := HBatHeap.del_min !q;
-	  retreive_mat_of_indexpiv i piv ownerships db field mat;
-
+	  q := CurQueue.del_min !q;
 
 	  loops := !loops + 1;
-	  if !loops mod 50000 = 0 then (
-		report g q h count nbytes prev t sz_qelt sz_helt;
-	  );
-	  if g != !prevg && g > 12 then (
-		Printf.eprintf "old g was %d \n%!" !prevg;
-		let oldhlen = HHashtbl.length h in
-		let g_kept = g - 1 in
-
-		let collect k _ _ =
-		  let g, _, _ = Hash.disass k in
-		  if g < g_kept then
-			HHashtbl.remove h k;
-		  ()
-		in
-		HHashtbl.fold collect h ();
-		let gained = oldhlen - HHashtbl.length h in
-		Printf.eprintf "Removed %d nodes\n%!" gained;
-
-		report g q h count nbytes prev t sz_qelt sz_helt;
-		prevg := g;
-		if gained > 2_000_000 then (
-		  Printf.eprintf "Gc\n%!";
-		  Gc.compact ();
-		  Printf.eprintf "Gc done\n%!";
-		)
-	  );
-	  if v = 255 then (
-		set data i g;
-		count := !count + 1;
-	  );
+	  if !loops mod 50000 = 0 then report debug_dat;
+	  if g != !prevg && g > 12 then garbage_collect h g debug_dat;
+	  if v = 255 then (set data i g;
+					   count := !count + 1;);
 
 	  let rec aux' = function
 		| (mat', piv')::tl
@@ -159,14 +167,15 @@ let build ownerships db ((goalmat, piv) as goalpattern) dbid =
 					  else g
 			 in
 			 let hash = Hash.make g' piv' i' in
-			 if not (HHashtbl.mem h hash) then (
-			   q := HBatHeap.insert !q hash;
-			   HHashtbl.add h hash ();
+			 if not (CurHashtbl.mem h hash) then (
+			   q := CurQueue.insert !q hash;
+			   CurHashtbl.add h hash ();
 			 );
 			 aux' tl
 		| _
 		  -> ()
 	  in
+	  retreive_mat_of_indexpiv i piv ownerships db field mat;
 	  aux' (Grid.successors (mat, piv));
 	  aux ()
 	)

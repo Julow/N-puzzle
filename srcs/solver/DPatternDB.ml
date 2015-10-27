@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/27 17:05:59 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/27 17:06:00 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/27 17:19:32 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -26,6 +26,7 @@ type t = {
   }
 
 (* ************************************************************************** *)
+(* MISC *)
 
 let rec fact_div x y =
   if x <= y then 1 else x * fact_div (x - 1) y
@@ -35,6 +36,16 @@ let mirror w i =
   let x = last - i mod w in
   let y = last - i / w in
   y + x * w
+
+let get data i =
+  int_of_char (Bytes.get data i)
+
+let set data i v =
+  Bytes.set data i (char_of_int v);
+  ()
+
+(* ************************************************************************** *)
+(* DEBUG *)
 
 let print_one (db:db) =
   let grid_size = db.grid_w * db.grid_w in
@@ -64,6 +75,7 @@ let print dbs =
   Array.iter print_one dbs.dbs
 
 (* ************************************************************************** *)
+(* CONVERSIONS *)
 
 (** e.g. For a given pattern with 6 random cells in a 4*4 grid
  **		 0  1  2 -1
@@ -91,8 +103,7 @@ let print dbs =
  **		Which gives:	db.data.(1976022) = HEURISTIC
  *)
 
-(* ********************************** *)
-(* Modulation *)
+(* Matrix -> Positions [[-> Indices]] -> Index *)
 let retreive_indices_of_pos field =
   let last = Array.length field - 1 in
   for i = last downto 1 do
@@ -107,7 +118,7 @@ let retreive_indices_of_pos field =
   done;
   ()
 
-(* Demodulation *)
+(* Matrix <- [[Positions <-]] Indices <- Index *)
 let retreive_pos_of_indices field =
   let last = Array.length field - 1 in
   for i = last downto 1 do
@@ -122,10 +133,10 @@ let retreive_pos_of_indices field =
   done
 
 (* ********************************** *)
-(* Modulation *)
+(* Matrix -> Positions [[-> Indices -> Index]] *)
 let index_of_pos db field =
   let s = Array.length field in
-  (* Array.iter (fun v->Printf.eprintf "%2d %!" v) field; Printf.eprintf "\n%!"; *)
+  (* Array.iter (fun v->Printf.eprintf "%2d" v) field; Printf.eprintf "\n%!"; *)
   retreive_indices_of_pos field;
   (* Array.iter (fun v->Printf.eprintf "%2d " v) field; *)
   assert(s = (Array.length db.paddings));
@@ -136,7 +147,7 @@ let index_of_pos db field =
   in
   aux 0 0
 
-(* Demodulation *)
+(* Matrix <- Positions <- [[Indices <-]] Index *)
 let retreive_indices_of_index field i paddings =
   let n = Array.length paddings in
   let rec aux j decr =
@@ -151,7 +162,7 @@ let retreive_indices_of_index field i paddings =
   ()
 
 (* ********************************** *)
-(* Modulation *)
+(* Matrix [[-> Positions]] -> Indices -> Index *)
 let retreive_dbs_pos mat ownerships fields mirror_ownerships mirror_fields =
   let w = Array.length mat in
   let aux i _ _ v =
@@ -168,6 +179,7 @@ let retreive_dbs_pos mat ownerships fields mirror_ownerships mirror_fields =
   Grid.iter_cells mat aux;
   ()
 
+(* Matrix [[-> Positions]] -> Indices -> Index *)
 let retreive_db_pos mat ownerships dbid field =
   let aux i _ _ v =
 	if v >= 0
@@ -178,12 +190,10 @@ let retreive_db_pos mat ownerships dbid field =
   Grid.iter_cells mat aux;
   ()
 
-(* Demodulation *)
+(* [[Matrix <- Positions <- Indices <-]] Index *)
 let retreive_mat_of_indexpiv i piv ownerships db field mat =
   retreive_indices_of_index field i db.paddings;
-  (*  Array.iter (fun v->Printf.eprintf "%2d %!" v) field; Printf.eprintf "\n%!"; *)
   retreive_pos_of_indices field;
-  (*  Array.iter (fun v->Printf.eprintf "%2d %!" v) field; Printf.eprintf "\n%!"; *)
   let w = Array.length mat in
   let last = w - 1 in
   for y = 0 to last do
@@ -203,9 +213,4 @@ let retreive_mat_of_indexpiv i piv ownerships db field mat =
   aux 0 db.nbrs;
   ()
 
-let get data i =
-  int_of_char (Bytes.get data i)
-
-let set data i v =
-  Bytes.set data i (char_of_int v);
-  ()
+(* ************************************************************************** *)

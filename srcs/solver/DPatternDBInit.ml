@@ -6,13 +6,13 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/27 17:05:57 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/27 17:06:35 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/27 17:22:32 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
 include DPatternDB
 
-(** 3.0.0 Build a grid with uninvolved cells at -1 *)
+(** 3.1.1 Build a grid with uninvolved cells at -1 *)
 let goal_pattern db =
   let (mat, piv) as initgra = Grid.goal db.grid_w in
   let x0, y0 = Grid.pivxy piv in
@@ -29,9 +29,9 @@ let goal_pattern db =
   initgra
 
 let fill_datas (dbs:t) =
-  (** 3.0 Foreach database *)
-  (** 3.1 Try to load database from file *)
-  (** 3.2 Else create database and export it to file *)
+  (** 3.1 Foreach database *)
+  (** 3.2 Try to load database from file *)
+  (** 3.3 Else create database and export it to file *)
   let fill_data dbid (db:db) =
 	let (mat, _) as goalpattern = goal_pattern db in
 	let fname = Grid.to_filename mat in
@@ -75,8 +75,6 @@ let build_paddings w ncell_pat =
   aux 0 ncell (nbytes / ncell);
   a
 
-
-
 let init_pattern_structure grid =
   let w = Array.length grid in
   let dbs = ref [] in
@@ -115,6 +113,7 @@ let init_pattern_structure grid =
   in
   List.rev_map aux !dbs
 
+(** 2.1 Builds ownerships table *)
 let build_ownerships dbs_a =
   assert(Array.length dbs_a > 0);
   let w = dbs_a.(0).grid_w in
@@ -129,6 +128,7 @@ let build_ownerships dbs_a =
   Array.iteri foreachdb dbs_a;
   a
 
+(** 2.2 Builds ownerships table *)
 let build_mirror_ownerships dbs_a =
   assert(Array.length dbs_a > 0);
   let w = dbs_a.(0).grid_w in
