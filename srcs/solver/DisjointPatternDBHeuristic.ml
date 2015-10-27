@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/27 07:52:31 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/27 13:14:19 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/27 14:10:37 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -25,22 +25,20 @@ let mirror_pos fields fields' w mat dbs =
 	  let x = v mod w in
 	  let y = v / w in
 	  let i' = last - y + (last - x) * w in
-	  (* let v' = mat.(y').(x') in *)
-	  (* Printf.eprintf "%2d  %2d to %2d (%2d)\n%!" i v i' (x' + y' * 4); *)
-	  Printf.eprintf "(%d%d)at ->(%d, %d) "
-					 dbid i
-					 (v mod w) (v / w);
+	  (* Printf.eprintf "(%d) (%d%d)at ->(%d, %d) " *)
+	  (* 				 fields.(dbid).(i) *)
+	  (* 				 dbid i *)
+	  (* 				 (v mod w) (v / w); *)
 	  let x', y' = Grid.find mat mirror.(i) in
-	  Printf.eprintf "Mirrori(%2d)%! at (%d, %d) final(%d)"
-					 mirror.(i)
-					 x' y'
-					 (mirrorf w (x' + y' * w))
-	  ;
-		(* Printf.eprintf "mirror(%d, %d)->\n%!" x' y'; *)
-
-	  Printf.eprintf "\n%!";
+	  let v' = mirrorf w (x' + y' * w) in
+	  (* Printf.eprintf "Mirrori(%2d)%! at (%d, %d) final(%d)" *)
+	  (* 				 mirror.(i) *)
+	  (* 				 x' y' v'; *)
+	  (* Printf.eprintf " %b%!" *)
+	  (* 				 (v = v') *)
+	  (* ; *)
+	  (* Printf.eprintf "\n%!"; *)
 	  fields'.(dbid).(i) <- mirrorf w (x' + y' * w)
-	  (* fields'.(dbid).(i) <- i' *)
 	in
 	Array.iteri aux field;
   in
@@ -50,7 +48,7 @@ let mirror_pos fields fields' w mat dbs =
 let calc dbs fields fields' (mat, piv) =
   let ndb = Array.length dbs.DisjointPatternDB.dbs in
   let w = dbs.DisjointPatternDB.dbs.(0).DisjointPatternDB.grid_w in
-  Grid.print (mat, piv);
+  (* Grid.print (mat, piv); *)
   assert(ndb = Array.length fields);
   assert(ndb = Array.length fields');
   DisjointPatternDB.retreive_dbs_pos
@@ -64,13 +62,13 @@ let calc dbs fields fields' (mat, piv) =
   				db.DisjointPatternDB.data
   				(DisjointPatternDB.index_of_pos db fld)
   	  in
-  	  aux fields (i + 1) (acc + h)
+  	  aux flds (i + 1) (acc + h)
   	)
   	else acc
   in
   let h = aux fields 0 0 in
   let h' = aux fields' 0 0 in
-  Printf.eprintf "%d vs %d\n%!" h h';
-  Printf.eprintf "\n%!";
-  (* max h h' *)
-  h
+  (* Printf.eprintf "%d vs %d\n%!" h h'; *)
+  (* Printf.eprintf "\n%!"; *)
+  max h h'
+  (* h *)
