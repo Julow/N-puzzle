@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/10/27 08:12:56 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/27 10:38:36 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -50,16 +50,16 @@ let grid_from_file fname =
 
 (* Solve *)
 let solve npuzzle =
-  (* let (realmat, realpiv) as realgr = grid_from_file "lol3.np" in *)
-  let (realmat, realpiv) as realgr = Grid.of_cgrid npuzzle in
+  let (realmat, realpiv) as realgr = grid_from_file "lol3.np" in
+  (* let (realmat, realpiv) as realgr = Grid.of_cgrid npuzzle in *)
+
   (* let realmat = [| *)
   (* 	  [|3 ;5 ;4|]; *)
   (* 	  [|2; 0; 6|]; *)
   (* 	  [|7; 8; 1|]; *)
   (* 	 |] in *)
-
-  let realpiv = Grid.pivv (1, 1) in
-  let realgr = realmat, realpiv in
+  (* let realpiv = Grid.pivv (1, 1) in *)
+  (* let realgr = realmat, realpiv in *)
   let w = Array.length realmat in
   Printf.eprintf "width %u\n%!" w;
   Grid.init_transp_tables w;
@@ -72,10 +72,15 @@ let solve npuzzle =
   Printf.eprintf "\n%!";
   Grid.print goalgr;
   Printf.eprintf "\n%!";
-  let dps = [|[| 1; 1; 2; 2|];
+  let dps = [|[| 1; 1; 1; 2|];
   			  [| 1; 1; 2; 2|];
-  			  [| 1;-9; 3; 2|];
-  			  [| 3; 3; 3; 3|];|] in
+  			  [| 1;-9; 2; 2|];
+  			  [| 3; 3; 3; 2|];|] in
+  (* let dps = [|[| 1; 1; 2; 2|]; *)
+  (* 			  [| 1; 1; 2; 2|]; *)
+  (* 			  [| 1;-9; 3; 2|]; *)
+  (* 			  [| 3; 3; 3; 3|];|] in *)
+
   (* let dps = [|[| 5;-1;-5;-1|]; *)
   (* 			  [| 5;-1;-5;-1|]; *)
   (* 			  [| 5;-1;-5;-1|]; *)
@@ -86,8 +91,22 @@ let solve npuzzle =
   (* 			  [|1; 1; 1; 1|];|] in *)
   let t = Unix.gettimeofday () in
   let dpdb = DisjointPatternDB.build dps in
-  ignore(dpdb);
+  let fields =
+	Array.map (fun db ->Array.make db.DisjointPatternDB.n_nbrs 42)
+			  dpdb.DisjointPatternDB.dbs
+  in
+  let fields' =
+	Array.map (fun db ->Array.make db.DisjointPatternDB.n_nbrs 42)
+			  dpdb.DisjointPatternDB.dbs
+  in
   Printf.eprintf "%f sec to build!!!\n%!" (Unix.gettimeofday () -. t);
+
+  let ret =
+	(DisjointPatternDBHeuristic.calc dpdb fields fields') goalgr in
+
+
+  Printf.eprintf "djp: %d\n%!" ret;
+
 
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
   (* let t = Unix.gettimeofday () in *)
@@ -103,6 +122,15 @@ let solve npuzzle =
   (* Printf.eprintf "%f sec to solve (%d steps)\n%!" *)
   (* 				 (Unix.gettimeofday () -. t) *)
   (* 				 (List.length stack - 1); *)
+
+  let t = Unix.gettimeofday () in
+  let stack = GridAStar.solve abstgr goalgr(
+								  DisjointPatternDBHeuristic.calc
+									dpdb fields fields') in
+  ignore(stack);
+  Printf.eprintf "%f sec to solve (%d steps)\n%!"
+  				 (Unix.gettimeofday () -. t)
+  				 (List.length stack - 1);
 
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
   ()

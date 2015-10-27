@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/22 09:56:27 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/27 07:56:31 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/27 09:43:14 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -16,7 +16,7 @@ type db = {
 	nbrs			: int list;
 	n_nbrs			: int;
 	paddings		: int array;
-	data			: string;
+	data			: bytes;
   }
 
 type t = {
@@ -31,10 +31,12 @@ let rec fact_div x y =
 
 let print_one (db:db) =
   let grid_size = db.grid_w * db.grid_w in
-  let string = fact_div grid_size (grid_size - db.n_nbrs) in
-  let string = (float string) /. 1000000. in
-  Printf.eprintf "(was %d) (%10.6fMString) %2d nbrs: %!"
-				 db.input_id string db.n_nbrs;
+  let bytes = fact_div grid_size (grid_size - db.n_nbrs) in
+  let bytes = (float bytes) /. 1000000. in
+  let bytes' = Bytes.length db.data in
+  let bytes' = (float bytes') /. 1000000. in
+  Printf.eprintf "(was %d) (%10.6fMBytes/%10.6fM) %2d nbrs: %!"
+				 db.input_id bytes bytes' db.n_nbrs;
   let aux' nbr = Printf.eprintf "%-2d %!" nbr in
   List.iter aux' db.nbrs;
   Printf.eprintf "\n\t %d paddings: %!" (Array.length db.paddings);
@@ -95,7 +97,8 @@ let retreive_indices_of_pos field =
 	done;
 	assert(field.(i) >= 0);
 	assert(field.(i) < 16 - i);
-  done
+  done;
+  ()
 
 (* Demodulation *)
 let retreive_pos_of_indices field =
@@ -117,9 +120,11 @@ let index_of_pos db field =
   let s = Array.length field in
   (* Array.iter (fun v->Printf.eprintf "%2d %!" v) field; Printf.eprintf "\n%!"; *)
   retreive_indices_of_pos field;
-  (* Array.iter (fun v->Printf.eprintf "%2d " v) field; Printf.eprintf "\n"; Printf.eprintf "\n"; *)
+  (* Array.iter (fun v->Printf.eprintf "%2d " v) field; *)
+  (* Printf.eprintf "\n"; Printf.eprintf "\n%!"; *)
   assert(s = (Array.length db.paddings));
   let rec aux i acc =
+	(* Printf.eprintf "Hello i(%d) s()\n%!" i; *)
 	if i < s
 	then aux (i + 1) (acc + field.(i) * db.paddings.(i))
 	else acc
@@ -146,7 +151,9 @@ let retreive_dbs_pos mat ownerships fields =
   let aux i _ _ v =
 	if v >= 0
 	then (let (dbid, cid) = ownerships.(v) in
-		  fields.(dbid).(cid) <- i)
+		  if dbid >= 0 && cid >= 0
+		  then fields.(dbid).(cid) <- i
+		 )
   in
   Grid.iter_cells mat aux;
   ()
@@ -186,13 +193,11 @@ let retreive_mat_of_indexpiv i piv ownerships db field mat =
   aux 0 db.nbrs;
   ()
 
-
-
 let get data i =
-  int_of_char (String.get data i)
+  int_of_char (Bytes.get data i)
 
 let set data i v =
-  String.set data i (char_of_int v);
+  Bytes.set data i (char_of_int v);
   ()
 
 (* ************************************************************************** *)
@@ -213,16 +218,16 @@ let goal_pattern db =
   Grid.iter_cells mat aux;
   initgra
 
-(** 3.2.0 Alloc string for data *)
+(** 3.2.0 Alloc bytes for data *)
 let alloc_data w n =
   let n_cell = w * w in
-  let string = fact_div n_cell (n_cell - n) in
-  String.make string (char_of_int 255)
+  let bytes = fact_div n_cell (n_cell - n) in
+  Bytes.make bytes (char_of_int 255)
 
-let warn dbid db ncell nstring goalpattern =
+let warn dbid db ncell nbytes goalpattern =
   Printf.eprintf "********************************************************\n%!";
-  Printf.eprintf "FILLING DB ** nb(%d) ** cells(%d/%d) ** nstring(%9d) **\n%!"
-				 dbid db.n_nbrs ncell nstring;
+  Printf.eprintf "FILLING DB ** nb(%d) ** cells(%d/%d) ** nbytes(%9d) **\n%!"
+				 dbid db.n_nbrs ncell nbytes;
   Grid.print goalpattern;
   print_one db;
   Printf.eprintf "********************************************************\n%!"
@@ -254,17 +259,17 @@ module Hash =
 module HHashtbl = Hashtbl.Make(Hash)
 module HBatHeap = BatHeap.Make(Hash)
 
-let report g q h count nstring prev t sz_qelt sz_helt =
+let report g q h count nbytes prev t sz_qelt sz_helt =
   let lq = float (HBatHeap.size !q) /. 1_000_000. in
   let lh = float (HHashtbl.length h) /. 1_000_000. in
   let c = float !count /. 1_000_000. in
-  let perc = (float !count) /. (float nstring) *. 100. in
+  let perc = (float !count) /. (float nbytes) *. 100. in
   let dt_c = float (!count - !prev) in
   let t' = Unix.gettimeofday () in
   let dt_t = t' -. !t in
   let eltps = dt_c /. dt_t in
   let eltph = eltps *. 3600. in
-  let percph = eltph /. (float nstring) *. 100. in
+  let percph = eltph /. (float nbytes) *. 100. in
   Printf.eprintf "g(%2d) q(%9.6fm/%8.2fMB) h(%9.6fm/%8.2fMB)"
 				 g lq (lq *. sz_qelt) lh (lh *. sz_helt);
   Printf.eprintf " count(%10.6fm %5.2f%% %.1fpph)\n%!"
@@ -288,8 +293,8 @@ let report g q h count nstring prev t sz_qelt sz_helt =
 (** 3.2.1 Fill pattern database with retrograde BFS search *)
 let build_pdb ownerships db ((goalmat, piv) as goalpattern) dbid =
   let ncell = db.grid_w * db.grid_w in
-  let nstring = fact_div ncell (ncell - db.n_nbrs) in
-  warn dbid db ncell nstring goalpattern;
+  let nbytes = fact_div ncell (ncell - db.n_nbrs) in
+  warn dbid db ncell nbytes goalpattern;
   let field = Array.make db.n_nbrs 42 in
 
   let mat = Grid.copy_mat goalmat in
@@ -313,7 +318,7 @@ let build_pdb ownerships db ((goalmat, piv) as goalpattern) dbid =
   HHashtbl.add h hash ();
 
   let rec aux () =
-	if !count < nstring then (
+	if !count < nbytes then (
 	  let g, piv, i = Hash.disass (HBatHeap.find_min !q) in
 	  let x0, y0 = Grid.pivxy piv in
 	  let v = get data i in
@@ -324,7 +329,7 @@ let build_pdb ownerships db ((goalmat, piv) as goalpattern) dbid =
 
 	  loops := !loops + 1;
 	  if !loops mod 50000 = 0 then (
-		report g q h count nstring prev t sz_qelt sz_helt;
+		report g q h count nbytes prev t sz_qelt sz_helt;
 	  );
 	  if g != !prevg && g > 12 then (
 		Printf.eprintf "old g was %d \n%!" !prevg;
@@ -341,22 +346,17 @@ let build_pdb ownerships db ((goalmat, piv) as goalpattern) dbid =
 		let gained = oldhlen - HHashtbl.length h in
 		Printf.eprintf "Removed %d nodes\n%!" gained;
 
-		report g q h count nstring prev t sz_qelt sz_helt;
+		report g q h count nbytes prev t sz_qelt sz_helt;
 		prevg := g;
-		Printf.eprintf "Gc\n%!";
-		Gc.compact ();
-		Printf.eprintf "Gc done\n%!";
+		if gained > 2_000_000 then (
+		  Printf.eprintf "Gc\n%!";
+		  Gc.compact ();
+		  Printf.eprintf "Gc done\n%!";
+		)
 	  );
-
-
-
-
-		(* Printf.eprintf "v(%d)\n%!" v; *)
 	  if v = 255 then (
 		set data i g;
 		count := !count + 1;
-
-
 	  );
 
 	  let rec aux' = function
@@ -368,12 +368,6 @@ let build_pdb ownerships db ((goalmat, piv) as goalpattern) dbid =
 					  else g
 			 in
 			 let hash = Hash.make g' piv' i' in
-
-(*
-			 let test = ref 0 in
-			 let f i x y v = test := !test + v; in
-			 Grid.iter_cells mat f; assert(!test = 59);
- *)
 			 if not (HHashtbl.mem h hash) then (
 			   q := HBatHeap.insert !q hash;
 			   HHashtbl.add h hash ();
@@ -382,88 +376,11 @@ let build_pdb ownerships db ((goalmat, piv) as goalpattern) dbid =
 		| _
 		  -> ()
 	  in
-
-	  (*
-		let test = ref 0 in
-		let f i x y v = test := !test + v; in
-		Grid.iter_cells mat f; assert(!test = 59);
-
-		let old_i = i in
-		let old_mat = Grid.copy_mat mat in
-		let old_pos = Array.copy field in
-
-		retreive_db_pos mat ownerships dbid field;
-		let save_pos = Array.copy field in
-		let save_i = index_of_pos db field in
-
-		retreive_mat_of_indexpiv save_i piv ownerships db field mat;
-		let save_mat = Grid.copy_mat mat in
-
-		assert(old_i = save_i);
-		assert(old_pos = save_pos);
-		assert(old_mat = save_mat);
-
-
-
-
-	 *)
-
-
-	  (* assert(!test = 59 || !test = 60); *)
-
 	  aux' (Grid.successors (mat, piv));
-	  (* Printf.eprintf "COUNT %d\n%!" !count; *)
-	  (* if !count >= 2 then assert(false); *)
-	  (* Printf.eprintf "\n%!"; *)
-	  aux ()
-
-
-
-
-	)
-  in
-
-  (*
-  Queue.push (goalpattern, 0) q;
-  Hashtbl.add h goalpattern ();
-
-  let rec aux () =
-	if !count < nstring then (
-	  let (((mat, piv) as state), g) = Queue.pop q in
-	  let x0, y0 = Grid.pivxy piv in
-
-	  if (!count mod 5000 = 0) && (not (!count = !prev))
-	  then report g q h count nstring prev t sz_qelt sz_helt;
-
-	  retreive_db_pos mat ownerships dbid indices_field;
-	  let i = index_of_pos db indices_field in
-	  let v = get data i in
-	  if v = 255 then (
-		set data i g;
-		count := !count + 1;
-		if !count > nstring - 50
-		then report g q h count nstring prev t sz_qelt sz_helt;
-	  );
-	  let rec aux' = function
-		| ((mat', piv') as state')::tl	->
-		   if not (Hashtbl.mem h state') then (
-			 let g' = if mat'.(y0).(x0) >= 0
-					  then g + 1
-					  else g
-			 in
-			 Queue.push (state', g') q;
-			 Hashtbl.add h state' ()
-		   );
-		   aux' tl
-		| _							-> ()
-	  in
-	  aux' (Grid.successors state);
 	  aux ()
 	)
   in
-   *)
   aux ();
-
   data
 
 
@@ -476,19 +393,21 @@ let fill_datas (dbs:t) =
 	let fname = Grid.to_filename mat in
 	let data = (
 	  try
-		let ichan = open_in fname in
+		let ichan = open_in_bin fname in
 		Printf.eprintf "File \"%s\" found\n%!" fname;
-		let data = (Marshal.from_channel ichan : string) in
+		let data = (Marshal.from_channel ichan : bytes) in
+		Printf.eprintf "data read: %d\n%!" (Bytes.length data);
+
 		close_in ichan;
 		data
 	  with
 	  | _ ->
 		 Printf.eprintf "File \"%s\" not found/loadable\n%!" fname;
 		 let data = build_pdb dbs.ownerships db goalpattern dbid in
-		 let ochan = open_out fname in
+		 let ochan = open_out_bin fname in
 		 Printf.eprintf "saving to file \"%s\"\n%!" fname;
-		 Printf.eprintf "length = %d\n%!" (String.length data);
-		 Marshal.to_channel ochan db.data [];
+		 Printf.eprintf "length = %d\n%!" (Bytes.length data);
+		 Marshal.to_channel ochan data [];
 		 close_out ochan;
 		 data
 	) in
@@ -499,7 +418,7 @@ let fill_datas (dbs:t) =
 (** 1.3.2 Save 'paddings' inside bitfield *)
 let build_paddings w ncell_pat =
   let ncell = w * w in
-  let nstring = fact_div ncell (ncell - ncell_pat) in
+  let nbytes = fact_div ncell (ncell - ncell_pat) in
   let a = Array.make ncell_pat 42 in
   let rec aux i nelt pad =
 	if i < ncell_pat
@@ -509,7 +428,7 @@ let build_paddings w ncell_pat =
 		  aux (i + 1) nelt' (pad / nelt'))
 	else assert(pad = 0)
   in
-  aux 0 ncell (nstring / ncell);
+  aux 0 ncell (nbytes / ncell);
   a
 
 let init_pattern_structure grid =
@@ -572,5 +491,9 @@ let build grid =
 	  dbs				= empty_dbs;
 	  ownerships		= build_ownerships empty_dbs;
 	} in
+  let holder = {
+	  holder with
+	  dbs				= fill_datas holder; }
+  in
   print holder;
-  fill_datas holder
+  holder

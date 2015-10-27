@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/19 17:34:55 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/23 18:26:42 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/27 10:30:02 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -89,7 +89,7 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	  		let neig_info = Opened { parent		= Some (cur_gra, info);
 	  								 g			= neig_g;
 	  								 f			= neig_f; } in
-			if neig_h <= 4 then
+			if neig_h <= 0 then
 			  Candidate.print neig_cdt;
 			candidates := BatHeap.insert !candidates neig_cdt;
 			info_insert infos neig_gra neig_info
