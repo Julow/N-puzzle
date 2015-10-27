@@ -6,23 +6,24 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/22 09:56:27 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/27 13:09:27 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/27 15:51:06 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
 type db = {
-	grid_w			: int;
-	input_id		: int;
-	nbrs			: int list;
-	n_nbrs			: int;
-	paddings		: int array;
-	mirror			: int array;
-	data			: bytes;
+	grid_w				: int;
+	input_id			: int;
+	nbrs				: int list;
+	n_nbrs				: int;
+	paddings			: int array;
+	mirror				: int array;
+	data				: bytes;
   }
 
 type t = {
-	dbs				: db array;
-	ownerships		: (int * int) array;
+	dbs					: db array;
+	ownerships			: (int * int) array;
+	mirror_ownerships	: (int * int) array;
   }
 
 (* ************************************************************************** *)
@@ -56,6 +57,12 @@ let print dbs =
   Array.iter (fun (_, i) -> Printf.eprintf "%-3d %!" i) dbs.ownerships;
   Printf.eprintf "\n%!";
   Array.iter print_one dbs.dbs
+
+let mirror w i =
+  let last = w - 1 in
+  let x = last - i mod w in
+  let y = last - i / w in
+  y + x * w
 
 (* ************************************************************************** *)
 
@@ -148,12 +155,17 @@ let retreive_indices_of_index field i paddings =
 
 (* ********************************** *)
 (* Modulation *)
-let retreive_dbs_pos mat ownerships fields =
+let retreive_dbs_pos mat ownerships fields mirror_ownerships mirror_fields =
+  let w = Array.length mat in
   let aux i _ _ v =
 	if v >= 0
 	then (let (dbid, cid) = ownerships.(v) in
-		  if dbid >= 0 && cid >= 0
-		  then fields.(dbid).(cid) <- i
+		  if dbid >= 0 && cid >= 0;
+		  then fields.(dbid).(cid) <- i;
+		  let (dbid, cid) = mirror_ownerships.(v) in
+		  if dbid >= 0 && cid >= 0;
+		  then mirror_fields.(dbid).(cid) <- mirror w i;
+		  ()
 		 )
   in
   Grid.iter_cells mat aux;
@@ -433,12 +445,6 @@ let build_paddings w ncell_pat =
   a
 
 
-let mirror w i =
-  let last = w - 1 in
-  let x = last - i mod w in
-  let y = last - i / w in
-  Printf.eprintf "i%-2d to %-2d\n%!" i (y + x * w);
-  y + x * w
 
 let init_pattern_structure grid =
   let w = Array.length grid in
@@ -494,6 +500,24 @@ let build_ownerships dbs_a =
   Array.iteri foreachdb dbs_a;
   a
 
+let build_mirror_ownerships dbs_a =
+  assert(Array.length dbs_a > 0);
+  let w = dbs_a.(0).grid_w in
+  let last = w - 1 in
+  let ncell = w * w in
+  let a = Array.make ncell (-1, -1) in
+  let foreachdb i db =
+	let foreachcell i' cell =
+	  let x = cell mod w in
+	  let y = cell / w in
+	  let cell' = last - y + (last - x) * w in
+	  a.(cell') <- (i, i');
+	in
+	List.iteri foreachcell db.nbrs;
+  in
+  Array.iteri foreachdb dbs_a;
+  a
+
 (** 1. Parse/alloc/fill all patterns meta-data *)
 (** 2. Build patterns holder *)
 (** 3. Fill patterns data *)
@@ -502,6 +526,7 @@ let build grid =
   let holder = {
 	  dbs				= empty_dbs;
 	  ownerships		= build_ownerships empty_dbs;
+	  mirror_ownerships	= build_mirror_ownerships empty_dbs;
 	} in
   let holder = {
 	  holder with
