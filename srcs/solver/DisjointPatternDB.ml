@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/22 09:56:27 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/24 20:28:51 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/27 07:56:31 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -98,23 +98,6 @@ let retreive_indices_of_pos field =
   done
 
 (* Demodulation *)
-(*
-	let retreive_pos_of_indices pos indices =
-  pos.(0) <- indices.(0);
-  for i = 1 to Array.length pos - 1 do
-	let rec aux j v =
-	  Printf.eprintf "i(%d) v(%d) pos.(%d)(%d)\n%!" i v j pos.(j);
-	  if j = i then
-		v
-	  else if pos.(j) <= v then
-		aux (j + 1) (v + 1)
-	  else
-		aux (j + 1) v
-	in
-	pos.(i) <- aux 0 indices.(i);
-	assert(pos.(i) < 16);
-  done
- *)
 let retreive_pos_of_indices field =
   let last = Array.length field - 1 in
   for i = last downto 1 do
@@ -361,8 +344,6 @@ let build_pdb ownerships db ((goalmat, piv) as goalpattern) dbid =
 		report g q h count nstring prev t sz_qelt sz_helt;
 		prevg := g;
 		Printf.eprintf "Gc\n%!";
-		Gc.full_major ();
-		Printf.eprintf "Gc p2\n%!";
 		Gc.compact ();
 		Printf.eprintf "Gc done\n%!";
 	  );

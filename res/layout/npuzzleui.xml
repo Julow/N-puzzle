@@ -67,8 +67,8 @@
 			verticalAlign="CENTER"
 			marginBottom="20"
 			text="milolWWW"
-
-			textFont="/usr/share/fonts/truetype/freefont/FreeMono.ttf"
+			textFont="/Library/Fonts/Arial Black.ttf"
+			<!-- textFont="/usr/share/fonts/truetype/freefont/FreeMono.ttf" -->
 			textSize="64"
 			textColor="0xFFFF0000"
 			backgroundColor="0x20000000"

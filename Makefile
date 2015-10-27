@@ -121,6 +121,7 @@ ML_OBJS = $(addprefix $(ML_DIR)/,\
 	GridHeuristics.cmi\
 	GridHeuristics.cmx\
 	DisjointPatternDB.cmx\
+	DisjointPatternDBHeuristic.cmx\
 	solver.cmx\
 )
 ML_DIR = srcs/solver
