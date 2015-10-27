@@ -9,3 +9,6 @@ cd .. &&
 rm -rf lua-5.3.1.tar.gz lua-5.3.1
 ```
 https://www.jair.org/media/1480/live-1480-2332-jair.pdf
+
+![representations](./img/Representations.png)
+![Symmetries.png](./img/Patterns_and_symmetries.png)
