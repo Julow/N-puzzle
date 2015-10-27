@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/10/27 13:09:43 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/27 17:10:19 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -86,19 +86,19 @@ let solve npuzzle =
   (* 			  [| 6;-9; 2; 1|]; *)
   (* 			  [| 6; 8; 2; 1|];|] in *)
   let t = Unix.gettimeofday () in
-  let dpdb = DisjointPatternDB.build dps in
+  let dpdb = DPatternDBInit.build dps in
   let fields =
-	Array.map (fun db ->Array.make db.DisjointPatternDB.n_nbrs 42)
-			  dpdb.DisjointPatternDB.dbs
+	Array.map (fun db ->Array.make db.DPatternDB.n_nbrs 42)
+			  dpdb.DPatternDB.dbs
   in
   let fields' =
-	Array.map (fun db ->Array.make db.DisjointPatternDB.n_nbrs 42)
-			  dpdb.DisjointPatternDB.dbs
+	Array.map (fun db ->Array.make db.DPatternDB.n_nbrs 42)
+			  dpdb.DPatternDB.dbs
   in
   Printf.eprintf "%f sec to build!!!\n%!" (Unix.gettimeofday () -. t);
 
   let ret =
-	(DisjointPatternDBHeuristic.calc dpdb fields fields') goalgr in
+	(DPatternDBHeuristic.calc dpdb fields fields') goalgr in
 
 
   Printf.eprintf "djp: %d\n%!" ret;
@@ -121,7 +121,7 @@ let solve npuzzle =
 
   let t = Unix.gettimeofday () in
   let stack = GridAStar.solve abstgr goalgr(
-								  DisjointPatternDBHeuristic.calc
+								  DPatternDBHeuristic.calc
 									dpdb fields fields') in
   ignore(stack);
   Printf.eprintf "%f sec to solve (%d steps)\n%!"
