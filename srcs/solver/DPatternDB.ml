@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/27 17:05:59 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/27 17:19:32 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/27 18:25:59 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -108,11 +108,17 @@ let retreive_indices_of_pos field =
   let last = Array.length field - 1 in
   for i = last downto 1 do
 	let v = field.(i) in
-	for j = i - 1 downto 0 do
-	  let v' = field.(j) in
-	  if v' < v
-	  then (field.(i) <- field.(i) - 1)
-	done;
+	let rec aux j acc =
+	  if j < 0 then
+		acc
+	  else (
+		let v' = field.(j) in
+		if v' < v
+		then aux (j - 1) (acc + 1)
+		else aux (j - 1) acc
+	  )
+	in
+	field.(i) <- field.(i) - aux (i - 1) 0;
 	assert(field.(i) >= 0);
 	assert(field.(i) < 16 - i);
   done;
@@ -122,15 +128,21 @@ let retreive_indices_of_pos field =
 let retreive_pos_of_indices field =
   let last = Array.length field - 1 in
   for i = last downto 1 do
-	for j = i - 1 downto 0 do
-	  let v = field.(i) in
-	  let v' = field.(j) in
-	  if v' <= v
-	  then (field.(i) <- field.(i) + 1)
-	done;
+	let rec aux j v =
+	  if j < 0 then
+		v
+	  else (
+		let v' = field.(j) in
+		if v' <= v
+		then aux (j - 1) (v + 1)
+		else aux (j - 1) v
+	  )
+	in
+	field.(i) <- aux (i - 1) field.(i);
 	assert(field.(i) >= 0);
 	assert(field.(i) < 16);
-  done
+  done;
+  ()
 
 (* ********************************** *)
 (* Matrix -> Positions [[-> Indices -> Index]] *)

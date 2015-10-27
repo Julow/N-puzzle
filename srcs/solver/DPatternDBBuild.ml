@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/27 17:05:48 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/27 17:43:33 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/27 18:13:00 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -17,7 +17,7 @@ include DPatternDB
  ** 	ie : 28 < log2(16!/8!) < 29
  ** P: Pivot coords
  ** G: Number of moves
- ** 0: Unused (Zero)
+ ** 0: Unused (Zeroes)
  ** 543210 76543210  76543210 76543210  76543210 76543210 76543210 76543210
  ** ______ ________  ________ ________  ________ ________ ________ ________
  ** 000000 00000000  GGGGGGGG PPPPPPPP  IIIIIIII IIIIIIII IIIIIIII IIIIIIII
@@ -182,3 +182,5 @@ let build ownerships db ((goalmat, piv) as goalpattern) dbid =
   in
   aux ();
   data
+
+(* ************************************************************************** *)

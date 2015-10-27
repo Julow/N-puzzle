@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/27 17:05:46 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/27 17:43:50 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/27 17:49:17 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -28,3 +28,5 @@ let calc dbs fields mirror_fields (mat, piv) =
   let h = aux fields 0 0 in
   let h' = aux mirror_fields 0 0 in
   max h h'
+
+ (* ************************************************************************** *)
