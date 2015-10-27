@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/22 09:56:27 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/27 09:43:14 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/27 13:09:27 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -16,6 +16,7 @@ type db = {
 	nbrs			: int list;
 	n_nbrs			: int;
 	paddings		: int array;
+	mirror			: int array;
 	data			: bytes;
   }
 
@@ -431,6 +432,14 @@ let build_paddings w ncell_pat =
   aux 0 ncell (nbytes / ncell);
   a
 
+
+let mirror w i =
+  let last = w - 1 in
+  let x = last - i mod w in
+  let y = last - i / w in
+  Printf.eprintf "i%-2d to %-2d\n%!" i (y + x * w);
+  y + x * w
+
 let init_pattern_structure grid =
   let w = Array.length grid in
   let dbs = ref [] in
@@ -456,14 +465,17 @@ let init_pattern_structure grid =
 			 nbrs		= [i];
 			 n_nbrs		= 1;
 			 data		= "";
+			 mirror		= [||];
 			 paddings	= [||];} in
 		 dbs := db::!dbs
   in
   Grid.iter_cells grid aux;
   (** 1.3 Finalize and reorder patterns *)
   let aux db =
+	let rev_nbrs = List.rev db.nbrs in
 	{db with
-	  nbrs				= List.rev db.nbrs;
+	  nbrs				= rev_nbrs;
+	  mirror			= Array.map (mirror w) (Array.of_list rev_nbrs);
 	  paddings			= build_paddings w db.n_nbrs;}
   in
   List.rev_map aux !dbs

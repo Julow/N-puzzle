@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/19 18:14:20 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/23 16:57:38 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/27 11:50:50 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -60,8 +60,8 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 		else aux threshold'
 	  in
 	  aux (he grasrc);
-	  List.iteri (fun i gra ->Printf.eprintf "g(%2d) h(%2d)" i (he gra);
-							  Graph.print gra) !result;
+	  (* List.iteri (fun i gra ->Printf.eprintf "g(%2d) h(%2d)" i (he gra); *)
+	  (* 						  Graph.print gra) !result; *)
 	  !result
 
   end
