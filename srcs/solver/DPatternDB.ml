@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/27 17:05:59 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/27 18:25:59 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/27 18:53:28 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -103,6 +103,8 @@ let print dbs =
  **		Which gives:	db.data.(1976022) = HEURISTIC
  *)
 
+(* ************************************************************************** *)
+(* SOLVE-TIME CONVERSIONS *)
 (* Matrix -> Positions [[-> Indices]] -> Index *)
 let retreive_indices_of_pos field =
   let last = Array.length field - 1 in
@@ -124,6 +126,52 @@ let retreive_indices_of_pos field =
   done;
   ()
 
+(* Matrix -> Positions [[-> Indices -> Index]] *)
+let index_of_pos db field =
+  let s = Array.length field in
+  (* Array.iter (fun v->Printf.eprintf "%2d" v) field; Printf.eprintf "\n%!"; *)
+  retreive_indices_of_pos field;
+  (* Array.iter (fun v->Printf.eprintf "%2d " v) field; *)
+  assert(s = (Array.length db.paddings));
+  let rec aux i acc =
+	if i < s
+	then aux (i + 1) (acc + field.(i) * db.paddings.(i))
+	else acc
+  in
+  aux 0 0
+
+(* Matrix [[-> Positions]] -> Indices -> Index *)
+let retreive_dbs_pos mat ownerships fields mirror_ownerships mirror_fields =
+  let w = Array.length mat in
+  let aux i _ _ v =
+	if v >= 0
+	then (let (dbid, cid) = ownerships.(v) in
+		  if dbid >= 0 && cid >= 0;
+		  then fields.(dbid).(cid) <- i;
+		  let (dbid, cid) = mirror_ownerships.(v) in
+		  if dbid >= 0 && cid >= 0;
+		  then mirror_fields.(dbid).(cid) <- mirror w i;
+		  ()
+		 )
+  in
+  Grid.iter_cells mat aux;
+  ()
+
+(* ************************************************************************** *)
+(* DB_COMPUTE-TIME CONVERSIONS *)
+
+(* Matrix [[-> Positions]] -> Indices -> Index *)
+let retreive_db_pos mat ownerships dbid field =
+  let aux i _ _ v =
+	if v >= 0
+	then (let (dbid', cid) = ownerships.(v) in
+		  if dbid' = dbid
+		  then field.(cid) <- i)
+  in
+  Grid.iter_cells mat aux;
+  ()
+
+(* ********************************** *)
 (* Matrix <- [[Positions <-]] Indices <- Index *)
 let retreive_pos_of_indices field =
   let last = Array.length field - 1 in
@@ -144,21 +192,6 @@ let retreive_pos_of_indices field =
   done;
   ()
 
-(* ********************************** *)
-(* Matrix -> Positions [[-> Indices -> Index]] *)
-let index_of_pos db field =
-  let s = Array.length field in
-  (* Array.iter (fun v->Printf.eprintf "%2d" v) field; Printf.eprintf "\n%!"; *)
-  retreive_indices_of_pos field;
-  (* Array.iter (fun v->Printf.eprintf "%2d " v) field; *)
-  assert(s = (Array.length db.paddings));
-  let rec aux i acc =
-	if i < s
-	then aux (i + 1) (acc + field.(i) * db.paddings.(i))
-	else acc
-  in
-  aux 0 0
-
 (* Matrix <- Positions <- [[Indices <-]] Index *)
 let retreive_indices_of_index field i paddings =
   let n = Array.length paddings in
@@ -171,35 +204,6 @@ let retreive_indices_of_index field i paddings =
 	else assert(decr = 0)
   in
   aux 0 i;
-  ()
-
-(* ********************************** *)
-(* Matrix [[-> Positions]] -> Indices -> Index *)
-let retreive_dbs_pos mat ownerships fields mirror_ownerships mirror_fields =
-  let w = Array.length mat in
-  let aux i _ _ v =
-	if v >= 0
-	then (let (dbid, cid) = ownerships.(v) in
-		  if dbid >= 0 && cid >= 0;
-		  then fields.(dbid).(cid) <- i;
-		  let (dbid, cid) = mirror_ownerships.(v) in
-		  if dbid >= 0 && cid >= 0;
-		  then mirror_fields.(dbid).(cid) <- mirror w i;
-		  ()
-		 )
-  in
-  Grid.iter_cells mat aux;
-  ()
-
-(* Matrix [[-> Positions]] -> Indices -> Index *)
-let retreive_db_pos mat ownerships dbid field =
-  let aux i _ _ v =
-	if v >= 0
-	then (let (dbid', cid) = ownerships.(v) in
-		  if dbid' = dbid
-		  then field.(cid) <- i)
-  in
-  Grid.iter_cells mat aux;
   ()
 
 (* [[Matrix <- Positions <- Indices <-]] Index *)

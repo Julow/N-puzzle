@@ -121,7 +121,7 @@ ML_OBJS = $(addprefix $(ML_DIR)/,\
 	GridHeuristics.cmi\
 	GridHeuristics.cmx\
 	DPatternDB.cmx\
-	DPatternDBBuild.cmx\
+	DPatternDBCompute.cmx\
 	DPatternDBHeuristic.cmx\
 	DPatternDBInit.cmx\
 	solver.cmx\

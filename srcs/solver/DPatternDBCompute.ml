@@ -1,12 +1,12 @@
 (* ************************************************************************** *)
 (*                                                                            *)
 (*                                                        :::      ::::::::   *)
-(*   DPatternDBBuild.ml                                 :+:      :+:    :+:   *)
+(*   DPatternDBCompute.ml                               :+:      :+:    :+:   *)
 (*                                                    +:+ +:+         +:+     *)
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
-(*   Created: 2015/10/27 17:05:48 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/27 18:13:00 by ngoguey          ###   ########.fr       *)
+(*   Created: 2015/10/27 18:52:13 by ngoguey           #+#    #+#             *)
+(*   Updated: 2015/10/27 18:52:14 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -129,7 +129,7 @@ let garbage_collect h g debug_dat =
   prevg := g;
   if gained > 2_000_000 then (
 	Printf.eprintf "Gc\n%!";
-	Gc.compact ();
+	Gc.full_major ();
 	Printf.eprintf "Gc done\n%!";
   )
 

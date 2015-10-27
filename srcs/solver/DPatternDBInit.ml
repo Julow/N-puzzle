@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/27 17:05:57 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/27 17:49:03 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/27 18:52:40 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -47,7 +47,7 @@ let fill_datas (dbs:t) =
 	  with
 	  | _ ->
 		 Printf.eprintf "File \"%s\" not found/loadable\n%!" fname;
-		 let data = DPatternDBBuild.build dbs.ownerships db goalpattern dbid in
+		 let data = DPatternDBCompute.build dbs.ownerships db goalpattern dbid in
 		 let ochan = open_out_bin fname in
 		 Printf.eprintf "saving to file \"%s\"\n%!" fname;
 		 Printf.eprintf "length = %d\n%!" (Bytes.length data);
