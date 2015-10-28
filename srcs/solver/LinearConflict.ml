@@ -6,11 +6,11 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/28 14:51:33 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/28 17:48:52 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/28 18:11:10 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
-type t = Full of int | Partial of int * t array
+type t = Full of int | Partial of int * t array | Redundant
 
 let print db =
   let rec aux first str i lvl =
@@ -19,6 +19,8 @@ let print db =
 	  | true	-> str
 	in
 	match lvl with
+	| Redundant			-> (* Printf.eprintf "%sRedundant\n%!" str; *)
+	   ();
 	| Full v			-> Printf.eprintf "%s(%d)Full\n%!" str v;
 	| Partial (v, a)	-> Printf.eprintf "%s(%d)Partial\n%!" str v;
 						   Array.iteri (aux false str) a
@@ -68,6 +70,7 @@ let input db nbrs v =
   	| _::_, Full _				-> assert(false)
   	| _, Full _					-> Full v
 	| _, Partial (_, a)			-> Partial (v, a)
+  	| _, Redundant				-> assert(false)
   in
   aux nbrs db
 
@@ -88,10 +91,21 @@ let init w db =
   aux [] nbrs db
 
 let alloc w =
-  let rec build_lvl i _ =
-	if i = w
-	then Full (42)
-	else Partial (42, Array.init w (build_lvl (i + 1)))
+  (* let rec aux i l = if i < 0 then l else aux (i - 1) (i::l) in *)
+  (* let nbrs = aux (w - 1) [] in *)
+  let busy = ref [] in
+  let rec build_lvl lvl i =
+	if List.mem i !busy then
+	  Redundant
+  	else if lvl = w then
+	  Full (42)
+  	else (
+	  let prevbusy = !busy in
+	  busy := i::!busy;
+	  let node = Partial (42, Array.init w (build_lvl (lvl + 1))) in
+	  busy := prevbusy;
+	  node
+	)
   in
   Partial (42, Array.init w (build_lvl 1))
 
