@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/10/28 15:38:18 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/28 16:54:16 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -67,6 +67,8 @@ let solve npuzzle =
   ignore(LinearConflict.gen 2);
   Printf.eprintf "\n%!";
   ignore(LinearConflict.gen 3);
+  (* Printf.eprintf "\n%!"; *)
+  (* ignore(LinearConflict.gen 4); *)
   Printf.eprintf "\n%!";
   assert(false);
   Printf.eprintf "width %u\n%!" w;
