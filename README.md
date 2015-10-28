@@ -12,3 +12,4 @@ https://www.jair.org/media/1480/live-1480-2332-jair.pdf
 
 ![representations](./img/Representations.png)
 ![Symmetries.png](./img/Patterns_and_symmetries.png)
+![Linear_conflict.png](./img/Linear_conflict.png)
