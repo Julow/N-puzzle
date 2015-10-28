@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/10/28 17:52:09 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/28 18:58:26 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -61,16 +61,6 @@ let solve npuzzle =
   (* let realpiv = Grid.pivv (1, 1) in *)
   (* let realgr = realmat, realpiv in *)
   let w = Array.length realmat in
-  Printf.eprintf "\n%!";
-  ignore(LinearConflict.gen 1);
-  Printf.eprintf "\n%!";
-  ignore(LinearConflict.gen 2);
-  Printf.eprintf "\n%!";
-  ignore(LinearConflict.gen 3);
-  (* Printf.eprintf "\n%!"; *)
-  ignore(LinearConflict.gen 4);
-  Printf.eprintf "\n%!";
-  assert(false);
   Printf.eprintf "width %u\n%!" w;
   Grid.init_transp_tables w;
   let abstgr = Grid.to_abstract realgr in
@@ -82,6 +72,7 @@ let solve npuzzle =
   Printf.eprintf "\n%!";
   Grid.print goalgr;
   Printf.eprintf "\n%!";
+  let lcdb = LinearConflict.gen w in
   let dps = [|[| 1; 1; 1; 3|];
   			  [| 1; 1; 3; 3|];
   			  [| 1;-9; 3; 3|];
@@ -107,13 +98,6 @@ let solve npuzzle =
   in
   Printf.eprintf "%f sec to build!!!\n%!" (Unix.gettimeofday () -. t);
 
-  let ret =
-	(DPatternDBHeuristic.calc dpdb fields fields') goalgr in
-
-
-  Printf.eprintf "djp: %d\n%!" ret;
-
-
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
   let t = Unix.gettimeofday () in
   let stack = GridAStar.solve abstgr goalgr GridHeuristics.Manhattan.calc in
@@ -121,6 +105,14 @@ let solve npuzzle =
   Printf.eprintf "%f sec to solve (%d steps)\n%!"
   				 (Unix.gettimeofday () -. t)
   				 (List.length stack - 1);
+
+  let t = Unix.gettimeofday () in
+  let stack = GridAStar.solve abstgr goalgr (LinearConflict.calc lcdb) in
+  ignore(stack);
+  Printf.eprintf "%f sec to solve (%d steps)\n%!"
+  				 (Unix.gettimeofday () -. t)
+  				 (List.length stack - 1);
+
 
   (* let t = Unix.gettimeofday () in *)
   (* let stack = GridIDAStar.solve abstgr goalgr GridHeuristics.Manhattan.calc in *)

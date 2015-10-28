@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/28 14:51:33 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/28 18:11:10 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/28 19:03:18 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -19,8 +19,7 @@ let print db =
 	  | true	-> str
 	in
 	match lvl with
-	| Redundant			-> (* Printf.eprintf "%sRedundant\n%!" str; *)
-	   ();
+	| Redundant			-> ();
 	| Full v			-> Printf.eprintf "%s(%d)Full\n%!" str v;
 	| Partial (v, a)	-> Printf.eprintf "%s(%d)Partial\n%!" str v;
 						   Array.iteri (aux false str) a
@@ -50,7 +49,7 @@ let rec streak prev l acc =
   | _::tl					-> streak prev tl acc
   | _						-> acc
 
-let calc w nbrs =
+let precalc w nbrs =
   let rec aux l max =
 	match l with
 	| hd::tl	-> let cur_streak = streak hd tl 1 in
@@ -79,7 +78,7 @@ let init w db =
   let nbrs = aux (w - 1) [] in
   let rec aux busy free db =
 	let ord_nrbs = List.rev busy in
-	let db = input db ord_nrbs (calc w ord_nrbs) in
+	let db = input db ord_nrbs (precalc w ord_nrbs) in
 	let rec aux' tested free' db =
 	  match free' with
 	  | hd::tl	-> let db = aux (hd::busy) (tested@tl) db in
@@ -91,8 +90,6 @@ let init w db =
   aux [] nbrs db
 
 let alloc w =
-  (* let rec aux i l = if i < 0 then l else aux (i - 1) (i::l) in *)
-  (* let nbrs = aux (w - 1) [] in *)
   let busy = ref [] in
   let rec build_lvl lvl i =
 	if List.mem i !busy then
@@ -113,3 +110,68 @@ let gen w =
   let db = init w (alloc w) in
   print db;
   db
+
+let calc db (mat, piv) =
+  let x0, y0 = Grid.pivxy piv in
+  let w = Array.length mat in
+  let rec foreachline y acc =
+	if y = w then
+	  acc
+	else (
+	  let rec foreachcell x lvl =
+		if x = w then
+		  match lvl with
+		  | Partial (v, _) | Full v	-> v
+		  | _						-> assert(false)
+		else if x = x0 && y = y0 then
+		  foreachcell (x + 1) lvl
+		else (
+		  let v = mat.(y).(x) in
+		  if v / w != y  then
+			foreachcell (x + 1) lvl
+		  else (
+			let lvl' = match lvl with
+			  | Partial (_, a)	-> a.(v mod w)
+			  | _				-> assert(false)
+			in
+			foreachcell (x + 1) lvl'
+		  )
+		)
+	  in
+	  let acc' = foreachcell 0 db in
+	  foreachline (y + 1) (acc + acc')
+	)
+  in
+  let rec foreachcol x acc =
+	if x = w then
+	  acc
+	else (
+	  let rec foreachcell y lvl =
+		if y = w then
+		  match lvl with
+		  | Partial (v, _) | Full v	-> v
+		  | _						-> assert(false)
+		else if y = y0 && x = x0 then
+		  foreachcell (y + 1) lvl
+		else (
+		  let v = mat.(y).(x) in
+		  if v mod w != x  then
+			foreachcell (y + 1) lvl
+		  else (
+			let lvl' = match lvl with
+			  | Partial (_, a)	-> a.(v / w)
+			  | _				-> assert(false)
+			in
+			foreachcell (y + 1) lvl'
+		  )
+		)
+	  in
+	  let acc' = foreachcell 0 db in
+	  foreachcol (x + 1) (acc + acc')
+	)
+  in
+  let md = GridHeuristics.Manhattan.calc (mat, piv) in
+  let lc_line = foreachline 0 0 in
+  let lc_col = foreachcol 0 0 in
+  (* TODO: Is lc_line + lc_col still admissible ?! *)
+  md + lc_line + lc_col
