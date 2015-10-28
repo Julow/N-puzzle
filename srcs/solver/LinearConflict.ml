@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/28 14:51:33 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/28 17:26:31 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/28 17:48:52 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -56,7 +56,9 @@ let calc w nbrs =
 				   aux tl max'
 	| _			-> max
   in
-  aux nbrs 0
+  let nnbrs = List.length nbrs in
+  let streak = aux nbrs 0 in
+  (nnbrs - streak) * 2
 
 let input db nbrs v =
   let rec aux l lvl =
@@ -67,12 +69,6 @@ let input db nbrs v =
   	| _, Full _					-> Full v
 	| _, Partial (_, a)			-> Partial (v, a)
   in
-  (* Printf.eprintf "Busy[%!"; *)
-  Printf.eprintf "**%!";
-  List.iter (fun v -> Printf.eprintf "%d %!" v) nbrs;
-  Printf.eprintf "(%d)%! REAL" v;
-  (* Printf.eprintf "] %!"; *)
-  Printf.eprintf "\n%!";
   aux nbrs db
 
 let init w db =
@@ -81,11 +77,6 @@ let init w db =
   let rec aux busy free db =
 	let ord_nrbs = List.rev busy in
 	let db = input db ord_nrbs (calc w ord_nrbs) in
-	(* Printf.eprintf "Free[%!"; *)
-	(* List.iter (fun v -> Printf.eprintf "%d %!" v) free; *)
-	(* Printf.eprintf "]%!"; *)
-	(* Printf.eprintf "\n%!"; *)
-
 	let rec aux' tested free' db =
 	  match free' with
 	  | hd::tl	-> let db = aux (hd::busy) (tested@tl) db in
