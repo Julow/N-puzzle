@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/10/27 18:54:14 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/28 15:38:18 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -61,6 +61,14 @@ let solve npuzzle =
   (* let realpiv = Grid.pivv (1, 1) in *)
   (* let realgr = realmat, realpiv in *)
   let w = Array.length realmat in
+  Printf.eprintf "\n%!";
+  ignore(LinearConflict.gen 1);
+  Printf.eprintf "\n%!";
+  ignore(LinearConflict.gen 2);
+  Printf.eprintf "\n%!";
+  ignore(LinearConflict.gen 3);
+  Printf.eprintf "\n%!";
+  assert(false);
   Printf.eprintf "width %u\n%!" w;
   Grid.init_transp_tables w;
   let abstgr = Grid.to_abstract realgr in
@@ -105,12 +113,12 @@ let solve npuzzle =
 
 
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
-  (* let t = Unix.gettimeofday () in *)
-  (* let stack = GridAStar.solve abstgr goalgr GridHeuristics.Manhattan.calc in *)
-  (* ignore(stack); *)
-  (* Printf.eprintf "%f sec to solve (%d steps)\n%!" *)
-  (* 				 (Unix.gettimeofday () -. t) *)
-  (* 				 (List.length stack - 1); *)
+  let t = Unix.gettimeofday () in
+  let stack = GridAStar.solve abstgr goalgr GridHeuristics.Manhattan.calc in
+  ignore(stack);
+  Printf.eprintf "%f sec to solve (%d steps)\n%!"
+  				 (Unix.gettimeofday () -. t)
+  				 (List.length stack - 1);
 
   (* let t = Unix.gettimeofday () in *)
   (* let stack = GridIDAStar.solve abstgr goalgr GridHeuristics.Manhattan.calc in *)

@@ -124,6 +124,7 @@ ML_OBJS = $(addprefix $(ML_DIR)/,\
 	DPatternDBCompute.cmx\
 	DPatternDBHeuristic.cmx\
 	DPatternDBInit.cmx\
+	LinearConflict.cmx\
 	solver.cmx\
 )
 ML_DIR = srcs/solver

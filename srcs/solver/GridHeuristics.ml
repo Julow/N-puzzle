@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 17:10:40 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/27 19:07:00 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/28 14:51:14 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -44,7 +44,9 @@ module Dijkstra : Grid.HEURISTIC =
 	  42
 
   end
-(*
+
+
+	(*
 module LinearConflict : Grid.HEURISTIC =
   struct
 	let calc (mat, piv) =
