@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/27 17:05:59 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/27 18:53:28 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/29 16:46:05 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -122,7 +122,7 @@ let retreive_indices_of_pos field =
 	in
 	field.(i) <- field.(i) - aux (i - 1) 0;
 	assert(field.(i) >= 0);
-	assert(field.(i) < 16 - i);
+	assert(field.(i) < Array.length field * (Array.length field) - i);
   done;
   ()
 
@@ -188,7 +188,7 @@ let retreive_pos_of_indices field =
 	in
 	field.(i) <- aux (i - 1) field.(i);
 	assert(field.(i) >= 0);
-	assert(field.(i) < 16);
+	assert(field.(i) < Array.length field * (Array.length field));
   done;
   ()
 

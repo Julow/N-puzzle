@@ -6,9 +6,13 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/10/29 15:32:02 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/29 18:02:29 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
+
+(*
+TODO: check all '!=' statements
+ *)
 
 let hashtbl_of_list l =
   let h = Hashtbl.create (List.length l) in
@@ -40,6 +44,9 @@ let algorithms =
 let pat8 = [|[| 1; 1; 1|];
 			 [| 1;-9; 1|];
 			 [| 1; 1; 1|];|]
+let pat7 = [|[| 1; 1; 1|];
+			 [| 1;-9;-1|];
+			 [| 1; 1; 1|];|]
 let pat663 = [|[| 1; 1; 1; 3|];
 			   [| 1; 1; 3; 3|];
 			   [| 1;-9; 3; 3|];
@@ -54,6 +61,7 @@ let heuristics =
 	[("Manhattan Distance", ManhattanDistanceHeuristic.make);
 	 ("Linear Conflict", LinearConflictHeuristic.make);
 	 ("Disjoint Pattern DB 8", DPatternDBHeuristic.make pat8);
+	 ("Disjoint Pattern DB 7", DPatternDBHeuristic.make pat7);
 	 ("Disjoint Pattern DB 663", DPatternDBHeuristic.make pat663);
 	 ("Disjoint Pattern DB 555", DPatternDBHeuristic.make pat555);
 	]
@@ -105,6 +113,8 @@ let launch abstgr goalgr w algo heu_maker =
   stack
 
 let launch_str abstgr goalgr w algo_str heu_maker_str =
+  Printf.eprintf "************************ %s ** %s ***********************\n%!"
+				 algo_str heu_maker_str;
   let algo = Hashtbl.find algorithms algo_str in
   let heu_maker = Hashtbl.find heuristics heu_maker_str in
   launch abstgr goalgr w algo heu_maker
@@ -134,8 +144,10 @@ let solve npuzzle =
   Printf.eprintf "\n%!";
 
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
-  launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 663";
   launch_str abstgr goalgr w "A*" "Manhattan Distance";
+  launch_str abstgr goalgr w "A*" "Linear Conflict";
+  launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 8";
+  launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 7";
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
   ()
 

@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/27 17:05:57 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/27 18:52:40 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/29 16:58:37 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -70,7 +70,6 @@ let build_paddings w ncell_pat =
 		  a.(i) <- pad;
 		  assert(pad > 0);
 		  aux (i + 1) nelt' (pad / nelt'))
-	else assert(pad = 0)
   in
   aux 0 ncell (nbytes / ncell);
   a

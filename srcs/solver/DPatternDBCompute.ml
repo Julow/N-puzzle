@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/27 18:52:13 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/27 18:52:14 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/29 17:59:27 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -136,6 +136,14 @@ let garbage_collect h g debug_dat =
 let build ownerships db ((goalmat, piv) as goalpattern) dbid =
   let ncell = db.grid_w * db.grid_w in
   let nbytes = fact_div ncell (ncell - db.n_nbrs) in
+  let n_ignoredcells = ncell - db.n_nbrs in
+  let nreachable = if n_ignoredcells = 1 then
+					 nbytes / 2
+				   else if n_ignoredcells = 2 then
+					 nbytes - fact_div db.n_nbrs 1 * 10
+				   else
+					 nbytes
+  in
   warn dbid db ncell nbytes goalpattern;
 
   let field, mat, data = init_mem_fields goalmat db in
@@ -145,7 +153,8 @@ let build ownerships db ((goalmat, piv) as goalpattern) dbid =
   let debug_dat = ncell, nbytes, count, q, h in
 
   let rec aux () =
-	if !count < nbytes then (
+	if !count < nreachable then (
+	  if CurQueue.size !q = 0 then report debug_dat;
 	  let g, piv, i = Hash.disass (CurQueue.find_min !q) in
 	  let x0, y0 = Grid.pivxy piv in
 	  let v = get data i in
@@ -183,4 +192,4 @@ let build ownerships db ((goalmat, piv) as goalpattern) dbid =
   aux ();
   data
 
-(* ************************************************************************** *)
+	(* ************************************************************************** *)
