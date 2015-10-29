@@ -118,13 +118,15 @@ ML_OBJS = $(addprefix $(ML_DIR)/,\
 	IDAStar.cmx\
 	Grid.cmi\
 	Grid.cmx\
-	GridHeuristics.cmi\
-	GridHeuristics.cmx\
 	DPatternDB.cmx\
 	DPatternDBCompute.cmx\
-	DPatternDBHeuristic.cmx\
 	DPatternDBInit.cmx\
-	LinearConflict.cmx\
+	DPatternDBHeuristic.cmi\
+	DPatternDBHeuristic.cmx\
+	ManhattanDistanceHeuristic.cmi\
+	ManhattanDistanceHeuristic.cmx\
+	LinearConflictHeuristic.cmi\
+	LinearConflictHeuristic.cmx\
 	solver.cmx\
 )
 ML_DIR = srcs/solver

@@ -1,12 +1,12 @@
 (* ************************************************************************** *)
 (*                                                                            *)
 (*                                                        :::      ::::::::   *)
-(*   LinearConflict.ml                                  :+:      :+:    :+:   *)
+(*   LinearConflictHeuristic.ml                         :+:      :+:    :+:   *)
 (*                                                    +:+ +:+         +:+     *)
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
-(*   Created: 2015/10/28 14:51:33 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/28 19:03:18 by ngoguey          ###   ########.fr       *)
+(*   Created: 2015/10/29 13:39:56 by ngoguey           #+#    #+#             *)
+(*   Updated: 2015/10/29 14:16:32 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -111,7 +111,7 @@ let gen w =
   print db;
   db
 
-let calc db (mat, piv) =
+let calc db md_calc (mat, piv) =
   let x0, y0 = Grid.pivxy piv in
   let w = Array.length mat in
   let rec foreachline y acc =
@@ -170,8 +170,17 @@ let calc db (mat, piv) =
 	  foreachcol (x + 1) (acc + acc')
 	)
   in
-  let md = GridHeuristics.Manhattan.calc (mat, piv) in
+  let md = md_calc (mat, piv) in
   let lc_line = foreachline 0 0 in
   let lc_col = foreachcol 0 0 in
   (* TODO: Is lc_line + lc_col still admissible ?! *)
   md + lc_line + lc_col
+
+(* ************************************************************************** *)
+
+let make w =
+  let db = gen w in
+  let md = ManhattanDistanceHeuristic.make w in
+  calc db md
+
+(* ************************************************************************** *)

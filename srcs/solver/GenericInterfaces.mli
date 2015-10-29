@@ -6,14 +6,14 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/18 15:36:53 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/19 18:08:42 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/29 13:44:40 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
 module type HEURISTIC =
   sig
 	type elt
-	val calc    : elt->     int
+	type fn = elt -> int
   end
 
 module type ORDEREDTYPE =

@@ -6,17 +6,16 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:12 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/24 14:46:53 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/29 14:11:05 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
 type matrix = int array array
 type t = matrix * int
 
-module type HEURISTIC =
-  sig
-	include GenericInterfaces.HEURISTIC with type elt := t
-  end
+module Heuristic : (GenericInterfaces.HEURISTIC
+					with type elt := t
+					with type fn = t -> int)
 
 (* Perf critical *)
 val pivxy				: int -> int * int

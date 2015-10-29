@@ -1,14 +1,15 @@
 (* ************************************************************************** *)
 (*                                                                            *)
 (*                                                        :::      ::::::::   *)
-(*   GridHeuristics.mli                                 :+:      :+:    :+:   *)
+(*   DPatternDBHeuristic.mli                            :+:      :+:    :+:   *)
 (*                                                    +:+ +:+         +:+     *)
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
-(*   Created: 2015/10/17 17:10:35 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/17 17:10:36 by ngoguey          ###   ########.fr       *)
+(*   Created: 2015/10/29 12:35:03 by ngoguey           #+#    #+#             *)
+(*   Updated: 2015/10/29 14:13:41 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
-module Manhattan : Grid.HEURISTIC
-module Dijkstra : Grid.HEURISTIC
+val make		: int array array -> int -> Grid.Heuristic.fn
+
+(* ************************************************************************** *)

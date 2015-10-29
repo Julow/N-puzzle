@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/27 17:05:46 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/27 17:49:17 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/29 14:06:09 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -29,4 +29,20 @@ let calc dbs fields mirror_fields (mat, piv) =
   let h' = aux mirror_fields 0 0 in
   max h h'
 
- (* ************************************************************************** *)
+(* ************************************************************************** *)
+
+let make pat w =
+  let t = Unix.gettimeofday () in
+  let dbs = DPatternDBInit.build pat in
+  let fields =
+	Array.map (fun db ->Array.make db.DPatternDB.n_nbrs 42)
+			  dbs.DPatternDB.dbs
+  in
+  let fields' =
+	Array.map (fun db ->Array.make db.DPatternDB.n_nbrs 42)
+			  dbs.DPatternDB.dbs
+  in
+  Printf.eprintf "%f sec to build!!!\n%!" (Unix.gettimeofday () -. t);
+  calc dbs fields fields'
+
+(* ************************************************************************** *)

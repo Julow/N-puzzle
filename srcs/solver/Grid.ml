@@ -6,16 +6,17 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:58 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/24 16:15:01 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/29 14:11:09 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
 type matrix = int array array
 type t = matrix * int
 
-module type HEURISTIC =
-  sig
-	include GenericInterfaces.HEURISTIC with type elt := t
+module Heuristic : (GenericInterfaces.HEURISTIC
+					with type elt := t) =
+  struct
+	type fn = t -> int
   end
 
 (* ************************************************************************** *)

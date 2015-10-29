@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/10/28 18:58:26 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/29 14:27:53 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -14,6 +14,18 @@ module GridAStar : (GenericInterfaces.HEPATHFINDER
 					with type graph := Grid.t) = AStar.Make(Grid)
 module GridIDAStar : (GenericInterfaces.HEPATHFINDER
 					  with type graph := Grid.t) = IDAStar.Make(Grid)
+
+
+(*
+Manhattan		elt -> int
+Conflict		db -> elt -> int
+PatternDB		db -> fields -> fields' -> elt -> int
+
+Make:
+Manhattan						w ->	f
+Conflict				db ->	w ->	f
+PatternDB		pat ->	db ->	w ->	f
+ *)
 
 
 let scanGrid chan g s =
@@ -29,7 +41,6 @@ let scanGrid chan g s =
 	   line (y + 1))
   in
   line 0
-
 
 let mat_from_file fname =
   let chan = open_in fname in
@@ -47,6 +58,16 @@ let grid_from_file fname =
   let mat = mat_from_file fname in
   mat, Grid.pivv (Grid.find mat 0)
 
+
+let launch abstgr goalgr w algo heu_maker =
+  let t = Unix.gettimeofday () in
+  let heu = heu_maker w in
+  Printf.eprintf "%f sec to generate heuristic\n%!" (Unix.gettimeofday () -. t);
+  let t = Unix.gettimeofday () in
+  let stack = algo abstgr goalgr heu in
+  Printf.eprintf "%f sec to solve (%d steps)\n%!" (Unix.gettimeofday () -. t)
+  				 (List.length stack - 1);
+  stack
 
 (* Solve *)
 let solve npuzzle =
@@ -72,64 +93,24 @@ let solve npuzzle =
   Printf.eprintf "\n%!";
   Grid.print goalgr;
   Printf.eprintf "\n%!";
-  let lcdb = LinearConflict.gen w in
-  let dps = [|[| 1; 1; 1; 3|];
-  			  [| 1; 1; 3; 3|];
-  			  [| 1;-9; 3; 3|];
-  			  [| 2; 2; 2; 3|];|] in
-  (* let dps = [|[| 1; 1; 2; 2|]; *)
-  (* 			  [| 1; 1; 2; 2|]; *)
-  (* 			  [| 1;-9; 3; 2|]; *)
-  (* 			  [| 3; 3; 3; 3|];|] in *)
 
-  (* let dps = [|[| 5; 4; 3; 7|]; *)
-  (* 			  [| 5; 4; 3; 7|]; *)
-  (* 			  [| 6;-9; 2; 1|]; *)
-  (* 			  [| 6; 8; 2; 1|];|] in *)
-  let t = Unix.gettimeofday () in
-  let dpdb = DPatternDBInit.build dps in
-  let fields =
-	Array.map (fun db ->Array.make db.DPatternDB.n_nbrs 42)
-			  dpdb.DPatternDB.dbs
-  in
-  let fields' =
-	Array.map (fun db ->Array.make db.DPatternDB.n_nbrs 42)
-			  dpdb.DPatternDB.dbs
-  in
-  Printf.eprintf "%f sec to build!!!\n%!" (Unix.gettimeofday () -. t);
+  let pat663 = [|[| 1; 1; 1; 3|];
+				 [| 1; 1; 3; 3|];
+				 [| 1;-9; 3; 3|];
+				 [| 2; 2; 2; 3|];|] in
+  let pat555 = [|[| 1; 1; 2; 2|];
+  				 [| 1; 1; 2; 2|];
+  				 [| 1;-9; 3; 2|];
+  				 [| 3; 3; 3; 3|];|] in
+
+  let md_make = ManhattanDistanceHeuristic.make in
+  let lc_make = LinearConflictHeuristic.make in
+  let dpdb663_make = DPatternDBHeuristic.make pat663 in
+  let dpdb555_make = DPatternDBHeuristic.make pat555 in
 
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
-  let t = Unix.gettimeofday () in
-  let stack = GridAStar.solve abstgr goalgr GridHeuristics.Manhattan.calc in
-  ignore(stack);
-  Printf.eprintf "%f sec to solve (%d steps)\n%!"
-  				 (Unix.gettimeofday () -. t)
-  				 (List.length stack - 1);
-
-  let t = Unix.gettimeofday () in
-  let stack = GridAStar.solve abstgr goalgr (LinearConflict.calc lcdb) in
-  ignore(stack);
-  Printf.eprintf "%f sec to solve (%d steps)\n%!"
-  				 (Unix.gettimeofday () -. t)
-  				 (List.length stack - 1);
-
-
-  (* let t = Unix.gettimeofday () in *)
-  (* let stack = GridIDAStar.solve abstgr goalgr GridHeuristics.Manhattan.calc in *)
-  (* ignore(stack); *)
-  (* Printf.eprintf "%f sec to solve (%d steps)\n%!" *)
-  (* 				 (Unix.gettimeofday () -. t) *)
-  (* 				 (List.length stack - 1); *)
-
-  let t = Unix.gettimeofday () in
-  let stack = GridAStar.solve abstgr goalgr(
-								  DPatternDBHeuristic.calc
-									dpdb fields fields') in
-  ignore(stack);
-  Printf.eprintf "%f sec to solve (%d steps)\n%!"
-  				 (Unix.gettimeofday () -. t)
-  				 (List.length stack - 1);
-
+  launch abstgr goalgr w GridAStar.solve md_make;
+  launch abstgr goalgr w GridIDAStar.solve lc_make;
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
   ()
 
