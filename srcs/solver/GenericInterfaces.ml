@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/18 15:36:49 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/29 13:50:09 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/29 14:54:01 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -14,6 +14,7 @@ module type HEURISTIC =
   sig
 	type elt
 	type fn = elt -> int
+	type maker = int -> fn
   end
 
 module type ORDEREDTYPE =

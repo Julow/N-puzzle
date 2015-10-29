@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:58 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/29 14:11:09 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/29 14:54:35 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -17,6 +17,7 @@ module Heuristic : (GenericInterfaces.HEURISTIC
 					with type elt := t) =
   struct
 	type fn = t -> int
+	type maker = int -> fn
   end
 
 (* ************************************************************************** *)

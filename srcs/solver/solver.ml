@@ -6,27 +6,60 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/10/29 14:27:53 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/29 15:32:02 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
+
+let hashtbl_of_list l =
+  let h = Hashtbl.create (List.length l) in
+  let rec aux = function
+	| (n, f)::tl	-> Hashtbl.add h n f;
+					   aux tl
+	| _				-> ()
+  in
+  aux l;
+  h
+
+(* ************************************************************************** *)
+(* ALGORITHMS *)
 
 module GridAStar : (GenericInterfaces.HEPATHFINDER
 					with type graph := Grid.t) = AStar.Make(Grid)
 module GridIDAStar : (GenericInterfaces.HEPATHFINDER
 					  with type graph := Grid.t) = IDAStar.Make(Grid)
 
+let algorithms =
+  hashtbl_of_list
+	[("A*", GridAStar.solve);
+	 ("IDA*", GridIDAStar.solve);
+	]
 
-(*
-Manhattan		elt -> int
-Conflict		db -> elt -> int
-PatternDB		db -> fields -> fields' -> elt -> int
+(* ************************************************************************** *)
+(* HEURISTICS *)
 
-Make:
-Manhattan						w ->	f
-Conflict				db ->	w ->	f
-PatternDB		pat ->	db ->	w ->	f
- *)
+let pat8 = [|[| 1; 1; 1|];
+			 [| 1;-9; 1|];
+			 [| 1; 1; 1|];|]
+let pat663 = [|[| 1; 1; 1; 3|];
+			   [| 1; 1; 3; 3|];
+			   [| 1;-9; 3; 3|];
+			   [| 2; 2; 2; 3|];|]
+let pat555 = [|[| 1; 1; 2; 2|];
+  			   [| 1; 1; 2; 2|];
+  			   [| 1;-9; 3; 2|];
+  			   [| 3; 3; 3; 3|];|]
 
+let heuristics =
+  hashtbl_of_list
+	[("Manhattan Distance", ManhattanDistanceHeuristic.make);
+	 ("Linear Conflict", LinearConflictHeuristic.make);
+	 ("Disjoint Pattern DB 8", DPatternDBHeuristic.make pat8);
+	 ("Disjoint Pattern DB 663", DPatternDBHeuristic.make pat663);
+	 ("Disjoint Pattern DB 555", DPatternDBHeuristic.make pat555);
+	]
+
+(* ************************************************************************** *)
+(* REMOVE LATER *)
 
 let scanGrid chan g s =
   let rec line y =
@@ -53,11 +86,12 @@ let mat_from_file fname =
   close_in chan;
   grid
 
-
 let grid_from_file fname =
   let mat = mat_from_file fname in
   mat, Grid.pivv (Grid.find mat 0)
 
+(* ************************************************************************** *)
+(* SOLVE ENTRY POINT *)
 
 let launch abstgr goalgr w algo heu_maker =
   let t = Unix.gettimeofday () in
@@ -67,9 +101,14 @@ let launch abstgr goalgr w algo heu_maker =
   let stack = algo abstgr goalgr heu in
   Printf.eprintf "%f sec to solve (%d steps)\n%!" (Unix.gettimeofday () -. t)
   				 (List.length stack - 1);
+  Printf.eprintf "\n%!";
   stack
 
-(* Solve *)
+let launch_str abstgr goalgr w algo_str heu_maker_str =
+  let algo = Hashtbl.find algorithms algo_str in
+  let heu_maker = Hashtbl.find heuristics heu_maker_str in
+  launch abstgr goalgr w algo heu_maker
+
 let solve npuzzle =
   let (realmat, realpiv) as realgr = grid_from_file "lol3.np" in
   (* let (realmat, realpiv) as realgr = Grid.of_cgrid npuzzle in *)
@@ -94,23 +133,9 @@ let solve npuzzle =
   Grid.print goalgr;
   Printf.eprintf "\n%!";
 
-  let pat663 = [|[| 1; 1; 1; 3|];
-				 [| 1; 1; 3; 3|];
-				 [| 1;-9; 3; 3|];
-				 [| 2; 2; 2; 3|];|] in
-  let pat555 = [|[| 1; 1; 2; 2|];
-  				 [| 1; 1; 2; 2|];
-  				 [| 1;-9; 3; 2|];
-  				 [| 3; 3; 3; 3|];|] in
-
-  let md_make = ManhattanDistanceHeuristic.make in
-  let lc_make = LinearConflictHeuristic.make in
-  let dpdb663_make = DPatternDBHeuristic.make pat663 in
-  let dpdb555_make = DPatternDBHeuristic.make pat555 in
-
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
-  launch abstgr goalgr w GridAStar.solve md_make;
-  launch abstgr goalgr w GridIDAStar.solve lc_make;
+  launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 663";
+  launch_str abstgr goalgr w "A*" "Manhattan Distance";
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
   ()
 

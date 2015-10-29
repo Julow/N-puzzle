@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/29 13:39:56 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/29 14:16:32 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/29 14:36:30 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -20,8 +20,8 @@ let print db =
 	in
 	match lvl with
 	| Redundant			-> ();
-	| Full v			-> Printf.eprintf "%s(%d)Full\n%!" str v;
-	| Partial (v, a)	-> Printf.eprintf "%s(%d)Partial\n%!" str v;
+	| Full v			-> Printf.eprintf "%-10scor(%d) Full\n%!" str v;
+	| Partial (v, a)	-> Printf.eprintf "%-10scor(%d) Partial\n%!" str v;
 						   Array.iteri (aux false str) a
   in
   aux true "**" 0 db
@@ -108,7 +108,7 @@ let alloc w =
 
 let gen w =
   let db = init w (alloc w) in
-  print db;
+  (* print db; *)
   db
 
 let calc db md_calc (mat, piv) =
