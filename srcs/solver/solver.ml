@@ -101,20 +101,28 @@ let grid_from_file fname =
 (* ************************************************************************** *)
 (* SOLVE ENTRY POINT *)
 
+let center str =
+  let slen = String.length str + 2 in
+  let llen = max ((80 - slen) / 2) 0 in
+  let rlen = max (80 - slen - llen) 0 in
+  Printf.eprintf "%s \027[31m%s\027[0m %s\n%!" (String.make llen '*')
+				 str (String.make rlen '*')
+
 let launch abstgr goalgr w algo heu_maker =
   let t = Unix.gettimeofday () in
   let heu = heu_maker w in
-  Printf.eprintf "%f sec to generate heuristic\n%!" (Unix.gettimeofday () -. t);
+  center (Printf.sprintf "%f sec to generate heuristic"
+						 (Unix.gettimeofday () -. t));
   let t = Unix.gettimeofday () in
   let stack = algo abstgr goalgr heu in
-  Printf.eprintf "%f sec to solve (%d steps)\n%!" (Unix.gettimeofday () -. t)
-  				 (List.length stack - 1);
+  center (Printf.sprintf "%f sec to solve (%d steps)" (Unix.gettimeofday () -. t)
+  						 (List.length stack - 1));
   Printf.eprintf "\n%!";
   stack
 
 let launch_str abstgr goalgr w algo_str heu_maker_str =
-  Printf.eprintf "************************ %s ** %s ***********************\n%!"
-				 algo_str heu_maker_str;
+  center "";
+  center (Printf.sprintf "%s ** %s" algo_str heu_maker_str);
   let algo = Hashtbl.find algorithms algo_str in
   let heu_maker = Hashtbl.find heuristics heu_maker_str in
   launch abstgr goalgr w algo heu_maker
