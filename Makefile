@@ -116,6 +116,8 @@ ML_OBJS = $(addprefix $(ML_DIR)/,\
 	Algorithms/AStar.cmx\
 	Algorithms/IDAStar.cmi\
 	Algorithms/IDAStar.cmx\
+	Algorithms/GreedySearch.cmi\
+	Algorithms/GreedySearch.cmx\
 	Grid.cmi\
 	Grid.cmx\
 	Heuristics/DPatternDB.cmx\

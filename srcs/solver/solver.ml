@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/10/31 10:04:03 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/31 11:36:51 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -31,11 +31,14 @@ module GridAStar : (GenericInterfaces.HEPATHFINDER
 					with type graph := Grid.t) = AStar.Make(Grid)
 module GridIDAStar : (GenericInterfaces.HEPATHFINDER
 					  with type graph := Grid.t) = IDAStar.Make(Grid)
+module GridGreedySearch : (GenericInterfaces.HEPATHFINDER
+					  with type graph := Grid.t) = GreedySearch.Make(Grid)
 
 let algorithms =
   hashtbl_of_list
 	[("A*", GridAStar.solve);
 	 ("IDA*", GridIDAStar.solve);
+	 ("Greedy Search", GridGreedySearch.solve);
 	]
 
 (* ************************************************************************** *)
@@ -153,11 +156,12 @@ let solve npuzzle =
   Printf.eprintf "\n%!";
 
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
-  launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 663";
+  launch_str abstgr goalgr w "Greedy Search" "Linear Conflict";
+  launch_str abstgr goalgr w "A*" "Uniform Cost";
   launch_str abstgr goalgr w "A*" "Linear Conflict";
   launch_str abstgr goalgr w "A*" "Manhattan Distance";
-  (* launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 8"; *)
-  (* launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 7"; *)
+  launch_str abstgr goalgr w "IDA*" "Disjoint Pattern DB 8";
+  launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 7";
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
   ()
 
