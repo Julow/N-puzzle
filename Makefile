@@ -112,33 +112,33 @@ ML_OBJS = $(addprefix $(ML_DIR)/,\
 	GenericInterfaces.cmx\
 	BatHeap.cmi\
 	BatHeap.cmx\
-	AStar.cmi\
-	AStar.cmx\
-	IDAStar.cmi\
-	IDAStar.cmx\
+	Algorithms/AStar.cmi\
+	Algorithms/AStar.cmx\
+	Algorithms/IDAStar.cmi\
+	Algorithms/IDAStar.cmx\
 	Grid.cmi\
 	Grid.cmx\
-	DPatternDB.cmx\
-	DPatternDBCompute.cmx\
-	DPatternDBInit.cmx\
-	DPatternDBHeuristic.cmi\
-	DPatternDBHeuristic.cmx\
-	ManhattanDistanceHeuristic.cmi\
-	ManhattanDistanceHeuristic.cmx\
-	LinearConflictHeuristic.cmi\
-	LinearConflictHeuristic.cmx\
-	UniformCostHeuristic.cmi\
-	UniformCostHeuristic.cmx\
+	Heuristics/DPatternDB.cmx\
+	Heuristics/DPatternDBCompute.cmx\
+	Heuristics/DPatternDBInit.cmx\
+	Heuristics/DPatternDBHeuristic.cmi\
+	Heuristics/DPatternDBHeuristic.cmx\
+	Heuristics/ManhattanDistanceHeuristic.cmi\
+	Heuristics/ManhattanDistanceHeuristic.cmx\
+	Heuristics/LinearConflictHeuristic.cmi\
+	Heuristics/LinearConflictHeuristic.cmx\
+	Heuristics/UniformCostHeuristic.cmi\
+	Heuristics/UniformCostHeuristic.cmx\
 	solver.cmx\
 )
 ML_DIR = srcs/solver
 SOLVER = $(ML_DIR)/solver.o
 
 $(ML_DIR)/%.cmi: $(ML_DIR)/%.mli
-	ocamlopt -I $(ML_DIR) $< && $(PRINT_OK)
+	ocamlopt -I $(ML_DIR) -I $(ML_DIR)/Heuristics -I $(ML_DIR)/Algorithms $< && $(PRINT_OK)
 
 $(ML_DIR)/%.cmx: $(ML_DIR)/%.ml
-	ocamlopt -I $(ML_DIR) -c $< && $(PRINT_OK)
+	ocamlopt -I $(ML_DIR) -I $(ML_DIR)/Heuristics -I $(ML_DIR)/Algorithms -c $< && $(PRINT_OK)
 
 $(SOLVER): $(ML_OBJS)
 	ocamlopt -output-obj -o ./o/camlcode.o unix.cmxa $(filter %.cmx,$^)
