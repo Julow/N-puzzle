@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/27 17:05:46 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/29 14:06:09 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/31 12:40:44 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -42,7 +42,6 @@ let make pat w =
 	Array.map (fun db ->Array.make db.DPatternDB.n_nbrs 42)
 			  dbs.DPatternDB.dbs
   in
-  Printf.eprintf "%f sec to build!!!\n%!" (Unix.gettimeofday () -. t);
   calc dbs fields fields'
 
 (* ************************************************************************** *)

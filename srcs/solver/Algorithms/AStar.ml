@@ -1,3 +1,4 @@
+
 (* ************************************************************************** *)
 (*                                                                            *)
 (*                                                        :::      ::::::::   *)
@@ -6,7 +7,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/19 17:34:55 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/27 10:30:02 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/31 12:40:22 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -59,7 +60,6 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	  aux info [graph]
 
 	let solve gra_init gra_goal he =
-	  (* Printf.eprintf "AStar Beginning ...\n%!"; *)
 	  let he_init = he gra_init in
 	  let cdt_init = { Candidate.graph  	 	= gra_init;
 					   Candidate.g   	    	= 0;
@@ -89,8 +89,8 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	  		let neig_info = Opened { parent		= Some (cur_gra, info);
 	  								 g			= neig_g;
 	  								 f			= neig_f; } in
-			if neig_h <= 0 then
-			  Candidate.print neig_cdt;
+			(* if neig_h <= 0 then *)
+			(*   Candidate.print neig_cdt; *)
 			candidates := BatHeap.insert !candidates neig_cdt;
 			info_insert infos neig_gra neig_info
 		  in (** 4. END *)
