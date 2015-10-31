@@ -27,6 +27,7 @@ Team: [jaguillo](https://github.com/Julow) / [ngoguey](https://github.com/Ngogue
 - [X] Disjoint Pattern Databases Heuristic(see below), allowing us to solve any **15-puzzles** in **less than 5 seconds**.
 - [X] Careful study of graph traversal algorithms.
 - [X] IDA* implementation. (as extra)
+- [X] Database for linear conflict results
 
 
 ```shell
@@ -45,6 +46,7 @@ Snail solutions:<BR>
 ![representations](./img/Representations.png)<BR>
 Disjoint Pattern Databases:<BR>
 ![Symmetries.png](./img/Patterns_and_symmetries.png)<BR>
+Linear conflict database:<BR>
 ![Linear_conflict.png](./img/Linear_conflict.png)<BR>
 ![algo_and_heuristic_decl.png](./img/algo_and_heuristic_decl.png)<BR>
 ![console_sample.png](./img/console_sample.png)<BR>
