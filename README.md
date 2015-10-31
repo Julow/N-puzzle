@@ -39,11 +39,15 @@ sudo make install &&
 cd .. &&
 rm -rf lua-5.3.1.tar.gz lua-5.3.1
 ```
+
+<BR>
+Snail solutions:<BR>
+![representations](./img/Representations.png)<BR>
+Disjoint Pattern Databases:<BR>
+![Symmetries.png](./img/Patterns_and_symmetries.png)<BR>
+![Linear_conflict.png](./img/Linear_conflict.png)<BR>
+![algo_and_heuristic_decl.png](./img/algo_and_heuristic_decl.png)<BR>
+![console_sample.png](./img/console_sample.png)<BR>
+
+<BR>Useful links:<BR>
 https://www.jair.org/media/1480/live-1480-2332-jair.pdf
-Snail solutions:
-![representations](./img/Representations.png)
-Disjoint Pattern Databases:
-![Symmetries.png](./img/Patterns_and_symmetries.png)
-![Linear_conflict.png](./img/Linear_conflict.png)
-![algo_and_heuristic_decl.png](./img/algo_and_heuristic_decl.png)
-![console_sample.png](./img/console_sample.png)
