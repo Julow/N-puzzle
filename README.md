@@ -1,5 +1,5 @@
 # N-PUZZLE, Nov 2015
->>>>> #####A* solver. (group project)
+>>>>> #####A* pathfinder. (group project)
 
 #####Grade ``(tbd/100)`` ``(tbd/125)*``
 --------  -----------------------
@@ -18,8 +18,8 @@ Team: [jaguillo](https://github.com/Julow) / [ngoguey](https://github.com/Ngogue
 
 #####Recommended bonuses:
 - [X] Use approriate containers for A*.
-- [ ] Provide uniform-cost search.
-- [ ] Provide greedy search.
+- [ ] Provide an uniform-cost search.
+- [ ] Provide a greedy search.
 
 #####Our work:
 - [X] Opportunity to write our libftui(TODO: LINK!) (75% of our project), providing an high-level UI for this project and the next ones.
@@ -51,3 +51,10 @@ Disjoint Pattern Databases:<BR>
 
 <BR>Useful links:<BR>
 https://www.jair.org/media/1480/live-1480-2332-jair.pdf
+
+```
+*
+- A grade of 85 was required to validate the project.
+- A maximum grade of 125 was reachable.
+- Second sessions are organised for failed projects.
+```
