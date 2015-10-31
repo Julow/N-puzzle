@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/10/29 18:02:29 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/31 10:04:03 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -64,6 +64,7 @@ let heuristics =
 	 ("Disjoint Pattern DB 7", DPatternDBHeuristic.make pat7);
 	 ("Disjoint Pattern DB 663", DPatternDBHeuristic.make pat663);
 	 ("Disjoint Pattern DB 555", DPatternDBHeuristic.make pat555);
+	 ("Uniform Cost", UniformCostHeuristic.make);
 	]
 
 (* ************************************************************************** *)
@@ -152,10 +153,11 @@ let solve npuzzle =
   Printf.eprintf "\n%!";
 
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
-  launch_str abstgr goalgr w "A*" "Manhattan Distance";
+  launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 663";
   launch_str abstgr goalgr w "A*" "Linear Conflict";
-  launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 8";
-  launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 7";
+  launch_str abstgr goalgr w "A*" "Manhattan Distance";
+  (* launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 8"; *)
+  (* launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 7"; *)
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
   ()
 

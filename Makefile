@@ -127,6 +127,8 @@ ML_OBJS = $(addprefix $(ML_DIR)/,\
 	ManhattanDistanceHeuristic.cmx\
 	LinearConflictHeuristic.cmi\
 	LinearConflictHeuristic.cmx\
+	UniformCostHeuristic.cmi\
+	UniformCostHeuristic.cmx\
 	solver.cmx\
 )
 ML_DIR = srcs/solver

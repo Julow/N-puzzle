@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/27 17:05:59 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/29 16:46:05 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/10/31 10:13:53 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -47,31 +47,33 @@ let set data i v =
 (* ************************************************************************** *)
 (* DEBUG *)
 
+let qprintf = Printf.eprintf
+
 let print_one (db:db) =
   let grid_size = db.grid_w * db.grid_w in
   let bytes = fact_div grid_size (grid_size - db.n_nbrs) in
   let bytes = (float bytes) /. 1000000. in
   let bytes' = Bytes.length db.data in
   let bytes' = (float bytes') /. 1000000. in
-  Printf.eprintf "(was %d) (%10.6fMBytes/%10.6fM) %2d nbrs: %!"
+  qprintf "(was %d) (%10.6fMBytes/%10.6fM) %2d nbrs: %!"
 				 db.input_id bytes bytes' db.n_nbrs;
-  let aux' nbr = Printf.eprintf "%-2d %!" nbr in
+  let aux' nbr = qprintf "%-2d %!" nbr in
   List.iter aux' db.nbrs;
-  Printf.eprintf "\n\t %d paddings: %!" (Array.length db.paddings);
+  qprintf "\n\t %d paddings: %!" (Array.length db.paddings);
   Array.iter aux' db.paddings;
-  Printf.eprintf "\n%!"
+  qprintf "\n%!"
 
 let print dbs =
-  Printf.eprintf "%d Databases\n%!" (Array.length dbs.dbs);
-  Printf.eprintf "%6s: %!" "Cells";
-  Array.iteri (fun i _ -> Printf.eprintf "%-3d %!" i) dbs.ownerships;
-  Printf.eprintf "\n%!";
-  Printf.eprintf "%6s: %!" "DBid";
-  Array.iter (fun (i, _) -> Printf.eprintf "%-3d %!" i) dbs.ownerships;
-  Printf.eprintf "\n%!";
-  Printf.eprintf "%6s: %!" "NBid";
-  Array.iter (fun (_, i) -> Printf.eprintf "%-3d %!" i) dbs.ownerships;
-  Printf.eprintf "\n%!";
+  qprintf "%d Databases\n%!" (Array.length dbs.dbs);
+  qprintf "%6s: %!" "Cells";
+  Array.iteri (fun i _ -> qprintf "%-3d %!" i) dbs.ownerships;
+  qprintf "\n%!";
+  qprintf "%6s: %!" "DBid";
+  Array.iter (fun (i, _) -> qprintf "%-3d %!" i) dbs.ownerships;
+  qprintf "\n%!";
+  qprintf "%6s: %!" "NBid";
+  Array.iter (fun (_, i) -> qprintf "%-3d %!" i) dbs.ownerships;
+  qprintf "\n%!";
   Array.iter print_one dbs.dbs
 
 (* ************************************************************************** *)
@@ -122,16 +124,17 @@ let retreive_indices_of_pos field =
 	in
 	field.(i) <- field.(i) - aux (i - 1) 0;
 	assert(field.(i) >= 0);
-	assert(field.(i) < Array.length field * (Array.length field) - i);
+	(* assert(field.(i) < 16 - i); *)
   done;
   ()
+
 
 (* Matrix -> Positions [[-> Indices -> Index]] *)
 let index_of_pos db field =
   let s = Array.length field in
-  (* Array.iter (fun v->Printf.eprintf "%2d" v) field; Printf.eprintf "\n%!"; *)
+  (* Array.iter (fun v -> qprintf "%2d %!" v) field; qprintf "\n%!"; *)
   retreive_indices_of_pos field;
-  (* Array.iter (fun v->Printf.eprintf "%2d " v) field; *)
+  (* Array.iter (fun v -> qprintf "%2d %!" v) field; *)
   assert(s = (Array.length db.paddings));
   let rec aux i acc =
 	if i < s
@@ -188,7 +191,7 @@ let retreive_pos_of_indices field =
 	in
 	field.(i) <- aux (i - 1) field.(i);
 	assert(field.(i) >= 0);
-	assert(field.(i) < Array.length field * (Array.length field));
+	(* assert(field.(i) < 16); *)
   done;
   ()
 
