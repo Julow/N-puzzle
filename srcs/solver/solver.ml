@@ -6,13 +6,9 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/10/31 13:05:03 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/01 15:46:28 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
-
-(*
-TODO: check all '!=' statements
- *)
 
 let hashtbl_of_list l =
   let h = Hashtbl.create (List.length l) in
@@ -71,7 +67,7 @@ let heuristics =
 	]
 
 (* ************************************************************************** *)
-(* REMOVE LATER *)
+(* DOTO: REMOVE LATER *)
 
 let scanGrid chan g s =
   let rec line y =
@@ -125,15 +121,27 @@ let launch abstgr goalgr w algo heu_maker =
   stack
 
 let launch_str abstgr goalgr w algo_str heu_maker_str =
+  let algo =
+	try Hashtbl.find algorithms algo_str
+	with
+	| Not_found	->
+	   failwith (Printf.sprintf "'%s' algorithm does not exist" algo_str)
+  in
+  let heu_maker =
+	try Hashtbl.find heuristics heu_maker_str
+	with
+	| Not_found
+	  -> failwith(Printf.sprintf "'%s' heuristic does not exist" heu_maker_str)
+  in
   center "";
   center (Printf.sprintf "%s ** %s" algo_str heu_maker_str);
-  let algo = Hashtbl.find algorithms algo_str in
-  let heu_maker = Hashtbl.find heuristics heu_maker_str in
   launch abstgr goalgr w algo heu_maker
 
+
+(* TODO Grid.of_cgrid is the only safe entry point here *)
 let solve npuzzle =
-  let (realmat, realpiv) as realgr = grid_from_file "lol3.np" in
-  (* let (realmat, realpiv) as realgr = Grid.of_cgrid npuzzle in *)
+  (* let (realmat, realpiv) as realgr = grid_from_file "lol3.np" in *)
+  let (realmat, realpiv) as realgr = Grid.of_cgrid npuzzle in
 
   (* let realmat = [| *)
   (* 	  [|3 ;5 ;4|]; *)
@@ -142,8 +150,8 @@ let solve npuzzle =
   (* 	 |] in *)
   (* let realpiv = Grid.pivv (1, 1) in *)
   (* let realgr = realmat, realpiv in *)
+
   let w = Array.length realmat in
-  Printf.eprintf "width %u\n%!" w;
   Grid.init_transp_tables w;
   let abstgr = Grid.to_abstract realgr in
   let goalgr = Grid.goal w in
@@ -152,8 +160,6 @@ let solve npuzzle =
   Printf.eprintf "\n%!";
   Grid.print abstgr;
   Printf.eprintf "\n%!";
-  (* Grid.print goalgr; *)
-  (* Printf.eprintf "\n%!"; *)
 
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
   launch_str abstgr goalgr w "Greedy Search" "Disjoint Pattern DB 6/6/3";
@@ -168,6 +174,7 @@ let solve npuzzle =
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
   ()
 
+(* ************************************************************************** *)
 (* Init C api *)
 let () =
   Callback.register "solve" solve

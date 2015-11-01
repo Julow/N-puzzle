@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/27 18:52:13 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/29 17:59:27 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/01 15:46:02 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -163,7 +163,7 @@ let build ownerships db ((goalmat, piv) as goalpattern) dbid =
 
 	  loops := !loops + 1;
 	  if !loops mod 50000 = 0 then report debug_dat;
-	  if g != !prevg && g > 12 then garbage_collect h g debug_dat;
+	  if g <> !prevg && g > 12 then garbage_collect h g debug_dat;
 	  if v = 255 then (set data i g;
 					   count := !count + 1;);
 

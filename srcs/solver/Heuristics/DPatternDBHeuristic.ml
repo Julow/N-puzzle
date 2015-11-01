@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/27 17:05:46 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/31 12:40:44 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/01 15:44:31 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -32,7 +32,6 @@ let calc dbs fields mirror_fields (mat, piv) =
 (* ************************************************************************** *)
 
 let make pat w =
-  let t = Unix.gettimeofday () in
   let dbs = DPatternDBInit.build pat in
   let fields =
 	Array.map (fun db ->Array.make db.DPatternDB.n_nbrs 42)

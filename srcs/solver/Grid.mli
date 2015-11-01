@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:12 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/29 14:55:26 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/01 15:27:02 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -32,10 +32,10 @@ val equal				: t -> t -> bool
 val successors			: t -> t list
 
 (* Iteration *)
-val find				: matrix -> int -> int * int
 val iter_cells			: matrix -> (int -> int -> int -> int -> unit) -> unit
+val find				: matrix -> int -> int * int
 
-(* Conversion *)
+(* Conversion TODO: PARTIALLY MOVE TO CPP *)
 val init_transp_tables	: int -> unit
 val to_real				: t -> t
 val to_abstract			: t -> t

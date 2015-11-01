@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/29 13:39:56 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/29 14:36:30 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/01 15:46:15 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -127,7 +127,7 @@ let calc db md_calc (mat, piv) =
 		  foreachcell (x + 1) lvl
 		else (
 		  let v = mat.(y).(x) in
-		  if v / w != y  then
+		  if v / w <> y  then
 			foreachcell (x + 1) lvl
 		  else (
 			let lvl' = match lvl with
@@ -155,7 +155,7 @@ let calc db md_calc (mat, piv) =
 		  foreachcell (y + 1) lvl
 		else (
 		  let v = mat.(y).(x) in
-		  if v mod w != x  then
+		  if v mod w <> x  then
 			foreachcell (y + 1) lvl
 		  else (
 			let lvl' = match lvl with

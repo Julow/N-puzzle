@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:58 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/29 14:54:35 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/01 15:37:58 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -106,6 +106,7 @@ let find mat v =
   line 0
 
 (* ************************************************************************** *)
+(* TODO: PARTIALLY MOVE TO CPP *)
 
 let transposition_toreal = ref [|42|]
 let transposition_toabstract = ref [|42|]
@@ -186,15 +187,27 @@ let to_abstract ((mat, _) as realgr) =
 
 let of_cgrid cgrid =
   let w = Npuzzle.get_size cgrid in
+  if w <= 0 then
+	failwith (Printf.sprintf "Invalid grid: with = %d" w);
   let mat = Array.make_matrix w w (-1) in
+  let allnbrs = ref [] in
   let aux i x y v =
 	let v = Npuzzle.get cgrid x y in
+	allnbrs := v::!allnbrs;
 	mat.(y).(x) <- v;
   in
-  if w <= 0 then
-	failwith "Invalid size"
-  else
-	iter_cells mat aux;
+  iter_cells mat aux;
+  let check_nbrs cur expected =
+	if cur <> expected then
+	  failwith (Printf.sprintf
+				  "Invalid grid: '%d' instead of '%d'" cur expected);
+	cur + 1
+  in
+  let ret = List.fold_left
+			  check_nbrs 0 (List.sort Pervasives.compare !allnbrs) in
+  if ret <> w * w then
+	failwith (Printf.sprintf
+				"Invalid grid: '%d' instead of '%d'" ret (w * w));
   mat, pivv (find mat 0)
 
 (* ************************************************************************** *)
