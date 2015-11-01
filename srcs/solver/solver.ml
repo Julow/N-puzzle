@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/11/01 16:39:02 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/01 18:03:33 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -108,7 +108,11 @@ let center str =
   Printf.eprintf "%s \027[31m%s\027[0m %s\n%!" (String.make llen '*')
 				 str (String.make rlen '*')
 
-let launch abstgr goalgr w algo heu_maker =
+let thread_handle = ref None
+let thread_done = false
+
+let launch (abstgr, goalgr, w, algo, heu_maker) =
+(* let launch abstgr goalgr w algo heu_maker = *)
   let t = Unix.gettimeofday () in
   let heu = heu_maker w in
   center (Printf.sprintf "%f sec to generate heuristic"
@@ -135,7 +139,14 @@ let launch_str abstgr goalgr w algo_str heu_maker_str =
   in
   center "";
   center (Printf.sprintf "%s ** %s" algo_str heu_maker_str);
-  launch abstgr goalgr w algo heu_maker
+
+  let packed = (abstgr, goalgr, w, algo, heu_maker) in
+  let th = Thread.create launch packed in
+  thread_handle := Some th;
+  Thread.join th;
+  (* () *)
+  []
+  (* launch abstgr goalgr w algo heu_maker *)
 
 (* TODO Grid.of_cgrid is the only safe entry point here *)
 let solve npuzzle =

@@ -47,7 +47,7 @@ endif
 OCAML_FLAGS		:= $(shell ocamlc -where)
 
 HEAD_FLAGS		+= -I$(OCAML_FLAGS)
-LINK_FLAGS		+= -L$(OCAML_FLAGS) -lunix -lasmrun -lncurses
+LINK_FLAGS		+= -L$(OCAML_FLAGS) -lunix -lasmrun -lthreadsnat -lncurses
 
 # Jobs
 JOBS			:= 1
@@ -137,13 +137,13 @@ ML_DIR = srcs/solver
 SOLVER = $(ML_DIR)/solver.o
 
 $(ML_DIR)/%.cmi: $(ML_DIR)/%.mli
-	ocamlopt -I $(ML_DIR) -I $(ML_DIR)/Heuristics -I $(ML_DIR)/Algorithms $< && $(PRINT_OK)
+	ocamlopt.opt -thread unix.cmxa threads/threads.cmxa -I $(ML_DIR) -I $(ML_DIR)/Heuristics -I $(ML_DIR)/Algorithms $< && $(PRINT_OK)
 
 $(ML_DIR)/%.cmx: $(ML_DIR)/%.ml
-	ocamlopt -I $(ML_DIR) -I $(ML_DIR)/Heuristics -I $(ML_DIR)/Algorithms -c $< && $(PRINT_OK)
+	ocamlopt.opt -thread unix.cmxa threads/threads.cmxa -I $(ML_DIR) -I $(ML_DIR)/Heuristics -I $(ML_DIR)/Algorithms -c $< && $(PRINT_OK)
 
 $(SOLVER): $(ML_OBJS)
-	ocamlopt -output-obj -o ./o/camlcode.o unix.cmxa $(filter %.cmx,$^)
+	ocamlopt.opt -thread unix.cmxa threads/threads.cmxa -output-obj -o ./o/camlcode.o $(filter %.cmx,$^)
 
 # Linking
 $(NAME): $(LIBS_DEPEND) $(O_FILES) $(SOLVER)
