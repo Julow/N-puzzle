@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/11/01 15:46:28 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/01 16:39:02 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -137,11 +137,10 @@ let launch_str abstgr goalgr w algo_str heu_maker_str =
   center (Printf.sprintf "%s ** %s" algo_str heu_maker_str);
   launch abstgr goalgr w algo heu_maker
 
-
 (* TODO Grid.of_cgrid is the only safe entry point here *)
 let solve npuzzle =
-  (* let (realmat, realpiv) as realgr = grid_from_file "lol3.np" in *)
-  let (realmat, realpiv) as realgr = Grid.of_cgrid npuzzle in
+  let (realmat, realpiv) as realgr = grid_from_file "lol3.np" in
+  (* let (realmat, realpiv) as realgr = Grid.of_cgrid npuzzle in *)
 
   (* let realmat = [| *)
   (* 	  [|3 ;5 ;4|]; *)
@@ -160,10 +159,12 @@ let solve npuzzle =
   Printf.eprintf "\n%!";
   Grid.print abstgr;
   Printf.eprintf "\n%!";
+  Grid.print goalgr;
+  Printf.eprintf "\n%!";
 
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
-  launch_str abstgr goalgr w "Greedy Search" "Disjoint Pattern DB 6/6/3";
-  launch_str abstgr goalgr w "Greedy Search" "Disjoint Pattern DB 5/5/5";
+  (* launch_str abstgr goalgr w "Greedy Search" "Disjoint Pattern DB 6/6/3"; *)
+  (* launch_str abstgr goalgr w "Greedy Search" "Disjoint Pattern DB 5/5/5"; *)
   launch_str abstgr goalgr w "Greedy Search" "Linear Conflict";
   launch_str abstgr goalgr w "Greedy Search" "Manhattan Distance";
 

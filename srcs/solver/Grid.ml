@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:58 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/01 15:37:58 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/01 16:26:02 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -108,6 +108,11 @@ let find mat v =
 (* ************************************************************************** *)
 (* TODO: PARTIALLY MOVE TO CPP *)
 
+let zero_coords w =
+  let x = (w - 1) / 2 in
+  let y = w / 2 in
+  x, y
+
 let transposition_toreal = ref [|42|]
 let transposition_toabstract = ref [|42|]
 
@@ -208,7 +213,8 @@ let of_cgrid cgrid =
   if ret <> w * w then
 	failwith (Printf.sprintf
 				"Invalid grid: '%d' instead of '%d'" ret (w * w));
-  mat, pivv (find mat 0)
+  let i0 = (fun (x, y) -> x + y * w) (zero_coords w) in
+  mat, pivv (find mat i0)
 
 (* ************************************************************************** *)
 
@@ -239,8 +245,7 @@ let goal w =
 	mat.(y).(x) <- i;
   in
   iter_cells mat aux;
-  mat, pivv (find mat (!transposition_toabstract).(0))
-
+  mat, pivv (zero_coords w)
 
 let to_filename mat =
   let str = ref "" in

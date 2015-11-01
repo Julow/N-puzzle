@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/27 17:05:46 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/01 15:44:31 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/01 16:38:02 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -32,6 +32,8 @@ let calc dbs fields mirror_fields (mat, piv) =
 (* ************************************************************************** *)
 
 let make pat w =
+  if w <> Array.length pat then
+	failwith "Using pattern with wrong grid size";
   let dbs = DPatternDBInit.build pat in
   let fields =
 	Array.map (fun db ->Array.make db.DPatternDB.n_nbrs 42)
