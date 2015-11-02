@@ -6,12 +6,13 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/31 10:27:02 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/31 11:37:16 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/02 09:09:14 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
 module Make : GenericInterfaces.MAKE_HEPATHFINDER =
-  functor (Graph : GenericInterfaces.PATHFINDER_GRAPH) ->
+  functor (Graph : GenericInterfaces.PATHFINDER_GRAPH)
+			(EventHandler : GenericInterfaces.EVENT_HANDLER) ->
   struct
 
 	type graph = Graph.t

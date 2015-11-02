@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/18 15:36:49 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/10/29 14:54:01 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/02 10:27:28 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -38,6 +38,29 @@ module type PATHFINDER_GRAPH =
 	val print       : t -> unit
   end
 
+module type EVENT_HANDLER_STATE =
+  sig
+	type t
+  end
+
+module type EVENT_HANDLER =
+  sig
+	type state
+	type t =
+	  | Success of state list
+	  | Failed of string
+	  | Progress of float
+	  | Empty
+
+	val dumpq		: unit -> unit
+	val pushq		: t -> unit
+  end
+
+module type MAKE_EVENT_HANDLER =
+  functor (State : EVENT_HANDLER_STATE) ->
+  EVENT_HANDLER with type state = State.t
+
 module type MAKE_HEPATHFINDER =
-  functor (Graph : PATHFINDER_GRAPH) ->
-  HEPATHFINDER with type graph := Graph.t
+  functor (Graph : PATHFINDER_GRAPH) (EventHandler : EVENT_HANDLER
+									  with type state = Graph.t) ->
+  HEPATHFINDER with type graph = Graph.t

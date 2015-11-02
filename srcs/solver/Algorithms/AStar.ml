@@ -1,4 +1,3 @@
-
 (* ************************************************************************** *)
 (*                                                                            *)
 (*                                                        :::      ::::::::   *)
@@ -7,12 +6,13 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/19 17:34:55 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/01 16:33:37 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/02 10:01:21 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
 module Make : GenericInterfaces.MAKE_HEPATHFINDER =
-  functor (Graph : GenericInterfaces.PATHFINDER_GRAPH) ->
+  functor (Graph : GenericInterfaces.PATHFINDER_GRAPH)
+			(EventHandler : GenericInterfaces.EVENT_HANDLER with type state = Graph.t) ->
   struct
 	type graph = Graph.t
 	type parent = None | Some of graph * graph_info
@@ -60,6 +60,8 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	  aux info [graph]
 
 	let solve gra_init gra_goal he =
+	  EventHandler.pushq (EventHandler.Progress 0.);
+
 	  let he_init = he gra_init in
 	  let cdt_init = { Candidate.graph  	 	= gra_init;
 					   Candidate.g   	    	= 0;
@@ -125,6 +127,10 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	  in  (** 1. END *)
 	  try
 		let sol = aux () in
+		EventHandler.dumpq ();
+		EventHandler.pushq (EventHandler.Progress 1.);
+		EventHandler.pushq (EventHandler.Success sol);
+		EventHandler.dumpq ();
 		(* Printf.eprintf "AStar: SOLVED!!!!!!!!\n%!"; *)
 		(* List.iteri (fun i gra -> Printf.eprintf "g(%2d) h(%2d)" i (he gra); *)
 		(* 						 Graph.print gra) sol; *)

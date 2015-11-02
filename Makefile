@@ -108,10 +108,11 @@ endif
 
 ML_OBJS = $(addprefix $(ML_DIR)/,\
 	npuzzle.cmi\
-	GenericInterfaces.cmi\
 	GenericInterfaces.cmx\
 	BatHeap.cmi\
 	BatHeap.cmx\
+	EventHandler.cmi\
+	EventHandler.cmx\
 	Algorithms/AStar.cmi\
 	Algorithms/AStar.cmx\
 	Algorithms/IDAStar.cmi\

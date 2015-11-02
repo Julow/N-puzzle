@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/11/01 18:03:33 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/02 10:26:29 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -21,14 +21,23 @@ let hashtbl_of_list l =
   h
 
 (* ************************************************************************** *)
+(* EVENTS HANDLER *)
+
+module EventHandler = EventHandler.Make(Grid)
+
+
+(* ************************************************************************** *)
 (* ALGORITHMS *)
 
 module GridAStar : (GenericInterfaces.HEPATHFINDER
-					with type graph := Grid.t) = AStar.Make(Grid)
+					with type graph := Grid.t)
+  = AStar.Make(Grid)(EventHandler)
 module GridIDAStar : (GenericInterfaces.HEPATHFINDER
-					  with type graph := Grid.t) = IDAStar.Make(Grid)
+					  with type graph := Grid.t)
+  = IDAStar.Make(Grid)(EventHandler)
 module GridGreedySearch : (GenericInterfaces.HEPATHFINDER
-					  with type graph := Grid.t) = GreedySearch.Make(Grid)
+						   with type graph := Grid.t)
+  = GreedySearch.Make(Grid)(EventHandler)
 
 let algorithms =
   hashtbl_of_list
@@ -174,8 +183,8 @@ let solve npuzzle =
   Printf.eprintf "\n%!";
 
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
-  (* launch_str abstgr goalgr w "Greedy Search" "Disjoint Pattern DB 6/6/3"; *)
-  (* launch_str abstgr goalgr w "Greedy Search" "Disjoint Pattern DB 5/5/5"; *)
+  launch_str abstgr goalgr w "Greedy Search" "Disjoint Pattern DB 6/6/3";
+  launch_str abstgr goalgr w "Greedy Search" "Disjoint Pattern DB 5/5/5";
   launch_str abstgr goalgr w "Greedy Search" "Linear Conflict";
   launch_str abstgr goalgr w "Greedy Search" "Manhattan Distance";
 
@@ -184,6 +193,10 @@ let solve npuzzle =
   launch_str abstgr goalgr w "A*" "Linear Conflict";
   (* launch_str abstgr goalgr w "A*" "Manhattan Distance"; *)
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
+
+  Printf.eprintf "test:\n%!";
+  EventHandler.dumpq ();
+
   ()
 
 (* ************************************************************************** *)
