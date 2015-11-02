@@ -1,25 +1,25 @@
 #
 
 # Executable name
-NAME		:= npuzzle
+NAME			:= npuzzle
 
 # Project directories
-DIRS		:= srcs include libftui/include
+DIRS			:= srcs include libftui/include
 
 # Git submodule to init
-MODULES		:=
+MODULES			:=
 # Makefiles to call
-LIBS		:= libftui
+LIBS			:= libftui
 
 # Base flags
-BASE_FLAGS	= -Wall -Wextra
-HEAD_FLAGS	= $(addprefix -I,$(DIRS))
+BASE_FLAGS		= -Wall -Wextra
+HEAD_FLAGS		= $(addprefix -I,$(DIRS))
 
 # Compilation flags (per language)
-C_FLAGS		= $(HEAD_FLAGS) $(BASE_FLAGS)
-CPP_FLAGS	= $(HEAD_FLAGS) $(BASE_FLAGS) -std=c++14
+C_FLAGS			= $(HEAD_FLAGS) $(BASE_FLAGS)
+CPP_FLAGS		= $(HEAD_FLAGS) $(BASE_FLAGS) -std=c++14
 
-LINK_FLAGS	= $(BASE_FLAGS) -Llibftui -lftui -lfreetype
+LINK_FLAGS		= $(BASE_FLAGS) -Llibftui -lftui -lfreetype
 
 ifeq ($(DEBUG_MODE),1)
 	# Extra flags used in debug mode
@@ -33,8 +33,18 @@ else
 	CPP_FLAGS	+=
 endif
 
-DEBUG_MODE	?= 0
+DEBUG_MODE		?= 0
 export DEBUG_MODE
+
+# Ocaml flags
+OCAML_WHERE		:= $(shell ocamlc -where)
+HEAD_FLAGS		+= -I$(OCAML_WHERE)
+LINK_FLAGS		+= -L$(OCAML_WHERE) -lunix -lasmrun -lthreadsnat -lncurses
+
+OCAML_SOLVER	= $(O_DIR)/ocaml_solver.o
+
+OCAML_LINKS		= -thread unix.cmxa threads/threads.cmxa
+OCAML_FLAGS		= -I $(OCAML_DIR) -I $(OCAML_DIR)/Heuristics -I $(OCAML_DIR)/Algorithms
 
 # Extra libs
 ifeq ($(shell uname),Darwin)
@@ -43,11 +53,6 @@ ifeq ($(shell uname),Darwin)
 else
 	LINK_FLAGS	+= -lglfw -lGL -lGLEW -ldl
 endif
-
-OCAML_FLAGS		:= $(shell ocamlc -where)
-
-HEAD_FLAGS		+= -I$(OCAML_FLAGS)
-LINK_FLAGS		+= -L$(OCAML_FLAGS) -lunix -lasmrun -lthreadsnat -lncurses
 
 # Jobs
 JOBS			:= 1
@@ -68,6 +73,7 @@ O_DIR		:= o
 
 # Depend file name
 DEPEND		:= depend.mk
+ML_DEPEND	:= ml_depend.mk
 
 # tmp
 MODULE_RULES	:= $(addsuffix /.git,$(MODULES))
@@ -102,59 +108,29 @@ endif
 
 # Include $(O_FILES) and dependencies
 -include $(DEPEND)
-
-# Ocaml
-# TODO: improve
-
-ML_OBJS = $(addprefix $(ML_DIR)/,\
-	npuzzle.cmi\
-	GenericInterfaces.cmx\
-	BatHeap.cmi\
-	BatHeap.cmx\
-	EventHandler.cmi\
-	EventHandler.cmx\
-	Algorithms/AStar.cmi\
-	Algorithms/AStar.cmx\
-	Algorithms/IDAStar.cmi\
-	Algorithms/IDAStar.cmx\
-	Algorithms/GreedySearch.cmi\
-	Algorithms/GreedySearch.cmx\
-	Grid.cmi\
-	Grid.cmx\
-	Heuristics/DPatternDB.cmx\
-	Heuristics/DPatternDBCompute.cmx\
-	Heuristics/DPatternDBInit.cmx\
-	Heuristics/DPatternDBHeuristic.cmi\
-	Heuristics/DPatternDBHeuristic.cmx\
-	Heuristics/ManhattanDistanceHeuristic.cmi\
-	Heuristics/ManhattanDistanceHeuristic.cmx\
-	Heuristics/LinearConflictHeuristic.cmi\
-	Heuristics/LinearConflictHeuristic.cmx\
-	Heuristics/UniformCostHeuristic.cmi\
-	Heuristics/UniformCostHeuristic.cmx\
-	solver.cmx\
-)
-ML_DIR = srcs/solver
-SOLVER = $(ML_DIR)/solver.o
-
-$(ML_DIR)/%.cmi: $(ML_DIR)/%.mli
-	ocamlopt.opt -thread unix.cmxa threads/threads.cmxa -I $(ML_DIR) -I $(ML_DIR)/Heuristics -I $(ML_DIR)/Algorithms $< && $(PRINT_OK)
-
-$(ML_DIR)/%.cmx: $(ML_DIR)/%.ml
-	ocamlopt.opt -thread unix.cmxa threads/threads.cmxa -I $(ML_DIR) -I $(ML_DIR)/Heuristics -I $(ML_DIR)/Algorithms -c $< && $(PRINT_OK)
-
-$(SOLVER): $(ML_OBJS)
-	ocamlopt.opt -thread unix.cmxa threads/threads.cmxa -output-obj -o ./o/camlcode.o $(filter %.cmx,$^)
+-include $(ML_DEPEND)
 
 # Linking
-$(NAME): $(LIBS_DEPEND) $(O_FILES) $(SOLVER)
-	clang++ -o $@ $(O_FILES) ./o/camlcode.o $(LINK_FLAGS) && $(PRINT_LINK)
+$(NAME): $(LIBS_DEPEND) $(O_FILES) $(OCAML_SOLVER)
+	clang++ -o $@ $(O_FILES) $(OCAML_SOLVER) $(LINK_FLAGS) && $(PRINT_LINK)
 
-# Compiling
+# C
 $(O_DIR)/%.o: %.c
 	clang $(C_FLAGS) -c $< -o $@ && $(PRINT_OK)
+# Cpp
 $(O_DIR)/%.o: %.cpp
 	clang++ $(CPP_FLAGS) -c $< -o $@ && $(PRINT_OK)
+# Ocaml
+%.cmi: %.mli
+	ocamlopt.opt $(OCAML_LINKS) $(OCAML_FLAGS) $< && $(PRINT_OK)
+%.cmx: %.ml
+	ocamlopt.opt $(OCAML_LINKS) $(OCAML_FLAGS) -c $< && $(PRINT_OK)
+$(OCAML_SOLVER): $(filter %.cmx,$(ML_OBJS)) $(filter %.cmi,$(ML_OBJS))
+	ocamlopt.opt $(OCAML_LINKS) -output-obj -o $@ $(filter %.cmx,$^)
+
+ocamldep:
+	bash ocaml_depend.sh > $(ML_DEPEND)
+.PHONY: ocamldep
 
 # Init submodules
 $(MODULE_RULES):
