@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/11/02 07:50:05 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/02 10:21:18 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/02 13:14:36 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -41,6 +41,8 @@ module Make =
 		  -> Printf.eprintf "Failed of '%s'\n%!" s;
 		| Progress n
 		  -> Printf.eprintf "Progress of %6.2f%%\n%!" (n *. 100.);
+		| _
+		  -> ();
 
 		i := !i + 1;
 	  in
@@ -63,5 +65,11 @@ module Make =
 	  in
 	  Mutex.unlock m;
 	  v
+
+	let clearq _ =
+	  Mutex.lock m;
+	  Queue.clear q;
+	  Mutex.unlock m;
+	  ()
 
   end

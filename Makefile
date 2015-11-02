@@ -137,6 +137,13 @@ ML_OBJS = $(addprefix $(ML_DIR)/,\
 ML_DIR = srcs/solver
 SOLVER = $(ML_DIR)/solver.o
 
+i:
+	@for i in $(filter %.ml,$(ML_OBJS:.cmx=.ml)); do \
+		echo "\033[33m --> $$i\033[0m"; \
+		ocamlopt.opt -thread unix.cmxa threads/threads.cmxa -I $(ML_DIR) -I $(ML_DIR)/Heuristics -I $(ML_DIR)/Algorithms -i $$i; \
+	done
+
+
 $(ML_DIR)/%.cmi: $(ML_DIR)/%.mli
 	ocamlopt.opt -thread unix.cmxa threads/threads.cmxa -I $(ML_DIR) -I $(ML_DIR)/Heuristics -I $(ML_DIR)/Algorithms $< && $(PRINT_OK)
 

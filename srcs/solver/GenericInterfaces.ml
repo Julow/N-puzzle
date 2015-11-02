@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/18 15:36:49 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/02 10:27:28 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/02 13:11:37 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -54,6 +54,8 @@ module type EVENT_HANDLER =
 
 	val dumpq		: unit -> unit
 	val pushq		: t -> unit
+	val popq		: unit -> t
+	val clearq		: unit -> unit
   end
 
 module type MAKE_EVENT_HANDLER =

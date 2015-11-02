@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/11/02 10:26:29 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/02 13:24:58 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -24,7 +24,6 @@ let hashtbl_of_list l =
 (* EVENTS HANDLER *)
 
 module EventHandler = EventHandler.Make(Grid)
-
 
 (* ************************************************************************** *)
 (* ALGORITHMS *)
@@ -108,7 +107,7 @@ let grid_from_file fname =
   mat, Grid.pivv (Grid.find mat 0)
 
 (* ************************************************************************** *)
-(* SOLVE ENTRY POINT *)
+(* SOLVE *)
 
 let center str =
   let slen = String.length str + 2 in
@@ -121,7 +120,7 @@ let thread_handle = ref None
 let thread_done = false
 
 let launch (abstgr, goalgr, w, algo, heu_maker) =
-(* let launch abstgr goalgr w algo heu_maker = *)
+  (* let launch abstgr goalgr w algo heu_maker = *)
   let t = Unix.gettimeofday () in
   let heu = heu_maker w in
   center (Printf.sprintf "%f sec to generate heuristic"
@@ -155,10 +154,10 @@ let launch_str abstgr goalgr w algo_str heu_maker_str =
   Thread.join th;
   (* () *)
   []
-  (* launch abstgr goalgr w algo heu_maker *)
+(* launch abstgr goalgr w algo heu_maker *)
 
 (* TODO Grid.of_cgrid is the only safe entry point here *)
-let solve npuzzle =
+let solve' npuzzle =
   let (realmat, realpiv) as realgr = grid_from_file "lol3.np" in
   (* let (realmat, realpiv) as realgr = Grid.of_cgrid npuzzle in *)
 
@@ -170,6 +169,7 @@ let solve npuzzle =
   (* let realpiv = Grid.pivv (1, 1) in *)
   (* let realgr = realmat, realpiv in *)
 
+  EventHandler.clearq ();
   let w = Array.length realmat in
   Grid.init_transp_tables w;
   let abstgr = Grid.to_abstract realgr in
@@ -182,6 +182,7 @@ let solve npuzzle =
   Grid.print goalgr;
   Printf.eprintf "\n%!";
 
+  (* TODO: retreive algo/heuristic *)
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
   launch_str abstgr goalgr w "Greedy Search" "Disjoint Pattern DB 6/6/3";
   launch_str abstgr goalgr w "Greedy Search" "Disjoint Pattern DB 5/5/5";
@@ -196,10 +197,32 @@ let solve npuzzle =
 
   Printf.eprintf "test:\n%!";
   EventHandler.dumpq ();
-
   ()
+
+(* ************************************************************************** *)
+(* From C api *)
+let poll_event _ =
+  EventHandler.popq ()
+
+let solve npuzzle =
+  solve' npuzzle;
+  ()
+
+let abort _ =
+  (match !thread_handle with
+  | None		-> ()
+  | Some th		-> Thread.kill th);
+  EventHandler.clearq ();
+  ()
+
+let algorithm_list _ =
+  Hashtbl.fold (fun k _ l -> k::l) algorithms []
+
+let heuristic_list _ =
+  Hashtbl.fold (fun k _ l -> k::l) algorithms []
 
 (* ************************************************************************** *)
 (* Init C api *)
 let () =
-  Callback.register "solve" solve
+  Callback.register "solve" solve;
+  ()
