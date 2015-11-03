@@ -110,6 +110,8 @@ endif
 -include $(DEPEND)
 -include $(ML_DEPEND)
 
+MAX_SOURCE_LEN	:= $(shell if [ $(MAX_SOURCE_LEN) -gt $(ML_MAX_LEN) ]; then echo $(MAX_SOURCE_LEN); else echo $(ML_MAX_LEN); fi)
+
 # Linking
 $(NAME): $(LIBS_DEPEND) $(O_FILES) $(OCAML_SOLVER)
 	clang++ -o $@ $(O_FILES) $(OCAML_SOLVER) $(LINK_FLAGS) && $(PRINT_LINK)
@@ -122,7 +124,7 @@ $(O_DIR)/%.o: %.cpp
 	clang++ $(CPP_FLAGS) -c $< -o $@ && $(PRINT_OK)
 # Ocaml
 %.cmi: %.mli
-	ocamlopt.opt $(OCAML_LINKS) $(OCAML_FLAGS) $< && $(PRINT_OK)
+	ocamlopt.opt $(OCAML_LINKS) $(OCAML_FLAGS) -c $< && $(PRINT_OK)
 %.cmx: %.ml
 	ocamlopt.opt $(OCAML_LINKS) $(OCAML_FLAGS) -c $< && $(PRINT_OK)
 $(OCAML_SOLVER): $(filter %.cmx,$(ML_OBJS)) $(filter %.cmi,$(ML_OBJS))
