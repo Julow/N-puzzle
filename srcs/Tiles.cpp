@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/11 11:58:44 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/12 16:44:27 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/03 16:22:32 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,7 +14,7 @@
 #include <cfenv>
 #include <cstdlib>
 #include <string>
-#include "Tiles.hpp"
+#include "tiles/Tiles.hpp"
 #include "gl.hpp"
 
 static ft::Vec3<float>		c255to1(ft::Vec3<int> const c)
@@ -118,7 +118,7 @@ void				Tiles::Tmp::_buildGrid(void)
 ft::Vec2<float>		Tiles::Tmp::_pointDeltaPos(void)
 {
 	float const	angle = static_cast<float>(std::rand() % 360) / 180.f * M_PI;
-	
+
 	return (ft::Vec2<float>(
 				cos(angle) * static_cast<float>(this->pointRandomRadius)
 				, sin(angle) * static_cast<float>(this->pointRandomRadius)
@@ -126,7 +126,7 @@ ft::Vec2<float>		Tiles::Tmp::_pointDeltaPos(void)
 }
 
 ft::Vec3<float>		Tiles::Tmp::_pointDeltaPink(void)
-{	
+{
 	return deltaPink * (static_cast<float>(std::rand() % 1000) / 500.f - 1.f);
 }
 
@@ -210,7 +210,7 @@ void				Tiles::_initGlProgram(void)
 	{
 		glDeleteProgram(_p);
 		throw std::domain_error("Error while linking shaders");
-	}	
+	}
 	return ;
 }
 

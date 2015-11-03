@@ -1,4 +1,4 @@
-O_FILES :=	o/include/tiles/Tiles.o o/srcs/GlCanvasHolder.o o/srcs/main.o \
+O_FILES :=	o/srcs/GlCanvasHolder.o o/srcs/Tiles.o o/srcs/main.o \
 			o/srcs/solver/Grid.o o/srcs/solver/Solver.o \
 			o/srcs/solver/Solver_hooks.o
 
@@ -11,8 +11,6 @@ libs:
 
 
 MAX_SOURCE_LEN := 28
-o/include/tiles/Tiles.o: include/tiles/Tiles.cpp include/gl.hpp \
-	| o/include/tiles/
 o/srcs/GlCanvasHolder.o: srcs/GlCanvasHolder.cpp include/GlCanvasHolder.hpp \
 	libftui/include/ft/Color.hpp libftui/include/ft/Rect.hpp \
 	libftui/include/ft/Vec.hpp libftui/include/ft/assert.hpp \
@@ -21,6 +19,10 @@ o/srcs/GlCanvasHolder.o: srcs/GlCanvasHolder.cpp include/GlCanvasHolder.hpp \
 	libftui/include/ft/templates/Vec4.tpp libftui/include/ftui/Canvas.hpp \
 	libftui/include/ftui/libftui.hpp include/gl.hpp \
 	libftui/include/ft/utils.hpp | o/srcs/
+o/srcs/Tiles.o: srcs/Tiles.cpp include/tiles/Tiles.hpp \
+	libftui/include/ft/Vec.hpp libftui/include/ft/templates/Vec2.tpp \
+	libftui/include/ft/templates/Vec3.tpp \
+	libftui/include/ft/templates/Vec4.tpp include/gl.hpp | o/srcs/
 o/srcs/main.o: srcs/main.cpp libftui/include/ft/utils.hpp \
 	include/config_window.hpp include/ftce/math.hpp libftui/include/ft/Vec.hpp \
 	libftui/include/ft/templates/Vec2.tpp \
