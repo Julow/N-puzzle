@@ -1,13 +1,13 @@
 ML_OBJS = \
-	srcs/solver/batteries-included/src/BatHeap.cmi \
 	srcs/solver/GenericInterfaces.cmx \
 	srcs/solver/npuzzle.cmi \
+	batteries-included/batteries-included/src/BatHeap.cmi \
+	batteries-included/batteries-included/src/BatHeap.cmx \
 	srcs/solver/npuzzle.cmx \
 	srcs/solver/Grid.cmi \
 	srcs/solver/Grid.cmx \
 	srcs/solver/EventHandler.cmi \
 	srcs/solver/EventHandler.cmx \
-	srcs/solver/batteries-included/src/BatHeap.cmx \
 	srcs/solver/Algorithms/IDAStar.cmi \
 	srcs/solver/Algorithms/IDAStar.cmx \
 	srcs/solver/Algorithms/GreedySearch.cmi \
@@ -27,16 +27,16 @@ ML_OBJS = \
 	srcs/solver/Heuristics/DPatternDBHeuristic.cmx \
 	srcs/solver/solver.cmx
 
-OCAML_FLAGS += -I srcs/solver -I srcs/solver/Algorithms -I srcs/solver/batteries-included -I srcs/solver/batteries-included/src -I srcs/solver/Heuristics
+OCAML_FLAGS += -I srcs/solver -I srcs/solver/Algorithms -I srcs/solver/Heuristics -I batteries-included -I batteries-included/batteries-included -I batteries-included/batteries-included/src -I batteries-included/src
 ML_MAX_LEN = 53
 
 srcs/solver/Algorithms/AStar.cmo : srcs/solver/GenericInterfaces.cmi \
-    srcs/solver/batteries-included/src/BatHeap.cmi \
+    batteries-included/batteries-included/src/BatHeap.cmi \
     srcs/solver/Algorithms/AStar.cmi srcs/solver/Algorithms/AStar.ml
 srcs/solver/Algorithms/AStar.cmx srcs/solver/Algorithms/AStar.o : \
     srcs/solver/GenericInterfaces.cmi srcs/solver/GenericInterfaces.cmx \
-    srcs/solver/batteries-included/src/BatHeap.cmi \
-    srcs/solver/batteries-included/src/BatHeap.cmx \
+    batteries-included/batteries-included/src/BatHeap.cmi \
+    batteries-included/batteries-included/src/BatHeap.cmx \
     srcs/solver/Algorithms/AStar.cmi srcs/solver/Algorithms/AStar.ml
 srcs/solver/Algorithms/AStar.cmi : srcs/solver/GenericInterfaces.cmi
 srcs/solver/Algorithms/GreedySearch.cmo : srcs/solver/GenericInterfaces.cmi \
@@ -53,14 +53,6 @@ srcs/solver/Algorithms/IDAStar.cmx srcs/solver/Algorithms/IDAStar.o : \
     srcs/solver/GenericInterfaces.cmi srcs/solver/GenericInterfaces.cmx \
     srcs/solver/Algorithms/IDAStar.cmi srcs/solver/Algorithms/IDAStar.ml
 srcs/solver/Algorithms/IDAStar.cmi : srcs/solver/GenericInterfaces.cmi
-srcs/solver/batteries-included/src/BatHeap.cmo : \
-    srcs/solver/batteries-included/src/BatHeap.cmi \
-    srcs/solver/batteries-included/src/BatHeap.ml
-srcs/solver/batteries-included/src/BatHeap.cmx \
-    srcs/solver/batteries-included/src/BatHeap.o : \
-    srcs/solver/batteries-included/src/BatHeap.cmi \
-    srcs/solver/batteries-included/src/BatHeap.ml
-srcs/solver/batteries-included/src/BatHeap.cmi :
 srcs/solver/EventHandler.cmo : srcs/solver/GenericInterfaces.cmi \
     srcs/solver/EventHandler.cmi srcs/solver/EventHandler.ml
 srcs/solver/EventHandler.cmx srcs/solver/EventHandler.o : \
@@ -88,15 +80,15 @@ srcs/solver/Heuristics/DPatternDB.cmx srcs/solver/Heuristics/DPatternDB.o \
 srcs/solver/Heuristics/DPatternDBCompute.cmo \
     srcs/solver/Heuristics/DPatternDBCompute.cmi : srcs/solver/Grid.cmi \
     srcs/solver/Heuristics/DPatternDB.cmi \
-    srcs/solver/batteries-included/src/BatHeap.cmi \
+    batteries-included/batteries-included/src/BatHeap.cmi \
     srcs/solver/Heuristics/DPatternDBCompute.ml
 srcs/solver/Heuristics/DPatternDBCompute.cmx \
     srcs/solver/Heuristics/DPatternDBCompute.o \
     srcs/solver/Heuristics/DPatternDBCompute.cmi : srcs/solver/Grid.cmi \
     srcs/solver/Grid.cmx srcs/solver/Heuristics/DPatternDB.cmi \
     srcs/solver/Heuristics/DPatternDB.cmx \
-    srcs/solver/batteries-included/src/BatHeap.cmi \
-    srcs/solver/batteries-included/src/BatHeap.cmx \
+    batteries-included/batteries-included/src/BatHeap.cmi \
+    batteries-included/batteries-included/src/BatHeap.cmx \
     srcs/solver/Heuristics/DPatternDBCompute.ml
 srcs/solver/Heuristics/DPatternDBHeuristic.cmo : srcs/solver/Grid.cmi \
     srcs/solver/Heuristics/DPatternDBInit.cmi \
@@ -184,3 +176,11 @@ srcs/solver/solver.cmx srcs/solver/solver.o srcs/solver/solver.cmi : \
     srcs/solver/Heuristics/DPatternDBHeuristic.cmx \
     srcs/solver/Algorithms/AStar.cmi srcs/solver/Algorithms/AStar.cmx \
     srcs/solver/solver.ml
+batteries-included/batteries-included/src/BatHeap.cmo : \
+    batteries-included/batteries-included/src/BatHeap.cmi \
+    batteries-included/batteries-included/src/BatHeap.ml
+batteries-included/batteries-included/src/BatHeap.cmx \
+    batteries-included/batteries-included/src/BatHeap.o : \
+    batteries-included/batteries-included/src/BatHeap.cmi \
+    batteries-included/batteries-included/src/BatHeap.ml
+batteries-included/batteries-included/src/BatHeap.cmi :

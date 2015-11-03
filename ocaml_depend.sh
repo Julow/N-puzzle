@@ -7,11 +7,11 @@
 #    By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/02 13:29:23 by jaguillo          #+#    #+#              #
-#    Updated: 2015/11/03 18:37:05 by jaguillo         ###   ########.fr        #
+#    Updated: 2015/11/03 19:22:16 by jaguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-OCAML_DIRS="srcs/solver"
+OCAML_DIRS="srcs/solver batteries-included"
 
 OCAML_SOURCES="`find $OCAML_DIRS -name '*.ml*' -type f`"
 
