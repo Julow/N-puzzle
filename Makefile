@@ -107,8 +107,8 @@ else
 endif
 
 # Include $(O_FILES) and dependencies
--include $(DEPEND)
--include $(ML_DEPEND)
+include $(DEPEND)
+include $(ML_DEPEND)
 
 MAX_SOURCE_LEN	:= $(shell if [ $(MAX_SOURCE_LEN) -gt $(ML_MAX_LEN) ]; then echo $(MAX_SOURCE_LEN); else echo $(ML_MAX_LEN); fi)
 

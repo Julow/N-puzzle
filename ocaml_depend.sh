@@ -7,7 +7,7 @@
 #    By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/02 13:29:23 by jaguillo          #+#    #+#              #
-#    Updated: 2015/11/03 15:41:17 by jaguillo         ###   ########.fr        #
+#    Updated: 2015/11/03 16:15:56 by jaguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,4 +37,4 @@ echo "OCAML_DIR = $OCAML_DIR"
 echo "ML_MAX_LEN = $ML_MAX_LEN"
 echo
 
-ocamldep -I "$OCAML_DIR" $OCAML_SOURCES
+ocamldep -all -I "$OCAML_DIR" $OCAML_SOURCES

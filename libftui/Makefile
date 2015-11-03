@@ -58,7 +58,7 @@ export DEBUG_MODE
 JOBS			:= 4
 
 # Column output
-COLUMN_OUTPUT	:= 0
+COLUMN_OUTPUT	:= 1
 
 ifeq ($(COLUMN_OUTPUT),0)
 	PRINT_OK	= printf '\033[32m$<\033[0m\n'
@@ -104,6 +104,13 @@ else
 	rm -f $(PRINT_FILE);												\
 	exit $$STATUS
 endif
+
+# Include $(O_FILES) and dependencies
+-include $(DEPEND)
+
+# Linking
+$(NAME): $(LIBS_DEPEND) $(O_FILES)
+	ar rcS $@ $(O_FILES) && $(PRINT_LINK)
 	LUA_FILES="$(patsubst %,$(NAME)(%),$(shell ar t $(LUA_LIB) \
 		| grep '\.o'))";												\
 	if [[ -z "$$LUA_FILES" ]];											\
@@ -113,13 +120,6 @@ endif
 		make $${LUA_FILES};												\
 	fi;																	\
 	ranlib $(NAME)
-
-# Include $(O_FILES) and dependencies
--include $(DEPEND)
-
-# Linking
-$(NAME): $(LIBS_DEPEND) $(O_FILES)
-	ar rcS $@ $(O_FILES) && $(PRINT_LINK)
 
 # Lua
 $(LUA_LIB):
