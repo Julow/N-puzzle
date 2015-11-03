@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:58 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/01 16:26:02 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/03 18:01:39 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -246,6 +246,27 @@ let goal w =
   in
   iter_cells mat aux;
   mat, pivv (zero_coords w)
+
+let generate w solvable =
+  let rec aux gr i =
+	match i with
+	| 10000		-> gr
+	| _			-> let succ = successors gr in
+				   let i' = Random.int (List.length succ) in
+				   aux (List.nth succ i') (i + 1)
+  in
+  let (mat, _) as gr = aux (goal w) 0 in
+  match solvable with
+  | true	-> gr
+  | false	-> match successors gr with
+			   | (mat0, piv0)::(mat1, piv1)::_
+				 -> let x0, y0 = pivxy piv0 in
+					let x1, y1 = pivxy piv1 in
+					mat.(y0).(x0) <- mat1.(y1).(x1);
+					mat.(y1).(x1) <- mat0.(y0).(x0);
+					gr
+			   | _
+				 -> failwith "unreachable"
 
 let to_filename mat =
   let str = ref "" in

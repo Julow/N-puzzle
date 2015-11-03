@@ -127,7 +127,7 @@ $(O_DIR)/%.o: %.cpp
 	ocamlopt.opt $(OCAML_LINKS) $(OCAML_FLAGS) -c $< && $(PRINT_OK)
 %.cmx: %.ml
 	ocamlopt.opt $(OCAML_LINKS) $(OCAML_FLAGS) -c $< && $(PRINT_OK)
-$(OCAML_SOLVER): $(filter %.cmx,$(ML_OBJS)) $(filter %.cmi,$(ML_OBJS))
+$(OCAML_SOLVER): $(ML_OBJS)
 	ocamlopt.opt $(OCAML_LINKS) -output-obj -o $@ $(filter %.cmx,$^)
 
 ocamldep:

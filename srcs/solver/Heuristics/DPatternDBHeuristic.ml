@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/27 17:05:46 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/01 16:38:02 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/03 17:59:20 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -31,7 +31,7 @@ let calc dbs fields mirror_fields (mat, piv) =
 
 (* ************************************************************************** *)
 
-let make pat w =
+let make pat w : Grid.Heuristic.fn =
   if w <> Array.length pat then
 	failwith "Using pattern with wrong grid size";
   let dbs = DPatternDBInit.build pat in

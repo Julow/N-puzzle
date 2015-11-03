@@ -87,12 +87,12 @@ srcs/solver/Heuristics/DPatternDBCompute.cmx \
     srcs/solver/Heuristics/DPatternDBCompute.o \
     srcs/solver/Heuristics/DPatternDBCompute.cmi : srcs/solver/Grid.cmi \
     srcs/solver/Grid.cmx srcs/solver/Heuristics/DPatternDBCompute.ml
-srcs/solver/Heuristics/DPatternDBHeuristic.cmo : \
+srcs/solver/Heuristics/DPatternDBHeuristic.cmo : srcs/solver/Grid.cmi \
     srcs/solver/Heuristics/DPatternDBHeuristic.cmi \
     srcs/solver/Heuristics/DPatternDBHeuristic.ml
 srcs/solver/Heuristics/DPatternDBHeuristic.cmx \
-    srcs/solver/Heuristics/DPatternDBHeuristic.o : \
-    srcs/solver/Heuristics/DPatternDBHeuristic.cmi \
+    srcs/solver/Heuristics/DPatternDBHeuristic.o : srcs/solver/Grid.cmi \
+    srcs/solver/Grid.cmx srcs/solver/Heuristics/DPatternDBHeuristic.cmi \
     srcs/solver/Heuristics/DPatternDBHeuristic.ml
 srcs/solver/Heuristics/DPatternDBHeuristic.cmi : srcs/solver/Grid.cmi
 srcs/solver/Heuristics/DPatternDBInit.cmo \
@@ -119,12 +119,12 @@ srcs/solver/Heuristics/ManhattanDistanceHeuristic.cmx \
     srcs/solver/Heuristics/ManhattanDistanceHeuristic.cmi \
     srcs/solver/Heuristics/ManhattanDistanceHeuristic.ml
 srcs/solver/Heuristics/ManhattanDistanceHeuristic.cmi : srcs/solver/Grid.cmi
-srcs/solver/Heuristics/UniformCostHeuristic.cmo : \
+srcs/solver/Heuristics/UniformCostHeuristic.cmo : srcs/solver/Grid.cmi \
     srcs/solver/Heuristics/UniformCostHeuristic.cmi \
     srcs/solver/Heuristics/UniformCostHeuristic.ml
 srcs/solver/Heuristics/UniformCostHeuristic.cmx \
-    srcs/solver/Heuristics/UniformCostHeuristic.o : \
-    srcs/solver/Heuristics/UniformCostHeuristic.cmi \
+    srcs/solver/Heuristics/UniformCostHeuristic.o : srcs/solver/Grid.cmi \
+    srcs/solver/Grid.cmx srcs/solver/Heuristics/UniformCostHeuristic.cmi \
     srcs/solver/Heuristics/UniformCostHeuristic.ml
 srcs/solver/Heuristics/UniformCostHeuristic.cmi : srcs/solver/Grid.cmi
 srcs/solver/npuzzle.cmi :

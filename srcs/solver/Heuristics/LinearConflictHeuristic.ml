@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/29 13:39:56 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/01 15:46:15 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/03 17:59:38 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -178,7 +178,7 @@ let calc db md_calc (mat, piv) =
 
 (* ************************************************************************** *)
 
-let make w =
+let make w : Grid.Heuristic.fn =
   let db = gen w in
   let md = ManhattanDistanceHeuristic.make w in
   calc db md
