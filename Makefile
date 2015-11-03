@@ -44,7 +44,7 @@ LINK_FLAGS		+= -L$(OCAML_WHERE) -lunix -lasmrun -lthreadsnat -lncurses
 OCAML_SOLVER	= $(O_DIR)/ocaml_solver.o
 
 OCAML_LINKS		= -thread unix.cmxa threads/threads.cmxa
-OCAML_FLAGS		= -I $(OCAML_DIR) -I $(OCAML_DIR)/Heuristics -I $(OCAML_DIR)/Algorithms -I 	$(OCAML_DIR)/batteries-included/src
+OCAML_FLAGS		=
 
 # Extra libs
 ifeq ($(shell uname),Darwin)
