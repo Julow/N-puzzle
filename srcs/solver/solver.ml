@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/11/02 16:33:55 by jaguillo         ###   ########.fr       *)
+(*   Updated: 2015/11/03 20:01:36 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -158,7 +158,8 @@ let launch_str abstgr goalgr w algo_str heu_maker_str =
 
 (* TODO Grid.of_cgrid is the only safe entry point here *)
 let solve' npuzzle =
-  let (realmat, realpiv) as realgr = grid_from_file "lol3.np" in
+  let (abstmat, _) as abstgr = Grid.generate 5 false in
+  (* let (realmat, realpiv) as realgr = grid_from_file "lol3.np" in *)
   (* let (realmat, realpiv) as realgr = Grid.of_cgrid npuzzle in *)
 
   (* let realmat = [| *)
@@ -169,34 +170,35 @@ let solve' npuzzle =
   (* let realpiv = Grid.pivv (1, 1) in *)
   (* let realgr = realmat, realpiv in *)
 
-  EventHandler.clearq ();
-  let w = Array.length realmat in
+  (* let abstgr = Grid.to_abstract realgr in *)
+  let w = Array.length abstmat in
   Grid.init_transp_tables w;
-  let abstgr = Grid.to_abstract realgr in
   let goalgr = Grid.goal w in
-  Printf.eprintf "\n%!";
-  Grid.print realgr;
-  Printf.eprintf "\n%!";
+  EventHandler.clearq ();
+
+  (* Printf.eprintf "\n%!"; *)
+  (* Grid.print realgr; *)
+  (* Printf.eprintf "\n%!"; *)
   Grid.print abstgr;
   Printf.eprintf "\n%!";
   Grid.print goalgr;
   Printf.eprintf "\n%!";
 
+  (* ignore (Grid.is_solvable abstgr); *)
+
   (* TODO: retreive algo/heuristic *)
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
-  launch_str abstgr goalgr w "Greedy Search" "Disjoint Pattern DB 6/6/3";
-  launch_str abstgr goalgr w "Greedy Search" "Disjoint Pattern DB 5/5/5";
-  launch_str abstgr goalgr w "Greedy Search" "Linear Conflict";
-  launch_str abstgr goalgr w "Greedy Search" "Manhattan Distance";
+  (* launch_str abstgr goalgr w "Greedy Search" "Disjoint Pattern DB 6/6/3"; *)
+  (* launch_str abstgr goalgr w "Greedy Search" "Disjoint Pattern DB 5/5/5"; *)
+  (* launch_str abstgr goalgr w "Greedy Search" "Linear Conflict"; *)
+  (* launch_str abstgr goalgr w "Greedy Search" "Manhattan Distance"; *)
 
   launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 6/6/3";
-  launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 5/5/5";
-  launch_str abstgr goalgr w "A*" "Linear Conflict";
+  (* launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 5/5/5"; *)
+  (* launch_str abstgr goalgr w "A*" "Linear Conflict"; *)
   (* launch_str abstgr goalgr w "A*" "Manhattan Distance"; *)
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
 
-  Printf.eprintf "test:\n%!";
-  EventHandler.dumpq ();
   ()
 
 (* ************************************************************************** *)
@@ -224,5 +226,6 @@ let heuristic_list _ =
 (* ************************************************************************** *)
 (* Init C api *)
 let () =
+  Random.self_init ();
   Callback.register "solve" solve;
   ()

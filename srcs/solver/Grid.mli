@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:12 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/03 18:04:08 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/03 18:56:40 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -50,4 +50,6 @@ val print_abst_to_real	: t -> unit
 
 (* Misc *)
 val goal				: int -> t
+val generate			: int -> bool -> t
+val is_solvable			: t -> bool
 val to_filename			: matrix -> string

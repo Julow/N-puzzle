@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:58 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/03 18:01:39 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/03 20:01:57 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -218,7 +218,57 @@ let of_cgrid cgrid =
 
 (* ************************************************************************** *)
 
-let print (mat, piv) =
+let is_solvable (mat, piv) =
+  let w = Array.length mat in
+  let v0 = (fun (x, y) -> x + y * w) (zero_coords w) in
+  let x0, y0 = pivxy piv in
+  let nbrs = ref [] in
+  for y = w - 1 downto 0 do
+	for x = w - 1 downto 0 do
+	  (* Printf.eprintf "(%d, %d)\n%!" x y; *)
+	  if y <> y0 || x <> x0
+	  then nbrs := mat.(y).(x)::!nbrs;
+	done
+  done;
+  (* List.iter (fun v -> Printf.eprintf "%d %!" v) !nbrs; *)
+  (* Printf.eprintf "\n%!"; *)
+  (* List.iter (fun v -> Printf.eprintf "%d %!" v) (List.sort compare !nbrs); *)
+  (* Printf.eprintf "\n%!"; *)
+  (* Printf.eprintf "\n%!"; *)
+  assert (List.length !nbrs = w * w - 1);
+  let rec aux i l acc =
+	if i < 0 then
+	  acc
+	else (
+	  let rec aux' = function
+		| hd::tl when hd = i	-> List.length tl
+		| _::tl					-> aux' tl
+		| _						-> assert (false)
+	  in
+	  let rec aux'' = function
+		| hd::tl when hd = i	-> aux'' tl
+		| hd::tl				-> hd :: aux'' tl
+		| _						-> []
+
+	  in
+	  (* List.iter (fun v -> Printf.eprintf "%d %!" v) l; *)
+	  (* Printf.eprintf "\n%!"; *)
+	  (* Printf.eprintf "looking for %d rank:\n%!" i; *)
+	  if i <> v0
+	  then aux (i - 1) (aux'' l) (acc + aux' l)
+	  else aux (i - 1) (aux'' l) acc
+	)
+  in
+  let inversions = aux (w * w - 1) !nbrs 0 in
+  (* Printf.eprintf "INVERSIONS IS %s (%d)\n%!" (match inversions mod 2 with *)
+  (* 										 | 0	-> "even" *)
+  (* 										 | _	-> "odd") inversions; *)
+  (* Printf.eprintf "LINE FROM BOTTOM IS %s (%d->%d)\n%!" (match (w - y0) mod 2 with *)
+  (* 											   | 0    -> "even" *)
+  (* 											   | _    -> "odd") y0 (w - y0); *)
+  inversions mod 2 = y0 mod 2
+
+let print ((mat, piv) as gr) =
   let last = Array.length mat - 1 in
   let aux i x y v =
 	if x = last
@@ -226,7 +276,8 @@ let print (mat, piv) =
 	else Printf.eprintf "%2d " v
   in
   let x0, y0 = pivxy piv in
-  Printf.eprintf "Pivot (%2d, %2d)\n%!" x0 y0;
+  (* Printf.eprintf "Pivot (%2d, %2d)\n%!" x0 y0; *)
+  Printf.eprintf "Pivot (%2d, %2d) solvable:%b\n%!" x0 y0 (is_solvable gr);
   iter_cells mat aux
 
 let print_real_to_abst gr =
@@ -250,7 +301,7 @@ let goal w =
 let generate w solvable =
   let rec aux gr i =
 	match i with
-	| 10000		-> gr
+	| 100000	-> gr
 	| _			-> let succ = successors gr in
 				   let i' = Random.int (List.length succ) in
 				   aux (List.nth succ i') (i + 1)
@@ -259,11 +310,12 @@ let generate w solvable =
   match solvable with
   | true	-> gr
   | false	-> match successors gr with
-			   | (mat0, piv0)::(mat1, piv1)::_
+			   | (_, piv0)::(_, piv1)::_
 				 -> let x0, y0 = pivxy piv0 in
 					let x1, y1 = pivxy piv1 in
-					mat.(y0).(x0) <- mat1.(y1).(x1);
-					mat.(y1).(x1) <- mat0.(y0).(x0);
+					let v0 = mat.(y0).(x0) in
+					mat.(y0).(x0) <- mat.(y1).(x1);
+					mat.(y1).(x1) <- v0;
 					gr
 			   | _
 				 -> failwith "unreachable"
