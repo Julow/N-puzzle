@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:58 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/03 19:22:59 by jaguillo         ###   ########.fr       *)
+(*   Updated: 2015/11/04 15:27:00 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -218,23 +218,20 @@ let of_cgrid cgrid =
 
 (* ************************************************************************** *)
 
+type parity = Odd | Even
+
 let is_solvable (mat, piv) =
   let w = Array.length mat in
   let v0 = (fun (x, y) -> x + y * w) (zero_coords w) in
   let x0, y0 = pivxy piv in
+  let dstx0, dsty0 = v0 mod w, v0 / w in
   let nbrs = ref [] in
   for y = w - 1 downto 0 do
 	for x = w - 1 downto 0 do
-	  (* Printf.eprintf "(%d, %d)\n%!" x y; *)
 	  if y <> y0 || x <> x0
 	  then nbrs := mat.(y).(x)::!nbrs;
 	done
   done;
-  (* List.iter (fun v -> Printf.eprintf "%d %!" v) !nbrs; *)
-  (* Printf.eprintf "\n%!"; *)
-  (* List.iter (fun v -> Printf.eprintf "%d %!" v) (List.sort compare !nbrs); *)
-  (* Printf.eprintf "\n%!"; *)
-  (* Printf.eprintf "\n%!"; *)
   assert (List.length !nbrs = w * w - 1);
   let rec aux i l acc =
 	if i < 0 then
@@ -249,24 +246,26 @@ let is_solvable (mat, piv) =
 		| hd::tl when hd = i	-> aux'' tl
 		| hd::tl				-> hd :: aux'' tl
 		| _						-> []
-
 	  in
-	  (* List.iter (fun v -> Printf.eprintf "%d %!" v) l; *)
-	  (* Printf.eprintf "\n%!"; *)
-	  (* Printf.eprintf "looking for %d rank:\n%!" i; *)
 	  if i <> v0
 	  then aux (i - 1) (aux'' l) (acc + aux' l)
 	  else aux (i - 1) (aux'' l) acc
 	)
   in
   let inversions = aux (w * w - 1) !nbrs 0 in
-  (* Printf.eprintf "INVERSIONS IS %s (%d)\n%!" (match inversions mod 2 with *)
-  (* 										 | 0	-> "even" *)
-  (* 										 | _	-> "odd") inversions; *)
-  (* Printf.eprintf "LINE FROM BOTTOM IS %s (%d->%d)\n%!" (match (w - y0) mod 2 with *)
-  (* 											   | 0    -> "even" *)
-  (* 											   | _    -> "odd") y0 (w - y0); *)
-  inversions mod 2 = y0 mod 2
+  let get_parity v = match v mod 2 with 0 -> Even | _ -> Odd in
+  match get_parity w
+	  , get_parity (dstx0 - x0)
+	  , get_parity (dsty0 - y0)
+	  , get_parity inversions with
+  | Odd,	_,		_,		Even	-> true
+  | Odd,	_,		_,		Odd		-> false
+  | Even,	Even,	Odd,	_		-> assert(false)
+  | Even,	Odd,	Even,	_		-> assert(false)
+  | Even,	Even,	Even,	Even	-> true
+  | Even,	Even,	Even,	Odd		-> false
+  | Even,	Odd,	Odd,	Even	-> false
+  | Even,	Odd,	Odd,	Odd		-> true
 
 let print ((mat, piv) as gr) =
   let last = Array.length mat - 1 in
@@ -307,6 +306,7 @@ let generate w solvable =
 				   aux (List.nth succ i') (i + 1)
   in
   let (mat, _) as gr = aux (goal w) 0 in
+  (* Printf.eprintf "GENERATIG SOLVABLE? %b\n%!" solvable; *)
   match solvable with
   | true	-> gr
   | false	-> match successors gr with

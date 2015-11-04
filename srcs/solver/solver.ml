@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/11/03 20:01:36 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/04 15:38:37 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -93,10 +93,11 @@ let scanGrid chan g s =
 
 let mat_from_file fname =
   let chan = open_in fname in
-  Printf.eprintf "opened: %s\n%!" fname;
-  Printf.eprintf "%s\n%!" (input_line chan);
+  (* Printf.eprintf "opened: %s\n%!" fname; *)
+  ignore (input_line chan);
+  (* Printf.eprintf "%s\n%!" (input_line chan); *)
   let size = (Scanf.fscanf chan "%d\n" (fun x _ -> x))() in
-  Printf.eprintf "size: %d\n%!" size;
+  (* Printf.eprintf "size: %d\n%!" size; *)
   let grid = Array.make_matrix size size 42 in
   scanGrid chan grid size;
   close_in chan;
@@ -158,17 +159,11 @@ let launch_str abstgr goalgr w algo_str heu_maker_str =
 
 (* TODO Grid.of_cgrid is the only safe entry point here *)
 let solve' npuzzle =
-  let (abstmat, _) as abstgr = Grid.generate 5 false in
+  let solvable = false in
+  let size = 3 in
+  let (abstmat, _) as abstgr = Grid.generate size solvable in
   (* let (realmat, realpiv) as realgr = grid_from_file "lol3.np" in *)
   (* let (realmat, realpiv) as realgr = Grid.of_cgrid npuzzle in *)
-
-  (* let realmat = [| *)
-  (* 	  [|3 ;5 ;4|]; *)
-  (* 	  [|2; 0; 6|]; *)
-  (* 	  [|7; 8; 1|]; *)
-  (* 	 |] in *)
-  (* let realpiv = Grid.pivv (1, 1) in *)
-  (* let realgr = realmat, realpiv in *)
 
   (* let abstgr = Grid.to_abstract realgr in *)
   let w = Array.length abstmat in
@@ -184,7 +179,6 @@ let solve' npuzzle =
   Grid.print goalgr;
   Printf.eprintf "\n%!";
 
-  (* ignore (Grid.is_solvable abstgr); *)
 
   (* TODO: retreive algo/heuristic *)
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
@@ -193,7 +187,8 @@ let solve' npuzzle =
   (* launch_str abstgr goalgr w "Greedy Search" "Linear Conflict"; *)
   (* launch_str abstgr goalgr w "Greedy Search" "Manhattan Distance"; *)
 
-  launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 6/6/3";
+  (* launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 6/6/3"; *)
+  launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 8";
   (* launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 5/5/5"; *)
   (* launch_str abstgr goalgr w "A*" "Linear Conflict"; *)
   (* launch_str abstgr goalgr w "A*" "Manhattan Distance"; *)
