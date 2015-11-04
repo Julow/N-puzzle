@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 15:43:35 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/01 15:37:46 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/04 17:50:54 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,6 +15,8 @@
 #include <caml/callback.h>
 #include <caml/printexc.h>
 #include <stdexcept>
+#include <stdio.h>
+#include "ft/assert.hpp"
 
 namespace npuzzle
 {
@@ -60,5 +62,7 @@ ISolverListener	*Solver::getListener(void)
 {
 	return (_listener);
 }
+
+
 
 };

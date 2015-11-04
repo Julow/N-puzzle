@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:58 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/03 19:22:59 by jaguillo         ###   ########.fr       *)
+(*   Updated: 2015/11/04 16:09:57 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -21,8 +21,9 @@ module Heuristic : (GenericInterfaces.HEURISTIC
   end
 
 (* ************************************************************************** *)
+(* PERF CRITICAL *)
 
-(* TODO: Protect versus x-overflow *)
+(* TODO: Protect versus x-overflow (IMPORTANT) je dois le faire moi meme *)
 let pivxy piv =
   piv land 0xF, piv lsr 4
 
@@ -44,7 +45,22 @@ let copy_swap (mat, piv) (dx, dy) =
   mat'.(y).(x) <- v0;
   mat', pivv pos
 
+let iter_cells mat f =
+  let w = Array.length mat in
+  let rec line y i =
+	let rec cell x i =
+	  if x < w
+	  then (f i x y mat.(y).(x);
+			cell (x + 1) (i + 1))
+	  else i
+	in
+	if y < w
+	then line (y + 1) (cell 0 i)
+  in
+  line 0 0
+
 (* ************************************************************************** *)
+(* PERF CRITICAL - REQ BY PATHFINDER *)
 
 let cost _ _ =
   1
@@ -74,20 +90,7 @@ let successors ((mat, piv) as gr) =
   foreach_dirs dirs []
 
 (* ************************************************************************** *)
-
-let iter_cells mat f =
-  let w = Array.length mat in
-  let rec line y i =
-	let rec cell x i =
-	  if x < w
-	  then (f i x y mat.(y).(x);
-			cell (x + 1) (i + 1))
-	  else i
-	in
-	if y < w
-	then line (y + 1) (cell 0 i)
-  in
-  line 0 0
+(* MISC *)
 
 let find mat v =
   let w = Array.length mat in
@@ -105,13 +108,62 @@ let find mat v =
   in
   line 0
 
-(* ************************************************************************** *)
-(* TODO: PARTIALLY MOVE TO CPP *)
-
 let zero_coords w =
   let x = (w - 1) / 2 in
   let y = w / 2 in
   x, y
+
+type parity = Odd | Even
+
+let is_solvable (mat, piv) =
+  let w = Array.length mat in
+  let v0 = (fun (x, y) -> x + y * w) (zero_coords w) in
+  let x0, y0 = pivxy piv in
+  let dstx0, dsty0 = v0 mod w, v0 / w in
+  let nbrs = ref [] in
+  for y = w - 1 downto 0 do
+	for x = w - 1 downto 0 do
+	  if y <> y0 || x <> x0
+	  then nbrs := mat.(y).(x)::!nbrs;
+	done
+  done;
+  assert (List.length !nbrs = w * w - 1);
+  let rec aux i l acc =
+	if i < 0 then
+	  acc
+	else (
+	  let rec aux' = function
+		| hd::tl when hd = i	-> List.length tl
+		| _::tl					-> aux' tl
+		| _						-> assert (false)
+	  in
+	  let rec aux'' = function
+		| hd::tl when hd = i	-> aux'' tl
+		| hd::tl				-> hd :: aux'' tl
+		| _						-> []
+	  in
+	  if i <> v0
+	  then aux (i - 1) (aux'' l) (acc + aux' l)
+	  else aux (i - 1) (aux'' l) acc
+	)
+  in
+  let inversions = aux (w * w - 1) !nbrs 0 in
+  let get_parity v = match v mod 2 with 0 -> Even | _ -> Odd in
+  match get_parity w
+	  , get_parity (dstx0 - x0)
+	  , get_parity (dsty0 - y0)
+	  , get_parity inversions with
+  | Odd,	_,		_,		Even	-> true
+  | Odd,	_,		_,		Odd		-> false
+  | Even,	Even,	Odd,	_		-> assert(false)
+  | Even,	Odd,	Even,	_		-> assert(false)
+  | Even,	Even,	Even,	Even	-> true
+  | Even,	Even,	Even,	Odd		-> false
+  | Even,	Odd,	Odd,	Even	-> false
+  | Even,	Odd,	Odd,	Odd		-> true
+
+(* ************************************************************************** *)
+(* CONVERSIONS *)
 
 let transposition_toreal = ref [|42|]
 let transposition_toabstract = ref [|42|]
@@ -190,9 +242,15 @@ let to_abstract ((mat, _) as realgr) =
   iter_cells mat aux;
   abstgr
 
+(**
+ **	Case 1	-> Grid size is not handled
+ **	Case 2	-> Wrong numbers in grid
+ **	Case 3	-> Grid is not solvable
+ **	Case 4	-> OK
+ *)
 let of_cgrid cgrid =
   let w = Npuzzle.get_size cgrid in
-  if w <= 0 then
+  if w < 3 then
 	failwith (Printf.sprintf "Invalid grid: with = %d" w);
   let mat = Array.make_matrix w w (-1) in
   let allnbrs = ref [] in
@@ -214,81 +272,13 @@ let of_cgrid cgrid =
 	failwith (Printf.sprintf
 				"Invalid grid: '%d' instead of '%d'" ret (w * w));
   let i0 = (fun (x, y) -> x + y * w) (zero_coords w) in
-  mat, pivv (find mat i0)
+  let gr = mat, pivv (find mat i0) in
+  if not (is_solvable gr)
+  then failwith "Invalid grid: not solvable"
+  else gr
 
 (* ************************************************************************** *)
-
-let is_solvable (mat, piv) =
-  let w = Array.length mat in
-  let v0 = (fun (x, y) -> x + y * w) (zero_coords w) in
-  let x0, y0 = pivxy piv in
-  let nbrs = ref [] in
-  for y = w - 1 downto 0 do
-	for x = w - 1 downto 0 do
-	  (* Printf.eprintf "(%d, %d)\n%!" x y; *)
-	  if y <> y0 || x <> x0
-	  then nbrs := mat.(y).(x)::!nbrs;
-	done
-  done;
-  (* List.iter (fun v -> Printf.eprintf "%d %!" v) !nbrs; *)
-  (* Printf.eprintf "\n%!"; *)
-  (* List.iter (fun v -> Printf.eprintf "%d %!" v) (List.sort compare !nbrs); *)
-  (* Printf.eprintf "\n%!"; *)
-  (* Printf.eprintf "\n%!"; *)
-  assert (List.length !nbrs = w * w - 1);
-  let rec aux i l acc =
-	if i < 0 then
-	  acc
-	else (
-	  let rec aux' = function
-		| hd::tl when hd = i	-> List.length tl
-		| _::tl					-> aux' tl
-		| _						-> assert (false)
-	  in
-	  let rec aux'' = function
-		| hd::tl when hd = i	-> aux'' tl
-		| hd::tl				-> hd :: aux'' tl
-		| _						-> []
-
-	  in
-	  (* List.iter (fun v -> Printf.eprintf "%d %!" v) l; *)
-	  (* Printf.eprintf "\n%!"; *)
-	  (* Printf.eprintf "looking for %d rank:\n%!" i; *)
-	  if i <> v0
-	  then aux (i - 1) (aux'' l) (acc + aux' l)
-	  else aux (i - 1) (aux'' l) acc
-	)
-  in
-  let inversions = aux (w * w - 1) !nbrs 0 in
-  (* Printf.eprintf "INVERSIONS IS %s (%d)\n%!" (match inversions mod 2 with *)
-  (* 										 | 0	-> "even" *)
-  (* 										 | _	-> "odd") inversions; *)
-  (* Printf.eprintf "LINE FROM BOTTOM IS %s (%d->%d)\n%!" (match (w - y0) mod 2 with *)
-  (* 											   | 0    -> "even" *)
-  (* 											   | _    -> "odd") y0 (w - y0); *)
-  inversions mod 2 = y0 mod 2
-
-let print ((mat, piv) as gr) =
-  let last = Array.length mat - 1 in
-  let aux i x y v =
-	if x = last
-	then Printf.eprintf "%2d\n%!" v
-	else Printf.eprintf "%2d " v
-  in
-  let x0, y0 = pivxy piv in
-  (* Printf.eprintf "Pivot (%2d, %2d)\n%!" x0 y0; *)
-  Printf.eprintf "Pivot (%2d, %2d) solvable:%b\n%!" x0 y0 (is_solvable gr);
-  iter_cells mat aux
-
-let print_real_to_abst gr =
-  Printf.printf "REAL TO ABST:\n%!";
-  print (to_abstract gr)
-
-let print_abst_to_real gr =
-  Printf.printf "ABST TO REAL\n%!";
-  print (to_real gr)
-
-(* ************************************************************************** *)
+(* MISC *)
 
 let goal w =
   let mat = (Array.make_matrix w w 0) in
@@ -328,5 +318,28 @@ let to_filename mat =
 	else str := Printf.sprintf "%s%02d" !str v
   in
   iter_cells mat aux;
-  (* Printf.eprintf "found '%s'\n%!" !str; *)
   Printf.sprintf "%s.pdb" !str
+
+(* ************************************************************************** *)
+(* DEBUG *)
+
+let print ((mat, piv) as gr) =
+  let last = Array.length mat - 1 in
+  let aux i x y v =
+	if x = last
+	then Printf.eprintf "%2d\n%!" v
+	else Printf.eprintf "%2d " v
+  in
+  let x0, y0 = pivxy piv in
+  Printf.eprintf "Pivot (%2d, %2d) solvable:%b\n%!" x0 y0 (is_solvable gr);
+  iter_cells mat aux
+
+let print_real_to_abst gr =
+  Printf.printf "REAL TO ABST:\n%!";
+  print (to_abstract gr)
+
+let print_abst_to_real gr =
+  Printf.printf "ABST TO REAL\n%!";
+  print (to_real gr)
+
+(* ************************************************************************** *)

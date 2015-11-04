@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/18 15:36:49 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/02 13:11:37 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/04 18:25:48 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -26,7 +26,7 @@ module type ORDEREDTYPE =
 module type HEPATHFINDER =
   sig
 	type graph
-	val solve : graph -> graph -> (graph -> int) -> graph list
+	val solve : graph -> graph -> (graph -> int) -> unit
   end
 
 module type PATHFINDER_GRAPH =
@@ -46,16 +46,20 @@ module type EVENT_HANDLER_STATE =
 module type EVENT_HANDLER =
   sig
 	type state
+	type report
 	type t =
 	  | Success of state list
 	  | Failed of string
 	  | Progress of float
 	  | Empty
 
-	val dumpq		: unit -> unit
-	val pushq		: t -> unit
-	val popq		: unit -> t
-	val clearq		: unit -> unit
+	val dumpq			: unit -> unit
+	val pushq			: t -> unit
+	val popq			: unit -> t
+	val clearq			: unit -> unit
+	val new_report		: int -> report
+	val tick_report		: report -> int -> int -> int -> report
+	val finalize_report	: report -> state list -> report
   end
 
 module type MAKE_EVENT_HANDLER =

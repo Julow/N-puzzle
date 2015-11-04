@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 15:40:32 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/16 19:44:49 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/04 17:19:30 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -30,6 +30,7 @@ public:
 	Grid const		&getGrid(void) const;
 
 	ISolverListener	*getListener(void);
+
 
 protected:
 

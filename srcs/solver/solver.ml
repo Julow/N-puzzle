@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/11/03 20:01:36 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/04 17:50:25 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -93,10 +93,11 @@ let scanGrid chan g s =
 
 let mat_from_file fname =
   let chan = open_in fname in
-  Printf.eprintf "opened: %s\n%!" fname;
-  Printf.eprintf "%s\n%!" (input_line chan);
+  (* Printf.eprintf "opened: %s\n%!" fname; *)
+  ignore (input_line chan);
+  (* Printf.eprintf "%s\n%!" (input_line chan); *)
   let size = (Scanf.fscanf chan "%d\n" (fun x _ -> x))() in
-  Printf.eprintf "size: %d\n%!" size;
+  (* Printf.eprintf "size: %d\n%!" size; *)
   let grid = Array.make_matrix size size 42 in
   scanGrid chan grid size;
   close_in chan;
@@ -126,11 +127,11 @@ let launch (abstgr, goalgr, w, algo, heu_maker) =
   center (Printf.sprintf "%f sec to generate heuristic"
 						 (Unix.gettimeofday () -. t));
   let t = Unix.gettimeofday () in
-  let stack = algo abstgr goalgr heu in
+  algo abstgr goalgr heu;
   center (Printf.sprintf "%f sec to solve (%d steps)" (Unix.gettimeofday () -. t)
-  						 (List.length stack - 1));
+  						 (-42));
   Printf.eprintf "\n%!";
-  stack
+  ()
 
 let launch_str abstgr goalgr w algo_str heu_maker_str =
   let algo =
@@ -158,17 +159,11 @@ let launch_str abstgr goalgr w algo_str heu_maker_str =
 
 (* TODO Grid.of_cgrid is the only safe entry point here *)
 let solve' npuzzle =
-  let (abstmat, _) as abstgr = Grid.generate 5 false in
+  let solvable = true in
+  let size = 3 in
+  let (abstmat, _) as abstgr = Grid.generate size solvable in
   (* let (realmat, realpiv) as realgr = grid_from_file "lol3.np" in *)
   (* let (realmat, realpiv) as realgr = Grid.of_cgrid npuzzle in *)
-
-  (* let realmat = [| *)
-  (* 	  [|3 ;5 ;4|]; *)
-  (* 	  [|2; 0; 6|]; *)
-  (* 	  [|7; 8; 1|]; *)
-  (* 	 |] in *)
-  (* let realpiv = Grid.pivv (1, 1) in *)
-  (* let realgr = realmat, realpiv in *)
 
   (* let abstgr = Grid.to_abstract realgr in *)
   let w = Array.length abstmat in
@@ -184,7 +179,6 @@ let solve' npuzzle =
   Grid.print goalgr;
   Printf.eprintf "\n%!";
 
-  (* ignore (Grid.is_solvable abstgr); *)
 
   (* TODO: retreive algo/heuristic *)
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
@@ -193,12 +187,12 @@ let solve' npuzzle =
   (* launch_str abstgr goalgr w "Greedy Search" "Linear Conflict"; *)
   (* launch_str abstgr goalgr w "Greedy Search" "Manhattan Distance"; *)
 
-  launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 6/6/3";
+  (* launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 6/6/3"; *)
+  launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 8";
   (* launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 5/5/5"; *)
   (* launch_str abstgr goalgr w "A*" "Linear Conflict"; *)
   (* launch_str abstgr goalgr w "A*" "Manhattan Distance"; *)
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
-
   ()
 
 (* ************************************************************************** *)
@@ -223,9 +217,27 @@ let algorithm_list _ =
 let heuristic_list _ =
   Hashtbl.fold (fun k _ l -> k::l) algorithms []
 
+let generate_grid : int -> bool -> Grid.t = fun w solvable ->
+  Grid.generate w solvable
+
+let transposition_toreal : int -> int array = fun w ->
+  Grid.init_transp_tables w;
+  !Grid.transposition_toreal
+
+let transposition_toabstract : int -> int array = fun w ->
+  Grid.init_transp_tables w;
+  !Grid.transposition_toabstract
+
 (* ************************************************************************** *)
 (* Init C api *)
 let () =
   Random.self_init ();
   Callback.register "solve" solve;
+  Callback.register "poll_event" poll_event;
+  Callback.register "abort" abort;
+  Callback.register "algorithm_list" algorithm_list;
+  Callback.register "heuristic_list" heuristic_list;
+  Callback.register "generate_grid" generate_grid;
+  Callback.register "transposition_toreal" transposition_toreal;
+  Callback.register "transposition_toabstract" transposition_toabstract;
   ()
