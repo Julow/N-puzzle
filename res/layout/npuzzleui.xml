@@ -1,4 +1,7 @@
-<VerticalLayout id="UIParent">
+<VerticalLayout
+	id="UIParent"
+	activity_scripts="res/utils.lua;res/lua/loading_screen/"
+>
 	<SolidView
 		marginTop="10"
 		marginBottom="10"
@@ -85,19 +88,3 @@
 		borderWidth="5"
 	/>
 </VerticalLayout>
-
-<!-- used to test alpha blending
-<body style="background:#ffffff;">
-	<div style="
-		background:rgba(255,0,0,0.2);
-		height:100px;
-		width:200px;
-		margin-bottom:-40px;
-	"></div>
-	<div style="
-		background:rgba(0,0,0,0.5);
-		height:100px;
-		width:200px;
-	"></div>
-</body>
--->

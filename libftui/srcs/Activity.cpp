@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/14 09:20:24 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/04 17:12:00 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -142,6 +142,24 @@ void			Activity::render(Canvas &canvas)
 	if (rv->isRedrawQueried())
 		rv->onDraw(canvas);
 	return ;
+}
+
+void			Activity::queryRedrawAll(void)
+{
+	if (_rootView != NULL)
+		_rootView->getView()->queryRedraw();
+}
+
+void			Activity::queryMeasureAll(void)
+{
+	if (_rootView != NULL)
+		_rootView->getView()->queryMeasure();
+}
+
+void			Activity::queryUpdateAll(void)
+{
+	if (_rootView != NULL)
+		_rootView->getView()->queryUpdate();
 }
 
 bool			Activity::onKeyUp(int key_code)

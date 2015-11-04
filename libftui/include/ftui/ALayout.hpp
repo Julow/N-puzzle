@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/14 13:33:08 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/04 17:15:26 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -66,6 +66,10 @@ public:
 	virtual bool				isUpdateQueried(void) const;
 	virtual bool				isMeasureQueried(void) const;
 	virtual bool				isRedrawQueried(void) const;
+
+	virtual void				queryUpdate(void);
+	virtual void				queryMeasure(void);
+	virtual void				queryRedraw(void);
 
 /*
 ** Child vector

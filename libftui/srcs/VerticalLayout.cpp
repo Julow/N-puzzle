@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/14 13:52:00 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/04 18:17:49 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -142,6 +142,7 @@ void			VerticalLayout::onDraw(Canvas &canvas)
 				else
 					to_redraw.merge(ft::make_rect(h->getPos(), h->getSize()));
 			}
+		// TODO: Canvas::setOrigin
 		// canvas.setClip(to_redraw);
 		// ASolidView::onDraw(canvas);
 		// canvas.setClip(old_clip);

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 17:47:17 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/04 17:11:32 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -50,6 +50,10 @@ public:
 	AView const			*getRoot(void) const;
 
 	void				render(Canvas &canvas);
+
+	void				queryRedrawAll(void);
+	void				queryMeasureAll(void);
+	void				queryUpdateAll(void);
 
 	bool				onKeyUp(int key_code);
 	bool				onKeyDown(int key_code);

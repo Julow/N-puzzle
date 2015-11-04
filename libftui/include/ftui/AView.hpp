@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/14 13:23:46 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/04 17:13:28 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -190,9 +190,9 @@ public:
 ** Query
 ** Queries a callback for the next frame
 */
-	void						queryUpdate(void);
-	void						queryMeasure(void);
-	void						queryRedraw(void);
+	virtual void				queryUpdate(void);
+	virtual void				queryMeasure(void);
+	virtual void				queryRedraw(void);
 
 protected:
 /*

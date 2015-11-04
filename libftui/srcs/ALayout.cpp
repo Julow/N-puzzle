@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/14 13:33:21 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/04 17:14:54 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -28,6 +28,27 @@ ALayout::ALayout(XmlParser const &xml, Activity &act) :
 
 ALayout::~ALayout(void)
 {
+}
+
+void				ALayout::queryUpdate(void)
+{
+	AView::queryUpdate();
+	for (int i = 0; i < size(); i++)
+		at(i)->queryUpdate();
+}
+
+void				ALayout::queryMeasure(void)
+{
+	AView::queryMeasure();
+	for (int i = 0; i < size(); i++)
+		at(i)->queryMeasure();
+}
+
+void				ALayout::queryRedraw(void)
+{
+	AView::queryRedraw();
+	for (int i = 0; i < size(); i++)
+		at(i)->queryRedraw();
 }
 
 void				ALayout::spreadTargetMouseScroll(bool state)

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/21 14:57:05 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/04 18:34:34 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -85,6 +85,16 @@ void		printViewTree(ftui::AView const *view, int indent = 0)
 ** -
 */
 
+#include "ftui/Activity.hpp"
+#include "ft/Vec.hpp"
+#include <fstream>
+
+static void		inflate_activity(ftui::Activity &act, std::string const &xml)
+{
+	std::ifstream	stream(xml);
+
+	act.inflate(stream);
+}
 
 class Main : npuzzle::ISolverListener
 {
@@ -92,16 +102,20 @@ public:
 	Tiles		tiles;
 	Main(void) :
 		_canvasHolder(WIN_WIDTHI, WIN_HEIGHTI),
-		_act(WIN_SIZEVI),
-		_puzzleSize(42)
+		_puzzleSize(42),
+		_mainActivity(WIN_SIZEVI),
+		_secondActivity(WIN_SIZEVI),
+		_currentActivity(nullptr)
 	{
-
-
 		std::srand(time(NULL));
-		std::ifstream			stream("res/layout/npuzzleui.xml");
 		Main::_instance = this;
-		_act.inflate(stream);
-		_act.registerLuaCFun_global("getPuzzleSize", &Main::getPuzzleSize);
+		_mainActivity.registerLuaCFun_global("getPuzzleSize", &Main::getPuzzleSize);
+		_secondActivity.registerLuaCFun_global("getPuzzleSize", &Main::getPuzzleSize);
+
+		inflate_activity(_mainActivity, "res/layout/main_activity.xml");
+		inflate_activity(_secondActivity, "res/layout/npuzzleui.xml");
+
+		_currentActivity = &_mainActivity;
 
 /*
 ** init glwf
@@ -133,36 +147,18 @@ public:
 		_canvasHolder.init();
 
 		tiles.init(WIN_SIZEVI);
-		// printViewTree(_act.getRoot());
 
-/*
-** test
-*/
-		lua_State *l = _act.getLuaState(); //don't remove please ;'(
-
-		// luaL_dostring(l, "ft.ptab(UIParent);");
-		// luaL_dostring(l, "ft.ptab(ALayout);");
-		// luaL_dostring(l, "ft.ptab(VerticalLayout);");
-		// luaL_dostring(l, "ft.pchildren(UIParent);");
-		// luaL_dostring(l, "setmetatable(ft, ft);");
-		// luaL_dostring(l, "ft.ptab(ft);");
-		// std::cout << std::endl;
-
-		// luaL_dostring(l, "ft.pparents(solid_test);");
-		// ftlua::stackdump(l);
-
-		// luaL_dostring(l, "ft.ptab(_G);");
-		// std::cout << "caca4" << std::endl;
-		// luaL_dostring(l, "print('backgroundColor:'..solid_test:getBackgroundColor())");
-
-		// luaL_dostring(l, "test:setCallback('onKeyDown', nil)");
-		luaL_dostring(l, "test:setCallback('onKeyUp', function (self, key) print('onKeyUp'..tostring(key)..' #'..self:getId()); self:queryRedraw() end)");
-		luaL_dostring(l, "test:setCallback('onKeyDown', function (self, key) print('onKeyDown'..tostring(key)..' #'..self:getId()) end)");
 /*
 ** - end
 */
-		int top = lua_gettop(_act.getLuaState());
+		int top = lua_gettop(_currentActivity->getLuaState());
 		FTASSERT(top == 0, ft::f("Top not 0: %", top));
+	}
+
+	void				changeActivity(ftui::Activity *activity)
+	{
+		_currentActivity = activity;
+		_currentActivity->queryRedrawAll();
 	}
 
 /*
@@ -175,7 +171,7 @@ public:
 			new int[puzzle_size]{ 1, 2, 3, 4},
 			new int[puzzle_size]{ 5, 6, 7, 8},
 			new int[puzzle_size]{ 9,10,11,12},
-			new int[puzzle_size]{13,14,15,0}
+			new int[puzzle_size]{13,14,15, 0}
 		};
 		npuzzle::Grid		grid(puzzle, puzzle_size);
 		npuzzle::Solver		solver(grid, this);
@@ -205,12 +201,12 @@ public:
 			// glClear(GL_COLOR_BUFFER_BIT);
 			// canvas.clear();
 			tiles.render();
-			_act.render(canvas);
+			_currentActivity->render(canvas);
 			_canvasHolder.render();
 			glfwSwapBuffers(_window);
 		}
-		printViewTree(_act.getRoot());
 	}
+
 	int					getPuzzleSize(void) { return _puzzleSize; }
 
 	~Main(void)
@@ -238,16 +234,18 @@ public:
 		if (key == GLFW_KEY_ESCAPE)
 			glfwSetWindowShouldClose(_window, true);
 		else
-			_act.onKeyUp(key);
+			_currentActivity->onKeyUp(key);
 		(void)scancode;
 		(void)mods;
+		changeActivity(&_mainActivity); // lol
 	}
 
 	void				onKeyDown(int key, int scancode, int mods)
 	{
-		_act.onKeyDown(key);
+		_currentActivity->onKeyDown(key);
 		(void)scancode;
 		(void)mods;
+		changeActivity(&_secondActivity); // lol
 	}
 
 /*
@@ -268,10 +266,16 @@ public:
 	}
 
 protected:
+
 	GLFWwindow			*_window;
+
 	GlCanvasHolder		_canvasHolder;
-	ftui::Activity		_act;
+	ftui::Activity		*_currentActivity;
+
 	int					_puzzleSize;
+
+	ftui::Activity		_mainActivity;
+	ftui::Activity		_secondActivity;
 };
 
 Main			*Main::_instance;
@@ -282,7 +286,7 @@ int				main(void)
 	{
 		Main		main;
 
-		main.solve();
+		// main.solve();
 		main.loop();
 	}
 	catch (std::exception const &e)
