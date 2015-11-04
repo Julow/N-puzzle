@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/11/04 15:38:37 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/04 16:10:30 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -217,6 +217,17 @@ let algorithm_list _ =
 
 let heuristic_list _ =
   Hashtbl.fold (fun k _ l -> k::l) algorithms []
+
+let generate_grid : int -> bool -> Grid.t = fun w solvable ->
+  Grid.generate w solvable
+
+let transposition_toreal : int -> int array = fun w ->
+  Grid.init_transp_tables w;
+  !Grid.transposition_toreal
+
+let transposition_toabstract : int -> int array = fun w ->
+  Grid.init_transp_tables w;
+  !Grid.transposition_toabstract
 
 (* ************************************************************************** *)
 (* Init C api *)
