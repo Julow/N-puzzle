@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/11/02 07:50:05 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/02 13:14:36 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/04 18:29:37 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -15,6 +15,18 @@ module Make =
   struct
 
 	type state = State.t
+	type report = { initial_h	: int;
+
+					nodes		: int;			(* SUBJECT.PDF *)
+					sum_h		: int;
+					max_open	: int;
+					max_closed	: int;
+					max_both	: int * int;	(* SUBJECT.PDF *)
+
+					average_h	: float;
+					time		: float;
+					states		: state list;	(* SUBJECT.PDF *)
+				  }
 
 	type t = Success of state list
 		   | Failed of string
@@ -23,10 +35,6 @@ module Make =
 
 	let q = (Queue.create () : t Queue.t)
 	let m = Mutex.create ()
-
-	(* ********************************************************************** *)
-	(* MUTEXES *)
-
 
 	(* ********************************************************************** *)
 	(* DEBUG *)
@@ -51,6 +59,7 @@ module Make =
 	  ()
 
 	(* ********************************************************************** *)
+	(* QUEUE OPERATIONS *)
 	let pushq t =
 	  Mutex.lock m;
 	  Queue.push t q;
@@ -72,4 +81,38 @@ module Make =
 	  Mutex.unlock m;
 	  ()
 
+	(* ********************************************************************** *)
+	(* REPORT OPERATIONS *)
+	let new_report initial_h =
+	  { initial_h	= initial_h;
+		nodes		= 0;
+		sum_h		= 0;
+		max_open	= 0;
+		max_closed	= 0;
+		max_both	= 0, 0;
+		average_h	= 0.;
+		time		= Unix.gettimeofday ();
+		states		= []; }
+
+	let tick_report rep h n_open n_closed =
+	  { rep with
+		nodes		= rep.nodes + 1;
+		sum_h		= rep.sum_h + h;
+		max_open	= max rep.max_open n_open;
+		max_closed	= max rep.max_closed n_closed;
+		max_both	= if n_open + n_closed > (fun (o, c) -> o + c) rep.max_both
+					  then n_open, n_closed
+					  else rep.max_both;
+	  }
+
+	let finalize_report rep states =
+	  { rep with
+		average_h	= float rep.sum_h /. float rep.nodes;
+		time		= Unix.gettimeofday () -. rep.time;
+		states		= states;
+	  }
+
+
   end
+
+(* ************************************************************************** *)

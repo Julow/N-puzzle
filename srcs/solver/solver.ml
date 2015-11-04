@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/11/04 16:10:30 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/04 17:50:25 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -127,11 +127,11 @@ let launch (abstgr, goalgr, w, algo, heu_maker) =
   center (Printf.sprintf "%f sec to generate heuristic"
 						 (Unix.gettimeofday () -. t));
   let t = Unix.gettimeofday () in
-  let stack = algo abstgr goalgr heu in
+  algo abstgr goalgr heu;
   center (Printf.sprintf "%f sec to solve (%d steps)" (Unix.gettimeofday () -. t)
-  						 (List.length stack - 1));
+  						 (-42));
   Printf.eprintf "\n%!";
-  stack
+  ()
 
 let launch_str abstgr goalgr w algo_str heu_maker_str =
   let algo =
@@ -159,7 +159,7 @@ let launch_str abstgr goalgr w algo_str heu_maker_str =
 
 (* TODO Grid.of_cgrid is the only safe entry point here *)
 let solve' npuzzle =
-  let solvable = false in
+  let solvable = true in
   let size = 3 in
   let (abstmat, _) as abstgr = Grid.generate size solvable in
   (* let (realmat, realpiv) as realgr = grid_from_file "lol3.np" in *)
@@ -193,7 +193,6 @@ let solve' npuzzle =
   (* launch_str abstgr goalgr w "A*" "Linear Conflict"; *)
   (* launch_str abstgr goalgr w "A*" "Manhattan Distance"; *)
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
-
   ()
 
 (* ************************************************************************** *)
@@ -234,4 +233,11 @@ let transposition_toabstract : int -> int array = fun w ->
 let () =
   Random.self_init ();
   Callback.register "solve" solve;
+  Callback.register "poll_event" poll_event;
+  Callback.register "abort" abort;
+  Callback.register "algorithm_list" algorithm_list;
+  Callback.register "heuristic_list" heuristic_list;
+  Callback.register "generate_grid" generate_grid;
+  Callback.register "transposition_toreal" transposition_toreal;
+  Callback.register "transposition_toabstract" transposition_toabstract;
   ()

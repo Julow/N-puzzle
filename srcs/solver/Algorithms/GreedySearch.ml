@@ -6,13 +6,14 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/31 10:27:02 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/02 09:09:14 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/04 17:49:22 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
 module Make : GenericInterfaces.MAKE_HEPATHFINDER =
   functor (Graph : GenericInterfaces.PATHFINDER_GRAPH)
-			(EventHandler : GenericInterfaces.EVENT_HANDLER) ->
+            (EventHandler : GenericInterfaces.EVENT_HANDLER
+			 with type state = Graph.t) ->
   struct
 
 	type graph = Graph.t
@@ -80,6 +81,8 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 		)
 	  in (* End of Loop *)
 	  let res = aux () in
-	  res
+	  EventHandler.pushq (EventHandler.Progress 1.);
+	  EventHandler.pushq (EventHandler.Success res);
+	  ()
 
   end
