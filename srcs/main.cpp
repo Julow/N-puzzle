@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/04 18:34:34 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/04 19:07:40 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -286,7 +286,7 @@ int				main(void)
 	{
 		Main		main;
 
-		// main.solve();
+		main.solve();
 		main.loop();
 	}
 	catch (std::exception const &e)

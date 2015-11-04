@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/11/02 07:50:05 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/04 18:29:37 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/04 18:32:12 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -102,15 +102,13 @@ module Make =
 		max_closed	= max rep.max_closed n_closed;
 		max_both	= if n_open + n_closed > (fun (o, c) -> o + c) rep.max_both
 					  then n_open, n_closed
-					  else rep.max_both;
-	  }
+					  else rep.max_both;}
 
 	let finalize_report rep states =
 	  { rep with
 		average_h	= float rep.sum_h /. float rep.nodes;
 		time		= Unix.gettimeofday () -. rep.time;
-		states		= states;
-	  }
+		states		= states;}
 
 
   end

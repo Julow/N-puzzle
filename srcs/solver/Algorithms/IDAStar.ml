@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/19 18:14:20 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/04 17:49:09 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/04 19:19:47 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -23,6 +23,8 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	let solve grasrc gragoal he =
 	  Printf.eprintf "IDAStar Beginning ...\n%!";
 	  let result = ref [] in
+	  let he_init = he grasrc in
+	  let rep = ref (EventHandler.new_report he_init) in
 
 	  (** 2.0 - *)
 	  let rec search gra g threshold =
@@ -39,6 +41,7 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 		  | _							-> decr
 		in
 		let h = he gra in
+		rep := EventHandler.tick_report !rep h g 0;
 		let f = g + h in
 		if f > threshold then
 		  f
@@ -61,7 +64,8 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 							 (List.length !result - 1))
 		else aux threshold'
 	  in
-	  aux (he grasrc);
+	  aux he_init;
+	  let rep = EventHandler.finalize_report !rep !result in
 	  (* List.iteri (fun i gra ->Printf.eprintf "g(%2d) h(%2d)" i (he gra); *)
 	  (* 						  Graph.print gra) !result; *)
 	  EventHandler.pushq (EventHandler.Progress 1.);

@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/31 10:27:02 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/04 17:49:22 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/04 19:26:14 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -45,13 +45,18 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	  Hashtbl.add infos grasrc infosrc;
 
 	  (* Loop *)
-	  let rec aux _ =
+	  let rec aux rep =
 
 		let gra = Stack.pop opened in
 		let info = Hashtbl.find infos gra in
+
+		let rep = EventHandler.tick_report
+					rep info.h (Stack.length opened + 1)
+					(Hashtbl.length infos) in
+
 		if Graph.equal gra gragoal then (
 
-		  retreive_steps gra info
+		  EventHandler.finalize_report rep (retreive_steps gra info)
 
 		)
 		else (
@@ -76,13 +81,13 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 			| _						-> ()
 		  in
 		  push_succ built_succ;
-		  aux ()
+		  aux rep
 
 		)
 	  in (* End of Loop *)
-	  let res = aux () in
+	  let rep = aux (EventHandler.new_report infosrc.h) in
 	  EventHandler.pushq (EventHandler.Progress 1.);
-	  EventHandler.pushq (EventHandler.Success res);
+	  EventHandler.pushq (EventHandler.Success []);
 	  ()
 
   end

@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/19 17:34:55 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/04 17:49:02 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/04 19:06:59 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -111,25 +111,29 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	  (** 1.0 - Main loop popping one candidate *)
 	  (** 1.1 - Expanding it if it was not closed in the meantime *)
 	  (** 1.2 - Retreive steps if candidate is goal *)
-	  let rec aux () =
+	  let rec aux rep =
 		let cdt = BatHeap.find_min !candidates in
 		let cdt_graph = cdt.Candidate.graph in
 		candidates := BatHeap.del_min !candidates;
+		let rep = EventHandler.tick_report
+					rep (cdt.Candidate.f - cdt.Candidate.g)
+					(BatHeap.size !candidates + 1) (Hashtbl.length infos) in
 		match Hashtbl.find infos cdt_graph with
 		| Opened info when Graph.equal cdt_graph gra_goal
-		  -> retreive_steps cdt_graph info
+		  -> EventHandler.finalize_report
+			   rep (retreive_steps cdt_graph info)
 		| Opened info
 		  -> let as_closed = Closed info in
 			 Hashtbl.replace infos cdt_graph as_closed;
 			 expand cdt info;
-			 aux ()
+			 aux rep
 		| _
-		  -> aux ()
+		  -> aux rep
 	  in  (** 1. END *)
 	  try
-		let sol = aux () in
+		let rep = aux (EventHandler.new_report he_init) in
 		EventHandler.pushq (EventHandler.Progress 1.);
-		EventHandler.pushq (EventHandler.Success sol);
+		EventHandler.pushq (EventHandler.Success []);
 		(* EventHandler.dumpq (); *)
 		(* Printf.eprintf "AStar: SOLVED!!!!!!!!\n%!"; *)
 		(* List.iteri (fun i gra -> Printf.eprintf "g(%2d) h(%2d)" i (he gra); *)
