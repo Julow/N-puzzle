@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/18 15:36:49 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/04 18:25:48 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/05 10:50:46 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -48,7 +48,7 @@ module type EVENT_HANDLER =
 	type state
 	type report
 	type t =
-	  | Success of state list
+	  | Success of report
 	  | Failed of string
 	  | Progress of float
 	  | Empty

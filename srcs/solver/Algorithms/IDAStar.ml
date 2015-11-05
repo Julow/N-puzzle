@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/19 18:14:20 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/04 19:19:47 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/05 10:51:11 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -69,7 +69,7 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	  (* List.iteri (fun i gra ->Printf.eprintf "g(%2d) h(%2d)" i (he gra); *)
 	  (* 						  Graph.print gra) !result; *)
 	  EventHandler.pushq (EventHandler.Progress 1.);
-	  EventHandler.pushq (EventHandler.Success !result);
+	  EventHandler.pushq (EventHandler.Success rep);
 	  ()
 
   end

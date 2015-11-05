@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/31 10:27:02 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/04 19:26:14 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/05 10:51:16 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -87,7 +87,7 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	  in (* End of Loop *)
 	  let rep = aux (EventHandler.new_report infosrc.h) in
 	  EventHandler.pushq (EventHandler.Progress 1.);
-	  EventHandler.pushq (EventHandler.Success []);
+	  EventHandler.pushq (EventHandler.Success rep);
 	  ()
 
   end

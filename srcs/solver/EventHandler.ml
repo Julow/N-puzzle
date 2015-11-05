@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/11/02 07:50:05 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/04 18:32:12 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/05 10:59:02 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -28,7 +28,7 @@ module Make =
 					states		: state list;	(* SUBJECT.PDF *)
 				  }
 
-	type t = Success of state list
+	type t = Success of report
 		   | Failed of string
 		   | Progress of float
 		   | Empty
@@ -44,7 +44,17 @@ module Make =
 		Printf.eprintf "i(%d) %!" !i;
 		match ev with
 		| Success l
-		  -> Printf.eprintf "Solved of %d long list\n%!" (List.length l);
+		  -> let steps = List.length l.states - 1 in
+			 let ma, mb = l.max_both in
+			 let m = ma + mb in
+			 Printf.eprintf "Solved (%d steps) (%d plan) (%.2f avgplan) "
+							steps l.initial_h l.average_h;
+			 Printf.eprintf "(%.2fsec) (%d maxo / %d maxc) (%d max(%d, %d)) "
+							l.time l.max_open l.max_closed m ma mb;
+			 Printf.eprintf "(%d nodes)\n%!"
+							l.nodes;
+			 ()
+
 		| Failed s
 		  -> Printf.eprintf "Failed of '%s'\n%!" s;
 		| Progress n
