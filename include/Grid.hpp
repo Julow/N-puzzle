@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/05 14:50:25 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/05 19:09:20 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -23,7 +23,7 @@ public:
 	Grid(Grid const &src);
 	Grid				&operator=(Grid const &rhs);
 	Grid(Grid &&src);
-	Grid				&&operator=(Grid &&rhs) = delete;
+	Grid				&operator=(Grid &&rhs);
 	Grid(int size);
 	Grid(int const* const* data, int size);
 	~Grid(void);
@@ -35,6 +35,8 @@ public:
 
 	int					get(int x, int y) const;
 	int					&get(int x, int y);
+
+	void				set(int x, int y, int v);
 
 protected:
 

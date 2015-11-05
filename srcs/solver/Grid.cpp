@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:12 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/05 18:03:37 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/05 19:42:59 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,7 +24,7 @@ static int alloc_count = 0; //TODO remove all debug
 Grid::Grid() :
 	_data(nullptr), _size(0)
 {
-	std::cout << "Grid: CTOR empty (" << alloc_count << " allocs)\n";
+	//std::cout << "Grid: CTOR empty (" << alloc_count << " allocs)\n";
 	return ;
 }
 
@@ -34,7 +34,7 @@ Grid::Grid(int size) :
 	int			i;
 
 	alloc_count++;
-	ft::f(std::cout, "Grid: CTOR size(%) (% allocs)\n", size, alloc_count);
+	// ft::f(std::cout, "Grid: CTOR size(%) (% allocs)\n", size, alloc_count);
 	_data = new int*[size];
 	for (i = 0; i < size; i++)
 		_data[i] = new int[size];
@@ -44,7 +44,7 @@ Grid::Grid(int size) :
 Grid::Grid(int const* const* data, int size) :
 	Grid(size)
 {
-	std::cout << "Grid: CTOR data/size  \n";
+	//std::cout << "Grid: CTOR data/size  \n";
 	for (int i = 0; i < size; i++)
 		std::memcpy(_data[i], data[i], size * sizeof(int));
 	return ;
@@ -53,14 +53,14 @@ Grid::Grid(int const* const* data, int size) :
 Grid::Grid(Grid const &src) :
 	Grid(src._data, src._size)
 {
-	std::cout << "Grid: CTOR Copy  \n";
+	//std::cout << "Grid: CTOR Copy  \n";
 	return ;
 }
 
 Grid::Grid(Grid &&src) :
 	_data(src._data), _size(src._size)
 {
-	std::cout << "Grid: CTOR Move  \n";
+	//std::cout << "Grid: CTOR Move  \n";
 	src._data = nullptr;
 	src._size = 0;
 	return ;
@@ -75,15 +75,16 @@ Grid::~Grid(void)
 		for (int i = 0; i < _size; i++)
 			delete [] _data[i];
 		delete [] _data;
-		std::cout << "Grid: Dtor (" << alloc_count << " alloc left)\n";
+		//std::cout << "Grid: Dtor (" << alloc_count << " alloc left)\n";
 	}
 	else
-		std::cout << "Grid: Dtor empty(" << alloc_count << " alloc left)\n";
+		//std::cout << "Grid: Dtor empty(" << alloc_count << " alloc left)\n";
 	return ;
 }
 
 Grid			&Grid::operator=(Grid const &rhs)
 {
+	//std::cout << "Grid: Copy OP" << std::endl;
 	if (_size > 0)
 	{
 		alloc_count--;
@@ -98,6 +99,23 @@ Grid			&Grid::operator=(Grid const &rhs)
 		_data[i] = new int[_size];
 	for (int i = 0; i < _size; i++)
 		std::memcpy(_data[i], rhs._data[i], _size * sizeof(int));
+	return *this;
+}
+
+Grid			&Grid::operator=(Grid &&rhs)
+{
+	//std::cout << "Grid: Move OP" << std::endl;
+	if (_size > 0)
+	{
+		alloc_count--;
+		for (int i = 0; i < _size; i++)
+			delete [] _data[i];
+		delete [] _data;
+	}
+	_size = rhs._size;
+	_data = rhs._data;
+	rhs._size = 0;
+	rhs._data = nullptr;
 	return *this;
 }
 
@@ -125,7 +143,13 @@ int					Grid::get(int x, int y) const
 
 int					&Grid::get(int x, int y)
 {
-	return (_data[x][y]);
+	return (_data[y][x]);
+}
+
+void				Grid::set(int x, int y, int v)
+{
+	_data[y][x] = v;
+	return ;
 }
 
 };

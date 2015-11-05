@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 11:51:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/05 18:08:54 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/05 19:42:24 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -100,6 +100,58 @@ static std::string					valToString(value &val)
 	return String_val(val);
 }
 
+static Grid							valToGrid(value &val)
+{
+	Grid			gr;
+	value			mat;
+	value			line;
+	size_t			width;
+
+	FTASSERT(Is_block(val));
+	FTASSERT(Wosize_val(val) == 2);
+	mat = Field(val, 0);
+	FTASSERT(Is_block(mat));
+	width = Wosize_val(mat);
+	FTASSERT(width >= 3);
+	gr = Grid(width);
+	for (size_t y = 0; y < width; y++)
+	{
+		line = Field(mat, y);
+		FTASSERT(Is_block(line));
+		FTASSERT(Wosize_val(line) == width);
+		for (size_t x = 0; x < width; x++)
+		{
+			int tmp = valToInt(Field(line, x));
+			gr.set(x, y, tmp);
+		}
+	}
+	return gr;
+}
+
+static std::vector<Grid>			valToGridVector(value &val)
+{
+	std::vector<Grid>		vec;
+	int						width;
+	value					node;
+
+	FTASSERT(Is_block(val));
+	width = -1;
+	node = val;
+	while (1)
+	{
+		if (Is_long(node))
+			break ;
+		vec.push_back(valToGrid(Field(node, 0)));
+		if (width < 0)
+			width = vec[0].getSize();
+		else
+			FTASSERT(width = vec.back().getSize());
+		node = Field(node, 1);
+	}
+	FTASSERT(vec.size() > 0);
+	return vec;
+}
+
 //0 initial_h   : int;
 
 //1 nodes       : int;          (* SUBJECT.PDF *)
@@ -127,6 +179,8 @@ static ISolverListener::report_s	valToReport(value &val)
 	rep.max_closed = valToInt(Field(val2, 4));
 	rep.max_both = valToIntTuple(Field(val2, 5));
 	//TODO: retreive steps
+	rep.steps = valToGridVector(Field(val2, 8));
+	rep.g = rep.steps.size() - 1;
 	return (rep);
 }
 
