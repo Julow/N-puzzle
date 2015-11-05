@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/05 15:13:54 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/05 17:39:27 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -167,8 +167,14 @@ public:
 
 
 	void    onSuccess(report_s rep){}
-	void    onProgress(progress_s prog){}
-	void    onFail(std::string const &str){}
+	void    onProgress(progress_s prog)
+		{
+			ft::f(std::cout, "OnProgress: '%'(%)\n", prog.str, prog.val * 100.f);
+		}
+	void    onFail(std::string const &str)
+		{
+			ft::f(std::cout, "OnFail: '%'\n", str);
+		}
 
 	void				solve(void)
 	{
@@ -187,6 +193,9 @@ public:
 		for (int i = 0; i < puzzle_size; i++)
 			delete puzzle[i];
 		std::cout << "Solving done" << std::endl;
+		solver.poll_event();
+
+		return ;
 	}
 
 	virtual void	put_progress(float progress)

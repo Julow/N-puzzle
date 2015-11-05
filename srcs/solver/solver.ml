@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/11/05 11:24:37 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/05 17:41:42 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -121,7 +121,7 @@ let thread_handle = ref None
 let thread_done = false
 
 let launch (abstgr, goalgr, w, algo, heu_maker) =
-  (* let launch abstgr goalgr w algo heu_maker = *)
+  (* TODO: Catch all errors and send to EventHandler *)
   let t = Unix.gettimeofday () in
   let heu = heu_maker w in
   center (Printf.sprintf "%f sec to generate heuristic"
@@ -153,14 +153,14 @@ let launch_str abstgr goalgr w algo_str heu_maker_str =
   let th = Thread.create launch packed in
   thread_handle := Some th;
   Thread.join th;
-  (* () *)
-  []
+  ()
+
 (* launch abstgr goalgr w algo heu_maker *)
 
 (* TODO Grid.of_cgrid is the only safe entry point here *)
 let solve' npuzzle =
   let solvable = true in
-  let size = 4 in
+  let size = 3 in
   let (abstmat, _) as abstgr = Grid.generate size solvable in
   (* let (realmat, realpiv) as realgr = grid_from_file "lol3.np" in *)
   (* let (realmat, realpiv) as realgr = Grid.of_cgrid npuzzle in *)
@@ -187,11 +187,11 @@ let solve' npuzzle =
   (* launch_str abstgr goalgr w "Greedy Search" "Linear Conflict"; *)
   (* launch_str abstgr goalgr w "Greedy Search" "Manhattan Distance"; *)
 
-  launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 6/6/3";
-  (* launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 8"; *)
+  (* launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 6/6/3"; *)
+  launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 8";
   launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 5/5/5";
   launch_str abstgr goalgr w "A*" "Linear Conflict";
-  (* launch_str abstgr goalgr w "A*" "Manhattan Distance"; *)
+  launch_str abstgr goalgr w "A*" "Manhattan Distance";
   (* ------------------------> SOLVING GOES HERE <------------------------ *)
   EventHandler.dumpq (); (* TODO: REMOVE *)
   ()

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 11:51:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/05 15:14:41 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/05 17:41:08 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -70,10 +70,26 @@ void		OCamlBinding::solve(Grid const &gr)
 /* ************************************************************************** */
 /* C -> OCaml */
 
+static double						valToDouble(value &val)
+{
+	FTASSERT(Is_block(val));
+	FTASSERT(Tag_val(val) == Double_tag);
+	return Double_val(val);
+}
+
+static std::string					valToString(value &val)
+{
+	FTASSERT(Is_block(val));
+	FTASSERT(Tag_val(val) == String_tag);
+	return String_val(val);
+}
+
 static ISolverListener::report_s	valToReport(value &val)
 {
+	printf("Converting report\n");
 	ISolverListener::report_s		rep;
 
+	FTASSERT(Wosize_val(val) == 1);
 	return (rep);
 }
 
@@ -81,12 +97,17 @@ static ISolverListener::progress_s	valToProgress(value &val)
 {
 	ISolverListener::progress_s	prog;
 
+	FTASSERT(Wosize_val(val) == 1);
+	prog.str = "nomsg"; //DOTO: Retreive Msg from ocaml
+	prog.val = valToDouble(Field(val, 0));
 	return (prog);
 }
 
-static std::string				valToFail(value &val)
+
+static std::string					valToFail(value &val)
 {
-	return ("salut");
+	FTASSERT(Wosize_val(val) == 1);
+	return (valToString(Field(val, 0)));
 }
 
 void		OCamlBinding::poll_event(void)
@@ -95,20 +116,22 @@ void		OCamlBinding::poll_event(void)
 	value			res;
 
 	FTASSERT(f != nullptr);
-	res = caml_callback_exn(*f, Val_unit); // TODO: memory leak ?
-	if (Is_exception_result(res))
-		throw std::runtime_error(
-			caml_format_exception(Extract_exception(res)));
-	else if (Is_long(res))
-		return ;
-	else if (Tag_val(res) == 0)
-		this->_el->onSuccess(valToReport(res));
-	else if (Tag_val(res) == 1)
-		this->_el->onFail(valToFail(res));
-	else if (Tag_val(res) == 2)
-		this->_el->onProgress(valToProgress(res));
-	else
-		FTASSERT(false);
+	while (1)
+	{
+		res = caml_callback_exn(*f, Val_unit); // TODO: memory leak ?
+		if (Is_exception_result(res))
+			throw std::runtime_error(
+				caml_format_exception(Extract_exception(res)));
+		if (Is_long(res))
+			break ;
+		FTASSERT(Tag_val(res) >=0 && Tag_val(res) <= 3);
+		if (Tag_val(res) == 0)
+			this->_el->onSuccess(valToReport(res));
+		else if (Tag_val(res) == 1)
+			this->_el->onFail(valToFail(res));
+		else if (Tag_val(res) == 2)
+			this->_el->onProgress(valToProgress(res));
+	}
 	return ;
 }
 
