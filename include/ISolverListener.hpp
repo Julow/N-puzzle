@@ -6,12 +6,17 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 15:39:19 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/16 15:44:36 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/05 14:49:00 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef ISOLVERLISTENER_HPP
 # define ISOLVERLISTENER_HPP
+
+# include "ft/Vec.hpp"
+# include <vector>
+# include <string>
+# include "Grid.hpp"
 
 namespace npuzzle
 {
@@ -19,9 +24,30 @@ namespace npuzzle
 class	ISolverListener
 {
 public:
+    struct report_s
+	{
+		int                 g;
+		int                 init_h;
+		float               avg_h;
+
+		int                 nodes;
+		int                 max_open;
+		int                 max_closed;
+		ft::Vec2<int>       max_both;
+
+		std::vector<Grid>   steps;
+	};
+	struct progress_s
+	{
+		std::string         str;
+		float               val;
+	};
+
 	virtual ~ISolverListener(void) {}
 
-	virtual void	put_progress(float progress) = 0;
+	virtual void	onSuccess(report_s rep) = 0;
+	virtual void	onProgress(progress_s prog) = 0;
+	virtual void	onFail(std::string const &str) = 0;
 
 protected:
 

@@ -6,9 +6,11 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/05 14:45:49 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 18:52:17 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/05 14:57:30 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
+
+#include <type_traits>
 
 namespace ft
 {

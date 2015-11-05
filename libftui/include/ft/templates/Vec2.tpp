@@ -6,9 +6,11 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/05 14:45:51 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 18:43:04 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/05 14:57:35 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
+
+#include <type_traits>
 
 namespace ft
 {
@@ -100,5 +102,5 @@ constexpr Vec2<T>	make_vec(T x, T y)
 }
 
 static_assert(!std::is_polymorphic<Vec2<int>>(), "It shouldn't be!");
-	
+
 };

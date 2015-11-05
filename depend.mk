@@ -1,6 +1,5 @@
 O_FILES :=	o/srcs/GlCanvasHolder.o o/srcs/Tiles.o o/srcs/main.o \
-			o/srcs/solver/Grid.o o/srcs/solver/Solver.o \
-			o/srcs/solver/Solver_hooks.o
+			o/srcs/solver/Grid.o o/srcs/solver/OCamlBinding.o
 
 LIBS_DEPEND := libftui/libftui.a
 
@@ -40,9 +39,10 @@ o/srcs/main.o: srcs/main.cpp libftui/include/ft/utils.hpp \
 	libftui/include/ftlua/templates/ftlua_caller.tpp \
 	libftui/include/ftlua/templates/ftlua_handler.tpp include/tiles/Tiles.hpp \
 	include/GlCanvasHolder.hpp include/gl.hpp include/Grid.hpp \
-	include/ISolverListener.hpp include/Solver.hpp | o/srcs/
+	include/ISolverListener.hpp include/OCamlBinding.hpp | o/srcs/
 o/srcs/solver/Grid.o: srcs/solver/Grid.cpp include/Grid.hpp | o/srcs/solver/
-o/srcs/solver/Solver.o: srcs/solver/Solver.cpp include/Grid.hpp \
-	include/ISolverListener.hpp include/Solver.hpp | o/srcs/solver/
-o/srcs/solver/Solver_hooks.o: srcs/solver/Solver_hooks.cpp include/Grid.hpp \
-	include/ISolverListener.hpp include/Solver.hpp | o/srcs/solver/
+o/srcs/solver/OCamlBinding.o: srcs/solver/OCamlBinding.cpp include/Grid.hpp \
+	include/ISolverListener.hpp include/OCamlBinding.hpp \
+	libftui/include/ft/Vec.hpp libftui/include/ft/templates/Vec2.tpp \
+	libftui/include/ft/templates/Vec3.tpp \
+	libftui/include/ft/templates/Vec4.tpp | o/srcs/solver/

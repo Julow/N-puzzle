@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:54:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/04 19:07:40 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/05 15:13:54 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -31,8 +31,8 @@
 #include "GlCanvasHolder.hpp"
 #include "gl.hpp"
 
-#include "Solver.hpp"
 #include "ISolverListener.hpp"
+#include "OCamlBinding.hpp"
 
 /*
 ** init glfw
@@ -164,6 +164,12 @@ public:
 /*
 ** Test solver api
 */
+
+
+	void    onSuccess(report_s rep){}
+	void    onProgress(progress_s prog){}
+	void    onFail(std::string const &str){}
+
 	void				solve(void)
 	{
 		int const			puzzle_size = 4;
@@ -173,10 +179,11 @@ public:
 			new int[puzzle_size]{ 9,10,11,12},
 			new int[puzzle_size]{13,14,15, 0}
 		};
-		npuzzle::Grid		grid(puzzle, puzzle_size);
-		npuzzle::Solver		solver(grid, this);
+		npuzzle::Grid			grid(puzzle, puzzle_size);
+		npuzzle::OCamlBinding	solver(this); //TODO: give ISolverListener
 
-		solver.solve();
+		std::cout << "CALLING SOLVE" << std::endl;
+		solver.solve(grid);
 		for (int i = 0; i < puzzle_size; i++)
 			delete puzzle[i];
 		std::cout << "Solving done" << std::endl;

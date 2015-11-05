@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/11/02 07:50:05 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/05 10:59:02 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/05 13:22:12 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -30,7 +30,7 @@ module Make =
 
 	type t = Success of report
 		   | Failed of string
-		   | Progress of float
+		   | Progress of float (* TODO: * string *)
 		   | Empty
 
 	let q = (Queue.create () : t Queue.t)

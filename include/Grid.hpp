@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/16 18:33:45 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/05 14:50:25 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,6 +19,11 @@ namespace npuzzle
 class	Grid
 {
 public:
+	Grid(void);
+	Grid(Grid const &src);
+	Grid				&operator=(Grid const &rhs);
+	Grid(Grid &&src);
+	Grid				&&operator=(Grid &&rhs) = delete;
 	Grid(int size);
 	Grid(int const* const* data, int size);
 	~Grid(void);
@@ -37,9 +42,6 @@ protected:
 	int					_size;
 
 private:
-	Grid(void);
-	Grid(Grid const &src);
-	Grid				&operator=(Grid const &rhs);
 };
 
 };
