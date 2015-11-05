@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/11/02 07:50:05 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/05 13:22:12 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/05 17:45:04 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -54,14 +54,12 @@ module Make =
 			 Printf.eprintf "(%d nodes)\n%!"
 							l.nodes;
 			 ()
-
 		| Failed s
 		  -> Printf.eprintf "Failed of '%s'\n%!" s;
 		| Progress n
 		  -> Printf.eprintf "Progress of %6.2f%%\n%!" (n *. 100.);
 		| _
 		  -> ();
-
 		i := !i + 1;
 	  in
 	  Printf.eprintf "Events Queue:\n%!";

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 15:39:19 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/05 14:49:00 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/05 18:27:40 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,6 +14,7 @@
 # define ISOLVERLISTENER_HPP
 
 # include "ft/Vec.hpp"
+# include "ft/utils.hpp"
 # include <vector>
 # include <string>
 # include "Grid.hpp"
@@ -26,6 +27,8 @@ class	ISolverListener
 public:
     struct report_s
 	{
+		float				time;
+
 		int                 g;
 		int                 init_h;
 		float               avg_h;
@@ -55,5 +58,16 @@ private:
 };
 
 };
+
+inline std::ostream	&operator<<(std::ostream &o,
+							npuzzle::ISolverListener::report_s const &rep)
+{
+	return o << ft::f("time(%) g/init/avg(% % %) "
+					  "nodes/maxo/maxc/both(% % % %)",
+					  rep.time, rep.g, rep.init_h, rep.avg_h,
+					  rep.nodes, rep.max_open, rep.max_closed,
+					  rep.max_both.x + rep.max_both.y);
+}
+
 
 #endif

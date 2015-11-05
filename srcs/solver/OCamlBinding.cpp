@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 11:51:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/05 17:41:08 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/05 18:08:54 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,6 +15,9 @@
 #include "ft/assert.hpp" // Tester d'autres prositions dans l'ordre d'include
 #include <stdexcept>
 #include <stdio.h>
+
+#include <vector>
+#include <tuple>
 
 
 #include <caml/mlvalues.h>
@@ -77,6 +80,19 @@ static double						valToDouble(value &val)
 	return Double_val(val);
 }
 
+static int							valToInt(value &val)
+{
+	FTASSERT(Is_long(val));
+	return Int_val(val);
+}
+
+static ft::Vec2<int>				valToIntTuple(value &val)
+{
+	FTASSERT(Is_block(val));
+	FTASSERT(Wosize_val(val) == 2);
+	return {valToInt(Field(val, 0)), valToInt(Field(val, 1))};
+}
+
 static std::string					valToString(value &val)
 {
 	FTASSERT(Is_block(val));
@@ -84,12 +100,33 @@ static std::string					valToString(value &val)
 	return String_val(val);
 }
 
+//0 initial_h   : int;
+
+//1 nodes       : int;          (* SUBJECT.PDF *)
+//2 sum_h       : int;
+//3 max_open    : int;
+//4 max_closed  : int;
+//5 max_both    : int * int;    (* SUBJECT.PDF *)
+
+//6 average_h   : float;
+//7 time        : float;
+//8 states      : state list;   (* SUBJECT.PDF *)
+
 static ISolverListener::report_s	valToReport(value &val)
 {
-	printf("Converting report\n");
+	value							val2 = Field(val, 0);
 	ISolverListener::report_s		rep;
 
-	FTASSERT(Wosize_val(val) == 1);
+	FTASSERT(Wosize_val(val2) == 9);
+	rep.time = valToDouble(Field(val2, 7));
+	//TODO: retreive g
+	rep.init_h = valToInt(Field(val2, 0));
+	rep.avg_h = valToDouble(Field(val2, 6));
+	rep.nodes = valToInt(Field(val2, 1));
+	rep.max_open = valToInt(Field(val2, 3));
+	rep.max_closed = valToInt(Field(val2, 4));
+	rep.max_both = valToIntTuple(Field(val2, 5));
+	//TODO: retreive steps
 	return (rep);
 }
 
@@ -123,7 +160,8 @@ void		OCamlBinding::poll_event(void)
 			throw std::runtime_error(
 				caml_format_exception(Extract_exception(res)));
 		if (Is_long(res))
-			break ;
+		break ;
+		FTASSERT(Wosize_val(res) == 1);
 		FTASSERT(Tag_val(res) >=0 && Tag_val(res) <= 3);
 		if (Tag_val(res) == 0)
 			this->_el->onSuccess(valToReport(res));

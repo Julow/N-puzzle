@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:12 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/05 15:58:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/05 18:03:37 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -61,6 +61,8 @@ Grid::Grid(Grid &&src) :
 	_data(src._data), _size(src._size)
 {
 	std::cout << "Grid: CTOR Move  \n";
+	src._data = nullptr;
+	src._size = 0;
 	return ;
 }
 
