@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 11:51:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/05 19:42:24 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/07 10:13:46 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -25,16 +25,11 @@
 #include <caml/callback.h>
 #include <caml/printexc.h>
 
-namespace npuzzle
-{
-
-
-OCamlBinding::OCamlBinding(ISolverListener *el)
-	: _currentGrid(), _el(el)
+OCamlBinding::OCamlBinding()
+	: _currentGrid(), _el(nullptr)
 {
 	char		*args = NULL;
 
-	FTASSERT(el != nullptr);
 	caml_startup(&args);
 }
 
@@ -45,6 +40,12 @@ OCamlBinding::~OCamlBinding()
 Grid const	&OCamlBinding::getGrid(void) const
 {
 	return (_currentGrid);
+}
+
+void		OCamlBinding::setListener(ISolverListener *el)
+{
+	this->_el = el;
+	return ;
 }
 
 // ISolverListener *Solver::getListener(void)
@@ -206,6 +207,7 @@ void		OCamlBinding::poll_event(void)
 	value *const	f = caml_named_value("poll_event");
 	value			res;
 
+	FTASSERT(_el != nullptr);
 	FTASSERT(f != nullptr);
 	while (1)
 	{
@@ -214,7 +216,7 @@ void		OCamlBinding::poll_event(void)
 			throw std::runtime_error(
 				caml_format_exception(Extract_exception(res)));
 		if (Is_long(res))
-		break ;
+			break ;
 		FTASSERT(Wosize_val(res) == 1);
 		FTASSERT(Tag_val(res) >=0 && Tag_val(res) <= 3);
 		if (Tag_val(res) == 0)
@@ -256,5 +258,3 @@ CAMLprim value  solver_hook_get(value binding, value x, value y)
 	CAMLreturn(Val_int(v));
 }
 }
-
-};

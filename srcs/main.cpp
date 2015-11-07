@@ -1,45 +1,38 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   Main.hpp                                           :+:      :+:    :+:   //
+//   Main.cpp                                           :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/11/07 09:37:37 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/07 09:47:52 by ngoguey          ###   ########.fr       //
+//   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
+//   Updated: 2015/11/07 12:50:51 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
+#include <iostream>
+
+// #include <iostream>
+// #include <iomanip>
+// #include <fstream>
+// #include <stdexcept>
+// #include <typeinfo>
+// #include <string>     // std::string, std::to_string
+
 #include "ft/utils.hpp"
 #include "config_window.hpp"
-
-#include <iostream>
-#include <iomanip>
-#include <fstream>
-#include <stdexcept>
-#include <typeinfo>
-#include <string>     // std::string, std::to_string
-
-#include "ftui/Activity.hpp"
-#include "ftui/AView.hpp"
-#include "ftui/ALayout.hpp"
-#include "ftlua/ftlua.hpp"
-#include "ftui/lua/lua.hpp"
-
-#include "tiles/Tiles.hpp"
-
 #include "GlCanvasHolder.hpp"
 #include "gl.hpp"
-
-#include "ISolverListener.hpp"
 #include "OCamlBinding.hpp"
-
-#include "ftui/Activity.hpp"
-#include "ft/Vec.hpp"
 #include "IState.hpp"
 #include "StartState.hpp"
+
+// #include "ftui/Activity.hpp"
+// #include "ft/Vec.hpp"
 // #include "LoadingState.hpp"
 // #include "ResultsState.hpp"
+// #include "ftui/Activity.hpp"
+// #include "ISolverListener.hpp"
 
 
 /*
@@ -77,7 +70,8 @@ public:
 			glfwWindowHint(GLFW_DOUBLEBUFFER, GL_TRUE);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, OPENGL_PROFILE);
-		if ((_window = glfwCreateWindow(WIN_WIDTHI, WIN_HEIGHTI, "npuzzle", NULL, NULL)) == NULL)
+		if ((_window = glfwCreateWindow(WIN_WIDTHI, WIN_HEIGHTI, "npuzzle"
+										, NULL, NULL)) == NULL)
 			throw std::runtime_error("Cannot create GLFW window");
 		glfwMakeContextCurrent(_window);
 		if (!INIT_GLEW)
@@ -88,22 +82,23 @@ public:
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+		IState::globalInit();
 		_canvasHolder.init();
 
-		IState::globalInit();
 	}
 
 	void				loop(void)
 	{
 		ftui::Canvas		canvas(_canvasHolder.getCanvas());
 
+		_state.reset(new StartState(canvas, _ocaml));
 		while (!glfwWindowShouldClose(_window))
 		{
 			glfwPollEvents();
 			// glClearColor(0.f, 0.f, 0.f, c1.f);
 			// glClear(GL_COLOR_BUFFER_BIT);
 			// canvas.clear();
-			_state->loop(_state, canvas);
+			_state->loop(_state, canvas, _ocaml);
 			_canvasHolder.render();
 			glfwSwapBuffers(_window);
 		}
@@ -128,15 +123,16 @@ public:
 	{
 		if (key == GLFW_KEY_ESCAPE)
 			glfwSetWindowShouldClose(_window, true);
-		// else
-			// _currentActivity->onKeyUp(key);
-		(void)scancode;
+		else
+			_state->getActivity().onKeyUp(key);
+			(void)scancode;
 		(void)mods;
 		// changeActivity(&_mainActivity); // lol
 	}
 
 	void				onKeyDown(int key, int scancode, int mods)
 	{
+		_state->getActivity().onKeyDown(key);
 		// _currentActivity->onKeyDown(key);
 		(void)scancode;
 		(void)mods;
@@ -164,6 +160,7 @@ protected:
 
 	GLFWwindow				*_window;
 	std::unique_ptr<IState>	_state;
+	OCamlBinding			_ocaml;
 
 	GlCanvasHolder			_canvasHolder;
 };
@@ -176,6 +173,7 @@ int				main(void)
 	{
 		Main		main;
 
+		std::cout << "Main lol" << std::endl;
 		main.loop();
 	}
 	catch (std::exception const &e)

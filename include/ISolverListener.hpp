@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 15:39:19 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/05 18:27:40 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/07 10:14:14 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,9 +18,6 @@
 # include <vector>
 # include <string>
 # include "Grid.hpp"
-
-namespace npuzzle
-{
 
 class	ISolverListener
 {
@@ -57,10 +54,8 @@ protected:
 private:
 };
 
-};
-
 inline std::ostream	&operator<<(std::ostream &o,
-							npuzzle::ISolverListener::report_s const &rep)
+							ISolverListener::report_s const &rep)
 {
 	return o << ft::f("time(%) g/init/avg(% % %) "
 					  "nodes/maxo/maxc/both(% % % %)",

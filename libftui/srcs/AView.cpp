@@ -6,12 +6,13 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/14 13:19:19 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/07 12:45:46 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include <exception>
 #include <cstdlib>
+#include <iostream>
 
 #include "ft/utils.hpp"
 #include "ftlua/ftlua.hpp"
@@ -100,7 +101,7 @@ IViewHolder const	*AView::getViewHolder(void) const
 }
 
 void				AView::setViewHolder(IViewHolder *holder)
-{	
+{
 	FTASSERT(this->_holder == nullptr);
 	this->_holder = holder;
 	return ;
@@ -483,7 +484,7 @@ void			AView::queryUpdate(void)
 		p = this->getParent();
 		if (p != nullptr)
 			p->spreadQueryUpdate();
-	}	
+	}
 	return ;
 }
 
@@ -497,7 +498,7 @@ void			AView::queryMeasure(void)
 		p = this->getParent();
 		if (p != nullptr)
 			p->spreadQueryMeasure();
-	}	
+	}
 	return ;
 }
 
@@ -511,7 +512,7 @@ void			AView::queryRedraw(void)
 		p = this->getParent();
 		if (p != nullptr)
 			p->spreadQueryRedraw();
-	}	
+	}
 	return ;
 }
 

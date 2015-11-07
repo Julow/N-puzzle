@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 12:38:10 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/05 14:47:22 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/07 10:12:52 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -17,16 +17,14 @@
 # include "ISolverListener.hpp"
 // # include "ft/Vec.hpp"
 
-namespace npuzzle
-{
-
 class OCamlBinding
 {
 public:
 
-	OCamlBinding(ISolverListener *el);
+	OCamlBinding();
 	~OCamlBinding();
 
+	void					setListener(ISolverListener *el);
 	void					solve(Grid const &gr);
 	void					poll_event(void);
 
@@ -38,11 +36,8 @@ private:
 	Grid					_currentGrid;
 	ISolverListener			*_el;
 
-	OCamlBinding() = delete;
 	OCamlBinding(OCamlBinding const &src) = delete;
 	OCamlBinding				&operator=(OCamlBinding const &rhs) = delete;
-};
-
 };
 
 #endif // ************************************************** OCAMLBINDING_HPP //

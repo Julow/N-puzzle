@@ -6,15 +6,12 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/05 19:09:20 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/07 10:13:23 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef GRID_HPP
 # define GRID_HPP
-
-namespace npuzzle
-{
 
 class	Grid
 {
@@ -44,8 +41,6 @@ protected:
 	int					_size;
 
 private:
-};
-
 };
 
 #endif

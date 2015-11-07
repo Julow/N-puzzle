@@ -6,11 +6,12 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/07 09:42:26 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/07 12:46:03 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include <algorithm>
+#include <iostream>
 
 #include "ft/utils.hpp"
 #include "ftlua/ftlua.hpp"
@@ -27,7 +28,7 @@ Activity::Activity(ft::Vec2<int> size) :
 	_size(size),
 	_l(nullptr)
 {
-	init_lua_env();
+	std::cout << "Activity CTOR" << std::endl;
 	return ;
 }
 
@@ -94,6 +95,8 @@ void			Activity::inflate(std::istream &stream)
 	AView				*v;
 	XmlParser::State	state;
 
+	if (_l == nullptr)
+		init_lua_env();
 	if (!xml.next(state))
 		FTASSERT(false, "Activity should own at least 1 view");
 	FTASSERT(state == XmlParser::State::START, "Cannot fail");

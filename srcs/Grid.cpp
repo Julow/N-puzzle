@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:12 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/05 19:42:59 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/07 10:14:32 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,9 +15,6 @@
 #include <cstring>
 #include <stdexcept>
 #include <iostream> // TODO
-
-namespace npuzzle
-{
 
 static int alloc_count = 0; //TODO remove all debug
 
@@ -151,5 +148,3 @@ void				Grid::set(int x, int y, int v)
 	_data[y][x] = v;
 	return ;
 }
-
-};

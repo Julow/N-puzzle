@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 09:02:27 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/07 09:48:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/07 12:48:45 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,9 +15,9 @@
 #include "config_window.hpp"
 
 // * STATICS ******************** //
-IState			*StartState::create(void)
+IState			*StartState::create(ftui::Canvas &can, OCamlBinding &ocaml)
 {
-	return new StartState;
+	return new StartState(can, ocaml);
 }
 
 ftui::Activity	StartState::act{WIN_SIZEVI};
@@ -35,8 +35,11 @@ void			StartState::globalInit(void)
 }
 
 // * CTORS / DTORS ************** //
-StartState::StartState()
+StartState::StartState(ftui::Canvas &can, OCamlBinding &ocaml)
 {
+	(void)can;
+	(void)ocaml;
+	ocaml.setListener(this);
 	return ;
 }
 
@@ -46,11 +49,19 @@ StartState::~StartState()
 }
 
 // * MEMBER FUNCTIONS / METHODS * //
+ftui::Activity	&StartState::getActivity(void)
+{
+	return StartState::act;
+}
+
+// * IState ********************* //
 void			StartState::loop(
-	std::unique_ptr<IState> &ptr, ftui::Canvas &can)
+	std::unique_ptr<IState> &ptr, ftui::Canvas &can, OCamlBinding &ocaml)
 {
 	(void)can;
 	(void)ptr;
+	(void)ocaml;
+	this->_render(can);
 	return ;
 }
 
@@ -58,5 +69,21 @@ void			StartState::_render(ftui::Canvas &can)
 {
 	StartState::tiles.render();
 	StartState::act.render(can);
+	return ;
+}
+// * ISolverListener ************ //
+void			StartState::onSuccess(report_s rep)
+{
+	(void)rep;
+	return ;
+}
+void			StartState::onProgress(progress_s prog){
+	(void)prog;
+	return ;
+}
+
+void			StartState::onFail(std::string const &str)
+{
+	(void)str;
 	return ;
 }

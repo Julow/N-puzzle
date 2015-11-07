@@ -6,9 +6,11 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/14 09:13:16 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/07 11:57:50 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
+
+#include <iostream>
 
 #include "ft/utils.hpp"
 #include "ftui/AView.hpp"
@@ -42,13 +44,13 @@ AView::views_info_t				AView::viewsInfo
 	{"ASolidView", {"AView", nullptr, {
 		INSG(ASolidView, getBackgroundColor), INSG(ASolidView, getBorderColor),
 		INSG(ASolidView, getBorderWidth), INSG(ASolidView, setBackgroundColor),
-		INSG(ASolidView, setBorderColor), INSG(ASolidView, setBorderWidth), 
+		INSG(ASolidView, setBorderColor), INSG(ASolidView, setBorderWidth),
 	}, {}}},
 	{"TextView", {"ASolidView", &TextView::createView, {
 		INSG(TextView, getText), INSG(TextView, setText),
 		INSG(TextView, getFont), INSG(TextView, setFont),
 		INSG(TextView, getTextColor), INSG(TextView, setTextColor),
-		INSG(TextView, getTextSize), INSG(TextView, setTextSize), 
+		INSG(TextView, getTextSize), INSG(TextView, setTextSize),
 	}, {}}},
 	{"ALayout", {"ASolidView", nullptr, {
 		INSG(ALayout, size), INSG(ALayout, at)

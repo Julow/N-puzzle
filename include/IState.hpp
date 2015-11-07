@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 08:56:05 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/07 09:35:12 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/07 10:30:41 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,6 +16,7 @@
 //# include <string>
 # include <memory>
 # include "ftui/Canvas.hpp"
+# include "OCamlBinding.hpp"
 //# include <iostream>
 //# include <stdexcept>
 
@@ -26,15 +27,21 @@ public:
 	IState						&operator=(IState const &rhs) = delete;
 	IState() {}
 
-	virtual void		loop(
-		std::unique_ptr<IState> &ptr, ftui::Canvas &can) = 0;
+	virtual void				loop(
+		std::unique_ptr<IState> &ptr
+		, ftui::Canvas &can
+		, OCamlBinding &ocaml) = 0;
+	virtual ftui::Activity		&getActivity(void) = 0;
 
-	static void			globalInit(void);
+	static void					globalInit(void);
 
 protected:
-	static IState        *(*createStartState)(void);
-	static IState        *(*createLoadingState)(void);
-	static IState        *(*createResultsState)(void);
+	static IState        *(*createStartState)
+		(ftui::Canvas &can, OCamlBinding &ocaml);
+	static IState        *(*createLoadingState)
+		(ftui::Canvas &can, OCamlBinding &ocaml);
+	static IState        *(*createResultsState)
+		(ftui::Canvas &can, OCamlBinding &ocaml);
 
 private:
 };

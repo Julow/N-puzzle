@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 08:59:12 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/07 09:22:17 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/07 10:19:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,8 +15,8 @@
 // #include "LoadingState.hpp"
 // #include "ResultsState.hpp"
 
-
-IState        *(*IState::createStartState)(void) = StartState::create;
+IState        *(*IState::createStartState)(
+	ftui::Canvas &can, OCamlBinding &ocaml) = StartState::create;
 // IState        *(*IState::createLoadingState)(void) = LoadingState::create;
 // IState        *(*IState::createResultsState)(void) = ResultsState::create;
 
