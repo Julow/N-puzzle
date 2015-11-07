@@ -6,13 +6,12 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 11:54:32 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/09/22 11:54:37 by jaguillo         ###   ########.fr       */
+/*   Updated: 2015/11/07 09:15:46 by ngoguey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef NPUZZLE_H
 # define NPUZZLE_H
-
 
 
 #endif

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/04 17:12:00 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/07 09:42:26 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -103,6 +103,7 @@ void			Activity::inflate(std::istream &stream)
 	v->setViewHolder(this->_rootView);
 	if (xml.next(state))
 		FTASSERT(false, "Activity should not own more than 1 view");
+	FTASSERT(lua_gettop(_l) == 0);
 	return ;
 }
 
