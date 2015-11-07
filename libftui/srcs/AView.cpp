@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/07 12:45:46 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/07 15:00:16 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -186,8 +186,15 @@ void				AView::setParam(string const &k, string const &v)
 		{
 			view->hookKeyboard(p == "true");
 		}},
+		{"activity_scripts", [](AView *view, std::string const &p)
+		{
+			// TODO: improve activity_scripts location
+			view->_act.saveScriptPath(p);
+		}},
 	};
 	auto const		&it = param_map.find(k);
+
+	std::cout << "AView : getting param  " << k<< "  " << v << std::endl;
 
 	if (it != param_map.end())
 		it->second(this, v);
@@ -220,6 +227,8 @@ void				AView::onDraw(Canvas &canvas)
 {
 	this->_flags &= ~AView::REDRAW_QUERY;
 	// TODO call lua
+	callLuaCallback(_act.getLuaState(), LuaCallback::DRAW);
+	// callLuaCallback(_act.getLuaState(), LuaCallback::DRAW, canvas);
 	// TODO lua Canvas table
 	(void)canvas;
 	return ;

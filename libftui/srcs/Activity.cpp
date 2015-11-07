@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/07 12:46:03 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/07 14:44:11 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -106,7 +106,33 @@ void			Activity::inflate(std::istream &stream)
 	v->setViewHolder(this->_rootView);
 	if (xml.next(state))
 		FTASSERT(false, "Activity should not own more than 1 view");
+	this->_loadScripts();
 	FTASSERT(lua_gettop(_l) == 0);
+	return ;
+}
+
+void			Activity::saveScriptPath(std::string const &str)
+{
+	std::stringstream	ss(str);
+	char				buf[64];
+
+	// TODO accept folder as parameter
+	while (ss.getline(buf, sizeof(buf), ';'))
+		_scriptsPaths.push_back(buf);
+	return ;
+}
+
+void			Activity::_loadScripts(void)
+{
+	for (auto const &fname : _scriptsPaths)
+	{
+		if (luaL_dofile(_l, fname.c_str()))
+		{
+			FTASSERT(false, ft::f("'%'", luaL_checkstring(_l, -1)));
+			//TODO throw
+			lua_pop(_l, 1);
+		}
+	}
 	return ;
 }
 
@@ -144,7 +170,10 @@ void			Activity::render(Canvas &canvas)
 		_rootView->setSize(_size);
 	}
 	if (rv->isRedrawQueried())
+	{
+		std::cout << "REDRAW REQ" << std::endl;
 		rv->onDraw(canvas);
+	}
 	return ;
 }
 

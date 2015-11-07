@@ -1,12 +1,13 @@
 <VerticalLayout
 	id="UIParent"
-	activity_scripts="res/utils.lua;res/lua/loading_screen/"
->
-	<SolidView
-		marginTop="10"
-		verticalAlign="CENTER"
-		width="250"
-		height="100"
-		backgroundColor="0xFFFFFFFF"
-	/>
+	activity_scripts="res/utils.lua;res/start_activity.lua"
+	>
+  <SolidView
+	  id="puzzleFrame"
+	  marginTop="75"
+	  verticalAlign="CENTER"
+	  width="600"
+	  height="600"
+	  backgroundColor="0xAAFFFFFF"
+	  />
 </VerticalLayout>

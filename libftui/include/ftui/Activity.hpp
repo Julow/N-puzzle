@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/04 17:11:32 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/07 14:10:32 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -45,6 +45,7 @@ public:
 	void				init_lua_env(void);
 	void				inflate(std::istream &stream);
 	lua_State			*getLuaState(void) const;
+	void				saveScriptPath(std::string const &str);
 
 	AView				*getRoot(void);
 	AView const			*getRoot(void) const;
@@ -121,8 +122,11 @@ protected:
 	event_map_t			_eventMap;
 	ft::Vec2<int>		_size;
 	lua_State			*_l;
+	std::vector<std::string>	_scriptsPaths;
 
 private:
+	void				_loadScripts(void);
+
 	Activity(void) = delete;
 	Activity(Activity const &src) = delete;
 	Activity			&operator=(Activity const &rhs) = delete;
@@ -139,7 +143,7 @@ class	Activity::RootViewHolder : public IViewHolder
 public:
 	RootViewHolder(XmlParser const &xml, AView *v, ft::Vec2<int> s);
 	virtual ~RootViewHolder(void);
-		
+
 	virtual ALayout			*getParent(void);
 	virtual ALayout const	*getParent(void) const;
 
