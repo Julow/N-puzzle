@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/07 13:47:07 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/08 17:24:20 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/08 19:25:27 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -58,11 +58,25 @@ end
 
 puzzleFrame:setCallback('onDraw', puzzleFrame.onDraw);
 puzzleFrame:setCallback('onSizeChange', puzzleFrame.onSizeChange);
-puzzleFrame:setCallback('onMouseMove', function(self, x, y, _)
-						   print("bordel", x, y);
+puzzleFrame:setCallback('onMouseMove', function(self, x, y)
+						   print("lua:onMouseMove", x, y);
+									 end
+);
+puzzleFrame:setCallback('onMouseDown', function(self, x, y, b, m)
+						   print("lua:onMouseDOWN", x, y, b, m);
+									 end
+);
+puzzleFrame:setCallback('onMouseUp', function(self, x, y, b, m)
+						   print("lua:onMouseUP", x, y, b, m);
+									 end
+);
+puzzleFrame:setCallback('onKeyDown', function(self, b)
+						   print("lua:onKeyDown", b);
 									 end
 );
 puzzleFrame:hookMouseMove(1);
+puzzleFrame:hookMouseClick(1);
+puzzleFrame:hookKeyboard(1);
 
 puzzleFrame.curPuzzle = {};
 puzzleFrame.w = 5;

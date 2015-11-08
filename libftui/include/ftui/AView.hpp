@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/08 18:16:14 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 19:23:45 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -134,8 +134,8 @@ public:
 	** Low level callbacks
 	*/
 	virtual bool				onMouseScroll(int x, int y, float delta);
-	virtual bool				onMouseDown(int x, int y, int button);
-	virtual bool				onMouseUp(int x, int y, int button);
+	virtual bool				onMouseDown(int x, int y, int button, int mods);
+	virtual bool				onMouseUp(int x, int y, int button, int mods);
 	virtual bool				onMouseMove(int x, int y);
 	virtual bool				onKeyDown(int key_code);
 	virtual bool				onKeyUp(int key_code);

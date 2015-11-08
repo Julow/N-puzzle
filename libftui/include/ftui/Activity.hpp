@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 18:05:32 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 19:23:23 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -60,8 +60,8 @@ public:
 
 	void				onMouseMove(int x, int y);
 
-	void				onMouseUp(int x, int y, int button);// TODO: implement
-	bool				onMouseDown(int x, int y, int button);// TODO: implement
+	void				onMouseUp(int x, int y, int button, int mods);
+	bool				onMouseDown(int x, int y, int button, int mods);
 
 	/*
 	 *	registerEvent(e,v)		Registers an event for a given view:

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 18:40:47 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 19:24:05 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -226,6 +226,37 @@ void			Activity::onMouseMove(int x, int y)
 	}
 	return ;
 }
+
+void			Activity::onMouseUp(int x, int y, int button, int mods)
+{
+	auto	rv = _rootView != nullptr ? _rootView->getView() : nullptr;
+
+	if (rv != nullptr)
+	{
+		if (rv->isMouseClickTargeted() &&
+			(rv->isMouseOver() || rv->isMouseCaptureTargeted()))
+		{
+			rv->onMouseUp(x, y, button, mods);
+		}
+	}
+	return ;
+}
+
+bool			Activity::onMouseDown(int x, int y, int button, int mods)
+{
+	auto	rv = _rootView != nullptr ? _rootView->getView() : nullptr;
+
+	if (rv != nullptr)
+	{
+		if (rv->isMouseClickTargeted() &&
+			(rv->isMouseOver() || rv->isMouseCaptureTargeted()))
+		{
+			return rv->onMouseDown(x, y, button, mods);
+		}
+	}
+	return false;
+}
+
 
 /*
 ** ************************************************************************** **

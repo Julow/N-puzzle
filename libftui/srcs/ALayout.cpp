@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 18:40:37 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 19:24:36 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -236,7 +236,7 @@ bool				ALayout::onMouseScroll(int x, int y, float delta)
 	return (ret);
 }
 
-bool				ALayout::onMouseDown(int x, int y, int button)
+bool				ALayout::onMouseDown(int x, int y, int button, int mods)
 {
 	bool		ret;
 	AView		*v;
@@ -248,14 +248,14 @@ bool				ALayout::onMouseDown(int x, int y, int button)
 		FTASSERT(v != nullptr);
 		if (v->isMouseClickTargeted() &&
 			(v->isMouseOver() || v->isMouseCaptureTargeted()))
-			ret |= v->onMouseDown(x, y, button);
+			ret |= v->onMouseDown(x, y, button, mods);
 	}
 	if (AView::isMouseClickTargeted())
-		ret |= AView::onMouseDown(x, y, button);
+		ret |= AView::onMouseDown(x, y, button, mods);
 	return (ret);
 }
 
-bool				ALayout::onMouseUp(int x, int y, int button)
+bool				ALayout::onMouseUp(int x, int y, int button, int mods)
 {
 	bool		ret;
 	AView		*v;
@@ -267,10 +267,10 @@ bool				ALayout::onMouseUp(int x, int y, int button)
 		FTASSERT(v != nullptr);
 		if (v->isMouseClickTargeted() &&
 			(v->isMouseOver() || v->isMouseCaptureTargeted()))
-			ret |= v->onMouseUp(x, y, button);
+			ret |= v->onMouseUp(x, y, button, mods);
 	}
 	if (AView::isMouseClickTargeted())
-		ret |= AView::onMouseUp(x, y, button);
+		ret |= AView::onMouseUp(x, y, button, mods);
 	return (ret);
 }
 

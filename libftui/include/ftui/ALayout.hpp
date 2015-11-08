@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/04 17:15:26 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/08 19:23:33 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -51,8 +51,8 @@ public:
 	virtual void				onDraw(Canvas &canvas) = 0;
 
 	virtual bool				onMouseScroll(int x, int y, float delta);
-	virtual bool				onMouseDown(int x, int y, int button);
-	virtual bool				onMouseUp(int x, int y, int button);
+	virtual bool				onMouseDown(int x, int y, int button, int mods);
+	virtual bool				onMouseUp(int x, int y, int button, int mods);
 	virtual bool				onMouseMove(int x, int y);
 	virtual bool				onKeyDown(int key_code);
 	virtual bool				onKeyUp(int key_code);
@@ -115,10 +115,10 @@ public:
 	static int					atG(lua_State *l);
 
 	static int					sizeG(lua_State *l);
-	
+
 	static int					addViewG(lua_State *l);
 	static int					popViewG(lua_State *l);
-	
+
 };
 
 };
