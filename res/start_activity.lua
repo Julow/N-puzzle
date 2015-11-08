@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/07 13:47:07 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/08 13:36:27 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/08 14:35:41 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -15,7 +15,8 @@ assert(puzzleFrame ~= nil)
 
 function puzzleFrame:onDraw(canvas)
    print('from lua:', 'puzzleFrame:onDraw()', self);
-   canvas:drawRect();
+   ft.ptab(canvas);
+   canvas:drawRect(0, 0, 102, 120, 0xFFEE6000);
    canvas:drawText();
 end
 

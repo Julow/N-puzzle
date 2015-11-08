@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 13:35:41 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 14:05:11 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -257,10 +257,8 @@ void				AView::onDraw(Canvas &canvas)
 	lua_pushlightuserdata(l, &canvas);				// &can, [], fun, [], _G
 	if (lua_gettable(l, -5) != LUA_TTABLE)			// [c], [], fun, [], _G
 		throw std::runtime_error("Lua missing canvas table");
-	FTASSERT(false); //debug
 	if (lua_pcall(l, 2, 0, 0))						// [], _G
-		throw std::runtime_error("Problem calling lua");
-	FTASSERT(false); //debug
+		throw std::runtime_error(ft::f("Lua: %", luaL_checkstring(l, -1)));
 	lua_pop(l, 2);									// empty
 	return ;
 }

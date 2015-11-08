@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 19:08:42 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/08 14:11:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,6 +14,7 @@
 
 #include "ft/Vec.hpp"
 #include "ft/utils.hpp"
+#include "ft/assert.hpp"
 
 namespace ftlua
 {
@@ -299,8 +300,16 @@ inline T	*retrieveSelf(lua_State *l, int index, bool pop)
 	if (!lua_istable(l, index))
 		luaL_error(l, "Lua stack: bad argument at index %d", index);
 	lua_pushinteger(l, 0);
-	if (lua_gettable(l, index - 1) != LUA_TLIGHTUSERDATA)
-		luaL_error(l, "Missing luserdata at self[0] in table");
+	if (index < 0)
+	{
+		if (lua_gettable(l, index - 1) != LUA_TLIGHTUSERDATA)
+			luaL_error(l, "Missing luserdata at self[0] in table");
+	}
+	else
+	{
+		if (lua_gettable(l, index) != LUA_TLIGHTUSERDATA)
+			luaL_error(l, "Missing luserdata at self[0] in table");
+	}
 	i = lua_touserdata(l, -1);
 	lua_pop(l, 1);
 	if (pop)

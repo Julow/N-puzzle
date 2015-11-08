@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 13:23:37 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 14:35:24 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -26,6 +26,9 @@ extern "C"
 #include <vector>
 #include <unordered_map>
 
+#include <cmath>
+#include <cfenv>
+
 namespace ftui
 {
 
@@ -43,12 +46,25 @@ static std::vector<FT_Face>	g_faces;
 
 int				Canvas::drawRectG(lua_State *l)
 {
-	std::cout << "drawRectG" << std::endl;
+	Canvas *const		self = ftlua::retrieveSelf<Canvas>(l, 1);
+	Canvas::Params		p;
+	ft::Rect<int>		r;
+	int const			top = lua_gettop(l);
 
-	// Canvas *const	inst = ftlua::retrieveSelf<Canvas>(l, 1, true);
-
-	// ft::f("drawRectG: %\n", (void*)inst);
-
+	std::fesetround(FE_TONEAREST);
+	r.left = std::rint(luaL_checknumber(l, 1));
+	r.top = std::rint(luaL_checknumber(l, 2));
+	r.right = std::rint(luaL_checknumber(l, 3));
+	r.bottom = std::rint(luaL_checknumber(l, 4));
+	p.strokeColor = luaL_checkinteger(l, 5);
+	if (top >= 6)
+		p.fillColor = luaL_checkinteger(l, 6);
+	if (top >= 7)
+		p.lineWidth = luaL_checkinteger(l, 7);
+	if (top > 7)
+		luaL_error(l, "Too many parameters to drawRect");
+	self->drawRect(r, p);
+	// ftlua::stackdump(l);
 	return 0;
 }
 
@@ -69,7 +85,7 @@ void			Canvas::pushTemplate(lua_State *l)
 void			Canvas::pushLua(lua_State *l)
 {
 	lua_pushglobaltable(l);				// _G
-	lua_newtable(l);					// [], _g
+	lua_newtable(l);					// [], _G
 
 	lua_pushlightuserdata(l, this);		// this, [], _G
 	lua_pushvalue(l, -2);				// [], this, [], _G
@@ -77,7 +93,11 @@ void			Canvas::pushLua(lua_State *l)
 
 	if (lua_getglobal(l, "Canvas") != LUA_TTABLE)	// template, [], _G
 		throw std::runtime_error("Canvas template should be present in _G");
-	lua_setmetatable(l, -2);			// [], _g
+	lua_setmetatable(l, -2);			// [], _G
+
+	lua_pushinteger(l, 0);				// 0, [], _G
+	lua_pushlightuserdata(l, this);		// this, 0, [], _G
+	lua_settable(l, -3);				// [], _G
 
 	lua_pop(l, 2);						// empty
 	return ;
@@ -242,6 +262,8 @@ void			Canvas::setAlpha(float alpha)
 */
 void			Canvas::drawRect(ft::Rect<int> const &rect, Params const &opt)
 {
+	FTASSERT(false);
+	std::cout << rect << std::endl;
 	if (ft::Color::a(opt.fillColor) != 0)
 		_fillRect(rect, ft::Color::alpha(opt.fillColor, _alpha));
 	if (ft::Color::a(opt.strokeColor) != 0)
@@ -252,6 +274,7 @@ void			Canvas::drawRect(ft::Rect<int> const &rect, Params const &opt)
 void			Canvas::_strokeRect(ft::Rect<int> const &rect,
 					ft::Color::t color, int lineWidth)
 {
+	FTASSERT(false);
 	int const		left = rect.left + _clip.left;
 	int const		right = rect.right + _clip.left;
 	int				top;
@@ -277,6 +300,7 @@ void			Canvas::_strokeRect(ft::Rect<int> const &rect,
 
 void			Canvas::_fillRect(ft::Rect<int> const &rect, ft::Color::t color)
 {
+	FTASSERT(false);
 	int const	left = rect.left + _clip.left;
 	int const	top = rect.top + _clip.top;
 	int const	width = rect.getWidth();

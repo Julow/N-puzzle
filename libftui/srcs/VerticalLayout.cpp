@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/04 18:17:49 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/08 14:22:37 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -132,7 +132,7 @@ void			VerticalLayout::onDraw(Canvas &canvas)
 			canvas.setAlpha(old_alpha);
 		}
 	}
-	else if (_layoutFlags & AView::REDRAW_QUERY)
+	else if (_layoutFlags & AView::REDRAW_QUERY) //TODO: elseif ??
 	{
 		for (ViewHolder *h : _childs)
 			if (h->getView()->isRedrawQueried())
@@ -170,7 +170,7 @@ void			VerticalLayout::onDraw(Canvas &canvas)
 void			VerticalLayout::addView(AView *view)
 {
 	ViewHolder		*holder;
-	
+
 	if (view->getViewHolder() != NULL)
 		throw std::invalid_argument(ft::f("View (#%) already has a parent",
 			view->getViewHolder()->getParent()));

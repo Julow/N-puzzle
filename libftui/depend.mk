@@ -37,11 +37,11 @@ o/srcs/ASolidView.o: srcs/ASolidView.cpp include/ft/Color.hpp \
 	include/ftui/IViewHolder.hpp include/ftui/XmlParser.hpp \
 	include/ftui/XmlTokenizer.hpp | o/srcs/
 o/srcs/AView.o: srcs/AView.cpp include/ft/utils.hpp include/ft/Vec.hpp \
-	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
-	include/ft/templates/Vec4.tpp include/ftlua/ftlua.hpp \
-	include/ftlua/templates/ftlua_caller.tpp \
-	include/ftlua/templates/ftlua_handler.tpp include/ft/assert.hpp \
-	include/ftui/AView.hpp include/ftui/libftui.hpp include/ftui/Activity.hpp \
+	include/ft/assert.hpp include/ft/templates/Vec2.tpp \
+	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
+	include/ftlua/ftlua.hpp include/ftlua/templates/ftlua_caller.tpp \
+	include/ftlua/templates/ftlua_handler.tpp include/ftui/AView.hpp \
+	include/ftui/libftui.hpp include/ftui/Activity.hpp \
 	include/ftui/DefaultEventBox.hpp include/ftui/EventBox.hpp \
 	include/ftui/EventParams.hpp include/ftui/IEventBox.hpp \
 	include/ftui/IEventParams.hpp include/ftui/IViewHolder.hpp \
@@ -66,19 +66,21 @@ o/srcs/AView_statics.o: srcs/AView_statics.cpp include/ft/utils.hpp \
 	include/ft/templates/Vec4.tpp include/ftui/ALayout.hpp \
 	include/ftui/ASolidView.hpp include/ftui/Canvas.hpp \
 	include/ftui/IViewHolder.hpp include/ftui/VerticalLayout.hpp \
-	include/ftui/SolidView.hpp include/ftui/TextView.hpp | o/srcs/
+	include/ftui/SolidView.hpp include/ftui/TextView.hpp \
+	include/ftlua/ftlua.hpp include/ftlua/templates/ftlua_caller.tpp \
+	include/ftlua/templates/ftlua_handler.tpp | o/srcs/
 o/srcs/Activity.o: srcs/Activity.cpp include/ft/utils.hpp include/ft/Vec.hpp \
-	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
-	include/ft/templates/Vec4.tpp include/ftlua/ftlua.hpp \
-	include/ftlua/templates/ftlua_caller.tpp \
-	include/ftlua/templates/ftlua_handler.tpp include/ft/assert.hpp \
-	include/ftui/Activity.hpp include/ftui/DefaultEventBox.hpp \
-	include/ftui/EventBox.hpp include/ftui/EventParams.hpp \
-	include/ftui/IEventBox.hpp include/ftui/IEventParams.hpp \
-	include/ftui/IViewHolder.hpp include/ftui/libftui.hpp \
-	include/ftui/templates/Activity.tpp include/ftui/templates/EventBox.tpp \
-	include/ftui/AView.hpp include/ftui/XmlParser.hpp \
-	include/ftui/XmlTokenizer.hpp | o/srcs/
+	include/ft/assert.hpp include/ft/templates/Vec2.tpp \
+	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
+	include/ftlua/ftlua.hpp include/ftlua/templates/ftlua_caller.tpp \
+	include/ftlua/templates/ftlua_handler.tpp include/ftui/Activity.hpp \
+	include/ftui/DefaultEventBox.hpp include/ftui/EventBox.hpp \
+	include/ftui/EventParams.hpp include/ftui/IEventBox.hpp \
+	include/ftui/IEventParams.hpp include/ftui/IViewHolder.hpp \
+	include/ftui/libftui.hpp include/ftui/templates/Activity.tpp \
+	include/ftui/templates/EventBox.tpp include/ftui/AView.hpp \
+	include/ft/Color.hpp include/ft/Rect.hpp include/ftui/Canvas.hpp \
+	include/ftui/XmlParser.hpp include/ftui/XmlTokenizer.hpp | o/srcs/
 o/srcs/Activity_RootViewHolder.o: srcs/Activity_RootViewHolder.cpp \
 	include/ft/Vec.hpp include/ft/assert.hpp include/ft/templates/Vec2.tpp \
 	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
@@ -93,7 +95,8 @@ o/srcs/Canvas.o: srcs/Canvas.cpp include/ft/Color.hpp include/ft/Rect.hpp \
 	include/ft/Vec.hpp include/ft/assert.hpp include/ft/templates/Vec2.tpp \
 	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
 	include/ftui/Canvas.hpp include/ftui/libftui.hpp include/ft/utils.hpp \
-	| o/srcs/
+	include/ftlua/ftlua.hpp include/ftlua/templates/ftlua_caller.tpp \
+	include/ftlua/templates/ftlua_handler.tpp | o/srcs/
 o/srcs/SolidView.o: srcs/SolidView.cpp include/ft/Color.hpp \
 	include/ft/Rect.hpp include/ft/Vec.hpp include/ft/assert.hpp \
 	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
@@ -136,8 +139,9 @@ o/srcs/XmlTokenizer.o: srcs/XmlTokenizer.cpp include/ft/assert.hpp \
 o/srcs/ft/assert.o: srcs/ft/assert.cpp include/ft/assert.hpp \
 	include/ft/utils.hpp | o/srcs/ft/
 o/srcs/ftlua/cpp_utils.o: srcs/ftlua/cpp_utils.cpp include/ft/Vec.hpp \
-	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
-	include/ft/templates/Vec4.tpp include/ft/utils.hpp include/ftlua/ftlua.hpp \
+	include/ft/assert.hpp include/ft/templates/Vec2.tpp \
+	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
+	include/ft/utils.hpp include/ftlua/ftlua.hpp \
 	include/ftlua/templates/ftlua_caller.tpp \
 	include/ftlua/templates/ftlua_handler.tpp | o/srcs/ftlua/
 o/srcs/ftlua/push_utils.o: srcs/ftlua/push_utils.cpp include/ft/assert.hpp \
