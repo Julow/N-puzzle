@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/07 14:10:32 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 10:13:42 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -42,11 +42,10 @@ public:
 	Activity(ft::Vec2<int> size);
 	virtual ~Activity(void);
 
-	void				init_lua_env(void);
 	void				inflate(std::istream &stream);
-	lua_State			*getLuaState(void) const;
 	void				saveScriptPath(std::string const &str);
 
+	lua_State			*getLuaState(void) const;
 	AView				*getRoot(void);
 	AView const			*getRoot(void) const;
 
@@ -59,10 +58,10 @@ public:
 	bool				onKeyUp(int key_code);
 	bool				onKeyDown(int key_code);
 
-	void				onMouseMove(int x, int y);
+	void				onMouseMove(int x, int y);// TODO: implement
 
-	void				onMouseUp(int x, int y, int button);
-	bool				onMouseDown(int x, int y, int button);
+	void				onMouseUp(int x, int y, int button);// TODO: implement
+	bool				onMouseDown(int x, int y, int button);// TODO: implement
 
 	/*
 	 *	registerEvent(e,v)		Registers an event for a given view:
@@ -115,7 +114,8 @@ public:
 		std::string const &funName, lua_CFunction f);
 	void				registerLuaCFun_table(
 		std::string const &tabName
-		, std::string const &funName, lua_CFunction f);
+		, std::string const &funName
+		, lua_CFunction f);
 
 protected:
 	RootViewHolder		*_rootView;
@@ -125,8 +125,6 @@ protected:
 	std::vector<std::string>	_scriptsPaths;
 
 private:
-	void				_loadScripts(void);
-
 	Activity(void) = delete;
 	Activity(Activity const &src) = delete;
 	Activity			&operator=(Activity const &rhs) = delete;

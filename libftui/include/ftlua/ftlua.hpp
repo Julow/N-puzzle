@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/13 07:39:43 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 19:09:00 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/08 10:07:26 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -128,6 +128,11 @@ T					*retrieveSelf(lua_State *l, int index, bool pop = true);
 
 void	pushUtils(lua_State *l);
 void	stackdump(lua_State *l);
+void	registerLuaCFunTable(
+	    lua_State *l
+		, std::string const &tabName
+		, std::string const &funName
+		, lua_CFunction f);
 
 };
 

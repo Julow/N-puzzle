@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/07 14:44:11 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 10:12:07 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -22,6 +22,11 @@
 namespace ftui
 {
 
+/*
+** ************************************************************************** **
+** Init-time / End-time -> instance.CTOR / instance.DTOR
+*/
+
 Activity::Activity(ft::Vec2<int> size) :
 	_rootView(NULL),
 	_eventMap(),
@@ -36,6 +41,39 @@ Activity::~Activity(void)
 {
 	if (_l != nullptr)
 		lua_close(_l);
+	// TODO: release views
+	return ;
+}
+
+/*
+** ************************************************************************** **
+** Init-time -> instance.inflate
+*/
+
+static void		init_template_table(
+	lua_State *l
+	, std::string const &view_name
+	, std::string const &tableinit_luacode)
+{
+	if (luaL_dostring(l, tableinit_luacode.c_str()) != LUA_OK)
+		throw std::runtime_error(ft::f("Cannot init table '%'", view_name));
+	if (lua_getglobal(l, view_name.c_str()) != LUA_TTABLE)
+	{
+		lua_createtable(l, 0, 0);
+		lua_setglobal(l, view_name.c_str());
+	}
+	lua_pop(l, 1);
+	return ;
+}
+
+static void		push_luacfun_methods(
+	lua_State *l
+	, std::string const &view_name
+	, std::vector<AView::view_info_s::luamethod_t> const &methods)
+{
+	for (auto itm : methods)
+		ftlua::registerLuaCFunTable(
+			l, view_name, std::get<0>(itm), std::get<1>(itm));
 	return ;
 }
 
@@ -56,36 +94,42 @@ static void		finalize_template(
 	return ;
 }
 
-void			Activity::init_lua_env(void)
+static void		push_view_templates(lua_State *l)
 {
-	int		err;
+	for (auto const &it : AView::viewsInfo)
+		init_template_table(l, it.first, it.second.tableInit);
+	for (auto const &it : AView::viewsInfo)
+		push_luacfun_methods(l, it.first, it.second.luaMethods);
+	for (auto const &it : AView::viewsInfo)
+		finalize_template(l, it.first, it.second);
+	return ;
+}
 
-	FTASSERT(_l == nullptr, "lua state already created");
-	this->_l = luaL_newstate();
-	if (_l == nullptr)
+static lua_State	*new_lua_env(void)
+{
+	lua_State *const	l = luaL_newstate();
+
+	if (l == nullptr)
 		throw std::runtime_error("Error while creating lua state");
-	luaL_openlibs(_l);
-	ftlua::pushUtils(_l);
-	for (auto const &it : AView::viewsInfo)
+	luaL_openlibs(l);
+	// TODO: rpath in binary to write utils in .lua file
+	ftlua::pushUtils(l);
+	push_view_templates(l);
+	return l;
+}
+
+static void			load_views_scripts(
+	lua_State *l, std::vector<std::string> &scripts_paths)
+{
+	for (auto const &fname : scripts_paths)
 	{
-		err = luaL_dostring(_l, it.second.tableInit.c_str());
-		if (err != LUA_OK)
-			throw std::runtime_error(ft::f("Cannot init table (%)", it.first));
-		if (lua_getglobal(_l, it.first.c_str()) != LUA_TTABLE)
-		{
-			lua_createtable(_l, 0, 0);
-			lua_setglobal(_l, it.first.c_str());
-		}
-		lua_pop(_l, 1);
+		if (luaL_dofile(l, fname.c_str()))
+			throw std::runtime_error(
+				ft::f("error loading '%': '%'"
+					  , fname, luaL_checkstring(l, -1)));
 	}
-	for (auto const &it : AView::viewsInfo)
-	{
-		for (auto itm : it.second.luaMethods)
-			this->registerLuaCFun_table(
-				it.first, std::get<0>(itm), std::get<1>(itm));
-	}
-	for (auto const &it : AView::viewsInfo)
-		finalize_template(_l, it.first, it.second);
+	scripts_paths.clear();
+	scripts_paths.shrink_to_fit();
 	return ;
 }
 
@@ -95,19 +139,19 @@ void			Activity::inflate(std::istream &stream)
 	AView				*v;
 	XmlParser::State	state;
 
-	if (_l == nullptr)
-		init_lua_env();
+	FTASSERT(_l == nullptr, "Activity.inflate called again");
+	_l = new_lua_env();
 	if (!xml.next(state))
-		FTASSERT(false, "Activity should own at least 1 view");
+		throw std::runtime_error("Activity should own at least 1 view");
 	FTASSERT(state == XmlParser::State::START, "Cannot fail");
 	v = AView::getFactory(xml.getMarkupName())(xml, *this);
 	this->_rootView = new Activity::RootViewHolder(xml, v, this->_size);
 	v->inflate(xml, *this);
 	v->setViewHolder(this->_rootView);
 	if (xml.next(state))
-		FTASSERT(false, "Activity should not own more than 1 view");
-	this->_loadScripts();
-	FTASSERT(lua_gettop(_l) == 0);
+		throw std::runtime_error("Activity should not own more than 1 view");
+	load_views_scripts(_l, _scriptsPaths);
+	FTASSERT(lua_gettop(_l) == 0, "Something went wrong...");
 	return ;
 }
 
@@ -122,19 +166,10 @@ void			Activity::saveScriptPath(std::string const &str)
 	return ;
 }
 
-void			Activity::_loadScripts(void)
-{
-	for (auto const &fname : _scriptsPaths)
-	{
-		if (luaL_dofile(_l, fname.c_str()))
-		{
-			FTASSERT(false, ft::f("'%'", luaL_checkstring(_l, -1)));
-			//TODO throw
-			lua_pop(_l, 1);
-		}
-	}
-	return ;
-}
+/*
+** ************************************************************************** **
+** Render-time -> internal functions
+*/
 
 lua_State		*Activity::getLuaState(void) const
 {
@@ -154,6 +189,11 @@ AView const		*Activity::getRoot(void) const
 		return (NULL);
 	return (_rootView->getView());
 }
+
+/*
+** ************************************************************************** **
+** Render-time -> instance.render
+*/
 
 void			Activity::render(Canvas &canvas)
 {
@@ -195,6 +235,11 @@ void			Activity::queryUpdateAll(void)
 		_rootView->getView()->queryUpdate();
 }
 
+/*
+** ************************************************************************** **
+** Render-time -> key/mouse entry point 'window event'->'activity event'
+*/
+
 bool			Activity::onKeyUp(int key_code)
 {
 	if (_rootView != NULL && _rootView->getView()->isKeyboardTargeted())
@@ -208,6 +253,11 @@ bool			Activity::onKeyDown(int key_code)
 		return (_rootView->getView()->onKeyDown(key_code));
 	return (false);
 }
+
+/*
+** ************************************************************************** **
+** Render-time -> instance.*Event		(more in Activity.tpp)
+*/
 
 void			Activity::unregisterEvent(std::string const &event, AView *v)
 {
@@ -227,6 +277,11 @@ void			Activity::unregisterEvent(std::string const &event, AView *v)
 	return ;
 }
 
+/*
+** ************************************************************************** **
+** Render-time -> register 'c' function for 'lua->c' callback
+*/
+
 void			Activity::registerLuaCFun_global(
 	std::string const &funName, lua_CFunction f)
 {
@@ -236,17 +291,10 @@ void			Activity::registerLuaCFun_global(
 
 void			Activity::registerLuaCFun_table(
 	std::string const &tabName
-	, std::string const &funName, lua_CFunction f)
+	, std::string const &funName
+	, lua_CFunction f)
 {
-	int		t;
-
-	t = lua_getglobal(_l, tabName.c_str());
-	if (t != LUA_TTABLE)
-		throw std::runtime_error(ft::f("Lua: Corrupted table (%)", tabName));
-	(void)lua_pushstring(_l, funName.c_str());
-	(void)lua_pushcfunction(_l, f);
-	lua_settable(_l, -3);
-	lua_setglobal(_l, tabName.c_str());
+	ftlua::registerLuaCFunTable(_l, tabName, funName, f);
 	return ;
 }
 

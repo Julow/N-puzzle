@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/30 09:01:50 by ngoguey           #+#    #+#             */
-//   Updated: 2015/10/04 14:21:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 09:16:33 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@
 
 namespace ftui
 {
+
+/*
+** ************************************************************************** **
+** Render-time -> instance.*Event       (more in Activity.cpp)
+*/
 
 template<typename... Args>
 void		Activity::registerEvent(std::string const &event, AView *v)

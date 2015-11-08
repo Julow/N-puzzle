@@ -7,9 +7,11 @@
 #    By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/02 13:29:23 by jaguillo          #+#    #+#              #
-#    Updated: 2015/11/03 19:22:16 by jaguillo         ###   ########.fr        #
+#    Updated: 2015/11/08 09:05:44 by ngoguey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+# Wrapper around ocamldep
 
 OCAML_DIRS="srcs/solver batteries-included"
 
