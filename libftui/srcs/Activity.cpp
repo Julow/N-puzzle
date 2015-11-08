@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 19:24:05 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 20:01:56 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -188,17 +188,17 @@ void			Activity::queryUpdateAll(void)
 ** Render-time -> key/mouse entry point 'window event'->'activity event'
 */
 
-bool			Activity::onKeyUp(int key_code)
+bool			Activity::onKeyUp(int key_code, int mods)
 {
 	if (_rootView != NULL && _rootView->getView()->isKeyboardTargeted())
-		return (_rootView->getView()->onKeyUp(key_code));
+		return (_rootView->getView()->onKeyUp(key_code, mods));
 	return (false);
 }
 
-bool			Activity::onKeyDown(int key_code)
+bool			Activity::onKeyDown(int key_code, int mods)
 {
 	if (_rootView != NULL && _rootView->getView()->isKeyboardTargeted())
-		return (_rootView->getView()->onKeyDown(key_code));
+		return (_rootView->getView()->onKeyDown(key_code, mods));
 	return (false);
 }
 

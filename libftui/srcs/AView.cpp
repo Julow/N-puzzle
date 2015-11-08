@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 19:25:02 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 20:01:24 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -298,18 +298,18 @@ bool				AView::onMouseMove(int x, int y)
 	return (false);
 }
 
-bool				AView::onKeyDown(int key_code)
+bool				AView::onKeyDown(int key_code, int mods)
 {
 	if (this->callLuaCallback(
-			_act.getLuaState(), LuaCallback::KEY_DOWN, key_code))
+			_act.getLuaState(), LuaCallback::KEY_DOWN, key_code, mods))
 		return (true);
 	return (false);
 }
 
-bool				AView::onKeyUp(int key_code)
+bool				AView::onKeyUp(int key_code, int mods)
 {
 	if (this->callLuaCallback(
-			_act.getLuaState(), LuaCallback::KEY_UP, key_code))
+			_act.getLuaState(), LuaCallback::KEY_UP, key_code, mods))
 		return (true);
 	return (false);
 }

@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/07 13:47:07 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/08 19:25:27 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/08 19:59:46 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -15,7 +15,6 @@ assert(puzzleFrame ~= nil)
 
 function puzzleFrame:onDraw(canvas)
    print("puzzleFrame:onDraw: ", x, y, a);
-   ft.ptab(self);
    -- canvas:drawText();
    if self.curPuzzle ~= nil then
 
@@ -70,8 +69,18 @@ puzzleFrame:setCallback('onMouseUp', function(self, x, y, b, m)
 						   print("lua:onMouseUP", x, y, b, m);
 									 end
 );
-puzzleFrame:setCallback('onKeyDown', function(self, b)
-						   print("lua:onKeyDown", b);
+puzzleFrame:setCallback('onKeyDown', function(self, b, m)
+						   print("lua:onKeyDOWN", b, m);
+						   if b == 32 then
+							  self:hookMouseMove(0);
+						   end
+									 end
+);
+puzzleFrame:setCallback('onKeyUp', function(self, b, m)
+						   print("lua:onKeyUP", b, m);
+						   if b == 32 then
+							  self:hookMouseMove(1);
+						   end
 									 end
 );
 puzzleFrame:hookMouseMove(1);
@@ -79,7 +88,8 @@ puzzleFrame:hookMouseClick(1);
 puzzleFrame:hookKeyboard(1);
 
 puzzleFrame.curPuzzle = {};
-puzzleFrame.w = 5;
+puzzleFrame.w = 3;
+
 -- ft.ptab(puzzleFrame);
 -- ft.ptab(AView);
 -- ft.ptab(Canvas);

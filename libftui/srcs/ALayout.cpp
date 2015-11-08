@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 19:24:36 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 20:01:03 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -310,7 +310,7 @@ bool				ALayout::onMouseMove(int x, int y)
 	return (ret);
 }
 
-bool				ALayout::onKeyDown(int key_code)
+bool				ALayout::onKeyDown(int key_code, int mods)
 {
 	bool		ret;
 	AView		*v;
@@ -321,14 +321,14 @@ bool				ALayout::onKeyDown(int key_code)
 		v = at(i);
 		FTASSERT(v != nullptr);
 		if (v->isKeyboardTargeted())
-			ret |= v->onKeyDown(key_code);
+			ret |= v->onKeyDown(key_code, mods);
 	}
 	if (AView::isKeyboardTargeted())
-		ret |= AView::onKeyDown(key_code);
+		ret |= AView::onKeyDown(key_code, mods);
 	return (ret);
 }
 
-bool				ALayout::onKeyUp(int key_code)
+bool				ALayout::onKeyUp(int key_code, int mods)
 {
 	bool		ret;
 	AView		*v;
@@ -339,10 +339,10 @@ bool				ALayout::onKeyUp(int key_code)
 		v = at(i);
 		FTASSERT(v != nullptr);
 		if (v->isKeyboardTargeted())
-			ret |= v->onKeyUp(key_code);
+			ret |= v->onKeyUp(key_code, mods);
 	}
 	if (AView::isKeyboardTargeted())
-		ret |= AView::onKeyUp(key_code);
+		ret |= AView::onKeyUp(key_code, mods);
 	return (ret);
 }
 

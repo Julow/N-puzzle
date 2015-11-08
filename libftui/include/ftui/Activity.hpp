@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 19:23:23 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 20:00:07 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -55,8 +55,8 @@ public:
 	void				queryMeasureAll(void);
 	void				queryUpdateAll(void);
 
-	bool				onKeyUp(int key_code);
-	bool				onKeyDown(int key_code);
+	bool				onKeyUp(int key_code, int mods);
+	bool				onKeyDown(int key_code, int mods);
 
 	void				onMouseMove(int x, int y);
 

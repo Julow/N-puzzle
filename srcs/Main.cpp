@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/08 19:22:29 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 19:59:14 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -119,16 +119,12 @@ void			Main::onKeyUp(int key, int scancode, int mods)
 	if (key == GLFW_KEY_ESCAPE)
 		glfwSetWindowShouldClose(_window, true);
 	else
-		_state->getActivity().onKeyUp(key);
-	(void)scancode;
-	(void)mods;
+		_state->getActivity().onKeyUp(key, mods);
 }
 
 void			Main::onKeyDown(int key, int scancode, int mods)
 {
-	_state->getActivity().onKeyDown(key);
-	(void)scancode;
-	(void)mods;
+	_state->getActivity().onKeyDown(key, mods);
 }
 
 void			Main::onMouseMove(int x, int y)
