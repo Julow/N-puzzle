@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 20:00:07 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 20:51:02 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -139,7 +139,8 @@ private:
 class	Activity::RootViewHolder : public IViewHolder
 {
 public:
-	RootViewHolder(XmlParser const &xml, AView *v, ft::Vec2<int> s);
+	RootViewHolder(Activity &act, XmlParser const &xml, AView *v,
+					ft::Vec2<int> s);
 	virtual ~RootViewHolder(void);
 
 	virtual ALayout			*getParent(void);
@@ -161,6 +162,7 @@ public:
 
 protected:
 
+	Activity				&_activity;
 	AView					*_view;
 	ft::Vec2<int>			_size;
 	ft::Vec2<int>			_requestedSize;

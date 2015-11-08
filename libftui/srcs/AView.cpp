@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 20:01:24 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 20:51:45 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -198,11 +198,6 @@ void				AView::setParam(string const &k, string const &v)
 		{"keyboard_target", [](AView *view, std::string const &p)
 		{
 			view->hookKeyboard(p == "true");
-		}},
-		{"activity_scripts", [](AView *view, std::string const &p)
-		{
-			// TODO: improve activity_scripts location
-			view->_act.saveScriptPath(p);
 		}},
 	};
 	auto const		&it = param_map.find(k);

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 09:38:59 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 09:40:13 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/08 20:51:39 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -17,8 +17,9 @@
 namespace ftui
 {
 
-Activity::RootViewHolder::RootViewHolder(XmlParser const &xml, AView *v,
-		ft::Vec2<int> s) :
+Activity::RootViewHolder::RootViewHolder(Activity &act, XmlParser const &xml,
+		AView *v, ft::Vec2<int> s) :
+	_activity(act),
 	_view(v),
 	_size(s)
 {
@@ -80,8 +81,8 @@ ft::Vec2<int>	Activity::RootViewHolder::getRequestedSize(void) const
 void			Activity::RootViewHolder::setParam(std::string const &k
 												   , std::string const &v)
 {
-	(void)k;
-	(void)v;
+	if (k == "activity_scripts")
+		_activity.saveScriptPath(v);
 	return ;
 }
 
