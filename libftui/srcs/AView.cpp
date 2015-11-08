@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 14:05:11 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 15:44:38 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -340,7 +340,10 @@ void				AView::onPositionChange(void)
 }
 void				AView::onSizeChange(void)
 {
-	this->callLuaCallback(_act.getLuaState(), LuaCallback::SIZE_CHANGE);
+	ft::Vec2<int>	size = this->getViewHolder()->getSize();
+
+	this->callLuaCallback(
+		_act.getLuaState(), LuaCallback::SIZE_CHANGE, size.x, size.y);
 	return ;
 }
 void				AView::onVisibilityChange(bool hidden)

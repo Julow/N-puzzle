@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 12:08:30 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 15:33:38 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -20,6 +20,7 @@
 # include "ft/Rect.hpp"
 # include "ft/Vec.hpp"
 # include "lua/lua.hpp"
+
 
 namespace ftui
 {
@@ -47,10 +48,22 @@ public:
 	};
 
 	Canvas(ft::Color::t *bitmap, int width, int height);
-	Canvas(Canvas const &src) = delete;
+	Canvas				&operator=(Canvas &&rhs);
 	virtual ~Canvas(void);
 
-	Canvas				&operator=(Canvas const &rhs);
+	Canvas(Canvas const &src) = delete;
+	Canvas				&operator=(Canvas const &rhs) = delete;
+
+
+/*
+** Lua interactions
+*/
+	static void				pushTemplate(lua_State *l);
+	static int				drawRectG(lua_State *l);
+	static int				drawTextG(lua_State *l);
+
+	void					pushLua(lua_State *l);
+	bool					isInLua(lua_State *l);
 
 /*
 ** Bitmap
@@ -161,12 +174,6 @@ public:
 	static ft::Vec2<int>	measureText(std::string const &text,
 								Params const &opt);
 
-	static void				pushTemplate(lua_State *l);
-	static int				drawRectG(lua_State *l);
-	static int				drawTextG(lua_State *l);
-
-	void					pushLua(lua_State *l);
-	bool					isInLua(lua_State *l);
 
 protected:
 

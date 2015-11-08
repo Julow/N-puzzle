@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 14:35:24 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 15:33:13 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -42,6 +42,44 @@ static std::vector<FT_Face>	g_faces;
 
 /*
 ** Construction
+*/
+
+Canvas::Canvas(ft::Color::t *bitmap, int width, int height) :
+	_bitmap(bitmap),
+	_width(width),
+	_height(height),
+	_clip(0, 0, width, height),
+	_alpha(1.f)
+{
+	return ;
+}
+
+// Canvas::Canvas(Canvas const &src) :
+// 	_bitmap(src._bitmap),
+// 	_width(src._width),
+// 	_height(src._height),
+// 	_alpha(src._alpha)
+// {
+// }
+
+Canvas::~Canvas(void)
+{
+	// not removed from any lua
+	return ;
+}
+
+Canvas			&Canvas::operator=(Canvas &&rhs)
+{
+	_bitmap = rhs._bitmap;
+	_width = rhs._width;
+	_height = rhs._height;
+	_alpha = rhs._alpha;
+	rhs._bitmap = nullptr;
+	return (*this);
+}
+
+/*
+** LUA Interations
 */
 
 int				Canvas::drawRectG(lua_State *l)
@@ -118,38 +156,6 @@ bool			Canvas::isInLua(lua_State *l)
 
 
 
-Canvas::Canvas(ft::Color::t *bitmap, int width, int height) :
-	_bitmap(bitmap),
-	_width(width),
-	_height(height),
-	_clip(0, 0, width, height),
-	_alpha(1.f)
-{
-	return ;
-}
-
-// Canvas::Canvas(Canvas const &src) :
-// 	_bitmap(src._bitmap),
-// 	_width(src._width),
-// 	_height(src._height),
-// 	_alpha(src._alpha)
-// {
-// }
-
-Canvas::~Canvas(void)
-{
-	// not removed from any lua
-	return ;
-}
-
-Canvas			&Canvas::operator=(Canvas const &rhs)
-{
-	_bitmap = rhs._bitmap;
-	_width = rhs._width;
-	_height = rhs._height;
-	_alpha = rhs._alpha;
-	return (*this);
-}
 
 /*
 ** Bitmap
@@ -262,7 +268,6 @@ void			Canvas::setAlpha(float alpha)
 */
 void			Canvas::drawRect(ft::Rect<int> const &rect, Params const &opt)
 {
-	FTASSERT(false);
 	std::cout << rect << std::endl;
 	if (ft::Color::a(opt.fillColor) != 0)
 		_fillRect(rect, ft::Color::alpha(opt.fillColor, _alpha));
@@ -274,7 +279,6 @@ void			Canvas::drawRect(ft::Rect<int> const &rect, Params const &opt)
 void			Canvas::_strokeRect(ft::Rect<int> const &rect,
 					ft::Color::t color, int lineWidth)
 {
-	FTASSERT(false);
 	int const		left = rect.left + _clip.left;
 	int const		right = rect.right + _clip.left;
 	int				top;
@@ -300,7 +304,6 @@ void			Canvas::_strokeRect(ft::Rect<int> const &rect,
 
 void			Canvas::_fillRect(ft::Rect<int> const &rect, ft::Color::t color)
 {
-	FTASSERT(false);
 	int const	left = rect.left + _clip.left;
 	int const	top = rect.top + _clip.top;
 	int const	width = rect.getWidth();

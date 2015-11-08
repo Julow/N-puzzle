@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/08 12:04:15 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 15:48:18 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -152,7 +152,6 @@ int				main(void)
 	{
 		Main		main;
 
-		std::cout << "Main lol" << std::endl;
 		main.loop();
 	}
 	catch (std::exception const &e)

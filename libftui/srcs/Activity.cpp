@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 12:24:22 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 15:58:49 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -34,7 +34,6 @@ Activity::Activity(ft::Vec2<int> size) :
 	_size(size),
 	_l(nullptr)
 {
-	std::cout << "Activity CTOR" << std::endl;
 	return ;
 }
 
