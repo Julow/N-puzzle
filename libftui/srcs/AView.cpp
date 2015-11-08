@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/07 15:00:16 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 11:38:32 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -32,9 +32,11 @@ namespace ftui
 {
 
 /*
-** TODO: move to a member static
+** ========================================================================== **
+** Init-time -> instance.CTOR from xml parsing
 */
-static std::string const	*retrieveId(XmlParser const &xml)
+
+static std::string const	*retrieve_id(XmlParser const &xml)
 {
 	auto const		&it = xml.getParams().find("id");
 
@@ -46,7 +48,7 @@ static std::string const	*retrieveId(XmlParser const &xml)
 AView::AView(XmlParser const &xml, Activity &act) :
 	_holder(nullptr),
 	_act(act),
-	_id(retrieveId(xml)),
+	_id(retrieve_id(xml)),
 	_flags(0),
 	_luaCallbacks(0),
 	_alpha(1.f)
@@ -69,6 +71,17 @@ AView::AView(XmlParser const &xml, Activity &act) :
 	lua_pop(l, 1);
 	return ;
 }
+
+/*
+** ========================================================================== **
+** Render-time -> instance.CTOR from specific request NYI
+** TODO: Implement
+*/
+
+/*
+** ========================================================================== **
+** End-time -> instance.DTOR from activity or parent
+*/
 
 AView::~AView(void)
 {
@@ -213,21 +226,21 @@ void				AView::setParam(string const &k, string const &v)
 void				AView::onUpdate(void)
 {
 	this->_flags &= ~AView::UPDATE_QUERY;
-	callLuaCallback(_act.getLuaState(), LuaCallback::UPDATE);
+	this->callLuaCallback(_act.getLuaState(), LuaCallback::UPDATE);
 	return ;
 }
 
 void				AView::onMeasure(void)
 {
 	this->_flags &= ~AView::MEASURE_QUERY;
-	callLuaCallback(_act.getLuaState(), LuaCallback::MEASURE);
+	this->callLuaCallback(_act.getLuaState(), LuaCallback::MEASURE);
 }
 
 void				AView::onDraw(Canvas &canvas)
 {
 	this->_flags &= ~AView::REDRAW_QUERY;
 	// TODO call lua
-	callLuaCallback(_act.getLuaState(), LuaCallback::DRAW);
+	this->callLuaCallback(_act.getLuaState(), LuaCallback::DRAW);
 	// callLuaCallback(_act.getLuaState(), LuaCallback::DRAW, canvas);
 	// TODO lua Canvas table
 	(void)canvas;
@@ -239,45 +252,48 @@ void				AView::onDraw(Canvas &canvas)
 */
 bool				AView::onMouseScroll(int x, int y, float delta)
 {
-	if (callLuaCallback(_act.getLuaState(), LuaCallback::MOUSE_SCROLL,
-		x, y, delta))
+	if (this->callLuaCallback(
+			_act.getLuaState(), LuaCallback::MOUSE_SCROLL, x, y, delta))
 		return (true);
 	return (false);
 }
 
 bool				AView::onMouseDown(int x, int y, int button)
 {
-	if (callLuaCallback(_act.getLuaState(), LuaCallback::MOUSE_DOWN,
-		x, y, button))
+	if (this->callLuaCallback(
+			_act.getLuaState(), LuaCallback::MOUSE_DOWN, x, y, button))
 		return (true);
 	return (false);
 }
 
 bool				AView::onMouseUp(int x, int y, int button)
 {
-	if (callLuaCallback(_act.getLuaState(), LuaCallback::MOUSE_UP,
-		x, y, button))
+	if (this->callLuaCallback(
+			_act.getLuaState(), LuaCallback::MOUSE_UP, x, y, button))
 		return (true);
 	return (false);
 }
 
 bool				AView::onMouseMove(int x, int y)
 {
-	if (callLuaCallback(_act.getLuaState(), LuaCallback::MOUSE_MOVE, x, y))
+	if (this->callLuaCallback(
+			_act.getLuaState(), LuaCallback::MOUSE_MOVE, x, y))
 		return (true);
 	return (false);
 }
 
 bool				AView::onKeyDown(int key_code)
 {
-	if (callLuaCallback(_act.getLuaState(), LuaCallback::KEY_DOWN, key_code))
+	if (this->callLuaCallback(
+			_act.getLuaState(), LuaCallback::KEY_DOWN, key_code))
 		return (true);
 	return (false);
 }
 
 bool				AView::onKeyUp(int key_code)
 {
-	if (callLuaCallback(_act.getLuaState(), LuaCallback::KEY_UP, key_code))
+	if (this->callLuaCallback(
+			_act.getLuaState(), LuaCallback::KEY_UP, key_code))
 		return (true);
 	return (false);
 }
@@ -287,33 +303,34 @@ bool				AView::onKeyUp(int key_code)
 */
 void				AView::onMouseEnter(void)
 {
-	callLuaCallback(_act.getLuaState(), LuaCallback::MOUSE_ENTER);
+	this->callLuaCallback(_act.getLuaState(), LuaCallback::MOUSE_ENTER);
 	return ;
 }
 void				AView::onMouseLeave(void)
 {
-	callLuaCallback(_act.getLuaState(), LuaCallback::MOUSE_LEAVE);
+	this->callLuaCallback(_act.getLuaState(), LuaCallback::MOUSE_LEAVE);
 	return ;
 }
 void				AView::onEvent(std::string const &event, IEventParams *p)
 {
-	callLuaCallback(_act.getLuaState(), LuaCallback::EVENT, event);
+	this->callLuaCallback(_act.getLuaState(), LuaCallback::EVENT, event);
 	(void)p;// TODO: onEvent IEventParams
 	return ;
 }
 void				AView::onPositionChange(void)
 {
-	callLuaCallback(_act.getLuaState(), LuaCallback::POSITION_CHANGE);
+	this->callLuaCallback(_act.getLuaState(), LuaCallback::POSITION_CHANGE);
 	return ;
 }
 void				AView::onSizeChange(void)
 {
-	callLuaCallback(_act.getLuaState(), LuaCallback::SIZE_CHANGE);
+	this->callLuaCallback(_act.getLuaState(), LuaCallback::SIZE_CHANGE);
 	return ;
 }
 void				AView::onVisibilityChange(bool hidden)
 {
-	callLuaCallback(_act.getLuaState(), LuaCallback::VISIBILITY_CHANGE, hidden);
+	this->callLuaCallback(
+		_act.getLuaState(), LuaCallback::VISIBILITY_CHANGE, hidden);
 	return ;
 }
 

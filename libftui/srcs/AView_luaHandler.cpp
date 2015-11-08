@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 19:17:04 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/08 10:47:08 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -37,7 +37,7 @@ int			CLASS::NAME##G(lua_State *l)								\
 */
 
 DEF_LUACFUN_GSUFFIX(TextView, setText,				2, 0)
-DEF_LUACFUN_GSUFFIX(TextView, getFont,				1,	1)
+DEF_LUACFUN_GSUFFIX(TextView, getFont,				1, 1)
 DEF_LUACFUN_GSUFFIX(TextView, setFont,				2, 0)
 DEF_LUACFUN_GSUFFIX(TextView, getTextColor,			1, 1)
 DEF_LUACFUN_GSUFFIX(TextView, setTextColor,			2, 0)

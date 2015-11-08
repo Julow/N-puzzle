@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/07 13:02:33 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 12:04:15 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -87,7 +87,7 @@ Main::Main(void)
 
 void				Main::loop(void)
 {
-	ftui::Canvas		canvas(_canvasHolder.getCanvas());
+	ftui::Canvas		&canvas(_canvasHolder.getCanvas());
 
 	_state.reset(new StartState(canvas, _ocaml));
 	while (!glfwWindowShouldClose(_window))

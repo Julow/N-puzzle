@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/14 13:13:12 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/08 12:08:30 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,6 +19,7 @@
 # include "ft/Color.hpp"
 # include "ft/Rect.hpp"
 # include "ft/Vec.hpp"
+# include "lua/lua.hpp"
 
 namespace ftui
 {
@@ -46,7 +47,7 @@ public:
 	};
 
 	Canvas(ft::Color::t *bitmap, int width, int height);
-	Canvas(Canvas const &src);
+	Canvas(Canvas const &src) = delete;
 	virtual ~Canvas(void);
 
 	Canvas				&operator=(Canvas const &rhs);
@@ -159,6 +160,13 @@ public:
 	*/
 	static ft::Vec2<int>	measureText(std::string const &text,
 								Params const &opt);
+
+	static void				pushTemplate(lua_State *l);
+	static int				drawRectG(lua_State *l);
+	static int				drawTextG(lua_State *l);
+
+	void					pushLua(lua_State *l);
+	bool					isInLua(lua_State *l);
 
 protected:
 

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/04 17:13:28 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/08 11:37:04 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -102,7 +102,7 @@ public:
 	*/
 	float						getAlpha(void) const;
 	bool						isVisible(void) const;
-	
+
 	void						setAlpha(float value);
 	void						setVisibility(bool hidden);
 
@@ -258,6 +258,7 @@ public:
 		, view_info_s::factory_t factory
 		, std::vector<view_info_s::luamethod_t> luaMethods = {}
 		, std::string const &tableInit = {});
+	static void						pushViewTemplates(lua_State *l);
 
 protected:
 	typedef std::unordered_map<std::string, uint32_t>	callback_map_t;

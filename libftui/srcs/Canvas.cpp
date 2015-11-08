@@ -6,11 +6,12 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/14 13:13:15 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/08 12:28:34 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "ftui/Canvas.hpp"
+#include "ftlua/ftlua.hpp"
 #include "ft/utils.hpp"
 
 extern "C"
@@ -35,6 +36,65 @@ static bool					g_freetype_init = false;
 static std::unordered_map<std::string, Canvas::font_t> g_faces_cache;
 static std::vector<FT_Face>	g_faces;
 
+/*
+** Construction
+*/
+
+int				Canvas::drawRectG(lua_State *l)
+{
+	// Canvas *const	inst = ftlua::retrieveSelf<Canvas>(l, 1, true);
+
+	// ft::f("drawRectG: %\n", (void*)inst);
+
+	return 0;
+}
+
+int				Canvas::drawTextG(lua_State *l)
+{
+	return 0;
+}
+
+void			Canvas::pushTemplate(lua_State *l)
+{
+	luaL_dostring(l, "Canvas = {}; Canvas.__index = Canvas;");
+	ftlua::registerLuaCFunTable(l, "Canvas", "drawRect", &Canvas::drawRectG);
+	ftlua::registerLuaCFunTable(l, "Canvas", "drawText", &Canvas::drawTextG);
+	return ;
+}
+
+void			Canvas::pushLua(lua_State *l)
+{
+	lua_pushglobaltable(l);				// _G
+	lua_newtable(l);					// [], _g
+
+	lua_pushlightuserdata(l, this);		// this, [], _G
+	lua_pushvalue(l, -2);				// [], this, [], _G
+	lua_settable(l, -4);				// [], _G
+
+	(void)lua_pushstring(l, "__index");	// __index, [], _g
+	if (lua_getglobal(l, "Canvas") != LUA_TTABLE)	// template, __index, [], _G
+		throw std::runtime_error("Canvas template should be present in _G");
+	lua_settable(l, -3);				// [], _g
+
+	lua_pop(l, 2);						// empty
+	return ;
+}
+
+bool			Canvas::isInLua(lua_State *l)
+{
+	lua_pushglobaltable(l);
+	lua_pushlightuserdata(l, this);
+	if (lua_gettable(l, -2) != LUA_TTABLE)
+	{
+		lua_pop(l, 2);
+		return false;
+	}
+	lua_pop(l, 2);
+	return true;
+}
+
+
+
 Canvas::Canvas(ft::Color::t *bitmap, int width, int height) :
 	_bitmap(bitmap),
 	_width(width),
@@ -42,18 +102,21 @@ Canvas::Canvas(ft::Color::t *bitmap, int width, int height) :
 	_clip(0, 0, width, height),
 	_alpha(1.f)
 {
+	return ;
 }
 
-Canvas::Canvas(Canvas const &src) :
-	_bitmap(src._bitmap),
-	_width(src._width),
-	_height(src._height),
-	_alpha(src._alpha)
-{
-}
+// Canvas::Canvas(Canvas const &src) :
+// 	_bitmap(src._bitmap),
+// 	_width(src._width),
+// 	_height(src._height),
+// 	_alpha(src._alpha)
+// {
+// }
 
 Canvas::~Canvas(void)
 {
+	// not removed from any lua
+	return ;
 }
 
 Canvas			&Canvas::operator=(Canvas const &rhs)

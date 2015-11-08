@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/07 13:47:07 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/07 14:59:15 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/08 12:04:38 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -22,4 +22,5 @@ puzzleFrame:queryRedraw();
 puzzleFrame:setCallback('onDraw', puzzleFrame.onDraw);
 ft.ptab(puzzleFrame);
 ft.ptab(AView);
+ft.ptab(Canvas);
 puzzleFrame:queryRedraw();

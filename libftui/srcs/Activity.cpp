@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 10:12:07 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 12:24:22 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -17,6 +17,7 @@
 #include "ftlua/ftlua.hpp"
 #include "ftui/Activity.hpp"
 #include "ftui/AView.hpp"
+#include "ftui/Canvas.hpp"
 #include "ftui/XmlParser.hpp"
 
 namespace ftui
@@ -50,61 +51,6 @@ Activity::~Activity(void)
 ** Init-time -> instance.inflate
 */
 
-static void		init_template_table(
-	lua_State *l
-	, std::string const &view_name
-	, std::string const &tableinit_luacode)
-{
-	if (luaL_dostring(l, tableinit_luacode.c_str()) != LUA_OK)
-		throw std::runtime_error(ft::f("Cannot init table '%'", view_name));
-	if (lua_getglobal(l, view_name.c_str()) != LUA_TTABLE)
-	{
-		lua_createtable(l, 0, 0);
-		lua_setglobal(l, view_name.c_str());
-	}
-	lua_pop(l, 1);
-	return ;
-}
-
-static void		push_luacfun_methods(
-	lua_State *l
-	, std::string const &view_name
-	, std::vector<AView::view_info_s::luamethod_t> const &methods)
-{
-	for (auto itm : methods)
-		ftlua::registerLuaCFunTable(
-			l, view_name, std::get<0>(itm), std::get<1>(itm));
-	return ;
-}
-
-static void		finalize_template(
-	lua_State *l, std::string const &name, AView::view_info_s const &i)
-{
-	int		err;
-
-	err = 0;
-	(void)lua_getglobal(l, "ft");
-	lua_pushstring(l, "finalize_template");
-	(void)lua_gettable(l, -2);
-	(void)lua_getglobal(l, name.c_str());
-	(void)lua_getglobal(l, i.parent.c_str());
-	err |= lua_pcall(l, 2, 0, 0);
-	FTASSERT(err == 0);
-	lua_pop(l, 1);
-	return ;
-}
-
-static void		push_view_templates(lua_State *l)
-{
-	for (auto const &it : AView::viewsInfo)
-		init_template_table(l, it.first, it.second.tableInit);
-	for (auto const &it : AView::viewsInfo)
-		push_luacfun_methods(l, it.first, it.second.luaMethods);
-	for (auto const &it : AView::viewsInfo)
-		finalize_template(l, it.first, it.second);
-	return ;
-}
-
 static lua_State	*new_lua_env(void)
 {
 	lua_State *const	l = luaL_newstate();
@@ -114,7 +60,8 @@ static lua_State	*new_lua_env(void)
 	luaL_openlibs(l);
 	// TODO: rpath in binary to write utils in .lua file
 	ftlua::pushUtils(l);
-	push_view_templates(l);
+	Canvas::pushTemplate(l);
+	AView::pushViewTemplates(l);
 	return l;
 }
 
@@ -199,6 +146,8 @@ void			Activity::render(Canvas &canvas)
 {
 	AView		*rv;
 
+	if (!canvas.isInLua(_l))
+		canvas.pushLua(_l);
 	rv = this->_rootView == nullptr ? nullptr : this->_rootView->getView();
 	if (rv == nullptr)
 		return ;
