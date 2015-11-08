@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 11:38:32 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 13:35:41 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -238,12 +238,30 @@ void				AView::onMeasure(void)
 
 void				AView::onDraw(Canvas &canvas)
 {
+	uint32_t const		id = static_cast<uint32_t>(LuaCallback::DRAW);
+	lua_State			*l;
+
 	this->_flags &= ~AView::REDRAW_QUERY;
-	// TODO call lua
-	this->callLuaCallback(_act.getLuaState(), LuaCallback::DRAW);
-	// callLuaCallback(_act.getLuaState(), LuaCallback::DRAW, canvas);
-	// TODO lua Canvas table
-	(void)canvas;
+	if (!(_luaCallbacks & (1 << id)))
+		return ;
+	l = _act.getLuaState();
+	lua_pushglobaltable(l);							// _G
+	lua_pushlightuserdata(l, this);					// this, _G
+	if (lua_gettable(l, -2) != LUA_TTABLE)			// [], _G
+		throw std::runtime_error("Lua missing table");
+	lua_pushinteger(l, id);							// callback_id, [], _G
+	if (lua_gettable(l, -2) != LUA_TFUNCTION)		// fun, [], _G
+		throw std::runtime_error("Lua missing callback");
+	lua_pushvalue(l, -2);							// [], fun, [], _G
+
+	lua_pushlightuserdata(l, &canvas);				// &can, [], fun, [], _G
+	if (lua_gettable(l, -5) != LUA_TTABLE)			// [c], [], fun, [], _G
+		throw std::runtime_error("Lua missing canvas table");
+	FTASSERT(false); //debug
+	if (lua_pcall(l, 2, 0, 0))						// [], _G
+		throw std::runtime_error("Problem calling lua");
+	FTASSERT(false); //debug
+	lua_pop(l, 2);									// empty
 	return ;
 }
 

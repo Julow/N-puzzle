@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/13 14:01:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 18:38:58 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/08 13:12:39 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -31,6 +31,7 @@ bool		AView::callLuaCallback(lua_State *l, uint32_t id, ARGS ...args)
 	lua_pushlightuserdata(l, this);			// <-	view_ptr, _G
 	if (lua_gettable(l, -2) != LUA_TTABLE)	// <-	view_table, _G
 		luaL_error(l, "Lua missing table");
+		// TODO: 'luaL_error' ou throw ?
 	lua_pushinteger(l, id);					// <-	callback_id, view_table, _G
 	if (lua_gettable(l, -2) != LUA_TFUNCTION)	// <-	function, view_table, _G
 		luaL_error(l, "Lua missing callback");

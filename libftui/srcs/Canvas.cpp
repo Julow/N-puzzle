@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 12:28:34 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 13:23:37 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -22,6 +22,7 @@ extern "C"
 
 }
 
+#include <iostream> //d
 #include <vector>
 #include <unordered_map>
 
@@ -42,6 +43,8 @@ static std::vector<FT_Face>	g_faces;
 
 int				Canvas::drawRectG(lua_State *l)
 {
+	std::cout << "drawRectG" << std::endl;
+
 	// Canvas *const	inst = ftlua::retrieveSelf<Canvas>(l, 1, true);
 
 	// ft::f("drawRectG: %\n", (void*)inst);
@@ -51,6 +54,7 @@ int				Canvas::drawRectG(lua_State *l)
 
 int				Canvas::drawTextG(lua_State *l)
 {
+	std::cout << "drawTextG" << std::endl;
 	return 0;
 }
 
@@ -71,10 +75,9 @@ void			Canvas::pushLua(lua_State *l)
 	lua_pushvalue(l, -2);				// [], this, [], _G
 	lua_settable(l, -4);				// [], _G
 
-	(void)lua_pushstring(l, "__index");	// __index, [], _g
-	if (lua_getglobal(l, "Canvas") != LUA_TTABLE)	// template, __index, [], _G
+	if (lua_getglobal(l, "Canvas") != LUA_TTABLE)	// template, [], _G
 		throw std::runtime_error("Canvas template should be present in _G");
-	lua_settable(l, -3);				// [], _g
+	lua_setmetatable(l, -2);			// [], _g
 
 	lua_pop(l, 2);						// empty
 	return ;
