@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 15:33:38 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 16:41:48 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -37,6 +37,7 @@ class	Canvas
 public:
 	typedef uint32_t	font_t;
 
+// TODO: Anti aliasing and floating point rects
 	struct	Params
 	{
 	public:

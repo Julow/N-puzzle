@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 15:33:45 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 18:05:32 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -58,7 +58,7 @@ public:
 	bool				onKeyUp(int key_code);
 	bool				onKeyDown(int key_code);
 
-	void				onMouseMove(int x, int y);// TODO: implement
+	void				onMouseMove(int x, int y);
 
 	void				onMouseUp(int x, int y, int button);// TODO: implement
 	bool				onMouseDown(int x, int y, int button);// TODO: implement

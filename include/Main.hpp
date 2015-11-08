@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 12:58:38 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/07 13:00:04 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 17:29:31 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -32,10 +32,14 @@ private:
 public:
 	static Main				*instance(void);
 public:
+	void					onMouseMove(int x, int y);
 	void					onKeyUp(int key, int scancode, int mods);
 	void					onKeyDown(int key, int scancode, int mods);
+
 	static void				handleKeyEvents(
 		GLFWwindow *window, int key, int scancode, int action, int mods);
+	static void				handleMousePosEvents(
+		GLFWwindow *window, double x, double y);
 
 protected:
 

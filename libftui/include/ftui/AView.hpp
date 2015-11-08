@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/08 15:38:32 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 18:16:14 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -44,8 +44,8 @@ public:
 		MOUSE_SCROLL_TARGET = (1 << 8),
 		MOUSE_CLICK_TARGET = (1 << 9),
 		MOUSE_MOVE_TARGET = (1 << 10),
-		MOUSE_CAPTURE_TARGET = (1 << 10),
-		KEYBOARD_TARGET = (1 << 11),
+		MOUSE_CAPTURE_TARGET = (1 << 11),
+		KEYBOARD_TARGET = (1 << 12),
 	};
 	enum		Misc
 	{
@@ -85,6 +85,7 @@ public:
 	IViewHolder					*getViewHolder(void);
 	IViewHolder const			*getViewHolder(void) const;
 	void						setViewHolder(IViewHolder *holder);
+	void						setMouseOver(bool state);
 
 	/*
 	** Extract the view tree from a xml file
@@ -205,8 +206,6 @@ protected:
 	uint32_t					_flags;
 	uint32_t					_luaCallbacks;
 	float						_alpha;
-
-	void						setMouseOver(bool state);
 
 /*
 ** Callbacks

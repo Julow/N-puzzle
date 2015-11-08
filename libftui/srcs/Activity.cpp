@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 15:58:49 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 18:40:47 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -200,6 +200,31 @@ bool			Activity::onKeyDown(int key_code)
 	if (_rootView != NULL && _rootView->getView()->isKeyboardTargeted())
 		return (_rootView->getView()->onKeyDown(key_code));
 	return (false);
+}
+
+void			Activity::onMouseMove(int x, int y)
+{
+	auto		rv = _rootView != nullptr ? _rootView->getView() : nullptr;
+
+	if (rv != nullptr)
+	{
+		if (ft::Rect<int>{0, 0, _size.x, _size.y}.contains(ft::Vec2<int>{x, y}))
+		{
+			if (!rv->isMouseOver())
+				rv->setMouseOver(true);
+		}
+		else
+		{
+			if (rv->isMouseOver())
+				rv->setMouseOver(false);
+		}
+		if (rv->isMouseMoveTargeted() &&
+			(rv->isMouseOver() || rv->isMouseCaptureTargeted()))
+		{
+			rv->onMouseMove(x, y);
+		}
+	}
+	return ;
 }
 
 /*

@@ -6,15 +6,17 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/04 17:14:54 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/08 18:40:37 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "ftui/ALayout.hpp"
 #include "ftui/XmlParser.hpp"
 #include "ftui/IViewHolder.hpp"
+#include "ft/utils.hpp"
 
 #include <algorithm>
+#include <iostream>
 
 using std::string;
 
@@ -274,18 +276,34 @@ bool				ALayout::onMouseUp(int x, int y, int button)
 
 bool				ALayout::onMouseMove(int x, int y)
 {
-	bool		ret;
-	AView		*v;
+	bool			ret;
+	IViewHolder		*vh;
+	AView			*v;
+
 
 	ret = false;
 	for (int i = 0; i < size(); i++)
 	{
-		v = at(i);
-		FTASSERT(v != nullptr);
-		// TODO for childrens: call setmouseover  (before of after onmove)
+		vh = this->holderAt(i);
+		v = vh->getView();
+		FTASSERT(vh != nullptr);
+		if (ft::Rect<int>{vh->getPos(), vh->getSize()}.contains(
+				ft::Vec2<int>{x, y}))
+		{
+			if (!v->isMouseOver())
+				v->setMouseOver(true);
+		}
+		else
+		{
+			if (v->isMouseOver())
+				v->setMouseOver(false);
+		}
 		if (v->isMouseMoveTargeted() &&
 			(v->isMouseOver() || v->isMouseCaptureTargeted()))
-			ret |= v->onMouseMove(x, y);
+		{
+			v->onMouseMove(x - vh->getPos().x 			// TODO: check this line
+						   , y - vh->getPos().y);
+		}
 	}
 	if (AView::isMouseMoveTargeted())
 		ret |= AView::onMouseMove(x, y);

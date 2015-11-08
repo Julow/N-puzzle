@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/08 15:48:18 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 17:33:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -77,6 +77,7 @@ Main::Main(void)
 	glViewport(0, 0, WIN_WIDTHI, WIN_HEIGHTI);
 	glfwSetWindowUserPointer(_window, this);
 	glfwSetKeyCallback(_window, &Main::handleKeyEvents);
+	glfwSetCursorPosCallback(_window, &Main::handleMousePosEvents);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -120,16 +121,18 @@ void			Main::onKeyUp(int key, int scancode, int mods)
 		_state->getActivity().onKeyUp(key);
 	(void)scancode;
 	(void)mods;
-	// changeActivity(&_mainActivity); // lol
 }
 
 void			Main::onKeyDown(int key, int scancode, int mods)
 {
 	_state->getActivity().onKeyDown(key);
-	// _currentActivity->onKeyDown(key);
 	(void)scancode;
 	(void)mods;
-	// changeActivity(&_secondActivity); // lol
+}
+
+void			Main::onMouseMove(int x, int y)
+{
+	_state->getActivity().onMouseMove(x, y);
 }
 
 void			Main::handleKeyEvents(
@@ -144,6 +147,17 @@ void			Main::handleKeyEvents(
 		main->onKeyUp(key, scancode, mods);
 	else if (action == GLFW_PRESS)
 		main->onKeyDown(key, scancode, mods);
+}
+
+void			Main::handleMousePosEvents(
+	GLFWwindow *window, double x, double y)
+{
+	Main		*main;
+
+	main = reinterpret_cast<Main*>(glfwGetWindowUserPointer(window));
+	if (main == NULL)
+		return ;
+	main->onMouseMove(x, y);
 }
 
 int				main(void)

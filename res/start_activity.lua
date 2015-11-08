@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/07 13:47:07 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/08 16:35:44 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/08 17:24:20 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -23,7 +23,7 @@ function puzzleFrame:onDraw(canvas)
 	  assert(self.wpx ~= nil and self.wpx > 0);
 
 	  local insets = 5.; -- INSET BORDER OF THE VIEW
-	  local spacing = 1.; -- SPACING BETWEEN TILES
+	  local spacing = 2.; -- SPACING BETWEEN TILES
 
 	  local last = self.w - 1;
 	  local tile_w = (self.wpx - insets * 2 - spacing * last
@@ -32,15 +32,16 @@ function puzzleFrame:onDraw(canvas)
 	  local dt = tile_w + spacing;
 	  local ypx = insets;
 	  local xpx = 0.;
+	  local i = 0;
 
 	  for y = 0, last do
 		 xpx = insets;
 		 for x = 0, last do
-			canvas:drawRect(xpx, ypx, xpx + tile_w, ypx + tile_w
-							, 0xB0FF0000
-							, 0xA5FF0000
-							, 8
-			);
+			i = y * self.w + x;
+			-- if self.curPuzzle[i] ~= nil then
+			   canvas:drawRect(xpx, ypx, xpx + tile_w, ypx + tile_w
+							   , 0xB0FF0000, 0xA5FF0000, 8);
+			-- end
 			xpx = xpx + dt;
 		 end
 		 ypx = ypx + dt;
@@ -57,10 +58,14 @@ end
 
 puzzleFrame:setCallback('onDraw', puzzleFrame.onDraw);
 puzzleFrame:setCallback('onSizeChange', puzzleFrame.onSizeChange);
-
+puzzleFrame:setCallback('onMouseMove', function(self, x, y, _)
+						   print("bordel", x, y);
+									 end
+);
+puzzleFrame:hookMouseMove(1);
 
 puzzleFrame.curPuzzle = {};
-puzzleFrame.w = 3;
+puzzleFrame.w = 5;
 -- ft.ptab(puzzleFrame);
 -- ft.ptab(AView);
 -- ft.ptab(Canvas);
