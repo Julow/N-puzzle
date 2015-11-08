@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/07 13:47:07 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/08 15:57:56 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/08 16:35:44 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -16,22 +16,31 @@ assert(puzzleFrame ~= nil)
 function puzzleFrame:onDraw(canvas)
    print("puzzleFrame:onDraw: ", x, y, a);
    ft.ptab(self);
-   canvas:drawRect(0, 0, 102, 120, 0xFF000000, 0xFFEE6000, 3);
-   canvas:drawText();
+   -- canvas:drawText();
    if self.curPuzzle ~= nil then
+
 	  assert(self.w ~= nil and self.w > 0);
 	  assert(self.wpx ~= nil and self.wpx > 0);
 
-	  local dt = self.wpx / self.w;
-	  local ypx = 0.;
-	  local xpx = 0.;
+	  local insets = 5.; -- INSET BORDER OF THE VIEW
+	  local spacing = 1.; -- SPACING BETWEEN TILES
+
 	  local last = self.w - 1;
+	  local tile_w = (self.wpx - insets * 2 - spacing * last
+					 ) / self.w;
+
+	  local dt = tile_w + spacing;
+	  local ypx = insets;
+	  local xpx = 0.;
 
 	  for y = 0, last do
-		 xpx = 0.;
+		 xpx = insets;
 		 for x = 0, last do
-			canvas:drawRect(xpx, ypx, xpx + dt, ypx + dt
-							, 0xFF000000, 0xFFEE6000, 3);
+			canvas:drawRect(xpx, ypx, xpx + tile_w, ypx + tile_w
+							, 0xB0FF0000
+							, 0xA5FF0000
+							, 8
+			);
 			xpx = xpx + dt;
 		 end
 		 ypx = ypx + dt;

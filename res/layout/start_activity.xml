@@ -8,6 +8,6 @@
 	  verticalAlign="CENTER"
 	  width="600"
 	  height="600"
-	  backgroundColor="0xAAFFFFFF"
+	  backgroundColor="0x30FFFFFF"
 	  />
 </VerticalLayout>

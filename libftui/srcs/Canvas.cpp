@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 15:33:13 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/08 16:35:59 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -94,11 +94,15 @@ int				Canvas::drawRectG(lua_State *l)
 	r.top = std::rint(luaL_checknumber(l, 2));
 	r.right = std::rint(luaL_checknumber(l, 3));
 	r.bottom = std::rint(luaL_checknumber(l, 4));
-	p.strokeColor = luaL_checkinteger(l, 5);
+	p.fillColor = luaL_checkinteger(l, 5);
 	if (top >= 6)
-		p.fillColor = luaL_checkinteger(l, 6);
+		p.strokeColor = luaL_checkinteger(l, 6);
+	else
+		p.strokeColor = 0x0;
 	if (top >= 7)
 		p.lineWidth = luaL_checkinteger(l, 7);
+	else
+		p.lineWidth = 0x0;
 	if (top > 7)
 		luaL_error(l, "Too many parameters to drawRect");
 	self->drawRect(r, p);
@@ -153,9 +157,6 @@ bool			Canvas::isInLua(lua_State *l)
 	lua_pop(l, 2);
 	return true;
 }
-
-
-
 
 /*
 ** Bitmap
@@ -270,7 +271,14 @@ void			Canvas::drawRect(ft::Rect<int> const &rect, Params const &opt)
 {
 	std::cout << rect << std::endl;
 	if (ft::Color::a(opt.fillColor) != 0)
-		_fillRect(rect, ft::Color::alpha(opt.fillColor, _alpha));
+	{
+		if (ft::Color::a(opt.strokeColor) != 0)
+			_fillRect({rect.left + opt.lineWidth, rect.top + opt.lineWidth
+						, rect.right - opt.lineWidth, rect.bottom - opt.lineWidth},
+				ft::Color::alpha(opt.fillColor, _alpha));
+		else
+			_fillRect(rect, ft::Color::alpha(opt.fillColor, _alpha));
+	}
 	if (ft::Color::a(opt.strokeColor) != 0)
 		_strokeRect(rect, ft::Color::alpha(opt.strokeColor, _alpha),
 			opt.lineWidth);
