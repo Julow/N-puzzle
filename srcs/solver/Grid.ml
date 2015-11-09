@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:58 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/04 16:09:57 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/09 18:58:12 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -20,15 +20,17 @@ module Heuristic : (GenericInterfaces.HEURISTIC
 	type maker = int -> fn
   end
 
+let bit_per_piv_component = 8
+
 (* ************************************************************************** *)
 (* PERF CRITICAL *)
 
 (* TODO: Protect versus x-overflow (IMPORTANT) je dois le faire moi meme *)
 let pivxy piv =
-  piv land 0xF, piv lsr 4
+  piv land 0xF, piv lsr bit_per_piv_component
 
 let pivv (x, y) =
-  x + y lsl 4
+  x + y lsl bit_per_piv_component
 
 let copy_mat mat =
   Array.map (fun line -> Array.copy line) mat
@@ -289,14 +291,33 @@ let goal w =
   mat, pivv (zero_coords w)
 
 let generate w solvable =
-  let rec aux gr i =
-	match i with
-	| 100000	-> gr
-	| _			-> let succ = successors gr in
-				   let i' = Random.int (List.length succ) in
-				   aux (List.nth succ i') (i + 1)
+
+  let try_successor ((mat, piv) as gr) =
+	let x0, y0 = pivxy piv in
+	let dirs = [|(1, 0); (0, 1); (-1, 0); (0, -1)|] in
+
+	let is_in_bounds x y =
+	  if x < 0 || y < 0 || x >= w || y >= w
+	  then false
+	  else true
+	in
+	let (x, y) = (fun (dx, dy) -> dx + x0, dy + y0) dirs.(Random.int 4) in
+	if is_in_bounds x y then (
+	  let v0 = mat.(y0).(x0) in
+	  mat.(y0).(x0) <- mat.(y).(x);
+	  mat.(y).(x) <- v0;
+	  pivv (x, y))
+	else
+	  piv
   in
-  let (mat, _) as gr = aux (goal w) 0 in
+  let mat, piv = goal w in
+  let rec aux i piv =
+	match i with
+	| 100000	-> piv
+	| _			-> let piv = try_successor (mat, piv) in
+				   aux (i + 1) piv
+  in
+  let (mat, piv) as gr = mat, aux 0 piv in
   match solvable with
   | true	-> gr
   | false	-> match successors gr with
@@ -342,4 +363,4 @@ let print_abst_to_real gr =
   Printf.printf "ABST TO REAL\n%!";
   print (to_real gr)
 
-(* ************************************************************************** *)
+		(* ************************************************************************** *)

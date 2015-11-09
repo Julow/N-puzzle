@@ -1,23 +1,26 @@
 -- ************************************************************************** --
 --                                                                            --
 --                                                        :::      ::::::::   --
---   randomPuzzleButton.lua                             :+:      :+:    :+:   --
+--   global.lua                                         :+:      :+:    :+:   --
 --                                                    +:+ +:+         +:+     --
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
---   Created: 2015/11/09 15:58:50 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/09 19:00:03 by ngoguey          ###   ########.fr       --
+--   Created: 2015/11/09 18:00:27 by ngoguey           #+#    #+#             --
+--   Updated: 2015/11/09 18:07:19 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
-local frame = randomPuzzleButton
-assert(frame ~= nil);
-
-function frame:onClick(_, _)
-   local grid = generate_grid(11, true);
-   local puzzleFrame = puzzleFrame;
-
-   puzzleFrame:showGrid(grid);
+function drawTextCenter(canvas, text, x, y)
+	local text_w, text_h = canvas:measureText(text, PUZZLEFRAME_TEXT_SIZE);
+	canvas:drawText(text, x - (text_w / 2), y - (text_h / 2)
+					, 0xFFFFFFFF, PUZZLEFRAME_TEXT_SIZE);
 end
 
-frame:setCallback('onClick', frame.onClick);
+function getPuzzleW(gr)
+   local n = #gr + 1;
+   local squared = math.sqrt(n);
+
+   assert(n > 0);
+   assert(squared * squared == n);
+   return squared;
+end

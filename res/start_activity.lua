@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/07 13:47:07 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/09 16:24:44 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/09 18:59:17 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -16,19 +16,16 @@ assert(puzzleFrame ~= nil)
 PUZZLEFRAME_TEXT_SIZE = 16;
 
 function drawTextCenter(canvas, text, x, y)
-	text_w, text_h = canvas:measureText(text, PUZZLEFRAME_TEXT_SIZE);
-	canvas:drawText(text, x - (text_w / 2), y - (text_h / 2), 0xFFFFFFFF, PUZZLEFRAME_TEXT_SIZE);
+	local text_w, text_h = canvas:measureText(text, PUZZLEFRAME_TEXT_SIZE);
+	canvas:drawText(text, x - (text_w / 2), y - (text_h / 2)
+					, 0xFFFFFFFF, PUZZLEFRAME_TEXT_SIZE);
 end
 
 function puzzleFrame:showGrid(grid)
-   local n = #grid + 1;
-   local squared = math.sqrt(n);
-
-   assert(n > 0);
-   assert(squared * squared == n);
    puzzleFrame.curPuzzle = grid;
-   puzzleFrame.w = squared;
+   puzzleFrame.w = getPuzzleW(grid);
    puzzleFrame:queryRedraw();
+   return ;
 end
 
 function puzzleFrame:onDraw(canvas)
@@ -57,7 +54,8 @@ function puzzleFrame:onDraw(canvas)
 			if self.curPuzzle[i] ~= 0 then
 			   canvas:drawRect(xpx, ypx, xpx + tile_w, ypx + tile_w
 							   , 0xB0FF0000, 0xA5FF0000, 8);
-			   drawTextCenter(canvas, tostring(self.curPuzzle[i]), xpx + (tile_w / 2), ypx + (tile_w / 2));
+			   drawTextCenter(canvas, tostring(self.curPuzzle[i])
+			   				  , xpx + (tile_w / 2), ypx + (tile_w / 2));
 			end
 			xpx = xpx + dt;
 		 end
@@ -106,7 +104,7 @@ puzzleFrame:hookMouseClick(1);
 puzzleFrame:hookKeyboard(1);
 
 puzzleFrame.curPuzzle = {};
-puzzleFrame.w = 4;
+puzzleFrame.w = 3;
 
 -- ft.ptab(puzzleFrame);
 -- ft.ptab(AView);

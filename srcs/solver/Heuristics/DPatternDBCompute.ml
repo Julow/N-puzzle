@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/27 18:52:13 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/01 15:46:02 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/09 18:21:44 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -20,7 +20,7 @@ include DPatternDB
  ** 0: Unused (Zeroes)
  ** 543210 76543210  76543210 76543210  76543210 76543210 76543210 76543210
  ** ______ ________  ________ ________  ________ ________ ________ ________
- ** 000000 00000000  GGGGGGGG PPPPPPPP  IIIIIIII IIIIIIII IIIIIIII IIIIIIII
+ ** 000000 GGGGGGGG  PPPPPPPP PPPPPPPP  IIIIIIII IIIIIIII IIIIIIII IIIIIIII
  *)
 
 module Hash =
@@ -30,17 +30,20 @@ module Hash =
 
 	(** Required by hmap functor *)
 	let equal a b =
-	  a land 0x00FF_FFFF_FFFF = b land 0x00FF_FFFF_FFFF
+	  a land 0x00_FFFF_FFFF_FFFF = b land 0x00_FFFF_FFFF_FFFF
 
 	(** Required by batheap functor *)
 	let compare a b =
-	  a lsr (32 + 8) - b lsr (32 + 8)
+	  a lsr (32 + Grid.bit_per_piv_component * 2)
+	  - b lsr (32 + Grid.bit_per_piv_component * 2)
 
 	let make g piv i =
-	  g lsl (32 + 8) + piv lsl 32 + i
+	  g lsl (32 + Grid.bit_per_piv_component * 2) + piv lsl 32 + i
 
 	let disass s =
-	  s lsr (32 + 8), s lsr 32 land 0xFF, s land 0xFFFFFFFF
+	  s lsr (32 + Grid.bit_per_piv_component * 2)
+	  , s lsr 32 land 0xFF
+	  , s land 0xFFFF_FFFF
 
 	let hash i =
 	  i

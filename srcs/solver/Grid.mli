@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:12 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/04 16:09:43 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/09 18:23:42 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -18,6 +18,8 @@ module Heuristic : (GenericInterfaces.HEURISTIC
 					with type fn = t -> int
 					with type maker = int -> t -> int
 				   )
+
+val bit_per_piv_component : int
 
 (* Perf critical *)
 val pivxy				: int -> int * int
