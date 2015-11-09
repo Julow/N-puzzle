@@ -11,7 +11,7 @@
 	  backgroundColor="0x30FFFFFF"
 	  />
   <Button
-	  id="randomPuzzleFrame"
+	  id="randomPuzzleButton"
 	  marginTop="10"
 	  verticalAlign="LEFT"
 	  width="60"

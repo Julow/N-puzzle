@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/09 14:25:17 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/09 13:11:33 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -30,7 +30,7 @@ ASolidView::~ASolidView(void)
 
 void			ASolidView::onDraw(Canvas &canvas)
 {
-	canvas.clear(canvas.getClip());
+	canvas.clearClip();
 	canvas.drawRect(ft::make_rect(ft::make_vec(0, 0), _holder->getSize()),
 			_bgParams);
 	AView::onDraw(canvas);

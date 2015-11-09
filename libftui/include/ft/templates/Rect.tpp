@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/05 14:06:16 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/14 13:48:54 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/09 14:29:21 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -92,6 +92,15 @@ template<typename T>
 Vec2<T>		Rect<T>::getSize(void) const
 {
 	return (Vec2<T>(getWidth(), getHeight()));
+}
+
+template<typename T>
+void		Rect<T>::expand(T expand)
+{
+	left -= expand;
+	top -= expand;
+	right += expand;
+	bottom += expand;
 }
 
 template<typename T>
@@ -194,6 +203,23 @@ Rect<T>		&Rect<T>::operator-=(Vec2<T> offset)
 }
 
 template<typename T>
+Rect<T>		Rect<T>::operator*(T scale) const
+{
+	return (ft::make_rect(left * scale, top * scale, right * scale,
+		bottom * scale));
+}
+
+template<typename T>
+Rect<T>		&Rect<T>::operator*=(T scale)
+{
+	left *= scale;
+	top *= scale;
+	right *= scale;
+	bottom *= scale;
+	return (*this);
+}
+
+template<typename T>
 Rect<T>		&Rect<T>::operator=(Rect<T> const &rhs)
 {
 	left = rhs.left;
@@ -208,6 +234,18 @@ bool		Rect<T>::operator==(Rect<T> const &rhs) const
 {
 	return (left == rhs.left && top == rhs.top
 		&& right == rhs.right && bottom == rhs.bottom);
+}
+
+template<typename T>
+template<typename C>
+Rect<T>::operator Rect<C>(void) const
+{
+	return (ft::make_rect(
+		static_cast<C>(left),
+		static_cast<C>(top),
+		static_cast<C>(right),
+		static_cast<C>(bottom)
+	));
 }
 
 template<typename T>

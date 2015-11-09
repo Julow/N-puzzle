@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:32:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/09 15:51:47 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/09 15:57:14 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -43,7 +43,7 @@ void		Button::onDraw(Canvas &canvas)
 {
 	IViewHolder		*vh = this->getViewHolder();
 
-	canvas.clear(canvas.getClip());
+	canvas.clearClip();
 	if (this->isMouseCaptureTargeted())
 		canvas.drawRect(ft::make_rect(ft::make_vec(0, 0), _holder->getSize()),
 						_pushed);
@@ -51,7 +51,9 @@ void		Button::onDraw(Canvas &canvas)
 		canvas.drawRect(ft::make_rect(ft::make_vec(0, 0), _holder->getSize()),
 						_normal);
 	if (this->isMouseOver())
-		canvas.drawRect({{5, 5}, (vh->getSize() - 10)}, _highlight);
+		canvas.drawRect({
+				{5.f, 5.f}, ft::Vec2<float>(vh->getSize().x - 10, vh->getSize().y - 10)}
+			, _highlight); //TODO: pas beau
 	AView::onDraw(canvas);
 	return ;
 }
