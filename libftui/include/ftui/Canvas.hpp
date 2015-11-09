@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/09 13:20:10 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/09 15:12:05 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -31,6 +31,8 @@ namespace ftui
 ** Draw
 ** -
 ** Warning: copy constructor and assignation does not delete/copy the bitmap
+** -
+** TODO: default font
 */
 class	Canvas
 {
@@ -62,6 +64,8 @@ public:
 	static void				pushTemplate(lua_State *l);
 	static int				drawRectG(lua_State *l);
 	static int				drawTextG(lua_State *l);
+	static int				measureTextG(lua_State *l);
+	static int				setFontG(lua_State *l);
 
 	void					pushLua(lua_State *l);
 	bool					isInLua(lua_State *l);
@@ -159,6 +163,8 @@ protected:
 
 	float				_alpha;
 	float				_scale;
+
+	font_t				_luaFont;
 
 	void				_strokeRect(ft::Rect<int> const &rect, ft::Color::t color,
 							int lineWidth);

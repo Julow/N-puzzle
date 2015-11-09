@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/09 14:30:50 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/09 15:14:01 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -50,7 +50,8 @@ Canvas::Canvas(ft::Color::t *bitmap, int width, int height) :
 	_height(height),
 	_clip(0, 0, width, height),
 	_alpha(1.f),
-	_scale(1.f)
+	_scale(1.f),
+	_luaFont(0)
 {
 	return ;
 }
@@ -90,7 +91,6 @@ int				Canvas::drawRectG(lua_State *l)
 	ft::Rect<float>		r;
 	int const			top = lua_gettop(l);
 
-	std::fesetround(FE_TONEAREST);
 	r.left = luaL_checknumber(l, 1);
 	r.top = luaL_checknumber(l, 2);
 	r.right = luaL_checknumber(l, 3);
@@ -108,13 +108,52 @@ int				Canvas::drawRectG(lua_State *l)
 		luaL_error(l, "Too many parameters to drawRect");
 	self->drawRect(r, p);
 	// ftlua::stackdump(l);
-	return 0;
+	return (0);
 }
 
-int				Canvas::drawTextG(lua_State *) // TODO
+int				Canvas::drawTextG(lua_State *l)
 {
-	std::cout << "drawTextG" << std::endl;
-	return 0;
+	Canvas *const		self = ftlua::retrieveSelf<Canvas>(l, 1);
+	Canvas::Params		params;
+	ft::Vec2<float>		pos;
+	std::string			text;
+	int const			top = lua_gettop(l);
+
+	text = luaL_checkstring(l, 1);
+	pos.x = luaL_checknumber(l, 2);
+	pos.y = luaL_checknumber(l, 3);
+	params.fillColor = luaL_checkinteger(l, 4);
+	params.lineWidth = luaL_checkinteger(l, 5);
+	params.font = self->_luaFont;
+	if (top > 5)
+		luaL_error(l, "Too many parameters to drawRect");
+	self->drawText(pos, text, params);
+	return (0);
+}
+
+int				Canvas::setFontG(lua_State *l)
+{
+	Canvas *const		self = ftlua::retrieveSelf<Canvas>(l, 1);
+
+	self->_luaFont = Canvas::getFont(luaL_checkstring(l, 1));
+	return (0);
+}
+
+int				Canvas::measureTextG(lua_State *l)
+{
+	Canvas *const		self = ftlua::retrieveSelf<Canvas>(l, 1);
+	ft::Vec2<int>		measure;
+	std::string			text;
+	Canvas::Params		params;
+
+	text = luaL_checkstring(l, 1);
+	params.lineWidth = luaL_checkinteger(l, 2);
+	params.font = self->_luaFont;
+	measure = self->measureText(text, params);
+	lua_pop(l, lua_gettop(l));
+	lua_pushinteger(l, measure.x);
+	lua_pushinteger(l, measure.y);
+	return (2);
 }
 
 void			Canvas::pushTemplate(lua_State *l)
@@ -122,6 +161,8 @@ void			Canvas::pushTemplate(lua_State *l)
 	luaL_dostring(l, "Canvas = {}; Canvas.__index = Canvas;");
 	ftlua::registerLuaCFunTable(l, "Canvas", "drawRect", &Canvas::drawRectG);
 	ftlua::registerLuaCFunTable(l, "Canvas", "drawText", &Canvas::drawTextG);
+	ftlua::registerLuaCFunTable(l, "Canvas", "measureText", &Canvas::measureTextG);
+	ftlua::registerLuaCFunTable(l, "Canvas", "setFont", &Canvas::setFontG);
 	return ;
 }
 

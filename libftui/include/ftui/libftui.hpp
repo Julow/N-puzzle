@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:55:01 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 07:40:17 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/09 15:07:23 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -73,6 +73,7 @@ namespace ftui
 ** 		mouse_click_target	(bool)
 ** 		mouse_move_target	(bool)
 ** 		keyboard_target		(bool)
+** 		activity_scripts	(str)	Script files (separated by ';')
 ** ASolidView
 ** 		backgroundColor		(color)	Background color
 ** 		borderColor			(color)	Border color
@@ -88,6 +89,18 @@ namespace ftui
 ** 		textFont			(str)	Font
 ** 		textColor			(color)
 ** 		textSize			(int)
+*/
+
+/*
+** ========================================================================== **
+** Lua methods
+** -
+** -- Canvas
+** Canvas:drawRect(left:int, top:int, right:int, bottom:int, fillColor:int,
+** 				strokeColor:int = 0, lineWidth:int = 0)
+** Canvas:drawText(text:str, x:int, y:int, color:int, fontSize:int)
+** Canvas:measureText(text:str, fontSize:int)
+** Canvas:setFont(file_name:str)
 */
 
 /*

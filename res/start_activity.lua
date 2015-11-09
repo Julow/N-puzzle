@@ -6,15 +6,23 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/07 13:47:07 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/09 13:40:34 by jaguillo         ###   ########.fr       --
+--   Updated: 2015/11/09 15:21:21 by jaguillo         ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
 local puzzleFrame = puzzleFrame;
 assert(puzzleFrame ~= nil)
 
+PUZZLEFRAME_TEXT_SIZE = 16;
+
+function drawTextCenter(canvas, text, x, y)
+	text_w, text_h = canvas:measureText(text, PUZZLEFRAME_TEXT_SIZE);
+	canvas:drawText(text, x - (text_w / 2), y - (text_h / 2), 0xFFFFFFFF, PUZZLEFRAME_TEXT_SIZE);
+end
+
 function puzzleFrame:onDraw(canvas)
    print("puzzleFrame:onDraw: ", x, y, a);
+   canvas:setFont("/Library/Fonts/Arial Black.ttf");
    -- canvas:drawText();
    if self.curPuzzle ~= nil then
 
@@ -25,8 +33,7 @@ function puzzleFrame:onDraw(canvas)
 	  local spacing = 1.; -- SPACING BETWEEN TILES
 
 	  local last = self.w - 1;
-	  local tile_w = (self.wpx - insets * 2 - spacing * last
-					 ) / self.w;
+	  local tile_w = (self.wpx - insets * 2 - spacing * last) / self.w;
 
 	  local dt = tile_w + spacing;
 	  local ypx = insets;
@@ -40,6 +47,7 @@ function puzzleFrame:onDraw(canvas)
 			-- if self.curPuzzle[i] ~= nil then
 			   canvas:drawRect(xpx, ypx, xpx + tile_w, ypx + tile_w
 							   , 0xB0FF0000, 0xA5FF0000, 8);
+			   drawTextCenter(canvas, tostring(self.curPuzzle[i]), xpx + (tile_w / 2), ypx + (tile_w / 2));
 			-- end
 			xpx = xpx + dt;
 		 end
