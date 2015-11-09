@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/08 11:38:30 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/09 14:52:59 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,6 +19,7 @@
 #include "ftui/SolidView.hpp"
 #include "ftui/ASolidView.hpp"
 #include "ftui/TextView.hpp"
+#include "ftui/Button.hpp"
 #include "ftlua/ftlua.hpp"
 
 namespace ftui
@@ -52,6 +53,8 @@ AView::views_info_t				AView::viewsInfo
 		INSG(TextView, getFont), INSG(TextView, setFont),
 		INSG(TextView, getTextColor), INSG(TextView, setTextColor),
 		INSG(TextView, getTextSize), INSG(TextView, setTextSize),
+	}, {}}},
+	{"Button", {"ASolidView", &Button::createView, {
 	}, {}}},
 	{"ALayout", {"ASolidView", nullptr, {
 		INSG(ALayout, size), INSG(ALayout, at)

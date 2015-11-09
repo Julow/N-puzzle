@@ -10,4 +10,11 @@
 	  height="600"
 	  backgroundColor="0x30FFFFFF"
 	  />
+  <Button
+	  id="randomPuzzleFrame"
+	  marginTop="10"
+	  verticalAlign="LEFT"
+	  width="60"
+	  height="60"
+	  />
 </VerticalLayout>

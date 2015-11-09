@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/07 13:47:07 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/09 13:52:07 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/09 15:35:26 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -58,7 +58,7 @@ end
 puzzleFrame:setCallback('onDraw', puzzleFrame.onDraw);
 puzzleFrame:setCallback('onSizeChange', puzzleFrame.onSizeChange);
 puzzleFrame:setCallback('onMouseMove', function(self, x, y)
-						   print("lua:onMouseMove", x, y);
+						   -- print("lua:onMouseMove", x, y);
 									 end
 );
 puzzleFrame:setCallback('onMouseDown', function(self, x, y, b, m)

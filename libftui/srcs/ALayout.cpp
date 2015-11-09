@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 20:01:03 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/09 15:09:57 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -286,23 +286,25 @@ bool				ALayout::onMouseMove(int x, int y)
 	{
 		vh = this->holderAt(i);
 		v = vh->getView();
-		FTASSERT(vh != nullptr);
-		if (ft::Rect<int>{vh->getPos(), vh->getSize()}.contains(
-				ft::Vec2<int>{x, y}))
+		if (v->isMouseMoveTargeted())
 		{
-			if (!v->isMouseOver())
-				v->setMouseOver(true);
-		}
-		else
-		{
-			if (v->isMouseOver())
-				v->setMouseOver(false);
-		}
-		if (v->isMouseMoveTargeted() &&
-			(v->isMouseOver() || v->isMouseCaptureTargeted()))
-		{
-			v->onMouseMove(x - vh->getPos().x 			// TODO: check this line
-						   , y - vh->getPos().y);
+			FTASSERT(vh != nullptr);
+			if (ft::Rect<int>{vh->getPos(), vh->getSize()}.contains(
+					ft::Vec2<int>{x, y}))
+			{
+				if (!v->isMouseOver())
+					v->setMouseOver(true);
+			}
+			else
+			{
+				if (v->isMouseOver())
+					v->setMouseOver(false);
+			}
+			if (v->isMouseOver() || v->isMouseCaptureTargeted())
+			{
+				ret |= v->onMouseMove(x - vh->getPos().x 			// TODO: check this line
+									  , y - vh->getPos().y);
+			}
 		}
 	}
 	if (AView::isMouseMoveTargeted())
@@ -379,19 +381,19 @@ bool				ALayout::isKeyboardTargeted(void) const
 bool				ALayout::isUpdateQueried(void) const
 {
 	return ((_layoutFlags & AView::UPDATE_QUERY)
-		|| AView::isUpdateQueried());
+			|| AView::isUpdateQueried());
 }
 
 bool				ALayout::isMeasureQueried(void) const
 {
 	return ((_layoutFlags & AView::MEASURE_QUERY)
-		|| AView::isMeasureQueried());
+			|| AView::isMeasureQueried());
 }
 
 bool				ALayout::isRedrawQueried(void) const
 {
 	return ((_layoutFlags & AView::REDRAW_QUERY)
-		|| AView::isRedrawQueried());
+			|| AView::isRedrawQueried());
 }
 
 };
