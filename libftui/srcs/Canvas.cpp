@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 16:35:59 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/09 14:30:50 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -49,7 +49,8 @@ Canvas::Canvas(ft::Color::t *bitmap, int width, int height) :
 	_width(width),
 	_height(height),
 	_clip(0, 0, width, height),
-	_alpha(1.f)
+	_alpha(1.f),
+	_scale(1.f)
 {
 	return ;
 }
@@ -86,14 +87,14 @@ int				Canvas::drawRectG(lua_State *l)
 {
 	Canvas *const		self = ftlua::retrieveSelf<Canvas>(l, 1);
 	Canvas::Params		p;
-	ft::Rect<int>		r;
+	ft::Rect<float>		r;
 	int const			top = lua_gettop(l);
 
 	std::fesetround(FE_TONEAREST);
-	r.left = std::rint(luaL_checknumber(l, 1));
-	r.top = std::rint(luaL_checknumber(l, 2));
-	r.right = std::rint(luaL_checknumber(l, 3));
-	r.bottom = std::rint(luaL_checknumber(l, 4));
+	r.left = luaL_checknumber(l, 1);
+	r.top = luaL_checknumber(l, 2);
+	r.right = luaL_checknumber(l, 3);
+	r.bottom = luaL_checknumber(l, 4);
 	p.fillColor = luaL_checkinteger(l, 5);
 	if (top >= 6)
 		p.strokeColor = luaL_checkinteger(l, 6);
@@ -110,7 +111,7 @@ int				Canvas::drawRectG(lua_State *l)
 	return 0;
 }
 
-int				Canvas::drawTextG(lua_State *l)
+int				Canvas::drawTextG(lua_State *) // TODO
 {
 	std::cout << "drawTextG" << std::endl;
 	return 0;
@@ -217,6 +218,19 @@ void			Canvas::clear(ft::Rect<int> const &rect)
 }
 
 /*
+** Scale
+*/
+void			Canvas::setScale(float scale)
+{
+	_scale = scale;
+}
+
+float			Canvas::getScale(void) const
+{
+	return (_scale);
+}
+
+/*
 ** Clip
 */
 ft::Rect<int> const	&Canvas::getClip(void) const
@@ -246,6 +260,11 @@ void			Canvas::setClip(ft::Rect<int> const &rect)
 	_clip = rect;
 }
 
+void			Canvas::clearClip(void)
+{
+	clear(getClip());
+}
+
 /*
 ** Alpha
 */
@@ -267,21 +286,18 @@ void			Canvas::setAlpha(float alpha)
 /*
 ** Render rect
 */
-void			Canvas::drawRect(ft::Rect<int> const &rect, Params const &opt)
+void			Canvas::drawRect(ft::Rect<float> const &rect, Params const &opt)
 {
-	std::cout << rect << std::endl;
-	if (ft::Color::a(opt.fillColor) != 0)
-	{
-		if (ft::Color::a(opt.strokeColor) != 0)
-			_fillRect({rect.left + opt.lineWidth, rect.top + opt.lineWidth
-						, rect.right - opt.lineWidth, rect.bottom - opt.lineWidth},
-				ft::Color::alpha(opt.fillColor, _alpha));
-		else
-			_fillRect(rect, ft::Color::alpha(opt.fillColor, _alpha));
-	}
+	ft::Rect<int>	int_rect = static_cast<ft::Rect<int>>(rect);
+
 	if (ft::Color::a(opt.strokeColor) != 0)
-		_strokeRect(rect, ft::Color::alpha(opt.strokeColor, _alpha),
+	{
+		_strokeRect(int_rect, ft::Color::alpha(opt.strokeColor, _alpha),
 			opt.lineWidth);
+		int_rect.expand(-opt.lineWidth);
+	}
+	if (ft::Color::a(opt.fillColor) != 0)
+		_fillRect(int_rect, ft::Color::alpha(opt.fillColor, _alpha));
 }
 
 void			Canvas::_strokeRect(ft::Rect<int> const &rect,
@@ -325,21 +341,24 @@ void			Canvas::_fillRect(ft::Rect<int> const &rect, ft::Color::t color)
 /*
 ** Render text
 */
-void			Canvas::drawText(ft::Vec2<int> pos, std::string const &text,
+void			Canvas::drawText(ft::Vec2<float> pos, std::string const &text,
 					Params const &opt)
 {
+	ft::Vec2<int>	int_vec;
 	FT_Face			face;
 	FT_UInt			glyph_index;
 	ft::Rect<int>	glyph_rect;
 
+	int_vec = ft::make_vec(static_cast<int>(pos.x * _scale),
+		static_cast<int>(pos.y * _scale));
 	if (ft::Color::a(opt.fillColor) == 0 || opt.lineWidth <= 0
 		|| opt.font >= g_faces.size())
 		return ;
-	pos += ft::make_vec(_clip.left, _clip.top);
+	int_vec += ft::make_vec(_clip.left, _clip.top);
 	face = g_faces[opt.font];
 	if (FT_Set_Pixel_Sizes(face, 0, opt.lineWidth))
 		throw std::runtime_error("Cannot resize font (drawText)");
-	pos.y += (face->descender * 2 + face->height + face->ascender) >> 6;
+	int_vec.y += (face->descender * 2 + face->height + face->ascender) >> 6;
 	for (uint32_t i = 0; i < text.size(); i++)
 	{
 		glyph_index = FT_Get_Char_Index(face, text[i]);
@@ -349,11 +368,11 @@ void			Canvas::drawText(ft::Vec2<int> pos, std::string const &text,
 			continue ;
 		glyph_rect.right = face->glyph->bitmap.width;
 		glyph_rect.bottom = face->glyph->bitmap.rows;
-		putAlphaBitmap(pos + ft::make_vec(face->glyph->bitmap_left,
+		putAlphaBitmap(int_vec + ft::make_vec(face->glyph->bitmap_left,
 				-face->glyph->bitmap_top),
 			face->glyph->bitmap.buffer, glyph_rect, face->glyph->bitmap.pitch,
 			opt.fillColor);
-		pos.x += face->glyph->advance.x >> 6;
+		int_vec.x += face->glyph->advance.x >> 6;
 	}
 }
 

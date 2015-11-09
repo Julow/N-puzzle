@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/02 18:43:04 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 15:57:16 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/09 12:41:49 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -53,6 +53,11 @@ public:
 	void		setSize(Vec2<T> size);
 	Vec2<T>		getSize(void) const;
 
+	/*
+	** Expand the rect in all directions
+	*/
+	void		expand(T exp);
+
 /*
 ** Checks
 */
@@ -94,6 +99,8 @@ public:
 /*
 ** Operators
 */
+	Rect<T>		&operator=(Rect<T> const &rhs);
+
 	/*
 	** Offset the rect
 	*/
@@ -102,12 +109,22 @@ public:
 	Rect<T>		operator-(Vec2<T> offset) const;
 	Rect<T>		&operator-=(Vec2<T> offset);
 
-	Rect<T>		&operator=(Rect<T> const &rhs);
+	/*
+	** Scale the rect
+	*/
+	Rect<T>		operator*(T scale) const;
+	Rect<T>		&operator*=(T scale);
 
 	/*
 	** TODO: float comparaison
 	*/
 	bool		operator==(Rect<T> const &rhs) const;
+
+	/*
+	** Cast
+	*/
+	template<typename C>
+	operator Rect<C>(void) const;
 
 protected:
 private:

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/12 08:49:42 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 08:41:44 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/09 13:17:47 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -36,7 +36,7 @@ void				TextView::onMeasure(void)
 void				TextView::onDraw(Canvas &canvas)
 {
 	ASolidView::onDraw(canvas);
-	canvas.drawText(ft::make_vec(0, 0), _text, _textParams);
+	canvas.drawText(ft::make_vec(0.f, 0.f), _text, _textParams);
 }
 
 std::string const	&TextView::getText(void) const

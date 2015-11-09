@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/07 13:47:07 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/08 19:59:46 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/09 13:40:34 by jaguillo         ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -22,7 +22,7 @@ function puzzleFrame:onDraw(canvas)
 	  assert(self.wpx ~= nil and self.wpx > 0);
 
 	  local insets = 5.; -- INSET BORDER OF THE VIEW
-	  local spacing = 2.; -- SPACING BETWEEN TILES
+	  local spacing = 1.; -- SPACING BETWEEN TILES
 
 	  local last = self.w - 1;
 	  local tile_w = (self.wpx - insets * 2 - spacing * last
@@ -88,7 +88,7 @@ puzzleFrame:hookMouseClick(1);
 puzzleFrame:hookKeyboard(1);
 
 puzzleFrame.curPuzzle = {};
-puzzleFrame.w = 3;
+puzzleFrame.w = 4;
 
 -- ft.ptab(puzzleFrame);
 -- ft.ptab(AView);

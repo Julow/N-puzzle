@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 16:41:48 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/09 13:20:10 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -43,7 +43,7 @@ public:
 	public:
 		ft::Color::t		strokeColor;
 		ft::Color::t		fillColor;
-		int32_t				lineWidth;
+		float				lineWidth;
 		font_t				font;
 		// float			borderRound;
 	};
@@ -74,6 +74,99 @@ public:
 	int					getBitmapWidth(void) const;
 	int					getBitmapHeight(void) const;
 
+	void				clear(void);
+	void				clear(ft::Rect<int> const &rect);
+
+/*
+** Clip
+** -
+** The clip is used to change the size and origin of shape being drawn
+** So rect filled with fillRect(0, 0, ...) are draw inside the clip
+** The clip is usualy applied and restored by layouts
+** Warning: clear(ft::Rect<int> const&) is not affected by the clip
+*/
+	ft::Rect<int> const	&getClip(void) const; // TODO: protected ?
+
+	int					getWidth(void) const;
+	int					getHeight(void) const;
+
+	void				applyClip(ft::Rect<int> const &rect);
+	void				setClip(ft::Rect<int> const &rect);
+
+	/*
+	** Clear the content of the clip
+	*/
+	void				clearClip(void);
+
+/*
+** Alpha
+*/
+	float				getAlpha(void) const;
+
+	void				applyAlpha(float alpha);
+	void				setAlpha(float alpha);
+
+/*
+** Scale
+*/
+	void				setScale(float scale);
+	float				getScale(void) const;
+
+/*
+** Drawing
+*/
+	/*
+	** Draw a rect
+	*/
+	void				drawRect(ft::Rect<float> const &rect, Params const &opt);
+
+	/*
+	** Draw text
+	** -
+	** opt.fillColor is used as text color
+	** opt.lineWidth is used as font size
+	*/
+	void				drawText(ft::Vec2<float> pos, std::string const &text,
+							Params const &opt);
+
+	// void		strokeLine(Vec2<int> a, Vec2<int> b, Params const &opt);
+	// void		strokeText(Vec2<int> pos, std::string const &text, Params const &opt);
+
+/*
+** Font
+*/
+	/*
+	** Return a font handler
+	*/
+	static font_t		getFont(std::string const &file);
+
+	/*
+	** Return the size of the text
+	** -
+	** opt.lineWidth is used as font size
+	*/
+	static ft::Vec2<int>	measureText(std::string const &text,
+								Params const &opt);
+
+
+protected:
+
+	ft::Color::t		*_bitmap;
+	int					_width;
+	int					_height;
+
+	ft::Rect<int>		_clip;
+
+	float				_alpha;
+	float				_scale;
+
+	void				_strokeRect(ft::Rect<int> const &rect, ft::Color::t color,
+							int lineWidth);
+	void				_fillRect(ft::Rect<int> const &rect, ft::Color::t color);
+
+/*
+** Bitmap
+*/
 	inline void			putPixel(int x, int y, ft::Color::t color)
 	{
 		y = y * _width + x;
@@ -110,86 +203,9 @@ public:
 							ft::Rect<int> const &rect, int pitch,
 							ft::Color::t color);
 
-	void				clear(void);
-	void				clear(ft::Rect<int> const &rect);
-
-/*
-** Clip
-** -
-** The clip is used to change the size and origin of shape being drawn
-** So rect filled with fillRect(0, 0, ...) are draw inside the clip
-** The clip is usualy applied and restored by layouts
-** Warning: clear(ft::Rect<int> const&) is not affected by the clip
-*/
-	ft::Rect<int> const	&getClip(void) const;
-
-	int					getWidth(void) const;
-	int					getHeight(void) const;
-
-	void				applyClip(ft::Rect<int> const &rect);
-	void				setClip(ft::Rect<int> const &rect);
-
-	// void				clearClip(void);
-
-/*
-** Alpha
-*/
-	float				getAlpha(void) const;
-
-	void				applyAlpha(float alpha);
-	void				setAlpha(float alpha);
-
-/*
-** Drawing
-*/
-	/*
-	** Draw a rect
-	*/
-	void				drawRect(ft::Rect<int> const &rect, Params const &opt);
-
-	/*
-	** Draw text
-	** -
-	** opt.fillColor is used as text color
-	** opt.lineWidth is used as font size
-	*/
-	void				drawText(ft::Vec2<int> pos, std::string const &text,
-							Params const &opt);
-
-	// void		strokeLine(Vec2<int> a, Vec2<int> b, Params const &opt);
-	// void		strokeText(Vec2<int> pos, std::string const &text, Params const &opt);
-
 /*
 ** Font
 */
-	/*
-	** Return a font handler
-	*/
-	static font_t		getFont(std::string const &file);
-
-	/*
-	** Return the size of the text
-	** -
-	** opt.lineWidth is used as font size
-	*/
-	static ft::Vec2<int>	measureText(std::string const &text,
-								Params const &opt);
-
-
-protected:
-
-	ft::Color::t		*_bitmap;
-	int					_width;
-	int					_height;
-
-	ft::Rect<int>		_clip;
-
-	float				_alpha;
-
-	void				_strokeRect(ft::Rect<int> const &rect, ft::Color::t color,
-							int lineWidth);
-	void				_fillRect(ft::Rect<int> const &rect, ft::Color::t color);
-
 	static font_t		loadFont(std::string const &file);
 
 private:
