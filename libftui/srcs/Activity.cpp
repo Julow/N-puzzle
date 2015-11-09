@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/09 11:19:21 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/09 15:11:13 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -206,7 +206,7 @@ void			Activity::onMouseMove(int x, int y)
 {
 	auto		rv = _rootView != nullptr ? _rootView->getView() : nullptr;
 
-	if (rv != nullptr)
+	if (rv != nullptr && rv->isMouseMoveTargeted())
 	{
 		if (ft::Rect<int>{0, 0, _size.x, _size.y}.contains(ft::Vec2<int>{x, y}))
 		{
@@ -218,8 +218,7 @@ void			Activity::onMouseMove(int x, int y)
 			if (rv->isMouseOver())
 				rv->setMouseOver(false);
 		}
-		if (rv->isMouseMoveTargeted() &&
-			(rv->isMouseOver() || rv->isMouseCaptureTargeted()))
+		if (rv->isMouseOver() || rv->isMouseCaptureTargeted())
 		{
 			rv->onMouseMove(x, y);
 		}
