@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 11:51:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/07 10:13:46 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/09 13:28:57 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,11 +19,16 @@
 #include <vector>
 #include <tuple>
 
-
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/callback.h>
 #include <caml/printexc.h>
+
+OCamlBinding		*OCamlBinding::_instance;
+OCamlBinding		*OCamlBinding::instance(void)
+{
+	return _instance;
+}
 
 OCamlBinding::OCamlBinding()
 	: _currentGrid(), _el(nullptr)
@@ -31,10 +36,13 @@ OCamlBinding::OCamlBinding()
 	char		*args = NULL;
 
 	caml_startup(&args);
+	OCamlBinding::_instance = this;
+	return ;
 }
 
 OCamlBinding::~OCamlBinding()
 {
+	return ;
 }
 
 Grid const	&OCamlBinding::getGrid(void) const
@@ -109,6 +117,8 @@ static Grid							valToGrid(value &val)
 	size_t			width;
 
 	FTASSERT(Is_block(val));
+	printf("size  %d\n", Wosize_val(val));
+	printf("tag   %d\n", Tag_val(val));
 	FTASSERT(Wosize_val(val) == 2);
 	mat = Field(val, 0);
 	FTASSERT(Is_block(mat));
@@ -230,6 +240,24 @@ void		OCamlBinding::poll_event(void)
 }
 
 /* ************************************************************************** */
+/* C -> OCaml */
+
+Grid		OCamlBinding::generate_grid(int w, bool solvable)
+{
+	value *const	f = caml_named_value("generate_grid");
+	value			res;
+
+	FTASSERT(_el != nullptr);
+	FTASSERT(f != nullptr);
+	res = caml_callback2_exn(*f, Val_int(w), Val_bool(solvable)); // TODO: memory leak ?
+	if (Is_exception_result(res))
+		throw std::runtime_error(
+			caml_format_exception(Extract_exception(res)));
+	return valToGrid(res);
+}
+
+
+/* ************************************************************************** */
 /* C <- OCaml */
 
 extern "C"
@@ -257,4 +285,5 @@ CAMLprim value  solver_hook_get(value binding, value x, value y)
 	v = b->getGrid().get(Int_val(x), Int_val(y));
 	CAMLreturn(Val_int(v));
 }
+
 }

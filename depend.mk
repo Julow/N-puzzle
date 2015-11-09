@@ -1,5 +1,6 @@
 O_FILES :=	o/srcs/GlCanvasHolder.o o/srcs/Grid.o o/srcs/IState.o o/srcs/Main.o \
-			o/srcs/OCamlBinding.o o/srcs/StartState.o o/srcs/Tiles.o
+			o/srcs/OCamlBinding.o o/srcs/OCamlBinding_lua.o \
+			o/srcs/StartState.o o/srcs/Tiles.o
 
 LIBS_DEPEND := libftui/libftui.a
 
@@ -9,7 +10,7 @@ libs:
 
 
 
-MAX_SOURCE_LEN := 23
+MAX_SOURCE_LEN := 25
 o/srcs/GlCanvasHolder.o: srcs/GlCanvasHolder.cpp include/GlCanvasHolder.hpp \
 	libftui/include/ft/Color.hpp libftui/include/ft/Rect.hpp \
 	libftui/include/ft/Vec.hpp libftui/include/ft/assert.hpp \
@@ -51,6 +52,11 @@ o/srcs/Main.o: srcs/Main.cpp libftui/include/ft/utils.hpp \
 	libftui/include/ftui/templates/Activity.tpp \
 	libftui/include/ftui/templates/EventBox.tpp include/Main.hpp | o/srcs/
 o/srcs/OCamlBinding.o: srcs/OCamlBinding.cpp include/Grid.hpp \
+	include/ISolverListener.hpp include/OCamlBinding.hpp \
+	libftui/include/ft/Vec.hpp libftui/include/ft/templates/Vec2.tpp \
+	libftui/include/ft/templates/Vec3.tpp \
+	libftui/include/ft/templates/Vec4.tpp libftui/include/ft/utils.hpp | o/srcs/
+o/srcs/OCamlBinding_lua.o: srcs/OCamlBinding_lua.cpp include/Grid.hpp \
 	include/ISolverListener.hpp include/OCamlBinding.hpp \
 	libftui/include/ft/Vec.hpp libftui/include/ft/templates/Vec2.tpp \
 	libftui/include/ft/templates/Vec3.tpp \

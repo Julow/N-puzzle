@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 09:02:27 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/07 14:43:58 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/09 13:18:03 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -28,6 +28,7 @@ void			StartState::globalInit(void)
 	std::ifstream	is("res/layout/start_activity.xml");
 
 	act.inflate(is);
+	act.registerLuaCFun_global("generate_grid", &OCamlBinding::generate_gridG);
 	// StartState::act.registerLuaCFun_global(
 	// 	"getPuzzleSize", &Main::getPuzzleSize);
 	StartState::tiles.init(WIN_SIZEVI);

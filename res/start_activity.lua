@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/07 13:47:07 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/08 19:59:46 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/09 13:52:07 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -37,10 +37,10 @@ function puzzleFrame:onDraw(canvas)
 		 xpx = insets;
 		 for x = 0, last do
 			i = y * self.w + x;
-			-- if self.curPuzzle[i] ~= nil then
+			if self.curPuzzle[i] ~= 0 then
 			   canvas:drawRect(xpx, ypx, xpx + tile_w, ypx + tile_w
 							   , 0xB0FF0000, 0xA5FF0000, 8);
-			-- end
+			end
 			xpx = xpx + dt;
 		 end
 		 ypx = ypx + dt;
@@ -72,7 +72,10 @@ puzzleFrame:setCallback('onMouseUp', function(self, x, y, b, m)
 puzzleFrame:setCallback('onKeyDown', function(self, b, m)
 						   print("lua:onKeyDOWN", b, m);
 						   if b == 32 then
+							  self.w = 3;
+							  self.curPuzzle = generate_grid(self.w, true);
 							  self:hookMouseMove(0);
+							  self:queryRedraw();
 						   end
 									 end
 );
