@@ -6,18 +6,11 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/09 13:20:39 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/09 18:03:13 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include <iostream>
-
-// #include <iostream>
-// #include <iomanip>
-// #include <fstream>
-// #include <stdexcept>
-// #include <typeinfo>
-// #include <string>     // std::string, std::to_string
 
 #include "ft/utils.hpp"
 #include "config_window.hpp"
@@ -27,14 +20,6 @@
 #include "IState.hpp"
 #include "StartState.hpp"
 #include "Main.hpp"
-
-// #include "ftui/Activity.hpp"
-// #include "ft/Vec.hpp"
-// #include "LoadingState.hpp"
-// #include "ResultsState.hpp"
-// #include "ftui/Activity.hpp"
-// #include "ISolverListener.hpp"
-
 
 /*
 ** init glfw
@@ -84,7 +69,6 @@ Main::Main(void)
 
 	IState::globalInit();
 	_canvasHolder.init();
-
 }
 
 void				Main::loop(void)

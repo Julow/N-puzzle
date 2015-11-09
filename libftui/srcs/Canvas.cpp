@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/09 15:14:01 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/09 18:02:39 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -329,7 +329,7 @@ void			Canvas::setAlpha(float alpha)
 */
 void			Canvas::drawRect(ft::Rect<float> const &rect, Params const &opt)
 {
-	ft::Rect<int>	int_rect = static_cast<ft::Rect<int>>(rect);
+	ft::Rect<int>	int_rect = static_cast<ft::Rect<int>>(rect * _scale);
 
 	if (ft::Color::a(opt.strokeColor) != 0)
 	{
