@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:26:40 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/09 15:49:30 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/09 16:13:06 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -26,6 +26,13 @@ namespace ftui
 class Button : public AView
 {
 public:
+
+	enum class  LuaCallback : uint32_t
+	{
+		CLICK = static_cast<uint32_t>(AView::LuaCallback::__LAST),
+		__LAST
+	};
+
 	static AView		*createView(XmlParser const &xml, Activity &a);
 
 	Button() = delete;

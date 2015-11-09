@@ -1,6 +1,6 @@
 <VerticalLayout
 	id="UIParent"
-	activity_scripts="res/utils.lua;res/start_activity.lua"
+	activity_scripts="res/utils.lua;res/start_activity.lua;res/randomPuzzleButton.lua"
 	>
   <SolidView
 	  id="puzzleFrame"

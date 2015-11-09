@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/07 13:47:07 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/09 15:24:18 by jaguillo         ###   ########.fr       --
+--   Updated: 2015/11/09 16:24:44 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -20,10 +20,20 @@ function drawTextCenter(canvas, text, x, y)
 	canvas:drawText(text, x - (text_w / 2), y - (text_h / 2), 0xFFFFFFFF, PUZZLEFRAME_TEXT_SIZE);
 end
 
+function puzzleFrame:showGrid(grid)
+   local n = #grid + 1;
+   local squared = math.sqrt(n);
+
+   assert(n > 0);
+   assert(squared * squared == n);
+   puzzleFrame.curPuzzle = grid;
+   puzzleFrame.w = squared;
+   puzzleFrame:queryRedraw();
+end
+
 function puzzleFrame:onDraw(canvas)
    print("puzzleFrame:onDraw: ", x, y, a);
    canvas:setFont("/Library/Fonts/Arial Black.ttf");
-   -- canvas:drawText();
    if self.curPuzzle ~= nil then
 
 	  assert(self.w ~= nil and self.w > 0);
@@ -80,10 +90,7 @@ puzzleFrame:setCallback('onMouseUp', function(self, x, y, b, m)
 puzzleFrame:setCallback('onKeyDown', function(self, b, m)
 						   print("lua:onKeyDOWN", b, m);
 						   if b == 32 then
-							  self.w = 3;
-							  self.curPuzzle = generate_grid(self.w, true);
 							  self:hookMouseMove(0);
-							  self:queryRedraw();
 						   end
 									 end
 );

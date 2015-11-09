@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/09 14:52:59 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/09 16:20:04 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -96,6 +96,8 @@ AView::callback_map_t	AView::callback_map
 	{"onCaptureChange",		LUA_CALLBACK_ID(CAPTURE_CHANGE)},
 	{"onSizeChange",		LUA_CALLBACK_ID(SIZE_CHANGE)},
 	{"onVisibilityChange",	LUA_CALLBACK_ID(VISIBILITY_CHANGE)},
+
+	{"onClick",		static_cast<uint32_t>(Button::LuaCallback::CLICK)},
 };
 
 AView::view_info_s::factory_t	AView::getFactory(std::string const &name)

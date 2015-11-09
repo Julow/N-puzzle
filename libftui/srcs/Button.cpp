@@ -6,12 +6,13 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:32:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/09 15:57:14 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/09 16:15:00 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 //#include <iostream>
 #include "ftui/Button.hpp"
+#include "ftui/Activity.hpp"
 #include "ftui/IViewHolder.hpp"
 
 namespace ftui
@@ -92,6 +93,9 @@ void        Button::onMouseLeave(void)
 
 void        Button::onClick(int button, int mods)
 {
+	this->callLuaCallback(_act.getLuaState()
+						  , static_cast<uint32_t>(LuaCallback::CLICK)
+						  , button, mods);
 	return ;
 }
 
