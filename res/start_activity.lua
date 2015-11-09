@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/07 13:47:07 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/09 16:24:44 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/09 18:11:16 by jaguillo         ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -17,7 +17,7 @@ PUZZLEFRAME_TEXT_SIZE = 16;
 
 function drawTextCenter(canvas, text, x, y)
 	text_w, text_h = canvas:measureText(text, PUZZLEFRAME_TEXT_SIZE);
-	canvas:drawText(text, x - (text_w / 2), y - (text_h / 2), 0xFFFFFFFF, PUZZLEFRAME_TEXT_SIZE);
+	canvas:drawText(text, x - (text_w / 2), y - (text_h / 2), 0xFF555555, PUZZLEFRAME_TEXT_SIZE);
 end
 
 function puzzleFrame:showGrid(grid)
