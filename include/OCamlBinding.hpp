@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 12:38:10 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/07 10:12:52 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/09 13:27:40 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,7 +15,7 @@
 
 # include "Grid.hpp"
 # include "ISolverListener.hpp"
-// # include "ft/Vec.hpp"
+# include "ftui/lua/lua.hpp"
 
 class OCamlBinding
 {
@@ -27,11 +27,17 @@ public:
 	void					setListener(ISolverListener *el);
 	void					solve(Grid const &gr);
 	void					poll_event(void);
+	Grid					generate_grid(int w, bool solvable);
+	static int				generate_gridG(lua_State *l);
 
 	Grid const				&getGrid(void) const;
 
+	static OCamlBinding		*instance(void);
+
 protected:
 private:
+
+	static OCamlBinding		*_instance;
 
 	Grid					_currentGrid;
 	ISolverListener			*_el;

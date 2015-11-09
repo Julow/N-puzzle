@@ -6,7 +6,11 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/07 13:47:07 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/09 15:24:18 by jaguillo         ###   ########.fr       --
+<<<<<<< HEAD
+--   Updated: 2015/11/09 15:21:21 by jaguillo         ###   ########.fr       --
+=======
+--   Updated: 2015/11/09 13:52:07 by ngoguey          ###   ########.fr       --
+>>>>>>> 52a40aa241ccfd298e7009efa1e8174fce2dbad5
 --                                                                            --
 -- ************************************************************************** --
 
@@ -47,8 +51,12 @@ function puzzleFrame:onDraw(canvas)
 			if self.curPuzzle[i] ~= 0 then
 			   canvas:drawRect(xpx, ypx, xpx + tile_w, ypx + tile_w
 							   , 0xB0FF0000, 0xA5FF0000, 8);
+<<<<<<< HEAD
 			   drawTextCenter(canvas, tostring(self.curPuzzle[i]), xpx + (tile_w / 2), ypx + (tile_w / 2));
+			-- end
+=======
 			end
+>>>>>>> 52a40aa241ccfd298e7009efa1e8174fce2dbad5
 			xpx = xpx + dt;
 		 end
 		 ypx = ypx + dt;
