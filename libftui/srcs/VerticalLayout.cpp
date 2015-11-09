@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 14:22:37 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/09 16:29:34 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,7 +16,6 @@
 #include "ft/utils.hpp"
 
 #include <algorithm>
-#include <iostream> // TODO lol
 
 namespace ftui
 {

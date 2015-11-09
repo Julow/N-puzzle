@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 15:04:00 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 18:52:56 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/09 16:09:20 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -22,8 +22,6 @@ namespace ft
 ** Vec4 (x, y, z, w)
 ** -
 ** Support a lot of constructor and operator
-** -
-** TODO: constexpr
 */
 
 # define _OPERATORS(TYPE,OP) \
@@ -31,11 +29,16 @@ namespace ft
 	constexpr TYPE<T>	&operator OP##=(T v);					\
 	constexpr TYPE<T>	operator OP(TYPE<T> const &rhs) const;	\
 	constexpr TYPE<T>	operator OP(T v) const;
+
 # define OPERATORS(TYPE) \
-	_OPERATORS(TYPE, +)								\
-	_OPERATORS(TYPE, -)								\
-	_OPERATORS(TYPE, *)								\
-	_OPERATORS(TYPE, /)
+	_OPERATORS(TYPE, +)											\
+	_OPERATORS(TYPE, -)											\
+	_OPERATORS(TYPE, *)											\
+	_OPERATORS(TYPE, /)											\
+	constexpr TYPE<T>	&operator=(TYPE<T> const &rhs);			\
+	template<typename C>										\
+	operator TYPE<C>(void) const;								\
+	constexpr bool		operator==(TYPE<T> const &rhs) const;
 
 template <typename T>
 class	Vec2
@@ -50,11 +53,7 @@ public:
 	T			x;
 	T			y;
 
-	constexpr Vec2<T>	&operator=(Vec2<T> const &rhs);
-
 	OPERATORS(Vec2)
-
-	constexpr bool		operator==(Vec2<T> const &rhs) const;
 
 protected:
 private:
@@ -79,11 +78,7 @@ public:
 	T			y;
 	T			z;
 
-	constexpr Vec3<T>	&operator=(Vec3<T> const &rhs);
-
 	OPERATORS(Vec3)
-
-	constexpr bool		operator==(Vec3<T> const &rhs) const;
 
 protected:
 private:
@@ -117,11 +112,7 @@ public:
 	T			z;
 	T			w;
 
-	constexpr Vec4<T>	&operator=(Vec4<T> const &rhs);
-
 	OPERATORS(Vec4)
-
-	constexpr bool		operator==(Vec4<T> const &rhs) const;
 
 protected:
 private:

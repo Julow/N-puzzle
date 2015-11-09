@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/09 13:11:33 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/09 16:29:16 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -33,7 +33,7 @@ void			ASolidView::onDraw(Canvas &canvas)
 	canvas.clearClip();
 	canvas.drawRect(ft::make_rect(ft::make_vec(0, 0), _holder->getSize()),
 			_bgParams);
-	AView::onDraw(canvas); //TODO: i moved it here from the top of the fun
+	AView::onDraw(canvas);
 }
 
 void			ASolidView::setParam(std::string const &k, std::string const &v)

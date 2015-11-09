@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/05 14:45:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/05 14:57:23 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/09 16:04:16 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -162,6 +162,18 @@ DECLARE_OPERATOR(*)
 DECLARE_OPERATOR(/)
 
 # undef DECLARE_OPERATOR
+
+template<typename T>
+template<typename C>
+Vec4<T>::operator Vec4<C>(void) const
+{
+	return (ft::make_vec(
+		static_cast<C>(x),
+		static_cast<C>(y),
+		static_cast<C>(z),
+		static_cast<C>(w)
+	));
+}
 
 template <typename T>
 constexpr Vec4<T>	make_vec(T x, T y, T z, T w)
