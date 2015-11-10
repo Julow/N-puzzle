@@ -15,19 +15,30 @@
 	<SolidView
 		id="dbg1"
 		marginTop="35"
+		marginBottom="35"
 		verticalAlign="LEFT"
 		width="800"
 		height="20"
 		backgroundColor="0x3000FF00"
 		/>
-	<SolidView
-		id="dbg2"
+	<VerticalLayout
+		id="innerdebug"
 		marginTop="35"
-		verticalAlign="RIGHT"
-		width="80"
-		height="80"
-		backgroundColor="0x3000FF00"
-		/>
+		verticalAlign="CENTER"
+		width="150"
+		height="150"
+		backgroundColor="0xFFFFFF00"
+		>
+
+	  </VerticalLayout>
+	  <SolidView
+		  id="dbg2"
+		  marginTop="35"
+		  verticalAlign="RIGHT"
+		  width="80"
+		  height="80"
+		  backgroundColor="0x3000FF00"
+		  />
 
   </VerticalLayout>
 

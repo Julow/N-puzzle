@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/07 13:47:07 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/10 14:33:25 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/10 14:50:41 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -107,7 +107,3 @@ puzzleFrame.w = 3;
 -- ft.ptab(puzzleFrame);
 -- ft.ptab(AView);
 -- ft.ptab(Canvas);
-
-local caca = 42;
-pipi = 42;
-ft.ptab(_G);

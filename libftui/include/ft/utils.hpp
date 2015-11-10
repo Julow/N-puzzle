@@ -6,12 +6,14 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 13:42:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/14 13:40:56 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/10 16:37:11 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef UTILS_H
 # define UTILS_H
+
+# include <iostream>
 
 # include <ostream>
 # include <sstream>
@@ -68,7 +70,7 @@ static inline void			f_loop(std::ostream &out, char const *format)
 
 template<typename HEAD, typename ... TAIL>
 void				f_loop(std::ostream &out, char const *format,
-						HEAD&& arg, TAIL&& ...tail)
+						   HEAD&& arg, TAIL&& ...tail)
 {
 	if (*format != '%')
 	{
@@ -110,15 +112,78 @@ template <typename T>
 std::ostream		&operator<<(std::ostream &o, Vec4<T> const &rhs)
 {
 	return (o << "{ " << rhs.x << ", " << rhs.y << ", " << rhs.z << ", "
-		<< rhs.w << " }");
+			<< rhs.w << " }");
 }
 
 template <typename T>
 std::ostream		&operator<<(std::ostream &o, Rect<T> const &rhs)
 {
 	return (o << "{ " << rhs.left << ", " << rhs.top
-		<< " w:" << rhs.getWidth() << " h:" << rhs.getHeight() << " }");
+			<< " w:" << rhs.getWidth() << " h:" << rhs.getHeight() << " }");
 }
+
+
+/*
+** FT::pad printing
+*/
+
+std::string	padformat_openlvl(
+	int line, std::string const &file, std::string const &function);
+void		padformat_closelvl();
+std::string	padformat_singlelvl(
+	int line, std::string const &file, std::string const &function);
+
+inline void	padformat_begin(
+	int line, std::string const &file, std::string const &function)
+{
+	std::string const	header = padformat_openlvl(line, file, function);
+
+	std::cout << header << '\n';
+	return ;
+}
+
+template <typename ...ARGS>
+void		padformat_begin(
+	int line, std::string const &file, std::string const &function,
+	const char *fmt , ARGS ...args)
+{
+	std::string const	header = padformat_openlvl(line, file, function);
+
+	std::cout << header << "-> " << ft::f(fmt, args...) << '\n';
+	return ;
+}
+
+inline void	padformat_end(void)
+{
+	padformat_closelvl();
+	return ;
+}
+
+inline void	padformat_single(
+	int line, std::string const &file, std::string const &function)
+{
+	std::string const	header = padformat_singlelvl(line, file, function);
+
+	std::cout << header << '\n';
+	return ;
+}
+
+template <typename ...ARGS>
+void		padformat_single(
+	int line, std::string const &file, std::string const &function,
+	const char *fmt , ARGS ...args)
+{
+	std::string const	header = padformat_singlelvl(line, file, function);
+
+	std::cout << header << "-> " << ft::f(fmt, args...) << '\n';
+	return ;
+}
+
+# define FTPADARGS(...) __LINE__, __FILE__, __FUNCTION__, ##__VA_ARGS__
+
+# define FTPADB(...) ft::padformat_begin(FTPADARGS(__VA_ARGS__))
+# define FTPADE() ft::padformat_end()
+# define FTPAD(...) ft::padformat_single(FTPADARGS(__VA_ARGS__))
 
 };
 

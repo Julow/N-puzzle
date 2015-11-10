@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/10 14:09:23 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/10 16:34:42 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -133,7 +133,7 @@ static ft::Rect<int>	calc_redraw_clip(
 				clip = ft::make_rect(vh->getPos(), vh->getSize());
 			else
 				clip.merge(ft::make_rect(vh->getPos(), vh->getSize()));
-			ft::f(std::cout, "clip: %\n", clip);
+			// ft::f(std::cout, "clip: %\n", clip);
 		}
 	}
 	return clip;
@@ -162,18 +162,21 @@ void			VerticalLayout::onDraw(Canvas &canvas)
 	// canvas.setClip(redrawClip);
 	// ASolidView::onDraw(canvas);
 	// canvas.setClip(old_clip);
-	ft::f(std::cout, "Redraw VerticalLayout:(%) isselfreq(%) ischildreq(%)\n"
-		  , (_id ? *_id : "noname")
-		  , AView::isRedrawQueried()
-		  , (_layoutFlags & AView::REDRAW_QUERY)
-		);
+	FTPADB("%", (_id ? *_id : "noname"));
 	if (AView::isRedrawQueried())
 	{
 		ASolidView::onDraw(canvas);
 		_layoutFlags &= ~AView::REDRAW_QUERY;
 		for (ViewHolder *vh : _childs)
+		{
+			// FTPAD("CHILD(%) query(%)  collide(%)"
+			// 	  , (vh->getView()->getId() ? *vh->getView()->getId() : "noname")
+			// 	  , vh->getView()->isRedrawQueried()
+			// 	  , redrawClip.collides(clip)
+			// 	);
 			redrawChild(
 				vh->getView(), ft::make_rect(vh->getPos(), vh->getSize()));
+		}
 	}
 	else if (_layoutFlags & AView::REDRAW_QUERY)
 	{
@@ -182,16 +185,18 @@ void			VerticalLayout::onDraw(Canvas &canvas)
 		{
 			v = vh->getView();
 			clip = ft::make_rect(vh->getPos(), vh->getSize());
-			ft::f(std::cout, "%  query(%)  collide(%)\n"
-				  , (v->getId() ? *v->getId() : "noname")
-				  , v->isRedrawQueried()
-				  , redrawClip.collides(clip)
-				);
+			// FTPAD("CHILD(%) query(%)  collide(%)"
+			// 	  , (v->getId() ? *v->getId() : "noname")
+			// 	  , v->isRedrawQueried()
+			// 	  , redrawClip.collides(clip)
+			// 	);
 			if (v->isRedrawQueried() || redrawClip.collides(clip))
 				redrawChild(v, clip);
 		}
 		_layoutFlags &= ~AView::REDRAW_QUERY;
 	}
+	FTPADE();
+	return ;
 }
 
 /*

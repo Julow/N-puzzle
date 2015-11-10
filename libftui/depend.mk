@@ -4,7 +4,8 @@ O_FILES :=	o/srcs/ALayout.o o/srcs/ALayout_luaHandler.o o/srcs/ASolidView.o \
 			o/srcs/Canvas.o o/srcs/SolidView.o o/srcs/TextView.o \
 			o/srcs/VerticalLayout.o o/srcs/VerticalLayout_ViewHolder.o \
 			o/srcs/XmlParser.o o/srcs/XmlTokenizer.o o/srcs/ft/assert.o \
-			o/srcs/ftlua/cpp_utils.o o/srcs/ftlua/push_utils.o
+			o/srcs/ft/padformat.o o/srcs/ftlua/cpp_utils.o \
+			o/srcs/ftlua/push_utils.o
 
 LIBS_DEPEND := 
 
@@ -95,9 +96,13 @@ o/srcs/Activity_RootViewHolder.o: srcs/Activity_RootViewHolder.cpp \
 o/srcs/Button.o: srcs/Button.cpp include/ft/Color.hpp include/ft/Rect.hpp \
 	include/ft/Vec.hpp include/ft/assert.hpp include/ft/templates/Vec2.tpp \
 	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
-	include/ftui/ASolidView.hpp include/ftui/AView.hpp include/ftui/Button.hpp \
-	include/ftui/Canvas.hpp include/ftui/libftui.hpp \
-	include/ftui/IViewHolder.hpp | o/srcs/
+	include/ftui/AView.hpp include/ftui/Button.hpp include/ftui/Canvas.hpp \
+	include/ftui/libftui.hpp include/ftui/Activity.hpp \
+	include/ftui/DefaultEventBox.hpp include/ftui/EventBox.hpp \
+	include/ftui/EventParams.hpp include/ftui/IEventBox.hpp \
+	include/ftui/IEventParams.hpp include/ftui/IViewHolder.hpp \
+	include/ftui/templates/Activity.tpp include/ftui/templates/EventBox.tpp \
+	| o/srcs/
 o/srcs/Canvas.o: srcs/Canvas.cpp include/ft/Color.hpp include/ft/Rect.hpp \
 	include/ft/Vec.hpp include/ft/assert.hpp include/ft/templates/Vec2.tpp \
 	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
@@ -144,6 +149,8 @@ o/srcs/XmlTokenizer.o: srcs/XmlTokenizer.cpp include/ft/assert.hpp \
 	include/ftui/XmlTokenizer.hpp include/ftui/libftui.hpp \
 	include/ft/utils.hpp | o/srcs/
 o/srcs/ft/assert.o: srcs/ft/assert.cpp include/ft/assert.hpp \
+	include/ft/utils.hpp | o/srcs/ft/
+o/srcs/ft/padformat.o: srcs/ft/padformat.cpp include/ft/assert.hpp \
 	include/ft/utils.hpp | o/srcs/ft/
 o/srcs/ftlua/cpp_utils.o: srcs/ftlua/cpp_utils.cpp include/ft/Vec.hpp \
 	include/ft/assert.hpp include/ft/templates/Vec2.tpp \

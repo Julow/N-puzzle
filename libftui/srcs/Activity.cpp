@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/10 12:46:55 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/10 16:40:11 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -152,19 +152,20 @@ void			Activity::render(Canvas &canvas)
 		return ;
 	if (rv->isUpdateQueried())
 	{
-		FTASSERT(false, "Update");
+		// FTPAD("Update");
 		rv->onUpdate();
 	}
 	if (rv->isMeasureQueried())
 	{
-		FTASSERT(false, "Measure");
+		// FTPAD("Measure");
 		rv->onMeasure();
 		_rootView->setSize(_size);
 	}
 	if (rv->isRedrawQueried())
 	{
-		FTASSERT(false, "Redraw");
+		FTPADB("Redraw");
 		rv->onDraw(canvas);
+		FTPADE();
 	}
 	return ;
 }

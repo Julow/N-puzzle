@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/10 13:49:03 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/10 16:38:48 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -236,7 +236,7 @@ void				AView::onDraw(Canvas &canvas)
 	uint32_t const		id = static_cast<uint32_t>(LuaCallback::DRAW);
 	lua_State			*l;
 
-	FTASSERT(false, ft::f("TARGET(%)", (_id ? *_id : "noname")));
+	FTPAD("%", (_id ? *_id : "noname"));
 	this->_flags &= ~AView::REDRAW_QUERY;
 	if (!(_luaCallbacks & (1 << id)))
 		return ;
@@ -547,10 +547,8 @@ void			AView::queryRedraw(void)
 {
 	ALayout		*p;
 
-	FTASSERT(false, ft::f("(%)", (_id ? *_id : "noname")));
 	if ((this->_flags & AView::REDRAW_QUERY) != AView::REDRAW_QUERY)
 	{
-		FTASSERT(false, ft::f("(%)", (_id ? *_id : "noname")));
 		this->_flags |= AView::REDRAW_QUERY;
 		p = this->getParent();
 		if (p != nullptr)
