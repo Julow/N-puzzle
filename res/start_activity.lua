@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/07 13:47:07 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/09 18:11:16 by jaguillo         ###   ########.fr       --
+--   Updated: 2015/11/10 14:33:25 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -28,7 +28,6 @@ function puzzleFrame:showGrid(grid)
 end
 
 function puzzleFrame:onDraw(canvas)
-   print("puzzleFrame:onDraw: ", x, y, a);
    canvas:setFont("/Library/Fonts/Arial Black.ttf");
    if self.curPuzzle ~= nil then
 
@@ -108,3 +107,7 @@ puzzleFrame.w = 3;
 -- ft.ptab(puzzleFrame);
 -- ft.ptab(AView);
 -- ft.ptab(Canvas);
+
+local caca = 42;
+pipi = 42;
+ft.ptab(_G);

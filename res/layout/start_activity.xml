@@ -2,18 +2,48 @@
 	id="UIParent"
 	activity_scripts="res/utils.lua;res/start_activity.lua;res/randomPuzzleButton.lua;res/global.lua"
 	>
+
+
+  <VerticalLayout
+	  id="debugLayout"
+	  marginTop="35"
+	  verticalAlign="CENTER"
+	  width="150"
+	  height="150"
+	  backgroundColor="0xFFFFFF00"
+	  >
+	<SolidView
+		id="dbg1"
+		marginTop="35"
+		verticalAlign="LEFT"
+		width="800"
+		height="20"
+		backgroundColor="0x3000FF00"
+		/>
+	<SolidView
+		id="dbg2"
+		marginTop="35"
+		verticalAlign="RIGHT"
+		width="80"
+		height="80"
+		backgroundColor="0x3000FF00"
+		/>
+
+  </VerticalLayout>
+
+
   <SolidView
 	  id="puzzleFrame"
-	  marginTop="75"
+	  marginTop="35"
 	  verticalAlign="CENTER"
-	  width="600"
-	  height="600"
+	  width="400"
+	  height="400"
 	  backgroundColor="0x30FFFFFF"
 	  />
   <Button
 	  id="randomPuzzleButton"
 	  marginTop="10"
-	  verticalAlign="LEFT"
+	  verticalAlign="CENTER"
 	  width="60"
 	  height="60"
 	  />

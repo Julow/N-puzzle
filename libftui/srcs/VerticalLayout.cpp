@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/09 16:29:34 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/10 14:09:23 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,6 +16,7 @@
 #include "ft/utils.hpp"
 
 #include <algorithm>
+#include <iostream>
 
 namespace ftui
 {
@@ -37,6 +38,7 @@ void			VerticalLayout::onUpdate(void)
 		if (h->getView()->isUpdateQueried())
 			h->getView()->onUpdate();
 	}
+	_layoutFlags &= ~AView::UPDATE_QUERY;
 }
 
 void            VerticalLayout::inflate(XmlParser &xml, Activity &a)
@@ -50,9 +52,9 @@ void            VerticalLayout::inflate(XmlParser &xml, Activity &a)
 */
 void			VerticalLayout::alignChilds(void)
 {
-	ft::Vec2<int>	layoutSize = _holder->getSize();
-	int				childPosX;
-	ft::Vec2<int>	childSize;
+	ft::Vec2<int> const	layoutSize = _holder->getSize();
+	int					childPosX;
+	ft::Vec2<int>		childSize;
 
 	for (ViewHolder *h : _childs)
 	{
@@ -102,6 +104,7 @@ void			VerticalLayout::onMeasure(void)
 	}
 	_holder->setRequestedSize(ft::make_vec(maxWidth, offsetTop));
 	alignChilds();
+	_layoutFlags &= ~AView::MEASURE_QUERY;
 }
 
 /*
@@ -113,53 +116,82 @@ void			VerticalLayout::onSizeChange(void)
 	alignChilds();
 }
 
+
+/*
+** onDraw
+*/
+static ft::Rect<int>	calc_redraw_clip(
+	VerticalLayout::child_container_t &childs)
+{
+	ft::Rect<int>	clip(0, 0, 0, 0);
+
+	for (VerticalLayout::ViewHolder *vh : childs)
+	{
+		if (vh->getView()->isRedrawQueried())
+		{
+			if (clip.getWidth() == 0 || clip.getHeight() == 0)
+				clip = ft::make_rect(vh->getPos(), vh->getSize());
+			else
+				clip.merge(ft::make_rect(vh->getPos(), vh->getSize()));
+			ft::f(std::cout, "clip: %\n", clip);
+		}
+	}
+	return clip;
+}
+
+//TODO: check, i nuked the previous definition
 void			VerticalLayout::onDraw(Canvas &canvas)
 {
-	float const			old_alpha = canvas.getAlpha();
-	ft::Rect<int> const	old_clip = canvas.getClip();
-	ft::Rect<int>		to_redraw;
+	float const			oldAlpha = canvas.getAlpha();
+	ft::Rect<int> const	oldClip = canvas.getClip();
+	auto				redrawChild =
+		[=, &canvas](AView *v, ft::Rect<int> const &clip)
+	{
+		canvas.applyAlpha(v->getAlpha());
+		canvas.applyClip(clip);
+		v->onDraw(canvas);
+		canvas.setClip(oldClip);
+		canvas.setAlpha(oldAlpha);
+		return ;
+	};
+	ft::Rect<int>		redrawClip;
+	ft::Rect<int>		clip;
+	AView				*v;
 
+	// TODO: Canvas::setOrigin
+	// canvas.setClip(redrawClip);
+	// ASolidView::onDraw(canvas);
+	// canvas.setClip(old_clip);
+	ft::f(std::cout, "Redraw VerticalLayout:(%) isselfreq(%) ischildreq(%)\n"
+		  , (_id ? *_id : "noname")
+		  , AView::isRedrawQueried()
+		  , (_layoutFlags & AView::REDRAW_QUERY)
+		);
 	if (AView::isRedrawQueried())
 	{
 		ASolidView::onDraw(canvas);
-		for (ViewHolder *h : _childs)
-		{
-			canvas.applyAlpha(h->getView()->getAlpha());
-			canvas.applyClip(ft::make_rect(h->getPos(), h->getSize()));
-			h->getView()->onDraw(canvas);
-			canvas.setClip(old_clip);
-			canvas.setAlpha(old_alpha);
-		}
+		_layoutFlags &= ~AView::REDRAW_QUERY;
+		for (ViewHolder *vh : _childs)
+			redrawChild(
+				vh->getView(), ft::make_rect(vh->getPos(), vh->getSize()));
 	}
-	else if (_layoutFlags & AView::REDRAW_QUERY) //TODO: elseif ??
+	else if (_layoutFlags & AView::REDRAW_QUERY)
 	{
-		for (ViewHolder *h : _childs)
-			if (h->getView()->isRedrawQueried())
-			{
-				if (to_redraw.getWidth() == 0 || to_redraw.getHeight() == 0)
-					to_redraw = ft::make_rect(h->getPos(), h->getSize());
-				else
-					to_redraw.merge(ft::make_rect(h->getPos(), h->getSize()));
-			}
-		// TODO: Canvas::setOrigin
-		// canvas.setClip(to_redraw);
-		// ASolidView::onDraw(canvas);
-		// canvas.setClip(old_clip);
-		for (ViewHolder *h : _childs)
+		redrawClip = calc_redraw_clip(_childs);
+		for (ViewHolder *vh : _childs)
 		{
-			ft::Rect<int>	tmp = ft::make_rect(h->getPos(), h->getSize());
-
-			if (to_redraw.collides(tmp))
-			{
-				canvas.applyAlpha(h->getView()->getAlpha());
-				canvas.applyClip(tmp);
-				h->getView()->onDraw(canvas);
-				canvas.setClip(old_clip);
-				canvas.setAlpha(old_alpha);
-			}
+			v = vh->getView();
+			clip = ft::make_rect(vh->getPos(), vh->getSize());
+			ft::f(std::cout, "%  query(%)  collide(%)\n"
+				  , (v->getId() ? *v->getId() : "noname")
+				  , v->isRedrawQueried()
+				  , redrawClip.collides(clip)
+				);
+			if (v->isRedrawQueried() || redrawClip.collides(clip))
+				redrawChild(v, clip);
 		}
+		_layoutFlags &= ~AView::REDRAW_QUERY;
 	}
-	_layoutFlags &= ~AView::REDRAW_QUERY;
 }
 
 /*
