@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/09 15:58:50 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/10 14:44:13 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/10 20:05:06 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -21,3 +21,7 @@ function frame:onClick(_, _)
 end
 
 frame:setCallback('onClick', frame.onClick);
+frame:setCallback('onDoubleClick',
+				  function (self)
+					 print('onDoubleClick !!');
+end);

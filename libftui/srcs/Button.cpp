@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:32:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/10 18:37:06 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/10 20:05:34 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,6 +18,17 @@
 namespace ftui
 {
 
+using namespace std::chrono_literals;
+
+Button::time_point const	Button::_zero =
+	std::chrono::system_clock::from_time_t(0);
+Button::time_diff const	Button::_maxDelta =
+	500ms;
+
+/* ************************************************************************** **
+** CONSTRUCTION
+*/
+
 AView		*Button::createView(XmlParser const &xml, Activity &a)
 {
 	return new Button(xml, a);
@@ -25,10 +36,12 @@ AView		*Button::createView(XmlParser const &xml, Activity &a)
 
 Button::Button(XmlParser const &xml, Activity &a)
 	: AView(xml, a)
+	, _state(true)
 	, _normal{		0xFF00AA00, 0xFFFF0000, 5, 0}
 	, _disabled{	0, 0, 0, 0}
 	, _pushed{		0xFF00AA00, 0xFFAA0000, 2, 0}
 	, _highlight{	0xFF00AA00, 0x40FFFF00, 0, 0}
+	, _lastClick(_zero)
 {
 	return ;
 }
@@ -46,6 +59,11 @@ void		Button::inflate(XmlParser &xml, Activity &act)
 	return ;
 }
 
+
+/* ************************************************************************** **
+** DRAW
+*/
+
 void		Button::onDraw(Canvas &canvas)
 {
 	IViewHolder		*vh = this->getViewHolder();
@@ -54,9 +72,12 @@ void		Button::onDraw(Canvas &canvas)
 	if (this->isMouseCaptureTargeted())
 		canvas.drawRect(ft::make_rect(ft::make_vec(0, 0), _holder->getSize()),
 						_pushed);
-	else
+	else if (_state == true)
 		canvas.drawRect(ft::make_rect(ft::make_vec(0, 0), _holder->getSize()),
 						_normal);
+	else
+		canvas.drawRect(ft::make_rect(ft::make_vec(0, 0), _holder->getSize()),
+						_disabled);
 	if (this->isMouseOver())
 		canvas.drawRect({
 				{5.f, 5.f}
@@ -66,22 +87,48 @@ void		Button::onDraw(Canvas &canvas)
 	return ;
 }
 
+/* ************************************************************************** **
+** MOUSE EVENTS
+*/
+
 bool        Button::onMouseDown(int x, int y, int button, int mods)
 {
-	this->hookMouseCapture(true);
-	this->queryRedraw();
-	return AView::onMouseDown(x, y, button, mods) || true;
+	if (button == 0)
+	{
+		this->hookMouseCapture(true);
+		this->queryRedraw();
+	}
+	return AView::onMouseDown(x, y, button, mods);
 }
+
 bool        Button::onMouseUp(int x, int y, int button, int mods)
 {
 	if (this->isMouseCaptureTargeted())
 	{
-		if (this->isMouseOver())
-			this->onClick(button, mods);
+		if (button == 0 && this->isMouseOver())
+		{
+			if (_lastClick != _zero
+				&& std::chrono::system_clock::now() - _lastClick < _maxDelta)
+			{
+				// 1. Validate button double click
+				_lastClick = _zero;
+				this->onDoubleClick(mods);
+			}
+			else
+			{
+				// 2. Validate button click
+				_lastClick = std::chrono::system_clock::now();
+				this->onClick(mods);
+			}
+			this->queryRedraw();
+			this->hookMouseCapture(false);
+			return AView::onMouseUp(x, y, button, mods) || true;
+		}
+		// 3. Abort button click
 		this->queryRedraw();
 		this->hookMouseCapture(false);
-		return AView::onMouseUp(x, y, button, mods) || true;
 	}
+	// 4. Was not clicking
 	return AView::onMouseUp(x, y, button, mods);
 }
 
@@ -91,6 +138,7 @@ void        Button::onMouseEnter(int x, int y)
 	AView::onMouseEnter(x, y);
 	return ;
 }
+
 void        Button::onMouseLeave(int x, int y)
 {
 	this->queryRedraw();
@@ -98,12 +146,42 @@ void        Button::onMouseLeave(int x, int y)
 	return ;
 }
 
-void        Button::onClick(int button, int mods)
+
+void        Button::onClick(int mods)
 {
-	this->callLuaCallback(_act.getLuaState()
-						  , static_cast<uint32_t>(LuaCallback::CLICK)
-						  , button, mods);
+	this->callLuaCallback(
+		_act.getLuaState()
+		, static_cast<uint32_t>(LuaCallback::CLICK), mods, 0);
+	//TODO: does not compile without the trailing '0'
 	return ;
+}
+
+void        Button::onDoubleClick(int mods)
+{
+	this->callLuaCallback(
+		_act.getLuaState()
+		, static_cast<uint32_t>(LuaCallback::DOUBLE_CLICK), mods, 0);
+	//TODO: does not compile without the trailing '0'
+	return ;
+}
+
+/* ************************************************************************** **
+** INTERACTIONS
+*/
+
+void		Button::setState(bool state)
+{
+	if (state != _state)
+	{
+		_state = state;
+		this->queryRedraw();
+	}
+	return ;
+}
+
+bool		Button::getState(void)
+{
+	return _state;
 }
 
 };
