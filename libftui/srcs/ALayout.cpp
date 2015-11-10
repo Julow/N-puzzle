@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/10 17:39:21 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/10 18:52:33 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -64,10 +64,10 @@ void				ALayout::spreadTargetMouseScroll(bool state)
 			this->_layoutFlags |= AView::MOUSE_SCROLL_TARGET;
 		else
 		{
-			this->_layoutFlags &= ~AView::MOUSE_SCROLL_TARGET;
 			for (int i = 0; i < size(); i++)
 				if (at(i)->isMouseScrollTargeted())
 					return ;
+			this->_layoutFlags &= ~AView::MOUSE_SCROLL_TARGET;
 		}
 		p = this->getParent();
 		if (p != nullptr)
@@ -87,10 +87,10 @@ void				ALayout::spreadTargetMouseClick(bool state)
 			this->_layoutFlags |= AView::MOUSE_CLICK_TARGET;
 		else
 		{
-			this->_layoutFlags &= ~AView::MOUSE_CLICK_TARGET;
 			for (int i = 0; i < size(); i++)
 				if (at(i)->isMouseClickTargeted())
 					return ;
+			this->_layoutFlags &= ~AView::MOUSE_CLICK_TARGET;
 		}
 		p = this->getParent();
 		if (p != nullptr)
@@ -99,7 +99,7 @@ void				ALayout::spreadTargetMouseClick(bool state)
 	return ;
 }
 
-void				ALayout::spreadTargetMove(bool state)
+void				ALayout::spreadTargetMouseMove(bool state)
 {
 	ALayout			*p;
 
@@ -112,17 +112,17 @@ void				ALayout::spreadTargetMove(bool state)
 			this->_layoutFlags |= AView::MOUSE_MOVE_TARGET;
 		else
 		{
-			this->_layoutFlags &= ~AView::MOUSE_MOVE_TARGET;
 			for (int i = 0; i < size(); i++)
 				if (at(i)->isMouseMoveTargeted())
 				{
 					FTPADE();
 					return ;
 				}
+			this->_layoutFlags &= ~AView::MOUSE_MOVE_TARGET;
 		}
 		p = this->getParent();
 		if (p != nullptr)
-			p->spreadTargetMove(state);
+			p->spreadTargetMouseMove(state);
 	}
 	FTPADE();
 	return ;
@@ -139,10 +139,10 @@ void				ALayout::spreadTargetMouseCapture(bool state)
 			this->_layoutFlags |= AView::MOUSE_CAPTURE_TARGET;
 		else
 		{
-			this->_layoutFlags &= ~AView::MOUSE_CAPTURE_TARGET;
 			for (int i = 0; i < size(); i++)
 				if (at(i)->isMouseCaptureTargeted())
 					return ;
+			this->_layoutFlags &= ~AView::MOUSE_CAPTURE_TARGET;
 		}
 		p = this->getParent();
 		if (p != nullptr)
@@ -162,10 +162,10 @@ void				ALayout::spreadTargetKeyboard(bool state)
 			this->_layoutFlags |= AView::KEYBOARD_TARGET;
 		else
 		{
-			this->_layoutFlags &= ~AView::KEYBOARD_TARGET;
 			for (int i = 0; i < size(); i++)
 				if (at(i)->isKeyboardTargeted())
 					return ;
+			this->_layoutFlags &= ~AView::KEYBOARD_TARGET;
 		}
 		p = this->getParent();
 		if (p != nullptr)
@@ -286,7 +286,6 @@ bool				ALayout::onMouseMove(int x, int y)
 	IViewHolder		*vh;
 	AView			*v;
 
-
 	ret = false;
 	for (int i = 0; i < size(); i++)
 	{
@@ -299,18 +298,15 @@ bool				ALayout::onMouseMove(int x, int y)
 					ft::Vec2<int>{x, y}))
 			{
 				if (!v->isMouseOver())
-					v->setMouseOver(true);
+					v->setMouseOver(x, y, true);
 			}
 			else
 			{
 				if (v->isMouseOver())
-					v->setMouseOver(false);
+					v->setMouseOver(x, y, false);
 			}
 			if (v->isMouseOver() || v->isMouseCaptureTargeted())
-			{
-				ret |= v->onMouseMove(x - vh->getPos().x 			// TODO: check this line
-									  , y - vh->getPos().y);
-			}
+				ret |= v->onMouseMove(x - vh->getPos().x, y - vh->getPos().y);
 		}
 	}
 	if (AView::isMouseMoveTargeted())
@@ -352,6 +348,24 @@ bool				ALayout::onKeyUp(int key_code, int mods)
 	if (AView::isKeyboardTargeted())
 		ret |= AView::onKeyUp(key_code, mods);
 	return (ret);
+}
+
+void				ALayout::onMouseLeave(int x, int y)
+{
+	AView		*v;
+
+	AView::onMouseLeave(x, y);
+	for (int i = 0; i < size(); i++)
+	{
+		v = at(i);
+		FTASSERT(v != nullptr);
+		if (v->isMouseOver())
+		{
+			v->setMouseOver(x, y, false);
+			// v->onMouseLeave(x, y);
+		}
+	}
+	return ;
 }
 
 bool				ALayout::isMouseScrollTargeted(void) const

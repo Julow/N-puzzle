@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:26:40 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/10 17:42:42 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/10 18:34:26 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -51,8 +51,8 @@ public:
 	virtual bool		onMouseDown(int x, int y, int button, int mods);
 	virtual bool		onMouseUp(int x, int y, int button, int mods);
 
-	virtual void		onMouseEnter(void);
-	virtual void		onMouseLeave(void);
+	virtual void		onMouseEnter(int x, int y);
+	virtual void		onMouseLeave(int x, int y);
 
 	virtual void		onClick(int button, int mods);
 	virtual void		onDraw(Canvas &canvas);

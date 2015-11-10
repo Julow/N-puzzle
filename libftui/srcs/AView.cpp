@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/10 17:25:26 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/10 18:52:42 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -202,8 +202,6 @@ void				AView::setParam(string const &k, string const &v)
 	};
 	auto const		&it = param_map.find(k);
 
-	std::cout << "AView : getting param  " << k<< "  " << v << std::endl;
-
 	if (it != param_map.end())
 		it->second(this, v);
 	else if (_holder != NULL)
@@ -313,14 +311,14 @@ bool				AView::onKeyUp(int key_code, int mods)
 /*
 ** High level callbacks
 */
-void				AView::onMouseEnter(void)
+void				AView::onMouseEnter(int x, int y)
 {
-	this->callLuaCallback(_act.getLuaState(), LuaCallback::MOUSE_ENTER);
+	this->callLuaCallback(_act.getLuaState(), LuaCallback::MOUSE_ENTER, x, y);
 	return ;
 }
-void				AView::onMouseLeave(void)
+void				AView::onMouseLeave(int x, int y)
 {
-	this->callLuaCallback(_act.getLuaState(), LuaCallback::MOUSE_LEAVE);
+	this->callLuaCallback(_act.getLuaState(), LuaCallback::MOUSE_LEAVE, x, y);
 	return ;
 }
 void				AView::onEvent(std::string const &event, IEventParams *p)
@@ -402,19 +400,19 @@ bool				AView::isRedrawQueried(void) const
 /*
 ** View core
 */
-void				AView::setMouseOver(bool state)
+void				AView::setMouseOver(int x, int y, bool state)
 {
 	if (static_cast<bool>(this->_flags & AView::MOUSE_OVER) != state)
 	{
 		if (state == true)
 		{
 			this->_flags |= AView::MOUSE_OVER;
-			this->onMouseEnter();
+			this->onMouseEnter(x, y);
 		}
 		else
 		{
 			this->_flags &= ~AView::MOUSE_OVER;
-			this->onMouseLeave();
+			this->onMouseLeave(x, y);
 		}
 	}
 	return ;
@@ -473,7 +471,7 @@ void			AView::hookMouseMove(bool state)
 			this->_flags &= ~AView::MOUSE_MOVE_TARGET;
 		p = this->getParent();
 		if (p != nullptr)
-			p->spreadTargetMove(state);
+			p->spreadTargetMouseMove(state);
 	}
 	FTPADE();
 	return ;

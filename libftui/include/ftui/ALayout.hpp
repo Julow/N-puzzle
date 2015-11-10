@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/08 20:00:18 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/10 18:52:21 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -56,6 +56,7 @@ public:
 	virtual bool				onMouseMove(int x, int y);
 	virtual bool				onKeyDown(int key_code, int mods);
 	virtual bool				onKeyUp(int key_code, int mods);
+	virtual void				onMouseLeave(int x, int y);
 
 	virtual bool				isMouseScrollTargeted(void) const;
 	virtual bool				isMouseClickTargeted(void) const;
@@ -84,7 +85,7 @@ public:
 */
 	void						spreadTargetMouseScroll(bool state);
 	void						spreadTargetMouseClick(bool state);
-	void						spreadTargetMove(bool state);
+	void						spreadTargetMouseMove(bool state);
 	void						spreadTargetMouseCapture(bool state);
 	void						spreadTargetKeyboard(bool state);
 

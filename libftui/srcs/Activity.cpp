@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/10 16:40:11 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/10 18:36:52 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -152,12 +152,10 @@ void			Activity::render(Canvas &canvas)
 		return ;
 	if (rv->isUpdateQueried())
 	{
-		// FTPAD("Update");
 		rv->onUpdate();
 	}
 	if (rv->isMeasureQueried())
 	{
-		// FTPAD("Measure");
 		rv->onMeasure();
 		_rootView->setSize(_size);
 	}
@@ -216,12 +214,12 @@ void			Activity::onMouseMove(int x, int y)
 		if (ft::Rect<int>{0, 0, _size.x, _size.y}.contains(ft::Vec2<int>{x, y}))
 		{
 			if (!rv->isMouseOver())
-				rv->setMouseOver(true);
+				rv->setMouseOver(x, y, true);
 		}
 		else
 		{
 			if (rv->isMouseOver())
-				rv->setMouseOver(false);
+				rv->setMouseOver(x, y, false);
 		}
 		if (rv->isMouseOver() || rv->isMouseCaptureTargeted())
 		{

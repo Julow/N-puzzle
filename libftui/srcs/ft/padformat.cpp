@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/10 14:57:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/10 17:46:37 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/10 18:23:13 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -88,13 +88,15 @@ std::string padformat_openlvl(
 	str = build_header();
 	return str;
 }
+
 void		padformat_closelvl(void)
 {
 	padstack.pop_back();
 	if (padstack.size() == 0)
-		std::cout << std::endl;
+		std::cout << "...done" << std::endl;
 	return ;
 }
+
 std::string padformat_singlelvl(
 	int line, std::string const &file, std::string const &function)
 {

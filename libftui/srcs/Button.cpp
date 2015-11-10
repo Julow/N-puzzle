@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:32:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/10 17:45:33 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/10 18:37:06 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -85,16 +85,16 @@ bool        Button::onMouseUp(int x, int y, int button, int mods)
 	return AView::onMouseUp(x, y, button, mods);
 }
 
-void        Button::onMouseEnter(void)
+void        Button::onMouseEnter(int x, int y)
 {
 	this->queryRedraw();
-	AView::onMouseEnter();
+	AView::onMouseEnter(x, y);
 	return ;
 }
-void        Button::onMouseLeave(void)
+void        Button::onMouseLeave(int x, int y)
 {
 	this->queryRedraw();
-	AView::onMouseLeave();
+	AView::onMouseLeave(x, y);
 	return ;
 }
 

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/09 16:03:25 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/10 18:35:52 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -85,7 +85,7 @@ public:
 	IViewHolder					*getViewHolder(void);
 	IViewHolder const			*getViewHolder(void) const;
 	void						setViewHolder(IViewHolder *holder);
-	void						setMouseOver(bool state);
+	void						setMouseOver(int x, int y, bool state);
 
 	/*
 	** Extract the view tree from a xml file
@@ -143,8 +143,8 @@ public:
 	/*
 	** High level callbacks
 	*/
-	virtual void				onMouseEnter(void);
-	virtual void				onMouseLeave(void);
+	virtual void				onMouseEnter(int x, int y);
+	virtual void				onMouseLeave(int x, int y);
 	virtual void				onEvent(std::string const &event
 										, IEventParams *p);
 	virtual void				onPositionChange(void);
