@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/09 15:09:57 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/10 17:39:21 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -89,7 +89,7 @@ void				ALayout::spreadTargetMouseClick(bool state)
 		{
 			this->_layoutFlags &= ~AView::MOUSE_CLICK_TARGET;
 			for (int i = 0; i < size(); i++)
-				if (at(i)->isMouseScrollTargeted())
+				if (at(i)->isMouseClickTargeted())
 					return ;
 		}
 		p = this->getParent();
@@ -103,22 +103,28 @@ void				ALayout::spreadTargetMove(bool state)
 {
 	ALayout			*p;
 
+	FTPADB("%", (_id ? *_id : "noname"));
 	if (static_cast<bool>(this->_layoutFlags & AView::MOUSE_MOVE_TARGET)
 		!= state)
 	{
+		FTPAD("ENTERING");
 		if (state)
 			this->_layoutFlags |= AView::MOUSE_MOVE_TARGET;
 		else
 		{
 			this->_layoutFlags &= ~AView::MOUSE_MOVE_TARGET;
 			for (int i = 0; i < size(); i++)
-				if (at(i)->isMouseScrollTargeted())
+				if (at(i)->isMouseMoveTargeted())
+				{
+					FTPADE();
 					return ;
+				}
 		}
 		p = this->getParent();
 		if (p != nullptr)
 			p->spreadTargetMove(state);
 	}
+	FTPADE();
 	return ;
 }
 
@@ -135,7 +141,7 @@ void				ALayout::spreadTargetMouseCapture(bool state)
 		{
 			this->_layoutFlags &= ~AView::MOUSE_CAPTURE_TARGET;
 			for (int i = 0; i < size(); i++)
-				if (at(i)->isMouseScrollTargeted())
+				if (at(i)->isMouseCaptureTargeted())
 					return ;
 		}
 		p = this->getParent();
@@ -158,7 +164,7 @@ void				ALayout::spreadTargetKeyboard(bool state)
 		{
 			this->_layoutFlags &= ~AView::KEYBOARD_TARGET;
 			for (int i = 0; i < size(); i++)
-				if (at(i)->isMouseScrollTargeted())
+				if (at(i)->isKeyboardTargeted())
 					return ;
 		}
 		p = this->getParent();

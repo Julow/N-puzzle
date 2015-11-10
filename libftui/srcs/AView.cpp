@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/10 16:38:48 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/10 17:25:26 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -463,8 +463,10 @@ void			AView::hookMouseMove(bool state)
 {
 	ALayout			*p;
 
+	FTPADB("%", (_id ? *_id : "noname"));
 	if (static_cast<bool>(this->_flags & AView::MOUSE_MOVE_TARGET) != state)
 	{
+		FTPAD("ENTERING");
 		if (state == true)
 			this->_flags |= AView::MOUSE_MOVE_TARGET;
 		else
@@ -473,6 +475,7 @@ void			AView::hookMouseMove(bool state)
 		if (p != nullptr)
 			p->spreadTargetMove(state);
 	}
+	FTPADE();
 	return ;
 }
 

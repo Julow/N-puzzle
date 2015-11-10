@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:26:40 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/09 16:13:06 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/10 17:42:42 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -33,6 +33,7 @@ public:
 		__LAST
 	};
 
+	// CONSTRUCTION ***************** //
 	static AView		*createView(XmlParser const &xml, Activity &a);
 
 	Button() = delete;
@@ -41,8 +42,12 @@ public:
 	Button				&operator=(Button const &rhs) = delete;
 	virtual ~Button();
 
+	virtual void                inflate(XmlParser &xml, Activity &act);
+
 	// virtual void		 setParam(std::string const &k, std::string const &v);
 
+
+	// MOUSE EVENTS ***************** //
 	virtual bool		onMouseDown(int x, int y, int button, int mods);
 	virtual bool		onMouseUp(int x, int y, int button, int mods);
 

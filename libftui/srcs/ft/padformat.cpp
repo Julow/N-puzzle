@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/10 14:57:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/10 16:36:12 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/10 17:46:37 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -91,6 +91,8 @@ std::string padformat_openlvl(
 void		padformat_closelvl(void)
 {
 	padstack.pop_back();
+	if (padstack.size() == 0)
+		std::cout << std::endl;
 	return ;
 }
 std::string padformat_singlelvl(
@@ -103,7 +105,15 @@ std::string padformat_singlelvl(
 
 	std::tie(lineback, fileback, funback) = padstack.back();
 	if (file == fileback && function == funback && line > lineback)
+	{
+		auto const save	= padstack.back();
+
+		padstack.pop_back();
+		padstack.push_back({line, file, function});
 		str = build_header();
+		padstack.pop_back();
+		padstack.push_back(save);
+	}
 	else
 	{
 		padstack.push_back({line, file, function});

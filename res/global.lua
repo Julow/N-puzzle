@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/09 18:00:27 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/09 18:07:19 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/10 17:19:21 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -24,3 +24,19 @@ function getPuzzleW(gr)
    assert(squared * squared == n);
    return squared;
 end
+
+function enableTestOnView(v)
+   v:hookMouseMove(1);
+   v:setCallback('onMouseEnter',
+				 function(self)
+					print(self:getId(), 'onEnter');
+   end);
+   v:setCallback('onMouseLeave',
+				 function(self)
+					print(self:getId(), 'onLeave');
+   end);
+end
+
+enableTestOnView(yellowL);
+enableTestOnView(blue);
+-- enableTestOnView(cyanL);

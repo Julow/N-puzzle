@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:32:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/09 16:15:00 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/10 17:45:33 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -30,13 +30,19 @@ Button::Button(XmlParser const &xml, Activity &a)
 	, _pushed{		0xFF00AA00, 0xFFAA0000, 2, 0}
 	, _highlight{	0xFF00AA00, 0x40FFFF00, 0, 0}
 {
-	this->hookMouseMove(true);
-	this->hookMouseClick(true);
 	return ;
 }
 
 Button::~Button()
 {
+	return ;
+}
+
+void		Button::inflate(XmlParser &xml, Activity &act)
+{
+	AView::inflate(xml, act);
+	this->hookMouseMove(true);
+	this->hookMouseClick(true);
 	return ;
 }
 
@@ -53,7 +59,8 @@ void		Button::onDraw(Canvas &canvas)
 						_normal);
 	if (this->isMouseOver())
 		canvas.drawRect({
-				{5.f, 5.f}, ft::Vec2<float>(vh->getSize().x - 10, vh->getSize().y - 10)}
+				{5.f, 5.f}
+				, ft::Vec2<float>(vh->getSize().x - 10, vh->getSize().y - 10)}
 			, _highlight); //TODO: pas beau
 	AView::onDraw(canvas);
 	return ;
