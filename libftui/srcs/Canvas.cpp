@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/09 18:02:39 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/10 16:53:03 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -335,10 +335,12 @@ void			Canvas::drawRect(ft::Rect<float> const &rect, Params const &opt)
 	{
 		_strokeRect(int_rect, ft::Color::alpha(opt.strokeColor, _alpha),
 			opt.lineWidth);
-		int_rect.expand(-opt.lineWidth);
+		int_rect.expand(-opt.lineWidth * _scale);
 	}
 	if (ft::Color::a(opt.fillColor) != 0)
+	{
 		_fillRect(int_rect, ft::Color::alpha(opt.fillColor, _alpha));
+	}
 }
 
 void			Canvas::_strokeRect(ft::Rect<int> const &rect,

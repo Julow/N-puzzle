@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 11:51:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/09 18:29:32 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/10 16:42:22 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -117,8 +117,6 @@ static Grid							valToGrid(value &val)
 	size_t			width;
 
 	FTASSERT(Is_block(val));
-	printf("size  %d\n", Wosize_val(val));
-	printf("tag   %d\n", Tag_val(val));
 	FTASSERT(Wosize_val(val) == 2);
 	mat = Field(val, 0);
 	FTASSERT(Is_block(mat));

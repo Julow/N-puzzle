@@ -5,40 +5,55 @@
 
 
   <VerticalLayout
-	  id="debugLayout"
+	  id="yellowL"
 	  marginTop="35"
 	  verticalAlign="CENTER"
 	  width="150"
 	  height="150"
+	  alpha="0.75"
 	  backgroundColor="0xFFFFFF00"
 	  >
 	<SolidView
-		id="dbg1"
+		id="green"
 		marginTop="35"
 		marginBottom="35"
 		verticalAlign="LEFT"
 		width="800"
 		height="20"
-		backgroundColor="0x3000FF00"
+		alpha="0.75"
+		backgroundColor="0xFF00FF00"
 		/>
 	<VerticalLayout
-		id="innerdebug"
+		id="cyanL"
 		marginTop="35"
 		verticalAlign="CENTER"
 		width="150"
 		height="150"
-		backgroundColor="0xFFFFFF00"
+		alpha="0.75"
+		backgroundColor="0xFF00FFFF"
 		>
 
-	  </VerticalLayout>
-	  <SolidView
-		  id="dbg2"
-		  marginTop="35"
-		  verticalAlign="RIGHT"
-		  width="80"
-		  height="80"
-		  backgroundColor="0x3000FF00"
+	  <Button
+		  id="dbgbutton"
+		  marginTop="50"
+		  marginBottom="50"
+		  verticalAlign="CENTER"
+		  alpha="0.75"
+		  width="60"
+		  height="60"
 		  />
+
+
+	</VerticalLayout>
+	<SolidView
+		id="blue"
+		marginTop="35"
+		verticalAlign="RIGHT"
+		width="80"
+		height="80"
+		alpha="0.75"
+		backgroundColor="0xFF0000FF"
+		/>
 
   </VerticalLayout>
 
