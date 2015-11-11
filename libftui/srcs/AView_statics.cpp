@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/10 20:03:46 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 12:03:02 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,6 +16,7 @@
 #include "ftui/AView.hpp"
 #include "ftui/ALayout.hpp"
 #include "ftui/VerticalLayout.hpp"
+#include "ftui/HorizontalLayout.hpp"
 #include "ftui/SolidView.hpp"
 #include "ftui/ASolidView.hpp"
 #include "ftui/TextView.hpp"
@@ -72,6 +73,7 @@ AView::views_info_t				AView::viewsInfo
 			end												\
 		}"}},
 	{"VerticalLayout", {"ALayout", &VerticalLayout::createView, {}, {}}},
+	{"HorizontalLayout", {"ALayout", &HorizontalLayout::createView, {}, {}}},
 	{"SolidView", {"ASolidView", &SolidView::createView, {}, {}}},
 };
 

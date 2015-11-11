@@ -1,17 +1,17 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   VerticalLayout.hpp                                 :+:      :+:    :+:   //
+//   HorizontalLayout.hpp                               :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
-//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
+//   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/09/22 13:12:43 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/11 11:49:24 by ngoguey          ###   ########.fr       //
+//   Created: 2015/11/11 11:47:52 by ngoguey           #+#    #+#             //
+//   Updated: 2015/11/11 12:05:49 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#ifndef VERTICALLAYOUT_HPP
-# define VERTICALLAYOUT_HPP
+#ifndef HORIZONTALLAYOUT_HPP
+# define HORIZONTALLAYOUT_HPP
 
 # include <vector>
 
@@ -22,11 +22,11 @@ namespace ftui
 {
 
 /*
-** VerticalLayout
+** HorizontalLayout
 ** -
 ** Childs:
-** * Are ordered vertically
-** * Can be horizontally aligned
+** * Are ordered horizontally
+** * Can be vertically aligned
 ** * Support marginTop and marginBottom
 ** * Requested height is always used
 ** * Requested width can be clamped to layout's width
@@ -34,7 +34,7 @@ namespace ftui
 **    but are partially hidden
 ** -
 */
-class	VerticalLayout : public ALayout
+class	HorizontalLayout : public ALayout
 {
 public:
 	class	ViewHolder;
@@ -42,12 +42,12 @@ public:
 
 	enum class	Align
 	{
-		LEFT,
-		CENTER,
-		RIGHT
+		TOP,
+		MIDDLE,
+		BOTTOM
 	};
 
-	virtual ~VerticalLayout(void);
+	virtual ~HorizontalLayout(void);
 
 	virtual void			inflate(XmlParser &xml, Activity &a);
 
@@ -72,16 +72,16 @@ protected:
 
 	std::vector<ViewHolder*>	_childs;
 
-	VerticalLayout(XmlParser const &xml, Activity &act);
+	HorizontalLayout(XmlParser const &xml, Activity &act);
 
 	virtual IViewHolder		*holderAt(int i);
 
 	virtual void			alignChilds(void);
 
 private:
-	VerticalLayout(void) = delete;
-	VerticalLayout(VerticalLayout const &src) = delete;
-	VerticalLayout			&operator=(VerticalLayout const &rhs) = delete;
+	HorizontalLayout(void) = delete;
+	HorizontalLayout(HorizontalLayout const &src) = delete;
+	HorizontalLayout			&operator=(HorizontalLayout const &rhs) = delete;
 
 /*
 ** Static
@@ -92,14 +92,14 @@ public:
 };
 
 /*
-** VerticalLayout::ViewHolder
+** HorizontalLayout::ViewHolder
 ** -
 */
-class	VerticalLayout::ViewHolder : public IViewHolder
+class	HorizontalLayout::ViewHolder : public IViewHolder
 {
 public:
 	virtual ~ViewHolder(void);
-	ViewHolder(VerticalLayout *p, AView *v);
+	ViewHolder(HorizontalLayout *p, AView *v);
 
 /*
 ** Impl
@@ -130,25 +130,25 @@ public:
 	*/
 	void					setSize(ft::Vec2<int> size);
 
-	ft::Vec2<int>			getVerticalMargin(void) const;
-	void					setVerticalMargin(ft::Vec2<int> margin);
 	ft::Vec2<int>			getHorizontalMargin(void) const;
 	void					setHorizontalMargin(ft::Vec2<int> margin);
-	Align					getHorizontalAlign(void) const;
-	void					setHorizontalAlign(Align align);
+	ft::Vec2<int>			getVerticalMargin(void) const;
+	void					setVerticalMargin(ft::Vec2<int> margin);
+	Align					getVerticalAlign(void) const;
+	void					setVerticalAlign(Align align);
 
 protected:
 
 	AView					*_view;
-	VerticalLayout			*_parent;
+	HorizontalLayout		*_parent;
 
 	ft::Vec2<int>			_pos;
 	ft::Vec2<int>			_size;
 	ft::Vec2<int>			_requestedSize;
 
-	ft::Vec2<int>			_verticalMargin;
 	ft::Vec2<int>			_horizontalMargin;
-	Align					_horizontalAlign;
+	ft::Vec2<int>			_verticalMargin;
+	Align					_verticalAlign;
 
 private:
 	ViewHolder(void) = delete;

@@ -1,11 +1,12 @@
 O_FILES :=	o/srcs/ALayout.o o/srcs/ALayout_luaHandler.o o/srcs/ASolidView.o \
 			o/srcs/AView.o o/srcs/AView_luaHandler.o o/srcs/AView_statics.o \
 			o/srcs/Activity.o o/srcs/Activity_RootViewHolder.o o/srcs/Button.o \
-			o/srcs/Canvas.o o/srcs/SolidView.o o/srcs/TextView.o \
-			o/srcs/VerticalLayout.o o/srcs/VerticalLayout_ViewHolder.o \
-			o/srcs/XmlParser.o o/srcs/XmlTokenizer.o o/srcs/ft/assert.o \
-			o/srcs/ft/padformat.o o/srcs/ftlua/cpp_utils.o \
-			o/srcs/ftlua/push_utils.o
+			o/srcs/Canvas.o o/srcs/HorizontalLayout.o \
+			o/srcs/HorizontalLayout_ViewHolder.o o/srcs/SolidView.o \
+			o/srcs/TextView.o o/srcs/VerticalLayout.o \
+			o/srcs/VerticalLayout_ViewHolder.o o/srcs/XmlParser.o \
+			o/srcs/XmlTokenizer.o o/srcs/ft/assert.o o/srcs/ft/padformat.o \
+			o/srcs/ftlua/cpp_utils.o o/srcs/ftlua/push_utils.o
 
 LIBS_DEPEND := 
 
@@ -14,7 +15,7 @@ libs:
 
 
 
-MAX_SOURCE_LEN := 34
+MAX_SOURCE_LEN := 36
 o/srcs/ALayout.o: srcs/ALayout.cpp include/ft/Color.hpp include/ft/Rect.hpp \
 	include/ft/Vec.hpp include/ft/assert.hpp include/ft/templates/Vec2.tpp \
 	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
@@ -67,8 +68,8 @@ o/srcs/AView_statics.o: srcs/AView_statics.cpp include/ft/utils.hpp \
 	include/ft/templates/Vec4.tpp include/ftui/ALayout.hpp \
 	include/ftui/ASolidView.hpp include/ftui/Canvas.hpp \
 	include/ftui/IViewHolder.hpp include/ftui/VerticalLayout.hpp \
-	include/ftui/SolidView.hpp include/ftui/TextView.hpp \
-	include/ftui/Button.hpp include/ftlua/ftlua.hpp \
+	include/ftui/HorizontalLayout.hpp include/ftui/SolidView.hpp \
+	include/ftui/TextView.hpp include/ftui/Button.hpp include/ftlua/ftlua.hpp \
 	include/ftlua/templates/ftlua_caller.tpp \
 	include/ftlua/templates/ftlua_handler.tpp | o/srcs/
 o/srcs/Activity.o: srcs/Activity.cpp include/ft/utils.hpp include/ft/Vec.hpp \
@@ -109,6 +110,27 @@ o/srcs/Canvas.o: srcs/Canvas.cpp include/ft/Color.hpp include/ft/Rect.hpp \
 	include/ftui/Canvas.hpp include/ftui/libftui.hpp include/ft/utils.hpp \
 	include/ftlua/ftlua.hpp include/ftlua/templates/ftlua_caller.tpp \
 	include/ftlua/templates/ftlua_handler.tpp | o/srcs/
+o/srcs/HorizontalLayout.o: srcs/HorizontalLayout.cpp include/ft/Color.hpp \
+	include/ft/Rect.hpp include/ft/Vec.hpp include/ft/assert.hpp \
+	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
+	include/ft/templates/Vec4.tpp include/ftui/ALayout.hpp \
+	include/ftui/ASolidView.hpp include/ftui/AView.hpp include/ftui/Canvas.hpp \
+	include/ftui/HorizontalLayout.hpp include/ftui/IViewHolder.hpp \
+	include/ftui/libftui.hpp include/ftui/XmlParser.hpp \
+	include/ftui/XmlTokenizer.hpp include/ft/utils.hpp | o/srcs/
+o/srcs/HorizontalLayout_ViewHolder.o: srcs/HorizontalLayout_ViewHolder.cpp \
+	include/ft/utils.hpp include/ft/Color.hpp include/ft/Rect.hpp \
+	include/ft/Vec.hpp include/ft/assert.hpp include/ft/templates/Vec2.tpp \
+	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
+	include/ftui/ALayout.hpp include/ftui/ASolidView.hpp \
+	include/ftui/AView.hpp include/ftui/Canvas.hpp \
+	include/ftui/HorizontalLayout.hpp include/ftui/IViewHolder.hpp \
+	include/ftui/libftui.hpp include/ftui/XmlParser.hpp \
+	include/ftui/XmlTokenizer.hpp include/ftui/Activity.hpp \
+	include/ftui/DefaultEventBox.hpp include/ftui/EventBox.hpp \
+	include/ftui/EventParams.hpp include/ftui/IEventBox.hpp \
+	include/ftui/IEventParams.hpp include/ftui/templates/Activity.tpp \
+	include/ftui/templates/EventBox.tpp | o/srcs/
 o/srcs/SolidView.o: srcs/SolidView.cpp include/ft/Color.hpp \
 	include/ft/Rect.hpp include/ft/Vec.hpp include/ft/assert.hpp \
 	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \

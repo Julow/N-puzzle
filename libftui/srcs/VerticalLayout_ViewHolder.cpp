@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 10:11:27 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/11 11:07:57 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 12:56:41 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -100,7 +100,7 @@ void			VerticalLayout::ViewHolder::setParam(std::string const &k,
 		{
 			holder->_horizontalMargin.y = atoi(v.c_str());
 		}},
-		{"verticalAlign", [](VerticalLayout::ViewHolder *holder,
+		{"horizontalAlign", [](VerticalLayout::ViewHolder *holder,
 			std::string const &v)
 		{
 			if (v == "LEFT")

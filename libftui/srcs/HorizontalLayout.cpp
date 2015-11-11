@@ -1,16 +1,16 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   VerticalLayout.cpp                                 :+:      :+:    :+:   //
+//   HorizontalLayout.cpp                                 :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/11 12:51:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 12:54:47 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#include "ftui/VerticalLayout.hpp"
+#include "ftui/HorizontalLayout.hpp"
 #include "ftui/Canvas.hpp"
 #include "ftui/XmlParser.hpp"
 #include "ft/utils.hpp"
@@ -21,16 +21,16 @@
 namespace ftui
 {
 
-VerticalLayout::VerticalLayout(XmlParser const &xml, Activity &act)
+HorizontalLayout::HorizontalLayout(XmlParser const &xml, Activity &act)
 	: ALayout(xml, act)
 {
 }
 
-VerticalLayout::~VerticalLayout(void)
+HorizontalLayout::~HorizontalLayout(void)
 {
 }
 
-void			VerticalLayout::onUpdate(void)
+void			HorizontalLayout::onUpdate(void)
 {
 	AView::onUpdate();
 	for (ViewHolder *h : _childs)
@@ -41,75 +41,80 @@ void			VerticalLayout::onUpdate(void)
 	_layoutFlags &= ~AView::UPDATE_QUERY;
 }
 
-void            VerticalLayout::inflate(XmlParser &xml, Activity &a)
+void            HorizontalLayout::inflate(XmlParser &xml, Activity &a)
 {
 	ALayout::inflate(xml, a);
 	return ;
 }
 
 /*
-** Align childs horizontally and lock their size
+** Align childs vertically and lock their size
 */
-void			VerticalLayout::alignChilds(void)
+void			HorizontalLayout::alignChilds(void)
 {
 	ft::Vec2<int> const	layoutSize = _holder->getSize();
-	int					childPosX;
+	int					childPosY;
 	ft::Vec2<int>		childSize;
-	ft::Vec2<int>		hm;
+	ft::Vec2<int>		vm;
 
 	for (ViewHolder *h : _childs)
 	{
-		childPosX = h->getPos().x;
+		FTASSERT(false);
+		childPosY = h->getPos().y;
 		childSize = h->getRequestedSize();
-		hm = h->getHorizontalMargin();
-		if (childSize.x + hm.x + hm.y > layoutSize.x)
-			childSize.x = layoutSize.x;//TODO: why?, de tt facon ca depasse
-		switch (h->getHorizontalAlign())
+		vm = h->getVerticalMargin();
+		if (childSize.y + vm.x + vm.y > layoutSize.y)
+			childSize.y = layoutSize.y;//TODO: why?, de tt facon ca depasse
+		switch (h->getVerticalAlign())
 		{
-		case Align::LEFT:
-			childPosX = hm.x;
+		case Align::TOP:
+		FTASSERT(false);
+			childPosY = vm.x;
 			break ;
-		case Align::CENTER:
-			childPosX = (layoutSize.x - childSize.x + hm.x - hm.y) / 2;
+		case Align::MIDDLE:
+		FTASSERT(false);
+			childPosY = (layoutSize.y - childSize.y + vm.x - vm.y) / 2;
 			break ;
-		case Align::RIGHT:
-			childPosX = layoutSize.x - childSize.x - hm.y;
+		case Align::BOTTOM:
+		FTASSERT(false);
+			childPosY = layoutSize.y - childSize.y - vm.y;
 			break ;
 		}
-		h->setPosX(childPosX);
+		std::cout << childPosY << std::endl;
+		h->setPosY(childPosY);
 		h->setSize(childSize);//TODO: faut-il verifier que la taille a bien change?
 	}
 }
 /*
 ** onMeasure
 ** -
-** Place childs vertically
+** Place childs horizontally
 */
-void			VerticalLayout::onMeasure(void)
+void			HorizontalLayout::onMeasure(void)
 {
 	ft::Vec2<int>	requestedSize;
-	ft::Vec2<int>	vm;
 	ft::Vec2<int>	hm;
-	int				width;
-	int				offsetTop = 0;
-	int				maxWidth = 0;
+	ft::Vec2<int>	vm;
+	int				height;
+	int				offsetLeft = 0;
+	int				maxHeight = 0;
 
 	AView::onMeasure();
 	for (ViewHolder *h : _childs)
 	{
 		h->getView()->onMeasure();
 		requestedSize = h->getRequestedSize();
-		hm = h->getHorizontalMargin();
-		width = requestedSize.x + hm.x + hm.y;
-		if (width > maxWidth)
-			maxWidth = width;
 		vm = h->getVerticalMargin();
-		offsetTop += vm.x;
-		h->setPosY(offsetTop);
-		offsetTop += vm.y;
-		offsetTop += requestedSize.y;
+		height = requestedSize.y + vm.x + vm.y;
+		if (height > maxHeight)
+			maxHeight = height;
+		hm = h->getHorizontalMargin();
+		offsetLeft += hm.x;
+		h->setPosX(offsetLeft);
+		offsetLeft += hm.y;
+		offsetLeft += requestedSize.x;
 	}
-	_holder->setRequestedSize(ft::make_vec(maxWidth, offsetTop));
+	_holder->setRequestedSize(ft::make_vec(offsetLeft, maxHeight));
 	alignChilds();
 	_layoutFlags &= ~AView::MEASURE_QUERY;
 }
@@ -117,7 +122,7 @@ void			VerticalLayout::onMeasure(void)
 /*
 ** onSizeChange
 */
-void			VerticalLayout::onSizeChange(void)
+void			HorizontalLayout::onSizeChange(void)
 {
 	AView::onSizeChange();
 	alignChilds();
@@ -128,11 +133,11 @@ void			VerticalLayout::onSizeChange(void)
 ** onDraw
 */
 static ft::Rect<int>	calc_redraw_clip(
-	VerticalLayout::child_container_t &childs)
+	HorizontalLayout::child_container_t &childs)
 {
 	ft::Rect<int>	clip(0, 0, 0, 0);
 
-	for (VerticalLayout::ViewHolder *vh : childs)
+	for (HorizontalLayout::ViewHolder *vh : childs)
 	{
 		if (vh->getView()->isRedrawQueried())
 		{
@@ -147,7 +152,7 @@ static ft::Rect<int>	calc_redraw_clip(
 }
 
 //TODO: check, i nuked the previous definition
-void			VerticalLayout::onDraw(Canvas &canvas)
+void			HorizontalLayout::onDraw(Canvas &canvas)
 {
 	float const			oldAlpha = canvas.getAlpha();
 	ft::Rect<int> const	oldClip = canvas.getClip();
@@ -200,7 +205,7 @@ void			VerticalLayout::onDraw(Canvas &canvas)
 ** Add a view
 ** If the view already has a parent, throw
 */
-void			VerticalLayout::addView(AView *view)
+void			HorizontalLayout::addView(AView *view)
 {
 	ViewHolder		*holder;
 
@@ -215,7 +220,7 @@ void			VerticalLayout::addView(AView *view)
 	view->queryRedraw();
 }
 
-AView			*VerticalLayout::popView(AView *view)
+AView			*HorizontalLayout::popView(AView *view)
 {
 	ViewHolder					*holder;
 	child_container_t::iterator	it;
@@ -231,22 +236,22 @@ AView			*VerticalLayout::popView(AView *view)
 	return (view);
 }
 
-AView			*VerticalLayout::at(int i)
+AView			*HorizontalLayout::at(int i)
 {
 	return (_childs[i]->getView());
 }
 
-AView const		*VerticalLayout::at(int i) const
+AView const		*HorizontalLayout::at(int i) const
 {
 	return (_childs[i]->getView());
 }
 
-int				VerticalLayout::size(void) const
+int				HorizontalLayout::size(void) const
 {
 	return (_childs.size());
 }
 
-IViewHolder		*VerticalLayout::holderAt(int i)
+IViewHolder		*HorizontalLayout::holderAt(int i)
 {
 	return (_childs[i]);
 }
@@ -254,9 +259,9 @@ IViewHolder		*VerticalLayout::holderAt(int i)
 /*
 ** Static
 */
-AView			*VerticalLayout::createView(XmlParser const &xml, Activity &act)
+AView			*HorizontalLayout::createView(XmlParser const &xml, Activity &act)
 {
-	return (new VerticalLayout(xml, act));
+	return (new HorizontalLayout(xml, act));
 }
 
 };

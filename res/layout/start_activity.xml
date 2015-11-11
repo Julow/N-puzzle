@@ -7,7 +7,7 @@
   <VerticalLayout
 	  id="yellowL"
 	  marginTop="35"
-	  verticalAlign="CENTER"
+	  horizontalAlign="CENTER"
 	  width="150"
 	  height="150"
 	  alpha="0.75"
@@ -17,7 +17,7 @@
 		id="green"
 		marginTop="35"
 		marginBottom="35"
-		verticalAlign="LEFT"
+		horizontalAlign="LEFT"
 		width="800"
 		height="20"
 		alpha="0.75"
@@ -26,7 +26,7 @@
 	<VerticalLayout
 		id="cyanL"
 		marginTop="35"
-		verticalAlign="CENTER"
+		horizontalAlign="CENTER"
 		width="150"
 		height="150"
 		alpha="0.75"
@@ -39,18 +39,44 @@
 		  marginLeft="50"
 		  marginRight="5"
 		  marginBottom="50"
-		  verticalAlign="CENTER"
+		  horizontalAlign="CENTER"
 		  alpha="0.75"
 		  width="60"
 		  height="60"
 		  />
+	  <HorizontalLayout
+		  id="purple"
+		  backgroundColor="0xFF800080"
+		  >
+
+		<Button
+			id="purpbut1"
+			marginTop="25" marginLeft="25" marginRight="25" marginBottom="25"
+			verticalAlign="MIDDLE"
+			alpha="0.75"
+			width="60"  height="60"/>
+		<Button
+			id="purpbut2"
+			marginTop="25" marginLeft="25" marginRight="25"
+			verticalAlign="BOTTOM"
+			alpha="0.75"
+			width="60"  height="60"/>
+		<Button
+			id="purpbut3"
+			marginLeft="25" marginRight="25" marginBottom="25"
+			verticalAlign="TOP"
+			alpha="0.75"
+			width="60"  height="60"/>
+
+
+	  </HorizontalLayout>
 
 
 	</VerticalLayout>
 	<SolidView
 		id="blue"
 		marginTop="35"
-		verticalAlign="RIGHT"
+		horizontalAlign="RIGHT"
 		width="80"
 		height="80"
 		alpha="0.75"
@@ -63,7 +89,7 @@
   <SolidView
 	  id="puzzleFrame"
 	  marginTop="35"
-	  verticalAlign="CENTER"
+	  horizontalAlign="CENTER"
 	  width="400"
 	  height="400"
 	  backgroundColor="0x30FFFFFF"
@@ -71,7 +97,7 @@
   <Button
 	  id="randomPuzzleButton"
 	  marginTop="10"
-	  verticalAlign="CENTER"
+	  horizontalAlign="CENTER"
 	  width="60"
 	  height="60"
 	  />
