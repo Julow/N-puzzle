@@ -32,10 +32,31 @@
 	  <HorizontalLayout
 		  id="mid-bot-holder"
 		  backgroundColor="0xFFFFFF00" alpha="0.75"
+		  activity_scripts="res/start_activity/mid_bot_buttons.lua"
 		  >
 		<Button
-			activity_scripts="res/start_activity/randomPuzzleButton.lua"
 			id="randomPuzzleButton"
+			marginTop="10" marginBottom="10" marginLeft="10" marginRight="10"
+			horizontalAlign="CENTER"
+			width="60"
+			height="60"
+			/>
+		<Button
+			id="filePuzzleButton"
+			marginTop="10" marginBottom="10" marginLeft="10" marginRight="10"
+			horizontalAlign="CENTER"
+			width="60"
+			height="60"
+			/>
+		<Button
+			id="defaultPuzzleButton"
+			marginTop="10" marginBottom="10" marginLeft="10" marginRight="10"
+			horizontalAlign="CENTER"
+			width="60"
+			height="60"
+			/>
+		<Button
+			id="solveLaunchButton"
 			marginTop="10" marginBottom="10" marginLeft="10" marginRight="10"
 			horizontalAlign="CENTER"
 			width="60"

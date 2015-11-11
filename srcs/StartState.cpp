@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 09:02:27 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/11 15:35:48 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 16:54:40 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,31 +14,34 @@
 #include <array>
 #include "StartState.hpp"
 #include "config_window.hpp"
+#include "ftlua/ftlua.hpp"
+#include "ftlua_extend.hpp"
+
+using SS = StartState;
 
 /* STATIC ATTRIBUTES  *********** */
-ftui::Activity	StartState::act{WIN_SIZEVI};
-Tiles			StartState::tiles;
+ftui::Activity	SS::act{WIN_SIZEVI};
+Tiles			SS::tiles;
 
 #define MATRIX33I(...) std::array<int*, 3>{{__VA_ARGS__}}.data()
 #define LINE3I(...) std::array<int, 3>{{__VA_ARGS__}}.data()
 
-Grid const		StartState::defaultGrid =
+Grid const		SS::defaultGrid =
 	Grid(MATRIX33I(LINE3I(0, 1, 2), LINE3I(3, 4, 5), LINE3I(6, 7, 8)), 3);
 
-Grid			*StartState::filegrid = nullptr;
+Grid			*SS::filegrid = nullptr;
 
 /* CONSTRUCTION ***************** */
-IState			*StartState::create(ftui::Canvas &can, OCamlBinding &ocaml)
+IState			*SS::create(ftui::Canvas &can, OCamlBinding &ocaml)
 {
-	return new StartState(can, ocaml);
+	return new SS(can, ocaml);
 }
 
-void			StartState::globalInit(void)
+void			SS::globalInit(void)
 {
 	std::ifstream	is("res/layout/start_activity.xml");
 
 	act.inflate(is);
-	act.registerLuaCFun_global("generate_grid", &OCamlBinding::generate_gridG);
 	act.registerLuaCFun_global("getAlgorithms", &getAlgorithms);
 	act.registerLuaCFun_global("getHeuristics", &getHeuristics);
 	act.registerLuaCFun_global("getGrid", &getGridG);
@@ -51,212 +54,190 @@ void			StartState::globalInit(void)
 	act.registerLuaCFun_global("setAlgorithmId", &setAlgorithmIdG);
 	act.registerLuaCFun_global("setHeuristicId", &setHeuristicIdG);
 	act.registerLuaCFun_global("setCost", &setCostG);
-	StartState::tiles.init(WIN_SIZEVI);
+	act.registerLuaCFun_global("launchSolving", &launchSolvingG);
+	SS::tiles.init(WIN_SIZEVI);
 	return ;
 }
 
-StartState		*StartState::_instance = nullptr;
-StartState		*StartState::instance(void)
-{ return (StartState::_instance); }
+SS		*SS::_instance = nullptr;
+SS		*SS::instance(void)
+{ return (SS::_instance); }
 
 // TODO:  loadFileGrid(std::string const &fileName);
 
-StartState::StartState(ftui::Canvas &can, OCamlBinding &ocaml)
+SS::StartState(ftui::Canvas &can, OCamlBinding &ocaml)
 	: _grid(defaultGrid), _algorithmId(0), _heuristicId(0), _cost(1)
+	, _launchSolving(false)
 {
 	(void)can;
 	(void)ocaml;
 	ocaml.setListener(this);
-	StartState::_instance = this;
+	SS::_instance = this;
 	return ;
 }
 
-StartState::~StartState()
+SS::~StartState()
 {
 	return ;
 }
 
 /* ISTATE LEGACY **************** */
-void			StartState::loop(
+void			SS::loop(
 	std::unique_ptr<IState> &ptr, ftui::Canvas &can, OCamlBinding &ocaml)
 {
 	(void)can;
 	(void)ptr;
 	(void)ocaml;
-	StartState::tiles.render();
-	StartState::act.render(can);
+	SS::tiles.render();
+	SS::act.render(can);
 	return ;
 }
 
-ftui::Activity	&StartState::getActivity(void)
+ftui::Activity	&SS::getActivity(void)
 {
-	return StartState::act;
+	return SS::act;
 }
 
 /* ISOLVERLISTENER LEGACY ******* */
-void			StartState::onSuccess(report_s rep)
+void			SS::onSuccess(report_s rep)
 {
+	FTASSERT(false, "Should not be reached");
 	(void)rep;
 	return ;
 }
-void			StartState::onProgress(progress_s prog){
+void			SS::onProgress(progress_s prog)
+{
+	FTASSERT(false, "Should not be reached");
 	(void)prog;
 	return ;
 }
 
-void			StartState::onFail(std::string const &str)
+void			SS::onFail(std::string const &str)
 {
+	FTASSERT(false, "Should not be reached");
 	(void)str;
 	return ;
 }
 
 /* LIBFTUI INTERACTIONS ********* */
 /* GETTERS ************ */
-
-int				StartState::getAlgorithms(lua_State *l)
+int				SS::getAlgorithms(lua_State *l)
 {
-	StartState *const	ss = StartState::instance();
-
+	StartState *const	ss = SS::instance();
+//TODO do
+	(void)ss;
+	(void)l;
 	return 1;
 }
 
-int				StartState::getHeuristics(lua_State *l)
+int				SS::getHeuristics(lua_State *l)
 {
-	StartState *const	ss = StartState::instance();
-
+	StartState *const	ss = SS::instance();
+//TODO do
+	(void)ss;
+	(void)l;
 	return 1;
 }
 
 
-int				StartState::getGridG(lua_State *l)
+int				SS::getGridG(lua_State *l)
 {
-	StartState *const	ss = StartState::instance();
+	StartState *const	ss = SS::instance();
 
+	FTASSERT(lua_gettop(l) == 0); //TODO: FTLUAASSERT
+	ftlua::pushgrid(l, ss->getGrid());
 	return 1;
 }
+Grid const		&SS::getGrid(void) const
+{ return _grid; }
 
-Grid const		&StartState::getGrid(void) const
+
+int				SS::getAlgorithmIdG(lua_State *l)
 {
-	return _grid;
+	return ftlua::handle<0, 1>(l, SS::instance(), &SS::getAlgorithmId);
 }
+int				SS::getAlgorithmId(void) const
+{ return _algorithmId; }
 
 
-int				StartState::getAlgorithmIdG(lua_State *l)
+int				SS::getHeuristicIdG(lua_State *l)
 {
-	StartState *const	ss = StartState::instance();
-
-	return 1;
+	return ftlua::handle<0, 1>(l, SS::instance(), &SS::getHeuristicId);
 }
+int				SS::getHeuristicId(void) const
+{ return _heuristicId; }
 
-int				StartState::getAlgorithmId(void) const
+
+int				SS::getCostG(lua_State *l)
 {
-	return _algorithmId;
+	return ftlua::handle<0, 1>(l, SS::instance(), &SS::getCost);
 }
-
-
-int				StartState::getHeuristicIdG(lua_State *l)
-{
-	StartState *const	ss = StartState::instance();
-
-	return 1;
-}
-
-int				StartState::getHeuristicId(void) const
-{
-	return _heuristicId;
-}
-
-
-int				StartState::getCostG(lua_State *l)
-{
-	StartState *const	ss = StartState::instance();
-
-	return 1;
-}
-
-int				StartState::getCost(void) const
-{
-	return _cost;
-}
+int				SS::getCost(void) const
+{ return _cost; }
 
 
 /* SETTERS ************ */
-int				StartState::useFileGridG(lua_State *l)
+int				SS::useFileGridG(lua_State *l)
 {
-	StartState *const	ss = StartState::instance();
-
-	return 0;
+	return ftlua::handle<0, 0>(l, SS::instance(), &SS::useFileGrid);
 }
 
-void			StartState::useFileGrid(void)
+
+void			SS::useFileGrid(void)
 {
+	// TODO useFileGrid
 	return ;
 }
 
 
-int				StartState::useDefaultGridG(lua_State *l)
+int				SS::useDefaultGridG(lua_State *l)
 {
-	StartState *const	ss = StartState::instance();
-
-	return 0;
+	return ftlua::handle<0, 0>(l, SS::instance(), &SS::useDefaultGrid);
 }
+void			SS::useDefaultGrid(void)
+{ _grid = SS::defaultGrid; }
 
-void			StartState::useDefaultGrid(void)
+
+int				SS::useRandomGridG(lua_State *l)
 {
+	return ftlua::handle<2, 0>(l, SS::instance(), &SS::useRandomGrid);
+}
+void			SS::useRandomGrid(int w, bool solvable)
+{
+	OCamlBinding *const	ocaml = OCamlBinding::instance();
+
+	_grid = ocaml->generate_grid(w, solvable);
 	return ;
 }
 
 
-int				StartState::useRandomGridG(lua_State *l)
+int				SS::setAlgorithmIdG(lua_State *l)
 {
-	StartState *const	ss = StartState::instance();
-
-	return 0;
+	return ftlua::handle<1, 0>(l, SS::instance(), &SS::setAlgorithmId);
 }
+void			SS::setAlgorithmId(int id)
+{ _algorithmId = id; }
 
-void			StartState::useRandomGrid(void)
+
+int				SS::setHeuristicIdG(lua_State *l)
 {
-	return ;
+	return ftlua::handle<1, 0>(l, SS::instance(), &SS::setHeuristicId);
 }
+void			SS::setHeuristicId(int id)
+{ _heuristicId = id; }
 
 
-int				StartState::setAlgorithmIdG(lua_State *l)
+int				SS::setCostG(lua_State *l)
 {
-	StartState *const	ss = StartState::instance();
-
-	return 0;
+	return ftlua::handle<1, 0>(l, SS::instance(), &SS::setCost);
 }
+void			SS::setCost(int cost)
+{ _cost = cost; }
 
-void			StartState::setAlgorithmId(int id)
+
+int				SS::launchSolvingG(lua_State *l)
 {
-	_algorithmId = id;
-	return ;
+	return ftlua::handle<0, 0>(l, SS::instance(), &SS::launchSolving);
 }
-
-
-int				StartState::setHeuristicIdG(lua_State *l)
-{
-	StartState *const	ss = StartState::instance();
-
-	return 0;
-}
-
-void			StartState::setHeuristicId(int id)
-{
-	_heuristicId = id;
-	return ;
-}
-
-
-int				StartState::setCostG(lua_State *l)
-{
-	StartState *const	ss = StartState::instance();
-
-	return 0;
-}
-
-void			StartState::setCost(int cost)
-{
-	_cost = cost;
-	return ;
-}
+void			SS::launchSolving(void)
+{ _launchSolving = true; }

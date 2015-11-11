@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/08 14:11:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 16:17:34 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -264,11 +264,11 @@ int		handle(lua_State *l, C *i, Ret (C::*f)(Args...))
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
 int		handle(lua_State *l, C const *i, Ret (C::*f)(Args...) const)
 {
-	using F = Ret (C::*)(Args...);
-	using FClean = typename std::remove_cv<F>::type;
-	using CClean = typename std::remove_cv<C>::type;
+	using FClean = Ret (C::*)(Args...);
+	using CClean = C*;
 	internal::helperLoop<NumIn, NumOut>(
-		l, reinterpret_cast<CClean>(i), reinterpret_cast<FClean>(f));
+		l, const_cast<CClean>(i), reinterpret_cast<FClean>(f));
+	// TODO: sorry world this is a const_cast :( TODO: fix_later
 	return (NumOut);
 }
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>

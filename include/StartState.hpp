@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 09:02:42 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/11 15:35:20 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 16:54:37 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -73,7 +73,7 @@ public:
 	void					useDefaultGrid(void);
 
 	static int				useRandomGridG(lua_State *l);
-	void					useRandomGrid(void);
+	void					useRandomGrid(int w, bool solvable);
 
 	static int				setAlgorithmIdG(lua_State *l);
 	void					setAlgorithmId(int id);
@@ -84,12 +84,16 @@ public:
 	static int				setCostG(lua_State *l);
 	void					setCost(int cost);
 
+	static int				launchSolvingG(lua_State *l);
+	void					launchSolving(void);
+
 private:
 	/* INTERNAL ********************* */
 	Grid					_grid;
 	unsigned int			_algorithmId;
 	unsigned int			_heuristicId;
 	int						_cost;
+	bool					_launchSolving;
 
 	static ftui::Activity	act;
 	static Tiles			tiles;
@@ -100,6 +104,5 @@ public:
 	static StartState		*instance(void);
 
 };
-//std::ostream					&operator<<(std::ostream &o, StartState const &rhs);
 
 #endif // **************************************************** STARTSTATE_HPP //
