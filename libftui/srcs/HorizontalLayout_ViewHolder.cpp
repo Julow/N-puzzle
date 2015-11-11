@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 10:11:27 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/11 12:56:35 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 13:15:17 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -28,7 +28,7 @@ HorizontalLayout::ViewHolder::ViewHolder(HorizontalLayout *p, AView *v) :
 	_requestedSize(0, 0),
 	_horizontalMargin(0, 0),
 	_verticalMargin(0, 0),
-	_verticalAlign(HorizontalLayout::Align::BOTTOM)
+	_verticalAlign(HorizontalLayout::Align::MIDDLE)
 {
 }
 

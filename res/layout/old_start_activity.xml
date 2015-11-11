@@ -1,0 +1,104 @@
+<VerticalLayout
+	id="UIParent"
+	activity_scripts="res/utils.lua;res/start_activity.lua;res/randomPuzzleButton.lua;res/global.lua"
+	>
+
+
+  <VerticalLayout
+	  id="yellowL"
+	  marginTop="35"
+	  horizontalAlign="CENTER"
+	  width="150"
+	  height="150"
+	  alpha="0.75"
+	  backgroundColor="0xFFFFFF00"
+	  >
+	<SolidView
+		id="green"
+		marginTop="35"
+		marginBottom="35"
+		horizontalAlign="LEFT"
+		width="800"
+		height="20"
+		alpha="0.75"
+		backgroundColor="0xFF00FF00"
+		/>
+	<VerticalLayout
+		id="cyanL"
+		marginTop="35"
+		horizontalAlign="CENTER"
+		width="150"
+		height="150"
+		alpha="0.75"
+		backgroundColor="0xFF00FFFF"
+		>
+
+	  <Button
+		  id="dbgbutton"
+		  marginTop="50"
+		  marginLeft="50"
+		  marginRight="5"
+		  marginBottom="50"
+		  horizontalAlign="CENTER"
+		  alpha="0.75"
+		  width="60"
+		  height="60"
+		  />
+	  <HorizontalLayout
+		  id="purple"
+		  backgroundColor="0xFF800080"
+		  >
+
+		<Button
+			id="purpbut1"
+			marginTop="25" marginLeft="25" marginRight="25" marginBottom="25"
+			verticalAlign="MIDDLE"
+			alpha="0.75"
+			width="60"  height="60"/>
+		<Button
+			id="purpbut2"
+			marginTop="25" marginLeft="25" marginRight="25"
+			verticalAlign="BOTTOM"
+			alpha="0.75"
+			width="60"  height="60"/>
+		<Button
+			id="purpbut3"
+			marginLeft="25" marginRight="25" marginBottom="25"
+			verticalAlign="TOP"
+			alpha="0.75"
+			width="60"  height="60"/>
+
+
+	  </HorizontalLayout>
+
+
+	</VerticalLayout>
+	<SolidView
+		id="blue"
+		marginTop="35"
+		horizontalAlign="RIGHT"
+		width="80"
+		height="80"
+		alpha="0.75"
+		backgroundColor="0xFF0000FF"
+		/>
+
+  </VerticalLayout>
+
+
+  <SolidView
+	  id="puzzleFrame"
+	  marginTop="35"
+	  horizontalAlign="CENTER"
+	  width="400"
+	  height="400"
+	  backgroundColor="0x30FFFFFF"
+	  />
+  <Button
+	  id="randomPuzzleButton"
+	  marginTop="10"
+	  horizontalAlign="CENTER"
+	  width="60"
+	  height="60"
+	  />
+</VerticalLayout>

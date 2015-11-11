@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/09 18:00:27 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/10 18:45:36 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/11 13:13:53 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -36,8 +36,3 @@ function enableTestOnView(v)
 					print(self:getId(), 'onLeave');
    end);
 end
-
--- enableTestOnView(yellowL);
-enableTestOnView(blue);
-enableTestOnView(dbgbutton);
--- enableTestOnView(cyanL);

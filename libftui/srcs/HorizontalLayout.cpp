@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/11 12:54:47 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 13:23:04 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -59,7 +59,6 @@ void			HorizontalLayout::alignChilds(void)
 
 	for (ViewHolder *h : _childs)
 	{
-		FTASSERT(false);
 		childPosY = h->getPos().y;
 		childSize = h->getRequestedSize();
 		vm = h->getVerticalMargin();
@@ -68,19 +67,15 @@ void			HorizontalLayout::alignChilds(void)
 		switch (h->getVerticalAlign())
 		{
 		case Align::TOP:
-		FTASSERT(false);
 			childPosY = vm.x;
 			break ;
 		case Align::MIDDLE:
-		FTASSERT(false);
 			childPosY = (layoutSize.y - childSize.y + vm.x - vm.y) / 2;
 			break ;
 		case Align::BOTTOM:
-		FTASSERT(false);
 			childPosY = layoutSize.y - childSize.y - vm.y;
 			break ;
 		}
-		std::cout << childPosY << std::endl;
 		h->setPosY(childPosY);
 		h->setSize(childSize);//TODO: faut-il verifier que la taille a bien change?
 	}

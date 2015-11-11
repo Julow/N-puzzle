@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 09:38:59 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/08 20:51:39 by juloo            ###   ########.fr       //
+//   Updated: 2015/11/11 13:06:04 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -81,6 +81,8 @@ ft::Vec2<int>	Activity::RootViewHolder::getRequestedSize(void) const
 void			Activity::RootViewHolder::setParam(std::string const &k
 												   , std::string const &v)
 {
+	(void)k;
+	(void)v;
 	if (k == "activity_scripts")
 		_activity.saveScriptPath(v);
 	return ;
