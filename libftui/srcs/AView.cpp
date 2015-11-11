@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/11 13:06:55 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 17:56:43 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -552,6 +552,7 @@ void			AView::queryRedraw(void)
 {
 	ALayout		*p;
 
+	ft::f(std::cout, "Query redraw %\n", (_id ? *_id : "noname"));
 	if ((this->_flags & AView::REDRAW_QUERY) != AView::REDRAW_QUERY)
 	{
 		this->_flags |= AView::REDRAW_QUERY;

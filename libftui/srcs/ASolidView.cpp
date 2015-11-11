@@ -6,13 +6,14 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/09 16:29:16 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/11 17:19:00 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "ftui/ASolidView.hpp"
 #include "ftui/IViewHolder.hpp"
 #include "ftui/XmlParser.hpp"
+#include "ft/utils.hpp"
 
 #include <string>
 
@@ -31,6 +32,7 @@ ASolidView::~ASolidView(void)
 void			ASolidView::onDraw(Canvas &canvas)
 {
 	canvas.clearClip();
+	FTPAD("%", (_id ? *_id : "noname"));
 	canvas.drawRect(ft::make_rect(ft::make_vec(0, 0), _holder->getSize()),
 			_bgParams);
 	AView::onDraw(canvas);

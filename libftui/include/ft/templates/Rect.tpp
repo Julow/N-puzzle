@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/05 14:06:16 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/09 14:29:21 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/11 17:49:10 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -106,8 +106,9 @@ void		Rect<T>::expand(T expand)
 template<typename T>
 bool		Rect<T>::collides(Rect<T> const &rect) const
 {
-	if (rect.left <= right && rect.right >= left
-		&& rect.top <= bottom && rect.bottom >= top)
+//TODO: check, j'ai remove les >=/<= en >/<
+	if (rect.left < right && rect.right > left
+		&& rect.top < bottom && rect.bottom > top)
 		return (true);
 	return (false);
 }
@@ -127,8 +128,9 @@ bool		Rect<T>::collides(Rect<T> const &rect, Rect<T> &res) const
 template<typename T>
 bool		Rect<T>::contains(Rect<T> const &rect) const
 {
-	if (rect.left >= left && rect.top >= top
-		&& rect.right <= right && rect.bottom <= bottom)
+//TODO: check, j'ai remove les >=/<= en >/<
+	if (rect.left > left && rect.top > top
+		&& rect.right < right && rect.bottom < bottom)
 		return (true);
 	return (false);
 }
@@ -136,8 +138,9 @@ bool		Rect<T>::contains(Rect<T> const &rect) const
 template<typename T>
 bool		Rect<T>::contains(Vec2<T> pt) const
 {
-	if (pt.x >= left && pt.x <= right
-		&& pt.y >= top && pt.y <= bottom)
+//TODO: check, j'ai remove les >=/<= en >/<
+	if (pt.x > left && pt.x < right
+		&& pt.y > top && pt.y < bottom)
 		return (true);
 	return (false);
 }

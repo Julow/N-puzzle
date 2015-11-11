@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/11 12:51:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 17:54:27 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -140,8 +140,8 @@ static ft::Rect<int>	calc_redraw_clip(
 				clip = ft::make_rect(vh->getPos(), vh->getSize());
 			else
 				clip.merge(ft::make_rect(vh->getPos(), vh->getSize()));
-			// ft::f(std::cout, "clip: %\n", clip);
 		}
+		// ft::f(std::cout, "clip: %  (%)\n", clip, ft::make_rect(vh->getPos(), vh->getSize()));
 	}
 	return clip;
 }
@@ -169,7 +169,11 @@ void			VerticalLayout::onDraw(Canvas &canvas)
 	// canvas.setClip(redrawClip);
 	// ASolidView::onDraw(canvas);
 	// canvas.setClip(old_clip);
-	FTPADB("%", (_id ? *_id : "noname"));
+	FTPADB("% queryG(%) queryV(%)"
+		   , (_id ? *_id : "noname")
+		   , isRedrawQueried()
+		   , AView::isRedrawQueried()
+		);
 	if (AView::isRedrawQueried())
 	{
 		ASolidView::onDraw(canvas);
@@ -187,6 +191,12 @@ void			VerticalLayout::onDraw(Canvas &canvas)
 		{
 			v = vh->getView();
 			clip = ft::make_rect(vh->getPos(), vh->getSize());
+			FTPAD("% (G%)(V%)(clip%)",
+				  (v->getId() ? *v->getId() : "noname")
+				  , v->isRedrawQueried()
+				  , v->AView::isRedrawQueried()
+				  , redrawClip.collides(clip)
+				);
 			if (v->isRedrawQueried() || redrawClip.collides(clip))
 				redrawChild(v, clip);
 		}
