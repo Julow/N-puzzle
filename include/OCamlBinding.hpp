@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 12:38:10 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/09 13:27:40 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 20:24:12 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,35 +15,41 @@
 
 # include "Grid.hpp"
 # include "ISolverListener.hpp"
-# include "ftui/lua/lua.hpp"
 
 class OCamlBinding
 {
+private:
+
+	/* CONSTRUCTION ***************** */
+	static OCamlBinding		*_instance;
 public:
+	static OCamlBinding		*instance(void);
 
 	OCamlBinding();
 	~OCamlBinding();
 
+	OCamlBinding(OCamlBinding const &src) = delete;
+	OCamlBinding			&operator=(OCamlBinding const &rhs) = delete;
+
+	/* MECHANISMS ******************* */
 	void					setListener(ISolverListener *el);
+	Grid const				&getGrid(void) const;
+
+	/* INTERACTIONS C-OCAML ********* */
 	void					solve(Grid const &gr);
 	void					poll_event(void);
 	Grid					generate_grid(int w, bool solvable);
-	static int				generate_gridG(lua_State *l);
-
-	Grid const				&getGrid(void) const;
-
-	static OCamlBinding		*instance(void);
+	void					abort(void);
+	void					algorithm_list(void);
+	void					heuristic_list(void);
+	void					transposition_toreal(int w);
+	void					transposition_toabstract(int w);
 
 protected:
-private:
-
-	static OCamlBinding		*_instance;
 
 	Grid					_currentGrid;
 	ISolverListener			*_el;
 
-	OCamlBinding(OCamlBinding const &src) = delete;
-	OCamlBinding				&operator=(OCamlBinding const &rhs) = delete;
 };
 
 #endif // ************************************************** OCAMLBINDING_HPP //

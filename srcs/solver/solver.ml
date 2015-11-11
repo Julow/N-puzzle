@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/11/09 18:31:43 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/11 20:19:55 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -198,12 +198,12 @@ let solve' npuzzle =
 
 (* ************************************************************************** *)
 (* From C api *)
-let poll_event _ =
-  EventHandler.popq ()
-
 let solve npuzzle =
   solve' npuzzle;
   ()
+
+let poll_event _ =
+  EventHandler.popq ()
 
 let abort _ =
   (match !thread_handle with
@@ -212,15 +212,15 @@ let abort _ =
   EventHandler.clearq ();
   ()
 
+let generate_grid : int -> bool -> Grid.t = fun w solvable ->
+  let gr = Grid.generate w solvable in
+  gr
+
 let algorithm_list _ =
   Hashtbl.fold (fun k _ l -> k::l) algorithms []
 
 let heuristic_list _ =
   Hashtbl.fold (fun k _ l -> k::l) algorithms []
-
-let generate_grid : int -> bool -> Grid.t = fun w solvable ->
-  let gr = Grid.generate w solvable in
-  gr
 
 let transposition_toreal : int -> int array = fun w ->
   Grid.init_transp_tables w;

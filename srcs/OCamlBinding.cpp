@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 11:51:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/10 16:42:22 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 20:24:27 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,6 +24,7 @@
 #include <caml/callback.h>
 #include <caml/printexc.h>
 
+/* CONSTRUCTION ***************** */
 OCamlBinding		*OCamlBinding::_instance;
 OCamlBinding		*OCamlBinding::instance(void)
 {
@@ -45,6 +46,7 @@ OCamlBinding::~OCamlBinding()
 	return ;
 }
 
+/* MECHANISMS ******************* */
 Grid const	&OCamlBinding::getGrid(void) const
 {
 	return (_currentGrid);
@@ -61,26 +63,8 @@ void		OCamlBinding::setListener(ISolverListener *el)
 // 	return (_listener);
 // }
 
-
 /* ************************************************************************** */
-/* C -> OCaml */
-
-void		OCamlBinding::solve(Grid const &gr)
-{
-	value *const	f = caml_named_value("solve");
-	value			res;
-
-	FTASSERT(f != nullptr);
-	this->_currentGrid = gr;
-	res = caml_callback_exn(*f, (value)this); // TODO: memory leak ?
-	if (Is_exception_result(res))
-		throw std::runtime_error(
-			caml_format_exception(Extract_exception(res)));
-	return ;
-}
-
-/* ************************************************************************** */
-/* C -> OCaml */
+/* val conversions */
 
 static double						valToDouble(value &val)
 {
@@ -161,18 +145,6 @@ static std::vector<Grid>			valToGridVector(value &val)
 	return vec;
 }
 
-//0 initial_h   : int;
-
-//1 nodes       : int;          (* SUBJECT.PDF *)
-//2 sum_h       : int;
-//3 max_open    : int;
-//4 max_closed  : int;
-//5 max_both    : int * int;    (* SUBJECT.PDF *)
-
-//6 average_h   : float;
-//7 time        : float;
-//8 states      : state list;   (* SUBJECT.PDF *)
-
 static ISolverListener::report_s	valToReport(value &val)
 {
 	value							val2 = Field(val, 0);
@@ -210,6 +182,23 @@ static std::string					valToFail(value &val)
 	return (valToString(Field(val, 0)));
 }
 
+/* ************************************************************************** */
+/* C -> OCaml */
+
+void		OCamlBinding::solve(Grid const &gr)
+{
+	value *const	f = caml_named_value("solve");
+	value			res;
+
+	FTASSERT(f != nullptr);
+	this->_currentGrid = gr;
+	res = caml_callback_exn(*f, (value)this); // TODO: memory leak ?
+	if (Is_exception_result(res))
+		throw std::runtime_error(
+			caml_format_exception(Extract_exception(res)));
+	return ;
+}
+
 void		OCamlBinding::poll_event(void)
 {
 	value *const	f = caml_named_value("poll_event");
@@ -237,8 +226,11 @@ void		OCamlBinding::poll_event(void)
 	return ;
 }
 
-/* ************************************************************************** */
-/* C -> OCaml */
+void        OCamlBinding::abort(void)
+{
+//TODO: OCamlBinding::abort
+	return ;
+}
 
 Grid		OCamlBinding::generate_grid(int w, bool solvable)
 {
@@ -254,6 +246,61 @@ Grid		OCamlBinding::generate_grid(int w, bool solvable)
 	return valToGrid(res);
 }
 
+void        OCamlBinding::algorithm_list(void)
+{
+	value *const	f = caml_named_value("algorithm_list");
+	value			res;
+
+	FTASSERT(_el != nullptr);
+	FTASSERT(f != nullptr);
+	res = caml_callback_exn(*f, Val_unit);
+	if (Is_exception_result(res))
+		throw std::runtime_error(
+			caml_format_exception(Extract_exception(res)));
+	return ;
+}
+
+void        OCamlBinding::heuristic_list(void)
+{
+	value *const	f = caml_named_value("heuristic_list");
+	value			res;
+
+	FTASSERT(_el != nullptr);
+	FTASSERT(f != nullptr);
+	res = caml_callback_exn(*f, Val_unit);
+	if (Is_exception_result(res))
+		throw std::runtime_error(
+			caml_format_exception(Extract_exception(res)));
+	return ;
+}
+
+void        OCamlBinding::transposition_toreal(int w)
+{
+	value *const	f = caml_named_value("transposition_toreal");
+	value			res;
+
+	FTASSERT(_el != nullptr);
+	FTASSERT(f != nullptr);
+	res = caml_callback_exn(*f, Val_int(w));
+	if (Is_exception_result(res))
+		throw std::runtime_error(
+			caml_format_exception(Extract_exception(res)));
+	return ;
+}
+
+void        OCamlBinding::transposition_toabstract(int w)
+{
+	value *const	f = caml_named_value("transposition_toabstract");
+	value			res;
+
+	FTASSERT(_el != nullptr);
+	FTASSERT(f != nullptr);
+	res = caml_callback_exn(*f, Val_int(w));
+	if (Is_exception_result(res))
+		throw std::runtime_error(
+			caml_format_exception(Extract_exception(res)));
+	return ;
+}
 
 /* ************************************************************************** */
 /* C <- OCaml */

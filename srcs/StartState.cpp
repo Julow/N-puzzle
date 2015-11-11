@@ -6,21 +6,22 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 09:02:27 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/11 19:55:04 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 20:01:11 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include <fstream>
-#include <array>
+
 #include "StartState.hpp"
 #include "config_window.hpp"
+
 #include "ftlua/ftlua.hpp"
 #include "ftlua_extend.hpp"
 
 using AS = AState;
 using SS = StartState;
 
-/* STATIC ATTRIBUTES  *********** */
+/* STATIC ATTRIBUTES	*********** */
 ftui::Activity	SS::act{WIN_SIZEVI};
 Tiles			SS::tiles;
 

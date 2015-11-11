@@ -6,20 +6,16 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 09:02:42 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/11 19:52:43 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 20:00:40 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef STARTSTATE_HPP
 # define STARTSTATE_HPP
 
-//# include <string>
-# include <iostream>
-//# include <stdexcept>
-# include "AState.hpp"
 # include "tiles/Tiles.hpp"
-# include "ftui/Activity.hpp"
-# include "ftui/lua/lua.hpp"
+
+# include "AState.hpp"
 
 class StartState final : public AState, public ISolverListener
 {
