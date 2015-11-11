@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:12:43 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/10 13:14:57 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 11:04:20 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -29,8 +29,8 @@ namespace ftui
 ** * Can be horizontally aligned
 ** * Support marginTop and marginBottom
 ** * Requested height is always used
-** * Requested width can be clamp to layout's width
-** * Are not shrink if height go outside layout's height
+** * Requested width can be clamped to layout's width
+** * Are not shrinked if height go outside layout's height
 **    but are partially hidden
 ** -
 */
@@ -132,6 +132,8 @@ public:
 
 	ft::Vec2<int>			getVerticalMargin(void) const;
 	void					setVerticalMargin(ft::Vec2<int> margin);
+	ft::Vec2<int>			getHorizontalMargin(void) const;
+	void					setHorizontalMargin(ft::Vec2<int> margin);
 	Align					getHorizontalAlign(void) const;
 	void					setHorizontalAlign(Align align);
 
@@ -145,6 +147,7 @@ protected:
 	ft::Vec2<int>			_requestedSize;
 
 	ft::Vec2<int>			_verticalMargin;
+	ft::Vec2<int>			_horizontalMargin;
 	Align					_horizontalAlign;
 
 private:

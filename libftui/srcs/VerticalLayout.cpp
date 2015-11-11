@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/10 16:34:42 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 11:16:48 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -55,30 +55,31 @@ void			VerticalLayout::alignChilds(void)
 	ft::Vec2<int> const	layoutSize = _holder->getSize();
 	int					childPosX;
 	ft::Vec2<int>		childSize;
+	ft::Vec2<int>		hm;
 
 	for (ViewHolder *h : _childs)
 	{
 		childPosX = h->getPos().x;
 		childSize = h->getRequestedSize();
-		if (childSize.x > layoutSize.x)
-			childSize.x = layoutSize.x;
+		hm = h->getHorizontalMargin();
+		if (childSize.x + hm.x + hm.y > layoutSize.x)
+			childSize.x = layoutSize.x;//TODO: why?, de tt facon ca depasse
 		switch (h->getHorizontalAlign())
 		{
 		case Align::LEFT:
-			childPosX = 0;
+			childPosX = hm.x;
 			break ;
 		case Align::CENTER:
-			childPosX = (layoutSize.x - childSize.x) / 2;
+			childPosX = (layoutSize.x - childSize.x + hm.x - hm.y) / 2;
 			break ;
 		case Align::RIGHT:
-			childPosX = layoutSize.x - childSize.x;
+			childPosX = layoutSize.x - childSize.x - hm.y;
 			break ;
 		}
 		h->setPosX(childPosX);
-		h->setSize(childSize);
+		h->setSize(childSize);//TODO: faut-il verifier que la taille a bien change?
 	}
 }
-
 /*
 ** onMeasure
 ** -
@@ -87,6 +88,9 @@ void			VerticalLayout::alignChilds(void)
 void			VerticalLayout::onMeasure(void)
 {
 	ft::Vec2<int>	requestedSize;
+	ft::Vec2<int>	vm;
+	ft::Vec2<int>	hm;
+	int				width;
 	int				offsetTop = 0;
 	int				maxWidth = 0;
 
@@ -95,11 +99,14 @@ void			VerticalLayout::onMeasure(void)
 	{
 		h->getView()->onMeasure();
 		requestedSize = h->getRequestedSize();
-		if (requestedSize.x > maxWidth)
-			maxWidth = requestedSize.x;
-		offsetTop += h->getVerticalMargin().x;
+		hm = h->getHorizontalMargin();
+		width = requestedSize.x + hm.x + hm.y;
+		if (width > maxWidth)
+			maxWidth = width;
+		vm = h->getVerticalMargin();
+		offsetTop += vm.x;
 		h->setPosY(offsetTop);
-		offsetTop += h->getVerticalMargin().y;
+		offsetTop += vm.y;
 		offsetTop += requestedSize.y;
 	}
 	_holder->setRequestedSize(ft::make_vec(maxWidth, offsetTop));
@@ -169,11 +176,6 @@ void			VerticalLayout::onDraw(Canvas &canvas)
 		_layoutFlags &= ~AView::REDRAW_QUERY;
 		for (ViewHolder *vh : _childs)
 		{
-			// FTPAD("CHILD(%) query(%)  collide(%)"
-			// 	  , (vh->getView()->getId() ? *vh->getView()->getId() : "noname")
-			// 	  , vh->getView()->isRedrawQueried()
-			// 	  , redrawClip.collides(clip)
-			// 	);
 			redrawChild(
 				vh->getView(), ft::make_rect(vh->getPos(), vh->getSize()));
 		}
@@ -185,11 +187,6 @@ void			VerticalLayout::onDraw(Canvas &canvas)
 		{
 			v = vh->getView();
 			clip = ft::make_rect(vh->getPos(), vh->getSize());
-			// FTPAD("CHILD(%) query(%)  collide(%)"
-			// 	  , (v->getId() ? *v->getId() : "noname")
-			// 	  , v->isRedrawQueried()
-			// 	  , redrawClip.collides(clip)
-			// 	);
 			if (v->isRedrawQueried() || redrawClip.collides(clip))
 				redrawChild(v, clip);
 		}

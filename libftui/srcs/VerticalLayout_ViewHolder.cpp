@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 10:11:27 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/09 14:56:40 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/11 11:07:57 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -27,6 +27,7 @@ VerticalLayout::ViewHolder::ViewHolder(VerticalLayout *p, AView *v) :
 	_size(0, 0),
 	_requestedSize(0, 0),
 	_verticalMargin(0, 0),
+	_horizontalMargin(0, 0),
 	_horizontalAlign(VerticalLayout::Align::LEFT)
 {
 }
@@ -89,6 +90,16 @@ void			VerticalLayout::ViewHolder::setParam(std::string const &k,
 		{
 			holder->_verticalMargin.y = atoi(v.c_str());
 		}},
+		{"marginLeft", [](VerticalLayout::ViewHolder *holder,
+			std::string const &v)
+		{
+			holder->_horizontalMargin.x = atoi(v.c_str());
+		}},
+		{"marginRight", [](VerticalLayout::ViewHolder *holder,
+			std::string const &v)
+		{
+			holder->_horizontalMargin.y = atoi(v.c_str());
+		}},
 		{"verticalAlign", [](VerticalLayout::ViewHolder *holder,
 			std::string const &v)
 		{
@@ -119,25 +130,29 @@ void			VerticalLayout::ViewHolder::setParam(std::string const &k,
 	return ;
 }
 
-ft::Vec2<int>	VerticalLayout::ViewHolder::getVerticalMargin(void) const
-{
-	return (_verticalMargin);
-}
+ft::Vec2<int>			VerticalLayout::ViewHolder::getVerticalMargin(
+	void) const
+{ return (_verticalMargin); }
 
-void			VerticalLayout::ViewHolder::setVerticalMargin(ft::Vec2<int> margin)
-{
-	_verticalMargin = margin;
-}
+void					VerticalLayout::ViewHolder::setVerticalMargin(
+	ft::Vec2<int> margin)
+{ _verticalMargin = margin; }
 
-VerticalLayout::Align VerticalLayout::ViewHolder::getHorizontalAlign(void) const
-{
-	return (_horizontalAlign);
-}
+ft::Vec2<int>			VerticalLayout::ViewHolder::getHorizontalMargin(
+	void) const
+{ return (_horizontalMargin); }
 
-void		 VerticalLayout::ViewHolder::setHorizontalAlign(VerticalLayout::Align align)
-{
-	_horizontalAlign = align;
-}
+void					VerticalLayout::ViewHolder::setHorizontalMargin(
+	ft::Vec2<int> margin)
+{ _horizontalMargin = margin;}
+
+VerticalLayout::Align	VerticalLayout::ViewHolder::getHorizontalAlign(
+	void) const
+{ return (_horizontalAlign); }
+
+void					VerticalLayout::ViewHolder::setHorizontalAlign(
+	VerticalLayout::Align align)
+{ _horizontalAlign = align; }
 
 AView			*VerticalLayout::ViewHolder::getView(void)
 {

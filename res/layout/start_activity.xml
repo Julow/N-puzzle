@@ -36,6 +36,8 @@
 	  <Button
 		  id="dbgbutton"
 		  marginTop="50"
+		  marginLeft="50"
+		  marginRight="5"
 		  marginBottom="50"
 		  verticalAlign="CENTER"
 		  alpha="0.75"
