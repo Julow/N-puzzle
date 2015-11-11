@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 13:42:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/10 16:37:11 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 18:47:46 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -122,6 +122,7 @@ std::ostream		&operator<<(std::ostream &o, Rect<T> const &rhs)
 			<< " w:" << rhs.getWidth() << " h:" << rhs.getHeight() << " }");
 }
 
+std::string		truncmid(std::string const &str, int w = 11);
 
 /*
 ** FT::pad printing

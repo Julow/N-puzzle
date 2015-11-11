@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/10 14:57:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/10 18:23:13 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 18:59:32 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -28,6 +28,22 @@ std::vector<std::string> const							colors{
 	"\033[46m",
 	"\033[47m",
 };
+
+std::string		truncmid(std::string const &str, int w /* = 11*/)
+{
+	int const	sz = str.size();
+	int			right;
+
+	if (sz <= w)
+	{
+		right = w - sz;
+		return str + std::string(right, ' ');
+	}
+	right = (w - 1) / 2;
+	return str.substr(0, w - 1 - right)
+		+ "."
+		+ str.substr(str.size() - right, right);
+}
 
 static void		truncate_mid(std::string &str)
 {

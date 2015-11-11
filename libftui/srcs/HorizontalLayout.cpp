@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/11 17:54:28 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 18:52:44 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -170,11 +170,8 @@ void			HorizontalLayout::onDraw(Canvas &canvas)
 	// canvas.setClip(redrawClip);
 	// ASolidView::onDraw(canvas);
 	// canvas.setClip(old_clip);
-	FTPADB("% queryG(%) queryV(%)"
-		   , (_id ? *_id : "noname")
-		   , isRedrawQueried()
-		   , AView::isRedrawQueried()
-		);
+	FTPADB("% GV(%%)", this->tostring()
+		   , isRedrawQueried(), AView::isRedrawQueried());
 	if (AView::isRedrawQueried())
 	{
 		ASolidView::onDraw(canvas);
@@ -192,8 +189,8 @@ void			HorizontalLayout::onDraw(Canvas &canvas)
 		{
 			v = vh->getView();
 			clip = ft::make_rect(vh->getPos(), vh->getSize());
-			FTPAD("% (G%)(V%)(clip%)",
-				  (v->getId() ? *v->getId() : "noname")
+			FTPAD("% GVClip(%%%)",
+				  v->tostring()
 				  , v->isRedrawQueried()
 				  , v->AView::isRedrawQueried()
 				  , redrawClip.collides(clip)

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/11 17:56:43 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 19:00:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -93,6 +93,11 @@ AView::~AView(void)
 ** ========================================================================== **
 ** View core
 */
+std::string			AView::tostring(void) const
+{
+	return ft::truncmid(this->_id != nullptr ? *_id : "noname", 20);
+}
+
 std::string const	*AView::getId(void) const
 {
 	return (this->_id);
@@ -238,7 +243,7 @@ void				AView::onDraw(Canvas &canvas)
 	uint32_t const		id = static_cast<uint32_t>(LuaCallback::DRAW);
 	lua_State			*l;
 
-	FTPAD("%", (_id ? *_id : "noname"));
+	FTPAD("%", this->tostring());
 	this->_flags &= ~AView::REDRAW_QUERY;
 	if (!(_luaCallbacks & (1 << id)))
 		return ;

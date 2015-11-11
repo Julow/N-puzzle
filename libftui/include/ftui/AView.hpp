@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/10 18:35:52 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 18:50:40 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -81,6 +81,7 @@ public:
 */
 	std::string const			*getId(void) const;
 	ALayout						*getParent(void);
+	std::string					tostring(void) const;
 
 	IViewHolder					*getViewHolder(void);
 	IViewHolder const			*getViewHolder(void) const;
