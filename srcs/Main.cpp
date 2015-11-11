@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/09 18:03:13 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/11 19:31:35 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -17,7 +17,7 @@
 #include "GlCanvasHolder.hpp"
 #include "gl.hpp"
 #include "OCamlBinding.hpp"
-#include "IState.hpp"
+#include "AState.hpp"
 #include "StartState.hpp"
 #include "Main.hpp"
 
@@ -67,7 +67,7 @@ Main::Main(void)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	IState::globalInit();
+	AState::globalInit();
 	_canvasHolder.init();
 }
 

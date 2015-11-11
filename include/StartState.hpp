@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 09:02:42 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/11 16:54:37 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 19:52:43 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,29 +16,30 @@
 //# include <string>
 # include <iostream>
 //# include <stdexcept>
-# include "IState.hpp"
+# include "AState.hpp"
 # include "tiles/Tiles.hpp"
 # include "ftui/Activity.hpp"
 # include "ftui/lua/lua.hpp"
 
-class StartState final : public IState, public ISolverListener
+class StartState final : public AState, public ISolverListener
 {
 public:
 
 	/* CONSTRUCTION ***************** */
-	static IState			*create(ftui::Canvas &can, OCamlBinding &ocaml);
+	static AState			*create(ftui::Canvas &can, OCamlBinding &ocaml);
 	static void				globalInit(void);
-	static void				loadFileGrid(std::string const &fileName);
+	static StartState		*instance(void);
+
+	StartState(ftui::Canvas &can, OCamlBinding &ocaml);
+	~StartState();
 
 	StartState() = delete;
-	StartState(ftui::Canvas &can, OCamlBinding &ocaml);
 	StartState(StartState const &src) = delete;
 	StartState				&operator=(StartState const &rhs) = delete;
-	~StartState();
 
 	/* ISTATE LEGACY **************** */
 	void					loop(
-		std::unique_ptr<IState> &ptr
+		std::unique_ptr<AState> &ptr
 		, ftui::Canvas &can
 		, OCamlBinding &ocaml) override;
 	ftui::Activity			&getActivity(void) override;
@@ -49,22 +50,6 @@ public:
 	void					onFail(std::string const &str) override;
 
 	/* LIBFTUI INTERACTIONS ********* */
-	/* GETTERS ************ */
-	static int				getAlgorithms(lua_State *l);
-	static int				getHeuristics(lua_State *l);
-
-	static int				getGridG(lua_State *l);
-	Grid const				&getGrid(void) const;
-
-	static int				getAlgorithmIdG(lua_State *l);
-	int						getAlgorithmId(void) const;
-
-	static int				getHeuristicIdG(lua_State *l);
-	int						getHeuristicId(void) const;
-
-	static int				getCostG(lua_State *l);
-	int						getCost(void) const;
-
 	/* SETTERS ************ */
 	static int				useFileGridG(lua_State *l);
 	void					useFileGrid(void);
@@ -89,19 +74,10 @@ public:
 
 private:
 	/* INTERNAL ********************* */
-	Grid					_grid;
-	unsigned int			_algorithmId;
-	unsigned int			_heuristicId;
-	int						_cost;
 	bool					_launchSolving;
 
 	static ftui::Activity	act;
 	static Tiles			tiles;
-	static const Grid		defaultGrid;
-	static Grid				*filegrid;
-	static StartState		*_instance;
-public:
-	static StartState		*instance(void);
 
 };
 

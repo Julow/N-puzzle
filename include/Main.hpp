@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 12:58:38 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/08 19:19:03 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 19:31:27 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -17,7 +17,7 @@
 #include "GlCanvasHolder.hpp"
 #include "gl.hpp"
 #include "OCamlBinding.hpp"
-#include "IState.hpp"
+#include "AState.hpp"
 #include "StartState.hpp"
 
 class Main
@@ -48,7 +48,7 @@ public:
 protected:
 
 	GLFWwindow				*_window;
-	std::unique_ptr<IState>	_state;
+	std::unique_ptr<AState>	_state;
 	OCamlBinding			_ocaml;
 
 	GlCanvasHolder			_canvasHolder;

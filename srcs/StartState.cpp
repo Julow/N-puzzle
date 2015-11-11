@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 09:02:27 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/11 16:54:40 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 19:55:04 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -17,22 +17,15 @@
 #include "ftlua/ftlua.hpp"
 #include "ftlua_extend.hpp"
 
+using AS = AState;
 using SS = StartState;
 
 /* STATIC ATTRIBUTES  *********** */
 ftui::Activity	SS::act{WIN_SIZEVI};
 Tiles			SS::tiles;
 
-#define MATRIX33I(...) std::array<int*, 3>{{__VA_ARGS__}}.data()
-#define LINE3I(...) std::array<int, 3>{{__VA_ARGS__}}.data()
-
-Grid const		SS::defaultGrid =
-	Grid(MATRIX33I(LINE3I(0, 1, 2), LINE3I(3, 4, 5), LINE3I(6, 7, 8)), 3);
-
-Grid			*SS::filegrid = nullptr;
-
 /* CONSTRUCTION ***************** */
-IState			*SS::create(ftui::Canvas &can, OCamlBinding &ocaml)
+AState			*SS::create(ftui::Canvas &can, OCamlBinding &ocaml)
 {
 	return new SS(can, ocaml);
 }
@@ -42,12 +35,7 @@ void			SS::globalInit(void)
 	std::ifstream	is("res/layout/start_activity.xml");
 
 	act.inflate(is);
-	act.registerLuaCFun_global("getAlgorithms", &getAlgorithms);
-	act.registerLuaCFun_global("getHeuristics", &getHeuristics);
-	act.registerLuaCFun_global("getGrid", &getGridG);
-	act.registerLuaCFun_global("getAlgorithmId", &getAlgorithmIdG);
-	act.registerLuaCFun_global("getHeuristicId", &getHeuristicIdG);
-	act.registerLuaCFun_global("getCost", &getCostG);
+	AS::loadGlobalScripts(act);
 	act.registerLuaCFun_global("useFileGrid", &useFileGridG);
 	act.registerLuaCFun_global("useDefaultGrid", &useDefaultGridG);
 	act.registerLuaCFun_global("useRandomGrid", &useRandomGridG);
@@ -59,14 +47,16 @@ void			SS::globalInit(void)
 	return ;
 }
 
-SS		*SS::_instance = nullptr;
-SS		*SS::instance(void)
-{ return (SS::_instance); }
+StartState		*SS::instance(void)
+{
+	StartState *const	ins = dynamic_cast<StartState*>(SS::_instance);
 
-// TODO:  loadFileGrid(std::string const &fileName);
+	FTASSERT(ins != nullptr);
+	return ins;
+}
 
 SS::StartState(ftui::Canvas &can, OCamlBinding &ocaml)
-	: _grid(defaultGrid), _algorithmId(0), _heuristicId(0), _cost(1)
+	: AState()
 	, _launchSolving(false)
 {
 	(void)can;
@@ -83,7 +73,7 @@ SS::~StartState()
 
 /* ISTATE LEGACY **************** */
 void			SS::loop(
-	std::unique_ptr<IState> &ptr, ftui::Canvas &can, OCamlBinding &ocaml)
+	std::unique_ptr<AState> &ptr, ftui::Canvas &can, OCamlBinding &ocaml)
 {
 	(void)can;
 	(void)ptr;
@@ -120,62 +110,6 @@ void			SS::onFail(std::string const &str)
 }
 
 /* LIBFTUI INTERACTIONS ********* */
-/* GETTERS ************ */
-int				SS::getAlgorithms(lua_State *l)
-{
-	StartState *const	ss = SS::instance();
-//TODO do
-	(void)ss;
-	(void)l;
-	return 1;
-}
-
-int				SS::getHeuristics(lua_State *l)
-{
-	StartState *const	ss = SS::instance();
-//TODO do
-	(void)ss;
-	(void)l;
-	return 1;
-}
-
-
-int				SS::getGridG(lua_State *l)
-{
-	StartState *const	ss = SS::instance();
-
-	FTASSERT(lua_gettop(l) == 0); //TODO: FTLUAASSERT
-	ftlua::pushgrid(l, ss->getGrid());
-	return 1;
-}
-Grid const		&SS::getGrid(void) const
-{ return _grid; }
-
-
-int				SS::getAlgorithmIdG(lua_State *l)
-{
-	return ftlua::handle<0, 1>(l, SS::instance(), &SS::getAlgorithmId);
-}
-int				SS::getAlgorithmId(void) const
-{ return _algorithmId; }
-
-
-int				SS::getHeuristicIdG(lua_State *l)
-{
-	return ftlua::handle<0, 1>(l, SS::instance(), &SS::getHeuristicId);
-}
-int				SS::getHeuristicId(void) const
-{ return _heuristicId; }
-
-
-int				SS::getCostG(lua_State *l)
-{
-	return ftlua::handle<0, 1>(l, SS::instance(), &SS::getCost);
-}
-int				SS::getCost(void) const
-{ return _cost; }
-
-
 /* SETTERS ************ */
 int				SS::useFileGridG(lua_State *l)
 {
