@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:32:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/11 11:26:49 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/11 13:54:35 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -23,7 +23,7 @@ using namespace std::chrono_literals;
 Button::time_point const	Button::_zero =
 	std::chrono::system_clock::from_time_t(0);
 Button::time_diff const	Button::_maxDelta =
-	350ms;
+	300ms;
 
 /* ************************************************************************** **
 ** CONSTRUCTION

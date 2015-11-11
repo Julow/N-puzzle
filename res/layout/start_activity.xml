@@ -26,7 +26,7 @@
 		  activity_scripts="res/puzzleFrame.lua"
 		  marginTop="35"
 		  horizontalAlign="CENTER"
-		  width="400" height="400"
+		  width="500" height="500"
 		  backgroundColor="0x30FFFFFF"
 		  />
 	  <HorizontalLayout
