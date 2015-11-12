@@ -3,3 +3,4 @@ module ftlua:
 
 	public require ft
 	public require liblua
+	local BASE_FLAGS += -DRES_PATH='"$(abspath ?path?/res/)"'

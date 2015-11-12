@@ -2,10 +2,10 @@
 #
 
 # Executable name
-NAME			:= libftui.a
+NAME			:= libmodules.a
 
 # Git submodule to init
-SUBMODULES		:= 
+SUBMODULES		:=
 
 # Base flags
 BASE_FLAGS		= -Wall -Wextra

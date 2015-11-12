@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/11 11:09:11 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/12 21:04:43 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -53,11 +53,13 @@ Activity::~Activity(void)
 static lua_State	*new_lua_env(void)
 {
 	lua_State *const	l = luaL_newstate();
+	int					err{0};
 
 	if (l == nullptr)
 		throw std::runtime_error("Error while creating lua state");
 	luaL_openlibs(l);
-	// TODO: rpath in binary to write utils in .lua file
+	err = luaL_dofile(l, (RES_PATH "/utils.lua"));
+	FTASSERT(err == LUA_OK);
 	ftlua::pushUtils(l);
 	Canvas::pushTemplate(l);
 	AView::pushViewTemplates(l);

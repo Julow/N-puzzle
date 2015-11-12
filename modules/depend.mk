@@ -28,6 +28,7 @@ $(O_DIR)/ft/padformat.o: ft/padformat.cpp ft/public/ft/Rect.hpp \
 	ft/public/ft/utils.hpp | $(O_DIR)/ft/
 
 # module ftlua
+$(O_DIR)/ftlua/cpp_utils.o $(O_DIR)/ftlua/push_utils.o: BASE_FLAGS += -DRES_PATH='"$(abspath ftlua/res/)"'
 $(O_DIR)/ftlua/cpp_utils.o $(O_DIR)/ftlua/push_utils.o: INCLUDE_FLAGS += \
 	-Iftlua/public -Ift/public -Iliblua/public
 $(O_DIR)/ftlua/cpp_utils.o: ftlua/cpp_utils.cpp ft/public/ft/Rect.hpp \
@@ -56,8 +57,17 @@ $(O_DIR)/ftui/Button.o $(O_DIR)/ftui/Canvas.o $(O_DIR)/ftui/HorizontalLayout.o \
 $(O_DIR)/ftui/HorizontalLayout_ViewHolder.o $(O_DIR)/ftui/SolidView.o \
 $(O_DIR)/ftui/TextView.o $(O_DIR)/ftui/VerticalLayout.o \
 $(O_DIR)/ftui/VerticalLayout_ViewHolder.o $(O_DIR)/ftui/XmlParser.o \
+$(O_DIR)/ftui/XmlTokenizer.o: BASE_FLAGS += -DRES_PATH='"$(abspath ftui/res/)"'
+$(O_DIR)/ftui/ALayout.o $(O_DIR)/ftui/ALayout_luaHandler.o \
+$(O_DIR)/ftui/ASolidView.o $(O_DIR)/ftui/AView.o \
+$(O_DIR)/ftui/AView_luaHandler.o $(O_DIR)/ftui/AView_statics.o \
+$(O_DIR)/ftui/Activity.o $(O_DIR)/ftui/Activity_RootViewHolder.o \
+$(O_DIR)/ftui/Button.o $(O_DIR)/ftui/Canvas.o $(O_DIR)/ftui/HorizontalLayout.o \
+$(O_DIR)/ftui/HorizontalLayout_ViewHolder.o $(O_DIR)/ftui/SolidView.o \
+$(O_DIR)/ftui/TextView.o $(O_DIR)/ftui/VerticalLayout.o \
+$(O_DIR)/ftui/VerticalLayout_ViewHolder.o $(O_DIR)/ftui/XmlParser.o \
 $(O_DIR)/ftui/XmlTokenizer.o: INCLUDE_FLAGS += -Iftlua/public -Ift/public \
-	-Iftui/public -Iliblua/public
+	-Iliblua/public -Iftui/public
 $(O_DIR)/ftui/ALayout.o: ftui/ALayout.cpp ft/public/ft/Color.hpp \
 	ft/public/ft/Rect.hpp ft/public/ft/Vec.hpp ft/public/ft/assert.hpp \
 	ft/public/ft/templates/Rect.tpp ft/public/ft/templates/Vec2.tpp \

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/11 19:00:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/12 20:58:54 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -56,7 +56,7 @@ AView::AView(XmlParser const &xml, Activity &act) :
 	lua_State *const	l = act.getLuaState();
 	int					err;
 
-	(void)lua_getglobal(l, "ft");
+	(void)lua_getglobal(l, "ftui");
 	(void)lua_pushstring(l, "push_view");
 	(void)lua_gettable(l, -2);
 	err = lua_getglobal(l, xml.getMarkupName().c_str());

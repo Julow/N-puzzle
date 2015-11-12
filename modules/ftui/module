@@ -5,3 +5,4 @@ module ftui:
 	public require ftlua
 
 	put LINK_FLAGS -lfreetype
+	local BASE_FLAGS += -DRES_PATH='"$(abspath ?path?/res/)"'

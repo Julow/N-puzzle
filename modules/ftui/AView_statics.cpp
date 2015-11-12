@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/11 12:03:02 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/12 20:59:09 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -59,19 +59,7 @@ AView::views_info_t				AView::viewsInfo
 	}, {}}},
 	{"ALayout", {"ASolidView", nullptr, {
 		INSG(ALayout, size), INSG(ALayout, at)
-	}, "\
-		ALayout = {											\
-			__ipairs = function(t)							\
-				local i, n = -1, t:size();					\
-															\
-				return function()							\
-					i = i + 1;								\
-					if i < n then							\
-						return i, t:at(i);					\
-					end										\
-				end											\
-			end												\
-		}"}},
+	}, "ALayout = ftui.ALayoutdef; ftui.ALayoutdef = nil;"}},
 	{"VerticalLayout", {"ALayout", &VerticalLayout::createView, {}, {}}},
 	{"HorizontalLayout", {"ALayout", &HorizontalLayout::createView, {}, {}}},
 	{"SolidView", {"ASolidView", &SolidView::createView, {}, {}}},
@@ -164,7 +152,7 @@ static void     finalize_template(
 	int     err;
 
 	err = 0;
-	(void)lua_getglobal(l, "ft");
+	(void)lua_getglobal(l, "ftui");
 	lua_pushstring(l, "finalize_template");
 	(void)lua_gettable(l, -2);
 	(void)lua_getglobal(l, name.c_str());
