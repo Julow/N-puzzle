@@ -83,7 +83,7 @@ SHELL			:= /bin/bash
 MAX_SOURCE_LEN	= 20
 
 # Default rule (need to be before any include)
-all: $(MODULE_RULES) libs_rules
+all: $(MODULE_RULES) libs
 ifeq ($(COLUMN_OUTPUT),0)
 	make -j$(JOBS) $(NAME)
 else
@@ -115,7 +115,7 @@ include $(ML_DEPEND)
 MAX_SOURCE_LEN	:= $(shell if [[ $(MAX_SOURCE_LEN) -gt $(ML_MAX_LEN) ]]; then echo $(MAX_SOURCE_LEN); else echo $(ML_MAX_LEN); fi)
 
 # Linking
-$(NAME): $(LIBS_DEPEND) $(O_FILES) $(OCAML_SOLVER)
+$(NAME): $(O_FILES) $(OCAML_SOLVER)
 	clang++ -o $@ $(O_FILES) $(OCAML_SOLVER) $(LINK_FLAGS) && $(PRINT_LINK)
 
 # C
@@ -135,9 +135,6 @@ $(OCAML_SOLVER): $(ML_OBJS)
 ocamldep:
 	bash ocaml_depend.sh > $(ML_DEPEND)
 .PHONY: ocamldep
-
-libs_rules: $(LIBS_RULES)
-.PHONY: libs_rules
 
 # Init submodules
 $(MODULE_RULES):
