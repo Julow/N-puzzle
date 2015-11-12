@@ -6,24 +6,62 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/11 19:31:35 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/12 18:25:32 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include <iostream>
+#include <array>
 
 #include "ft/utils.hpp"
-#include "config_window.hpp"
-#include "GlCanvasHolder.hpp"
-#include "gl.hpp"
-#include "OCamlBinding.hpp"
-#include "AState.hpp"
-#include "StartState.hpp"
+
 #include "Main.hpp"
+#include "config_window.hpp"
+#include "PickState.hpp"
+#include "ftlua/ftlua.hpp"
+#include "ftlua_extend.hpp"
 
 /*
-** init glfw
+** ************************************************************************** **
+** CONSTRUCTION
 */
+
+Main			*Main::instance(void)
+{
+	static Main		*m = nullptr;
+
+	if (m == nullptr)
+	{
+		m = new Main();
+	}
+	return m;
+}
+
+void			Main::loadSharedScripts(ftui::Activity &act)
+{
+	auto				pushFun =
+		[&](std::string const &fname, lua_CFunction f)
+		{ act.registerLuaCFun_table("Main", fname, f); };
+	int					ret;
+	lua_State *const	l = act.getLuaState();
+
+	luaL_dostring(l, "Main = {}");
+	pushFun("getGrid", &Main::getGridG);
+	pushFun("getAlgorithmId", &Main::getAlgorithmIdG);
+	pushFun("getHeuristicId", &Main::getHeuristicIdG);
+	pushFun("getCost", &Main::getCostG);
+
+	ret = lua_getglobal(l, "Main");
+	FTASSERT(ret == LUA_TTABLE);
+
+	lua_pushinteger(l, 0);
+	lua_pushlightuserdata(l, Main::instance());
+	lua_settable(l, -3);
+
+	lua_pop(l, 1);
+	return ;
+}
+
 #ifdef MAC_OS_MODE
 # define INIT_GLEW			true
 # define OPENGL_PROFILE		GLFW_OPENGL_CORE_PROFILE
@@ -39,7 +77,14 @@
 #endif
 
 Main::Main(void)
-	: _window(nullptr), _canvasHolder(WIN_WIDTHI, WIN_HEIGHTI)
+	: _window(nullptr)
+	, _canvasHolder(WIN_WIDTHI, WIN_HEIGHTI)
+		// , _state()
+	, _ocaml()
+	, grid(DEFGRID)
+	, algorithmId(0)
+	, heuristicId(0)
+	, cost(0)
 {
 	std::srand(time(NULL));
 
@@ -67,25 +112,7 @@ Main::Main(void)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	AState::globalInit();
 	_canvasHolder.init();
-}
-
-void				Main::loop(void)
-{
-	ftui::Canvas		&canvas(_canvasHolder.getCanvas());
-
-	_state.reset(new StartState(canvas, _ocaml));
-	while (!glfwWindowShouldClose(_window))
-	{
-		glfwPollEvents();
-		// glClearColor(0.f, 0.f, 0.f, c1.f);
-		// glClear(GL_COLOR_BUFFER_BIT);
-		// canvas.clear();
-		_state->loop(_state, canvas, _ocaml);
-		_canvasHolder.render();
-		glfwSwapBuffers(_window);
-	}
 }
 
 Main::~Main(void)
@@ -94,9 +121,32 @@ Main::~Main(void)
 	glfwTerminate();
 }
 
-Main			*Main::_instance;
-Main			*Main::instance(void)
-{return _instance;}
+/*
+** ************************************************************************** **
+** LOOP
+*/
+
+void				Main::loop(void)
+{
+	ftui::Canvas		&canvas(_canvasHolder.getCanvas());
+
+	_state.reset(new PickState(*this, _ocaml));
+	while (!glfwWindowShouldClose(_window))
+	{
+		glfwPollEvents();
+		// glClearColor(0.f, 0.f, 0.f, c1.f);
+		// glClear(GL_COLOR_BUFFER_BIT);
+		// canvas.clear();
+		_state->loop(_state, canvas);
+		_canvasHolder.render();
+		glfwSwapBuffers(_window);
+	}
+}
+
+/*
+** ************************************************************************** **
+** GLFW INTERACTIONS
+*/
 
 void			Main::onKeyUp(int key, int scancode, int mods)
 {
@@ -153,7 +203,7 @@ void			Main::handleMousePosEvents(
 	main->onMouseMove(x, y);
 }
 
-void            Main::handleMouseButtonEvents(
+void			Main::handleMouseButtonEvents(
 	GLFWwindow *window, int button, int action, int mods)
 {
 	Main		*main;
@@ -165,19 +215,61 @@ void            Main::handleMouseButtonEvents(
 	glfwGetCursorPos(window, pos + 0, pos + 1);
 	if (action == GLFW_PRESS)
 		main->onMouseDown(static_cast<int>(pos[0]), static_cast<int>(pos[1])
-						  , button, mods);
+							, button, mods);
 	else
 		main->onMouseUp(static_cast<int>(pos[0]), static_cast<int>(pos[1])
-						  , button, mods);
+						, button, mods);
 }
+
+/*
+** ************************************************************************** **
+** LIBFTUI INTERACTIONS
+*/
+
+int				Main::getGridG(lua_State *l)
+{
+	Main *const		main = ftlua::retrieveSelf<Main>(l, 1);
+
+	FTASSERT(lua_gettop(l) == 0); //TODO: FTLUAAASERT
+	ftlua::pushgrid(l, main->grid);
+	return 1;
+}
+Grid const	&Main::getGrid(void) const
+{ return this->grid; }
+
+int				Main::getAlgorithmIdG(lua_State *l)
+{
+	return ftlua::handle<1, 1>(l, &Main::getAlgorithmId);
+}
+int				Main::getAlgorithmId(void) const
+{ return this->algorithmId; }
+
+
+int				Main::getHeuristicIdG(lua_State *l)
+{
+	return ftlua::handle<1, 1>(l, &Main::getHeuristicId);
+}
+int				Main::getHeuristicId(void) const
+{ return this->heuristicId; }
+
+
+int				Main::getCostG(lua_State *l)
+{
+	return ftlua::handle<1, 1>(l, &Main::getCost);
+}
+int				Main::getCost(void) const
+{ return this->cost; }
+
+
 
 int				main(void)
 {
 	try
 	{
-		Main		main;
+		Main *const	main = Main::instance();
 
-		main.loop();
+		main->loop();
+		delete main;
 	}
 	catch (std::exception const &e)
 	{

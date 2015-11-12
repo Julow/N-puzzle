@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 09:02:42 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/11 20:00:40 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/12 14:10:37 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -65,12 +65,12 @@ public:
 	static int				setCostG(lua_State *l);
 	void					setCost(int cost);
 
-	static int				launchSolvingG(lua_State *l);
-	void					launchSolving(void);
+	static int				tagForSolvingG(lua_State *l);
+	void					tagForSolving(void);
 
 private:
 	/* INTERNAL ********************* */
-	bool					_launchSolving;
+	bool					_tagSolve;
 
 	static ftui::Activity	act;
 	static Tiles			tiles;
