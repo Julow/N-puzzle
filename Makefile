@@ -4,12 +4,12 @@
 NAME			:= npuzzle
 
 # Project directories
-DIRS			:= srcs include libftui/ft/public libftui/ftlua/public libftui/ftui/public libftui/liblua/public
+DIRS			:= srcs include modules/ft/public modules/ftlua/public modules/ftui/public modules/liblua/public
 
 # Git submodule to init
 MODULES			:=
 # Makefiles to call
-LIBS			:= libftui
+LIBS			:= modules
 
 # Base flags
 BASE_FLAGS		= -Wall -Wextra
@@ -19,7 +19,7 @@ HEAD_FLAGS		= $(addprefix -I,$(DIRS))
 C_FLAGS			= $(HEAD_FLAGS) $(BASE_FLAGS)
 CPP_FLAGS		= $(HEAD_FLAGS) $(BASE_FLAGS) -std=c++14
 
-LINK_FLAGS		= $(BASE_FLAGS) -Llibftui -lftui -Llibftui/liblua -llua -lfreetype
+LINK_FLAGS		= $(BASE_FLAGS) -Lmodules -lftui -Lmodules/liblua -llua -lfreetype
 
 ifeq ($(DEBUG_MODE),1)
 	# Extra flags used in debug mode
