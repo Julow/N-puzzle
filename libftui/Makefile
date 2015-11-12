@@ -1,58 +1,34 @@
+
 #
 
 # Executable name
 NAME			:= libftui.a
 
-# Project directories
-DIRS			:= srcs include
-
-# Lua
-LUA_DIR			:= lua-5.3.1
-LUA_ARCHIVE		:= $(LUA_DIR).tar.gz
-LUA_LINK		:= ln -sf ../../$(LUA_DIR)/src include/ftui/lua
-LUA_SRC			:= $(LUA_DIR)/src
-LUA_LIB			:= $(LUA_SRC)/liblua.a
-LUA_PLATFORM	= posix
-
-PLATFORM		:= $(shell uname)
-
-ifeq ($(PLATFORM),Linux)
-	LUA_PLATFORM = linux
-else
-	ifeq ($(PLATFORM),Darwin)
-		LUA_PLATFORM = macosx
-	endif
-endif
-
 # Git submodule to init
-MODULES			:= 
-# Makefiles to call
-LIBS			:= 
+SUBMODULES		:= 
 
 # Base flags
 BASE_FLAGS		= -Wall -Wextra
-HEAD_FLAGS		= $(addprefix -I,$(DIRS))
+INCLUDE_FLAGS	=
 
 # Compilation flags (per language)
-C_FLAGS			= $(HEAD_FLAGS) $(BASE_FLAGS)
-CPP_FLAGS		= $(HEAD_FLAGS) $(BASE_FLAGS) -std=c++14
+C_FLAGS			= $(INCLUDE_FLAGS) $(BASE_FLAGS)
+CPP_FLAGS		= $(INCLUDE_FLAGS) $(BASE_FLAGS) -std=c++14
 
 LINK_FLAGS		= $(BASE_FLAGS)
 
+DEBUG_MODE		?= 0
 ifeq ($(DEBUG_MODE),1)
 	# Extra flags used in debug mode
 	BASE_FLAGS	+= -g
-	C_FLAGS		+=
-	CPP_FLAGS	+=
 else
 	# Extra flags used when not in debug mode
 	BASE_FLAGS	+= -O2
-	C_FLAGS		+=
-	CPP_FLAGS	+=
 endif
-
-DEBUG_MODE		?= 0
 export DEBUG_MODE
+
+# Objects directory
+O_DIR			:= _objs
 
 # Jobs
 JOBS			:= 4
@@ -64,72 +40,51 @@ ifeq ($(COLUMN_OUTPUT),0)
 	PRINT_OK	= printf '\033[32m$<\033[0m\n'
 	PRINT_LINK	= printf '\033[32m$@\033[0m\n'
 else
-	PRINT_OK	= echo $(patsubst $(firstword $(DIRS))/%,%,$<) >> $(PRINT_FILE)
+	PRINT_OK	= echo $< >> $(PRINT_FILE)
 	PRINT_LINK	= printf '\n\033[32m$@\033[0m\n'
 endif
-
-# Objects directory
-O_DIR			:= o
 
 # Depend file name
 DEPEND			:= depend.mk
 
 # tmp
-MODULE_RULES	:= $(addsuffix /.git,$(MODULES))
+SUBMODULE_RULES	:= $(addsuffix /.git,$(SUBMODULES))
 PRINT_FILE		:= .tmp_print
 SHELL			:= /bin/bash
 
 # Default rule (need to be before any include)
-all: $(MODULE_RULES) $(LUA_LIB) libs
+all: $(SUBMODULE_RULES) libs_rules
 ifeq ($(COLUMN_OUTPUT),0)
 	make -j$(JOBS) $(NAME)
 else
-	PER_LINE=$$((`tput cols` / $$(($(MAX_SOURCE_LEN) + 2))));			\
-	CURR=0;																\
-	rm -f $(PRINT_FILE);												\
-	touch $(PRINT_FILE);												\
-	tail -n0 -f $(PRINT_FILE) | while read l;							\
-	do																	\
-		if [[ $$CURR -ge $$PER_LINE ]];									\
-		then															\
-			CURR=0;														\
-			echo;														\
-		fi;																\
-		CURR=$$(($$CURR + 1));											\
-		printf '\033[32m%-*s\033[0m  ' "$(MAX_SOURCE_LEN)" "$$l";		\
-	done &																\
-	make -j$(JOBS) $(NAME);												\
-	STATUS=$$?;															\
-	kill -9 `jobs -p`;													\
-	rm -f $(PRINT_FILE);												\
+	MAX_LEN=0;														\
+	for f in $(patsubst $(O_DIR)/%,%,$(O_FILES)); do				\
+		if [[ $${#f} -gt $$MAX_LEN ]]; then MAX_LEN=$${#f}; fi;		\
+	done;															\
+	PER_LINE=$$((`tput cols` / $$(($$MAX_LEN + 2))));				\
+	CURR=0;															\
+	touch $(PRINT_FILE);											\
+	tail -n0 -f $(PRINT_FILE) | while read l;						\
+	do																\
+		if [[ $$CURR -ge $$PER_LINE ]]; then CURR=0; echo; fi;		\
+		CURR=$$(($$CURR + 1));										\
+		printf "\033[32m%-*s\033[0m  " "$$MAX_LEN" "$$l";			\
+	done &															\
+	make -j$(JOBS) $(NAME);											\
+	STATUS=$$?;														\
+	kill -9 `jobs -p`;												\
+	rm -f $(PRINT_FILE);											\
 	exit $$STATUS
 endif
 
 # Include $(O_FILES) and dependencies
 -include $(DEPEND)
 
-# Linking
-$(NAME): $(LIBS_DEPEND) $(O_FILES)
-	ar rcS $@ $(O_FILES) && $(PRINT_LINK)
-	LUA_FILES="$(patsubst %,$(NAME)(%),$(shell ar t $(LUA_LIB) \
-		| grep '\.o'))";												\
-	if [[ -z "$$LUA_FILES" ]];											\
-	then																\
-		echo "Error: liblua not correctly compiled"; exit 1;			\
-	else																\
-		make $${LUA_FILES};												\
-	fi;																	\
-	ranlib $(NAME)
+libs_rules: $(LIBS_RULES)
 
-# Lua
-$(LUA_LIB):
-	echo Extract lua
-	tar -xf $(LUA_ARCHIVE)
-	echo "Make lua ($(LUA_PLATFORM))"
-	make -C $(LUA_DIR) $(LUA_PLATFORM)
-	$(LUA_LINK)
-$(NAME)(%.o): $(LUA_SRC)/%.o
-	ar rcS $@ $<
+# Linking
+$(NAME): $(LINK_DEPENDS) $(O_FILES)
+	ar rcs $@ $(O_FILES) && $(PRINT_LINK)
 
 # Compiling
 $(O_DIR)/%.o: %.c
@@ -138,7 +93,7 @@ $(O_DIR)/%.o: %.cpp
 	clang++ $(CPP_FLAGS) -c $< -o $@ && $(PRINT_OK)
 
 # Init submodules
-$(MODULE_RULES):
+$(SUBMODULE_RULES):
 	git submodule init $(@:.git=)
 	git submodule update $(@:.git=)
 
@@ -169,4 +124,4 @@ _debug:
 	$(eval DEBUG_MODE = 1)
 
 .SILENT:
-.PHONY: all clean fclean re debug rebug _debug bindings
+.PHONY: all clean fclean re debug rebug _debug

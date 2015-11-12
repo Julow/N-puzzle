@@ -6,14 +6,14 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/02 18:43:04 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/09 12:41:49 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/12 13:30:47 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef RECT_HPP
 # define RECT_HPP
 
-# include "Vec.hpp"
+# include "ft/Vec.hpp"
 
 namespace ft
 {
@@ -137,6 +137,6 @@ Rect<T>		make_rect(Vec2<T> pos, Vec2<T> size);
 
 };
 
-# include "templates/Rect.tpp"
+# include "ft/templates/Rect.tpp"
 
 #endif

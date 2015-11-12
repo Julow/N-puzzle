@@ -6,13 +6,13 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/13 07:41:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 14:12:51 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/12 14:11:11 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include <vector>
 
-#include "ftui/lua/lua.hpp"
+#include "ftlua/ftlua.hpp"
 #include "ft/assert.hpp"
 
 #define TOSTRING(...) #__VA_ARGS__

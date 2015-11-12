@@ -11,79 +11,116 @@ libs:
 
 
 MAX_SOURCE_LEN := 23
-o/srcs/AState.o: srcs/AState.cpp include/AState.hpp include/Grid.hpp \
-	include/ISolverListener.hpp include/OCamlBinding.hpp \
-	include/StartState.hpp include/tiles/Tiles.hpp \
-	libftui/include/ft/Color.hpp libftui/include/ft/Rect.hpp \
-	libftui/include/ft/Vec.hpp libftui/include/ft/assert.hpp \
-	libftui/include/ft/templates/Vec2.tpp \
-	libftui/include/ft/templates/Vec3.tpp \
-	libftui/include/ft/templates/Vec4.tpp libftui/include/ft/utils.hpp \
-	libftui/include/ftui/Activity.hpp libftui/include/ftui/Canvas.hpp \
-	libftui/include/ftui/DefaultEventBox.hpp libftui/include/ftui/EventBox.hpp \
-	libftui/include/ftui/EventParams.hpp libftui/include/ftui/IEventBox.hpp \
-	libftui/include/ftui/IEventParams.hpp libftui/include/ftui/IViewHolder.hpp \
-	libftui/include/ftui/libftui.hpp \
-	libftui/include/ftui/templates/Activity.tpp \
-	libftui/include/ftui/templates/EventBox.tpp | o/srcs/
+o/srcs/AState.o: srcs/AState.cpp libftui/ft/public/ft/Rect.hpp \
+	libftui/ft/public/ft/Vec.hpp libftui/ft/public/ft/assert.hpp \
+	libftui/ft/public/ft/templates/Rect.tpp \
+	libftui/ft/public/ft/templates/Vec2.tpp \
+	libftui/ft/public/ft/templates/Vec3.tpp \
+	libftui/ft/public/ft/templates/Vec4.tpp libftui/ft/public/ft/utils.hpp \
+	libftui/ftlua/public/ftlua/ftlua.hpp \
+	libftui/ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	libftui/ftlua/public/ftlua/templates/ftlua_handler.tpp \
+	libftui/liblua/public/liblua.hpp include/Grid.hpp include/ftlua_extend.hpp \
+	include/AState.hpp include/ISolverListener.hpp include/OCamlBinding.hpp \
+	libftui/ft/public/ft/Color.hpp libftui/ftui/public/ftui/Activity.hpp \
+	libftui/ftui/public/ftui/Canvas.hpp \
+	libftui/ftui/public/ftui/DefaultEventBox.hpp \
+	libftui/ftui/public/ftui/EventBox.hpp \
+	libftui/ftui/public/ftui/EventParams.hpp \
+	libftui/ftui/public/ftui/IEventBox.hpp \
+	libftui/ftui/public/ftui/IEventParams.hpp \
+	libftui/ftui/public/ftui/IViewHolder.hpp \
+	libftui/ftui/public/ftui/libftui.hpp \
+	libftui/ftui/public/ftui/templates/Activity.tpp \
+	libftui/ftui/public/ftui/templates/DefaultEventBox.tpp \
+	libftui/ftui/public/ftui/templates/EventBox.tpp include/StartState.hpp \
+	include/tiles/Tiles.hpp | o/srcs/
 o/srcs/GlCanvasHolder.o: srcs/GlCanvasHolder.cpp include/GlCanvasHolder.hpp \
-	libftui/include/ft/Color.hpp libftui/include/ft/Rect.hpp \
-	libftui/include/ft/Vec.hpp libftui/include/ft/assert.hpp \
-	libftui/include/ft/templates/Vec2.tpp \
-	libftui/include/ft/templates/Vec3.tpp \
-	libftui/include/ft/templates/Vec4.tpp libftui/include/ftui/Canvas.hpp \
-	libftui/include/ftui/libftui.hpp include/gl.hpp \
-	libftui/include/ft/utils.hpp | o/srcs/
-o/srcs/Grid.o: srcs/Grid.cpp include/Grid.hpp libftui/include/ft/utils.hpp \
+	libftui/ft/public/ft/Color.hpp libftui/ft/public/ft/Rect.hpp \
+	libftui/ft/public/ft/Vec.hpp libftui/ft/public/ft/assert.hpp \
+	libftui/ft/public/ft/templates/Rect.tpp \
+	libftui/ft/public/ft/templates/Vec2.tpp \
+	libftui/ft/public/ft/templates/Vec3.tpp \
+	libftui/ft/public/ft/templates/Vec4.tpp libftui/ft/public/ft/utils.hpp \
+	libftui/ftlua/public/ftlua/ftlua.hpp \
+	libftui/ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	libftui/ftlua/public/ftlua/templates/ftlua_handler.tpp \
+	libftui/ftui/public/ftui/Canvas.hpp libftui/ftui/public/ftui/libftui.hpp \
+	libftui/liblua/public/liblua.hpp include/gl.hpp | o/srcs/
+o/srcs/Grid.o: srcs/Grid.cpp include/Grid.hpp libftui/ft/public/ft/Rect.hpp \
+	libftui/ft/public/ft/Vec.hpp libftui/ft/public/ft/templates/Rect.tpp \
+	libftui/ft/public/ft/templates/Vec2.tpp \
+	libftui/ft/public/ft/templates/Vec3.tpp \
+	libftui/ft/public/ft/templates/Vec4.tpp libftui/ft/public/ft/utils.hpp \
 	| o/srcs/
-o/srcs/Main.o: srcs/Main.cpp libftui/include/ft/utils.hpp \
-	include/config_window.hpp include/ftce/math.hpp libftui/include/ft/Vec.hpp \
-	libftui/include/ft/templates/Vec2.tpp \
-	libftui/include/ft/templates/Vec3.tpp \
-	libftui/include/ft/templates/Vec4.tpp include/GlCanvasHolder.hpp \
-	libftui/include/ft/Color.hpp libftui/include/ft/Rect.hpp \
-	libftui/include/ft/assert.hpp libftui/include/ftui/Canvas.hpp \
-	libftui/include/ftui/libftui.hpp include/gl.hpp include/Grid.hpp \
+o/srcs/Main.o: srcs/Main.cpp libftui/ft/public/ft/Rect.hpp \
+	libftui/ft/public/ft/Vec.hpp libftui/ft/public/ft/templates/Rect.tpp \
+	libftui/ft/public/ft/templates/Vec2.tpp \
+	libftui/ft/public/ft/templates/Vec3.tpp \
+	libftui/ft/public/ft/templates/Vec4.tpp libftui/ft/public/ft/utils.hpp \
+	include/config_window.hpp include/ftce/math.hpp include/GlCanvasHolder.hpp \
+	libftui/ft/public/ft/Color.hpp libftui/ft/public/ft/assert.hpp \
+	libftui/ftlua/public/ftlua/ftlua.hpp \
+	libftui/ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	libftui/ftlua/public/ftlua/templates/ftlua_handler.tpp \
+	libftui/ftui/public/ftui/Canvas.hpp libftui/ftui/public/ftui/libftui.hpp \
+	libftui/liblua/public/liblua.hpp include/gl.hpp include/Grid.hpp \
 	include/ISolverListener.hpp include/OCamlBinding.hpp include/AState.hpp \
-	include/StartState.hpp include/tiles/Tiles.hpp \
-	libftui/include/ftui/Activity.hpp libftui/include/ftui/DefaultEventBox.hpp \
-	libftui/include/ftui/EventBox.hpp libftui/include/ftui/EventParams.hpp \
-	libftui/include/ftui/IEventBox.hpp libftui/include/ftui/IEventParams.hpp \
-	libftui/include/ftui/IViewHolder.hpp \
-	libftui/include/ftui/templates/Activity.tpp \
-	libftui/include/ftui/templates/EventBox.tpp include/Main.hpp | o/srcs/
+	libftui/ftui/public/ftui/Activity.hpp \
+	libftui/ftui/public/ftui/DefaultEventBox.hpp \
+	libftui/ftui/public/ftui/EventBox.hpp \
+	libftui/ftui/public/ftui/EventParams.hpp \
+	libftui/ftui/public/ftui/IEventBox.hpp \
+	libftui/ftui/public/ftui/IEventParams.hpp \
+	libftui/ftui/public/ftui/IViewHolder.hpp \
+	libftui/ftui/public/ftui/templates/Activity.tpp \
+	libftui/ftui/public/ftui/templates/DefaultEventBox.tpp \
+	libftui/ftui/public/ftui/templates/EventBox.tpp include/StartState.hpp \
+	include/tiles/Tiles.hpp include/Main.hpp | o/srcs/
 o/srcs/OCamlBinding.o: srcs/OCamlBinding.cpp include/Grid.hpp \
 	include/ISolverListener.hpp include/OCamlBinding.hpp \
-	libftui/include/ft/Vec.hpp libftui/include/ft/templates/Vec2.tpp \
-	libftui/include/ft/templates/Vec3.tpp \
-	libftui/include/ft/templates/Vec4.tpp libftui/include/ft/utils.hpp | o/srcs/
+	libftui/ft/public/ft/Rect.hpp libftui/ft/public/ft/Vec.hpp \
+	libftui/ft/public/ft/templates/Rect.tpp \
+	libftui/ft/public/ft/templates/Vec2.tpp \
+	libftui/ft/public/ft/templates/Vec3.tpp \
+	libftui/ft/public/ft/templates/Vec4.tpp libftui/ft/public/ft/utils.hpp \
+	| o/srcs/
 o/srcs/StartState.o: srcs/StartState.cpp include/AState.hpp include/Grid.hpp \
 	include/ISolverListener.hpp include/OCamlBinding.hpp \
 	include/StartState.hpp include/tiles/Tiles.hpp \
-	libftui/include/ft/Color.hpp libftui/include/ft/Rect.hpp \
-	libftui/include/ft/Vec.hpp libftui/include/ft/assert.hpp \
-	libftui/include/ft/templates/Vec2.tpp \
-	libftui/include/ft/templates/Vec3.tpp \
-	libftui/include/ft/templates/Vec4.tpp libftui/include/ft/utils.hpp \
-	libftui/include/ftui/Activity.hpp libftui/include/ftui/Canvas.hpp \
-	libftui/include/ftui/DefaultEventBox.hpp libftui/include/ftui/EventBox.hpp \
-	libftui/include/ftui/EventParams.hpp libftui/include/ftui/IEventBox.hpp \
-	libftui/include/ftui/IEventParams.hpp libftui/include/ftui/IViewHolder.hpp \
-	libftui/include/ftui/libftui.hpp \
-	libftui/include/ftui/templates/Activity.tpp \
-	libftui/include/ftui/templates/EventBox.tpp include/config_window.hpp \
-	include/ftce/math.hpp libftui/include/ftlua/ftlua.hpp \
-	libftui/include/ftlua/templates/ftlua_caller.tpp \
-	libftui/include/ftlua/templates/ftlua_handler.tpp include/ftlua_extend.hpp \
-	| o/srcs/
+	libftui/ft/public/ft/Color.hpp libftui/ft/public/ft/Rect.hpp \
+	libftui/ft/public/ft/Vec.hpp libftui/ft/public/ft/assert.hpp \
+	libftui/ft/public/ft/templates/Rect.tpp \
+	libftui/ft/public/ft/templates/Vec2.tpp \
+	libftui/ft/public/ft/templates/Vec3.tpp \
+	libftui/ft/public/ft/templates/Vec4.tpp libftui/ft/public/ft/utils.hpp \
+	libftui/ftlua/public/ftlua/ftlua.hpp \
+	libftui/ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	libftui/ftlua/public/ftlua/templates/ftlua_handler.tpp \
+	libftui/ftui/public/ftui/Activity.hpp libftui/ftui/public/ftui/Canvas.hpp \
+	libftui/ftui/public/ftui/DefaultEventBox.hpp \
+	libftui/ftui/public/ftui/EventBox.hpp \
+	libftui/ftui/public/ftui/EventParams.hpp \
+	libftui/ftui/public/ftui/IEventBox.hpp \
+	libftui/ftui/public/ftui/IEventParams.hpp \
+	libftui/ftui/public/ftui/IViewHolder.hpp \
+	libftui/ftui/public/ftui/libftui.hpp \
+	libftui/ftui/public/ftui/templates/Activity.tpp \
+	libftui/ftui/public/ftui/templates/DefaultEventBox.tpp \
+	libftui/ftui/public/ftui/templates/EventBox.tpp \
+	libftui/liblua/public/liblua.hpp include/config_window.hpp \
+	include/ftce/math.hpp include/ftlua_extend.hpp | o/srcs/
 o/srcs/Tiles.o: srcs/Tiles.cpp include/tiles/Tiles.hpp \
-	libftui/include/ft/Vec.hpp libftui/include/ft/templates/Vec2.tpp \
-	libftui/include/ft/templates/Vec3.tpp \
-	libftui/include/ft/templates/Vec4.tpp include/gl.hpp | o/srcs/
-o/srcs/ftlua_extend.o: srcs/ftlua_extend.cpp libftui/include/ft/Vec.hpp \
-	libftui/include/ft/assert.hpp libftui/include/ft/templates/Vec2.tpp \
-	libftui/include/ft/templates/Vec3.tpp \
-	libftui/include/ft/templates/Vec4.tpp libftui/include/ft/utils.hpp \
-	libftui/include/ftlua/ftlua.hpp \
-	libftui/include/ftlua/templates/ftlua_caller.tpp \
-	libftui/include/ftlua/templates/ftlua_handler.tpp include/Grid.hpp | o/srcs/
+	libftui/ft/public/ft/Vec.hpp libftui/ft/public/ft/templates/Vec2.tpp \
+	libftui/ft/public/ft/templates/Vec3.tpp \
+	libftui/ft/public/ft/templates/Vec4.tpp include/gl.hpp | o/srcs/
+o/srcs/ftlua_extend.o: srcs/ftlua_extend.cpp libftui/ft/public/ft/Rect.hpp \
+	libftui/ft/public/ft/Vec.hpp libftui/ft/public/ft/assert.hpp \
+	libftui/ft/public/ft/templates/Rect.tpp \
+	libftui/ft/public/ft/templates/Vec2.tpp \
+	libftui/ft/public/ft/templates/Vec3.tpp \
+	libftui/ft/public/ft/templates/Vec4.tpp libftui/ft/public/ft/utils.hpp \
+	libftui/ftlua/public/ftlua/ftlua.hpp \
+	libftui/ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	libftui/ftlua/public/ftlua/templates/ftlua_handler.tpp \
+	libftui/liblua/public/liblua.hpp include/Grid.hpp | o/srcs/

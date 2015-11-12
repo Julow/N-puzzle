@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/05 14:06:16 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/11 17:49:10 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/12 12:15:19 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -129,7 +129,7 @@ template<typename T>
 bool		Rect<T>::contains(Rect<T> const &rect) const
 {
 //TODO: check, j'ai remove les >=/<= en >/<
-	if (rect.left > left && rect.top > top
+	if (rect.left >= left && rect.top >= top
 		&& rect.right < right && rect.bottom < bottom)
 		return (true);
 	return (false);
@@ -139,8 +139,8 @@ template<typename T>
 bool		Rect<T>::contains(Vec2<T> pt) const
 {
 //TODO: check, j'ai remove les >=/<= en >/<
-	if (pt.x > left && pt.x < right
-		&& pt.y > top && pt.y < bottom)
+	if (pt.x >= left && pt.x < right
+		&& pt.y >= top && pt.y < bottom)
 		return (true);
 	return (false);
 }

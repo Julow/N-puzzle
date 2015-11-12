@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/11 18:50:40 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/12 14:13:02 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -20,7 +20,7 @@
 # include <unordered_map>
 # include <stdint.h>
 
-# include "lua/lua.hpp"
+# include "ftlua/ftlua.hpp"
 
 namespace ftui
 {

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/11 19:32:02 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/11 20:05:05 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/12 14:28:51 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -17,7 +17,7 @@
 
 # include "ftui/Canvas.hpp"
 # include "ftui/Activity.hpp"
-# include "ftui/lua/lua.hpp"
+# include "ftlua/ftlua.hpp"
 
 # include "OCamlBinding.hpp"
 

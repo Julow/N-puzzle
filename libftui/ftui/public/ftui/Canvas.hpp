@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/12 11:06:24 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/12 14:12:58 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,7 +19,7 @@
 # include "ft/Color.hpp"
 # include "ft/Rect.hpp"
 # include "ft/Vec.hpp"
-# include "lua/lua.hpp"
+# include "ftlua/ftlua.hpp"
 
 
 namespace ftui

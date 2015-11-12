@@ -1,0 +1,5 @@
+module ftlua:
+	public include public/
+
+	public require ft
+	public require liblua

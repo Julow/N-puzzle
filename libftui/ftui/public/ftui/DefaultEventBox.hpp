@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/30 11:09:06 by ngoguey           #+#    #+#             //
-//   Updated: 2015/10/13 09:41:07 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/12 14:22:26 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -40,6 +40,6 @@ private:
 
 };
 
-# include "templates/DefaultEventBox.tpp"
+# include "ftui/templates/DefaultEventBox.tpp"
 
 #endif

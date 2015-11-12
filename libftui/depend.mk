@@ -1,184 +1,322 @@
-O_FILES :=	o/srcs/ALayout.o o/srcs/ALayout_luaHandler.o o/srcs/ASolidView.o \
-			o/srcs/AView.o o/srcs/AView_luaHandler.o o/srcs/AView_statics.o \
-			o/srcs/Activity.o o/srcs/Activity_RootViewHolder.o o/srcs/Button.o \
-			o/srcs/Canvas.o o/srcs/HorizontalLayout.o \
-			o/srcs/HorizontalLayout_ViewHolder.o o/srcs/SolidView.o \
-			o/srcs/TextView.o o/srcs/VerticalLayout.o \
-			o/srcs/VerticalLayout_ViewHolder.o o/srcs/XmlParser.o \
-			o/srcs/XmlTokenizer.o o/srcs/ft/assert.o o/srcs/ft/padformat.o \
-			o/srcs/ftlua/cpp_utils.o o/srcs/ftlua/push_utils.o
+LIBS_RULES += liblua
+LINK_FLAGS += -lfreetype -Lliblua/lua-5.3.1/src -llua
+O_FILES += $(O_DIR)/ft/assert.o $(O_DIR)/ft/padformat.o \
+	$(O_DIR)/ftlua/cpp_utils.o $(O_DIR)/ftlua/push_utils.o \
+	$(O_DIR)/ftui/ALayout.o $(O_DIR)/ftui/ALayout_luaHandler.o \
+	$(O_DIR)/ftui/ASolidView.o $(O_DIR)/ftui/AView.o \
+	$(O_DIR)/ftui/AView_luaHandler.o $(O_DIR)/ftui/AView_statics.o \
+	$(O_DIR)/ftui/Activity.o $(O_DIR)/ftui/Activity_RootViewHolder.o \
+	$(O_DIR)/ftui/Button.o $(O_DIR)/ftui/Canvas.o \
+	$(O_DIR)/ftui/HorizontalLayout.o \
+	$(O_DIR)/ftui/HorizontalLayout_ViewHolder.o $(O_DIR)/ftui/SolidView.o \
+	$(O_DIR)/ftui/TextView.o $(O_DIR)/ftui/VerticalLayout.o \
+	$(O_DIR)/ftui/VerticalLayout_ViewHolder.o $(O_DIR)/ftui/XmlParser.o \
+	$(O_DIR)/ftui/XmlTokenizer.o
+PUBLIC_DIRS += ft/public ftlua/public ftui/public liblua/public
 
-LIBS_DEPEND := 
+# module ft
+$(O_DIR)/ft/assert.o $(O_DIR)/ft/padformat.o: INCLUDE_FLAGS += -Ift/public
+$(O_DIR)/ft/assert.o: ft/assert.cpp ft/public/ft/Rect.hpp ft/public/ft/Vec.hpp \
+	ft/public/ft/assert.hpp ft/public/ft/templates/Rect.tpp \
+	ft/public/ft/templates/Vec2.tpp ft/public/ft/templates/Vec3.tpp \
+	ft/public/ft/templates/Vec4.tpp ft/public/ft/utils.hpp | $(O_DIR)/ft/
+$(O_DIR)/ft/padformat.o: ft/padformat.cpp ft/public/ft/Rect.hpp \
+	ft/public/ft/Vec.hpp ft/public/ft/assert.hpp \
+	ft/public/ft/templates/Rect.tpp ft/public/ft/templates/Vec2.tpp \
+	ft/public/ft/templates/Vec3.tpp ft/public/ft/templates/Vec4.tpp \
+	ft/public/ft/utils.hpp | $(O_DIR)/ft/
 
-libs:
-.PHONY: libs
+# module ftlua
+$(O_DIR)/ftlua/cpp_utils.o $(O_DIR)/ftlua/push_utils.o: INCLUDE_FLAGS += \
+	-Ift/public -Iftlua/public -Iliblua/public
+$(O_DIR)/ftlua/cpp_utils.o: ftlua/cpp_utils.cpp ft/public/ft/Rect.hpp \
+	ft/public/ft/Vec.hpp ft/public/ft/assert.hpp \
+	ft/public/ft/templates/Rect.tpp ft/public/ft/templates/Vec2.tpp \
+	ft/public/ft/templates/Vec3.tpp ft/public/ft/templates/Vec4.tpp \
+	ft/public/ft/utils.hpp ftlua/public/ftlua/ftlua.hpp \
+	ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	ftlua/public/ftlua/templates/ftlua_handler.tpp liblua/public/liblua.hpp \
+	| $(O_DIR)/ftlua/
+$(O_DIR)/ftlua/push_utils.o: ftlua/push_utils.cpp ft/public/ft/Rect.hpp \
+	ft/public/ft/Vec.hpp ft/public/ft/assert.hpp ft/public/ft/assert.hpp \
+	ft/public/ft/templates/Rect.tpp ft/public/ft/templates/Vec2.tpp \
+	ft/public/ft/templates/Vec3.tpp ft/public/ft/templates/Vec4.tpp \
+	ft/public/ft/utils.hpp ftlua/public/ftlua/ftlua.hpp \
+	ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	ftlua/public/ftlua/templates/ftlua_handler.tpp liblua/public/liblua.hpp \
+	| $(O_DIR)/ftlua/
 
+# module ftui
+$(O_DIR)/ftui/ALayout.o $(O_DIR)/ftui/ALayout_luaHandler.o \
+$(O_DIR)/ftui/ASolidView.o $(O_DIR)/ftui/AView.o \
+$(O_DIR)/ftui/AView_luaHandler.o $(O_DIR)/ftui/AView_statics.o \
+$(O_DIR)/ftui/Activity.o $(O_DIR)/ftui/Activity_RootViewHolder.o \
+$(O_DIR)/ftui/Button.o $(O_DIR)/ftui/Canvas.o $(O_DIR)/ftui/HorizontalLayout.o \
+$(O_DIR)/ftui/HorizontalLayout_ViewHolder.o $(O_DIR)/ftui/SolidView.o \
+$(O_DIR)/ftui/TextView.o $(O_DIR)/ftui/VerticalLayout.o \
+$(O_DIR)/ftui/VerticalLayout_ViewHolder.o $(O_DIR)/ftui/XmlParser.o \
+$(O_DIR)/ftui/XmlTokenizer.o: INCLUDE_FLAGS += -Ift/public -Iftlua/public \
+	-Iftui/public -Iliblua/public
+$(O_DIR)/ftui/ALayout.o: ftui/ALayout.cpp ft/public/ft/Color.hpp \
+	ft/public/ft/Rect.hpp ft/public/ft/Vec.hpp ft/public/ft/assert.hpp \
+	ft/public/ft/templates/Rect.tpp ft/public/ft/templates/Vec2.tpp \
+	ft/public/ft/templates/Vec3.tpp ft/public/ft/templates/Vec4.tpp \
+	ft/public/ft/utils.hpp ft/public/ft/utils.hpp ftlua/public/ftlua/ftlua.hpp \
+	ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	ftlua/public/ftlua/templates/ftlua_handler.tpp \
+	ftui/public/ftui/ALayout.hpp ftui/public/ftui/ASolidView.hpp \
+	ftui/public/ftui/AView.hpp ftui/public/ftui/Canvas.hpp \
+	ftui/public/ftui/IViewHolder.hpp ftui/public/ftui/XmlParser.hpp \
+	ftui/public/ftui/XmlTokenizer.hpp ftui/public/ftui/libftui.hpp \
+	liblua/public/liblua.hpp | $(O_DIR)/ftui/
+$(O_DIR)/ftui/ALayout_luaHandler.o: ftui/ALayout_luaHandler.cpp \
+	ft/public/ft/Color.hpp ft/public/ft/Rect.hpp ft/public/ft/Vec.hpp \
+	ft/public/ft/assert.hpp ft/public/ft/templates/Rect.tpp \
+	ft/public/ft/templates/Vec2.tpp ft/public/ft/templates/Vec3.tpp \
+	ft/public/ft/templates/Vec4.tpp ft/public/ft/utils.hpp \
+	ftlua/public/ftlua/ftlua.hpp ftlua/public/ftlua/ftlua.hpp \
+	ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	ftlua/public/ftlua/templates/ftlua_handler.tpp \
+	ftui/public/ftui/ALayout.hpp ftui/public/ftui/ASolidView.hpp \
+	ftui/public/ftui/AView.hpp ftui/public/ftui/Canvas.hpp \
+	ftui/public/ftui/libftui.hpp liblua/public/liblua.hpp | $(O_DIR)/ftui/
+$(O_DIR)/ftui/ASolidView.o: ftui/ASolidView.cpp ft/public/ft/Color.hpp \
+	ft/public/ft/Rect.hpp ft/public/ft/Vec.hpp ft/public/ft/assert.hpp \
+	ft/public/ft/templates/Rect.tpp ft/public/ft/templates/Vec2.tpp \
+	ft/public/ft/templates/Vec3.tpp ft/public/ft/templates/Vec4.tpp \
+	ft/public/ft/utils.hpp ft/public/ft/utils.hpp ftlua/public/ftlua/ftlua.hpp \
+	ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	ftlua/public/ftlua/templates/ftlua_handler.tpp \
+	ftui/public/ftui/ASolidView.hpp ftui/public/ftui/AView.hpp \
+	ftui/public/ftui/Canvas.hpp ftui/public/ftui/IViewHolder.hpp \
+	ftui/public/ftui/XmlParser.hpp ftui/public/ftui/XmlTokenizer.hpp \
+	ftui/public/ftui/libftui.hpp liblua/public/liblua.hpp | $(O_DIR)/ftui/
+$(O_DIR)/ftui/AView.o: ftui/AView.cpp ft/public/ft/Color.hpp \
+	ft/public/ft/Rect.hpp ft/public/ft/Vec.hpp ft/public/ft/assert.hpp \
+	ft/public/ft/templates/Rect.tpp ft/public/ft/templates/Vec2.tpp \
+	ft/public/ft/templates/Vec3.tpp ft/public/ft/templates/Vec4.tpp \
+	ft/public/ft/utils.hpp ftlua/public/ftlua/ftlua.hpp \
+	ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	ftlua/public/ftlua/templates/ftlua_handler.tpp \
+	ftui/public/ftui/ALayout.hpp ftui/public/ftui/ASolidView.hpp \
+	ftui/public/ftui/AView.hpp ftui/public/ftui/Activity.hpp \
+	ftui/public/ftui/Canvas.hpp ftui/public/ftui/DefaultEventBox.hpp \
+	ftui/public/ftui/EventBox.hpp ftui/public/ftui/EventParams.hpp \
+	ftui/public/ftui/EventParams.hpp ftui/public/ftui/IEventBox.hpp \
+	ftui/public/ftui/IEventParams.hpp ftui/public/ftui/IViewHolder.hpp \
+	ftui/public/ftui/IViewHolder.hpp ftui/public/ftui/VerticalLayout.hpp \
+	ftui/public/ftui/XmlParser.hpp ftui/public/ftui/XmlTokenizer.hpp \
+	ftui/public/ftui/libftui.hpp \
+	ftui/public/ftui/templates/AView_callLuaCallback.tpp \
+	ftui/public/ftui/templates/Activity.tpp \
+	ftui/public/ftui/templates/DefaultEventBox.tpp \
+	ftui/public/ftui/templates/EventBox.tpp liblua/public/liblua.hpp \
+	| $(O_DIR)/ftui/
+$(O_DIR)/ftui/AView_luaHandler.o: ftui/AView_luaHandler.cpp \
+	ft/public/ft/Color.hpp ft/public/ft/Rect.hpp ft/public/ft/Vec.hpp \
+	ft/public/ft/assert.hpp ft/public/ft/templates/Rect.tpp \
+	ft/public/ft/templates/Vec2.tpp ft/public/ft/templates/Vec3.tpp \
+	ft/public/ft/templates/Vec4.tpp ft/public/ft/utils.hpp \
+	ftlua/public/ftlua/ftlua.hpp ftlua/public/ftlua/ftlua.hpp \
+	ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	ftlua/public/ftlua/templates/ftlua_handler.tpp \
+	ftui/public/ftui/ASolidView.hpp ftui/public/ftui/AView.hpp \
+	ftui/public/ftui/Canvas.hpp ftui/public/ftui/IViewHolder.hpp \
+	ftui/public/ftui/TextView.hpp ftui/public/ftui/libftui.hpp \
+	liblua/public/liblua.hpp | $(O_DIR)/ftui/
+$(O_DIR)/ftui/AView_statics.o: ftui/AView_statics.cpp ft/public/ft/Color.hpp \
+	ft/public/ft/Rect.hpp ft/public/ft/Vec.hpp ft/public/ft/assert.hpp \
+	ft/public/ft/templates/Rect.tpp ft/public/ft/templates/Vec2.tpp \
+	ft/public/ft/templates/Vec3.tpp ft/public/ft/templates/Vec4.tpp \
+	ft/public/ft/utils.hpp ftlua/public/ftlua/ftlua.hpp \
+	ftlua/public/ftlua/ftlua.hpp ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	ftlua/public/ftlua/templates/ftlua_handler.tpp \
+	ftui/public/ftui/ALayout.hpp ftui/public/ftui/ASolidView.hpp \
+	ftui/public/ftui/ASolidView.hpp ftui/public/ftui/AView.hpp \
+	ftui/public/ftui/Button.hpp ftui/public/ftui/Canvas.hpp \
+	ftui/public/ftui/HorizontalLayout.hpp ftui/public/ftui/IViewHolder.hpp \
+	ftui/public/ftui/SolidView.hpp ftui/public/ftui/TextView.hpp \
+	ftui/public/ftui/VerticalLayout.hpp ftui/public/ftui/libftui.hpp \
+	liblua/public/liblua.hpp | $(O_DIR)/ftui/
+$(O_DIR)/ftui/Activity.o: ftui/Activity.cpp ft/public/ft/Color.hpp \
+	ft/public/ft/Rect.hpp ft/public/ft/Vec.hpp ft/public/ft/assert.hpp \
+	ft/public/ft/templates/Rect.tpp ft/public/ft/templates/Vec2.tpp \
+	ft/public/ft/templates/Vec3.tpp ft/public/ft/templates/Vec4.tpp \
+	ft/public/ft/utils.hpp ftlua/public/ftlua/ftlua.hpp \
+	ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	ftlua/public/ftlua/templates/ftlua_handler.tpp ftui/public/ftui/AView.hpp \
+	ftui/public/ftui/Activity.hpp ftui/public/ftui/Canvas.hpp \
+	ftui/public/ftui/DefaultEventBox.hpp ftui/public/ftui/EventBox.hpp \
+	ftui/public/ftui/EventParams.hpp ftui/public/ftui/IEventBox.hpp \
+	ftui/public/ftui/IEventParams.hpp ftui/public/ftui/IViewHolder.hpp \
+	ftui/public/ftui/XmlParser.hpp ftui/public/ftui/XmlTokenizer.hpp \
+	ftui/public/ftui/libftui.hpp ftui/public/ftui/templates/Activity.tpp \
+	ftui/public/ftui/templates/DefaultEventBox.tpp \
+	ftui/public/ftui/templates/EventBox.tpp liblua/public/liblua.hpp \
+	| $(O_DIR)/ftui/
+$(O_DIR)/ftui/Activity_RootViewHolder.o: ftui/Activity_RootViewHolder.cpp \
+	ft/public/ft/Rect.hpp ft/public/ft/Vec.hpp ft/public/ft/assert.hpp \
+	ft/public/ft/templates/Rect.tpp ft/public/ft/templates/Vec2.tpp \
+	ft/public/ft/templates/Vec3.tpp ft/public/ft/templates/Vec4.tpp \
+	ft/public/ft/utils.hpp ftlua/public/ftlua/ftlua.hpp \
+	ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	ftlua/public/ftlua/templates/ftlua_handler.tpp ftui/public/ftui/AView.hpp \
+	ftui/public/ftui/Activity.hpp ftui/public/ftui/DefaultEventBox.hpp \
+	ftui/public/ftui/EventBox.hpp ftui/public/ftui/EventParams.hpp \
+	ftui/public/ftui/IEventBox.hpp ftui/public/ftui/IEventParams.hpp \
+	ftui/public/ftui/IViewHolder.hpp ftui/public/ftui/XmlParser.hpp \
+	ftui/public/ftui/XmlTokenizer.hpp ftui/public/ftui/libftui.hpp \
+	ftui/public/ftui/templates/Activity.tpp \
+	ftui/public/ftui/templates/DefaultEventBox.tpp \
+	ftui/public/ftui/templates/EventBox.tpp liblua/public/liblua.hpp \
+	| $(O_DIR)/ftui/
+$(O_DIR)/ftui/Button.o: ftui/Button.cpp ft/public/ft/Color.hpp \
+	ft/public/ft/Rect.hpp ft/public/ft/Vec.hpp ft/public/ft/assert.hpp \
+	ft/public/ft/templates/Rect.tpp ft/public/ft/templates/Vec2.tpp \
+	ft/public/ft/templates/Vec3.tpp ft/public/ft/templates/Vec4.tpp \
+	ft/public/ft/utils.hpp ftlua/public/ftlua/ftlua.hpp \
+	ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	ftlua/public/ftlua/templates/ftlua_handler.tpp ftui/public/ftui/AView.hpp \
+	ftui/public/ftui/Activity.hpp ftui/public/ftui/Button.hpp \
+	ftui/public/ftui/Canvas.hpp ftui/public/ftui/DefaultEventBox.hpp \
+	ftui/public/ftui/EventBox.hpp ftui/public/ftui/EventParams.hpp \
+	ftui/public/ftui/IEventBox.hpp ftui/public/ftui/IEventParams.hpp \
+	ftui/public/ftui/IViewHolder.hpp ftui/public/ftui/IViewHolder.hpp \
+	ftui/public/ftui/libftui.hpp ftui/public/ftui/templates/Activity.tpp \
+	ftui/public/ftui/templates/DefaultEventBox.tpp \
+	ftui/public/ftui/templates/EventBox.tpp liblua/public/liblua.hpp \
+	| $(O_DIR)/ftui/
+$(O_DIR)/ftui/Canvas.o: ftui/Canvas.cpp ft/public/ft/Color.hpp \
+	ft/public/ft/Rect.hpp ft/public/ft/Vec.hpp ft/public/ft/assert.hpp \
+	ft/public/ft/templates/Rect.tpp ft/public/ft/templates/Vec2.tpp \
+	ft/public/ft/templates/Vec3.tpp ft/public/ft/templates/Vec4.tpp \
+	ft/public/ft/utils.hpp ft/public/ft/utils.hpp ftlua/public/ftlua/ftlua.hpp \
+	ftlua/public/ftlua/ftlua.hpp ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	ftlua/public/ftlua/templates/ftlua_handler.tpp ftui/public/ftui/Canvas.hpp \
+	ftui/public/ftui/libftui.hpp liblua/public/liblua.hpp | $(O_DIR)/ftui/
+$(O_DIR)/ftui/HorizontalLayout.o: ftui/HorizontalLayout.cpp \
+	ft/public/ft/Color.hpp ft/public/ft/Rect.hpp ft/public/ft/Vec.hpp \
+	ft/public/ft/assert.hpp ft/public/ft/templates/Rect.tpp \
+	ft/public/ft/templates/Vec2.tpp ft/public/ft/templates/Vec3.tpp \
+	ft/public/ft/templates/Vec4.tpp ft/public/ft/utils.hpp \
+	ft/public/ft/utils.hpp ftlua/public/ftlua/ftlua.hpp \
+	ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	ftlua/public/ftlua/templates/ftlua_handler.tpp \
+	ftui/public/ftui/ALayout.hpp ftui/public/ftui/ASolidView.hpp \
+	ftui/public/ftui/AView.hpp ftui/public/ftui/Canvas.hpp \
+	ftui/public/ftui/Canvas.hpp ftui/public/ftui/HorizontalLayout.hpp \
+	ftui/public/ftui/IViewHolder.hpp ftui/public/ftui/XmlParser.hpp \
+	ftui/public/ftui/XmlTokenizer.hpp ftui/public/ftui/libftui.hpp \
+	liblua/public/liblua.hpp | $(O_DIR)/ftui/
+$(O_DIR)/ftui/HorizontalLayout_ViewHolder.o: \
+	ftui/HorizontalLayout_ViewHolder.cpp ft/public/ft/Color.hpp \
+	ft/public/ft/Rect.hpp ft/public/ft/Vec.hpp ft/public/ft/assert.hpp \
+	ft/public/ft/templates/Rect.tpp ft/public/ft/templates/Vec2.tpp \
+	ft/public/ft/templates/Vec3.tpp ft/public/ft/templates/Vec4.tpp \
+	ft/public/ft/utils.hpp ftlua/public/ftlua/ftlua.hpp \
+	ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	ftlua/public/ftlua/templates/ftlua_handler.tpp \
+	ftui/public/ftui/ALayout.hpp ftui/public/ftui/ASolidView.hpp \
+	ftui/public/ftui/AView.hpp ftui/public/ftui/Activity.hpp \
+	ftui/public/ftui/Canvas.hpp ftui/public/ftui/DefaultEventBox.hpp \
+	ftui/public/ftui/EventBox.hpp ftui/public/ftui/EventParams.hpp \
+	ftui/public/ftui/HorizontalLayout.hpp ftui/public/ftui/IEventBox.hpp \
+	ftui/public/ftui/IEventParams.hpp ftui/public/ftui/IViewHolder.hpp \
+	ftui/public/ftui/XmlParser.hpp ftui/public/ftui/XmlTokenizer.hpp \
+	ftui/public/ftui/libftui.hpp ftui/public/ftui/templates/Activity.tpp \
+	ftui/public/ftui/templates/DefaultEventBox.tpp \
+	ftui/public/ftui/templates/EventBox.tpp liblua/public/liblua.hpp \
+	| $(O_DIR)/ftui/
+$(O_DIR)/ftui/SolidView.o: ftui/SolidView.cpp ft/public/ft/Color.hpp \
+	ft/public/ft/Rect.hpp ft/public/ft/Vec.hpp ft/public/ft/assert.hpp \
+	ft/public/ft/templates/Rect.tpp ft/public/ft/templates/Vec2.tpp \
+	ft/public/ft/templates/Vec3.tpp ft/public/ft/templates/Vec4.tpp \
+	ft/public/ft/utils.hpp ftlua/public/ftlua/ftlua.hpp \
+	ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	ftlua/public/ftlua/templates/ftlua_handler.tpp \
+	ftui/public/ftui/ASolidView.hpp ftui/public/ftui/AView.hpp \
+	ftui/public/ftui/Canvas.hpp ftui/public/ftui/SolidView.hpp \
+	ftui/public/ftui/libftui.hpp liblua/public/liblua.hpp | $(O_DIR)/ftui/
+$(O_DIR)/ftui/TextView.o: ftui/TextView.cpp ft/public/ft/Color.hpp \
+	ft/public/ft/Rect.hpp ft/public/ft/Vec.hpp ft/public/ft/assert.hpp \
+	ft/public/ft/templates/Rect.tpp ft/public/ft/templates/Vec2.tpp \
+	ft/public/ft/templates/Vec3.tpp ft/public/ft/templates/Vec4.tpp \
+	ft/public/ft/utils.hpp ftlua/public/ftlua/ftlua.hpp \
+	ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	ftlua/public/ftlua/templates/ftlua_handler.tpp \
+	ftui/public/ftui/ASolidView.hpp ftui/public/ftui/AView.hpp \
+	ftui/public/ftui/Canvas.hpp ftui/public/ftui/IViewHolder.hpp \
+	ftui/public/ftui/TextView.hpp ftui/public/ftui/libftui.hpp \
+	liblua/public/liblua.hpp | $(O_DIR)/ftui/
+$(O_DIR)/ftui/VerticalLayout.o: ftui/VerticalLayout.cpp ft/public/ft/Color.hpp \
+	ft/public/ft/Rect.hpp ft/public/ft/Vec.hpp ft/public/ft/assert.hpp \
+	ft/public/ft/templates/Rect.tpp ft/public/ft/templates/Vec2.tpp \
+	ft/public/ft/templates/Vec3.tpp ft/public/ft/templates/Vec4.tpp \
+	ft/public/ft/utils.hpp ft/public/ft/utils.hpp ftlua/public/ftlua/ftlua.hpp \
+	ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	ftlua/public/ftlua/templates/ftlua_handler.tpp \
+	ftui/public/ftui/ALayout.hpp ftui/public/ftui/ASolidView.hpp \
+	ftui/public/ftui/AView.hpp ftui/public/ftui/Canvas.hpp \
+	ftui/public/ftui/Canvas.hpp ftui/public/ftui/IViewHolder.hpp \
+	ftui/public/ftui/VerticalLayout.hpp ftui/public/ftui/XmlParser.hpp \
+	ftui/public/ftui/XmlTokenizer.hpp ftui/public/ftui/libftui.hpp \
+	liblua/public/liblua.hpp | $(O_DIR)/ftui/
+$(O_DIR)/ftui/VerticalLayout_ViewHolder.o: ftui/VerticalLayout_ViewHolder.cpp \
+	ft/public/ft/Color.hpp ft/public/ft/Rect.hpp ft/public/ft/Vec.hpp \
+	ft/public/ft/assert.hpp ft/public/ft/templates/Rect.tpp \
+	ft/public/ft/templates/Vec2.tpp ft/public/ft/templates/Vec3.tpp \
+	ft/public/ft/templates/Vec4.tpp ft/public/ft/utils.hpp \
+	ftlua/public/ftlua/ftlua.hpp ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	ftlua/public/ftlua/templates/ftlua_handler.tpp \
+	ftui/public/ftui/ALayout.hpp ftui/public/ftui/ASolidView.hpp \
+	ftui/public/ftui/AView.hpp ftui/public/ftui/Activity.hpp \
+	ftui/public/ftui/Canvas.hpp ftui/public/ftui/DefaultEventBox.hpp \
+	ftui/public/ftui/EventBox.hpp ftui/public/ftui/EventParams.hpp \
+	ftui/public/ftui/IEventBox.hpp ftui/public/ftui/IEventParams.hpp \
+	ftui/public/ftui/IViewHolder.hpp ftui/public/ftui/VerticalLayout.hpp \
+	ftui/public/ftui/XmlParser.hpp ftui/public/ftui/XmlTokenizer.hpp \
+	ftui/public/ftui/libftui.hpp ftui/public/ftui/templates/Activity.tpp \
+	ftui/public/ftui/templates/DefaultEventBox.tpp \
+	ftui/public/ftui/templates/EventBox.tpp liblua/public/liblua.hpp \
+	| $(O_DIR)/ftui/
+$(O_DIR)/ftui/XmlParser.o: ftui/XmlParser.cpp ft/public/ft/Rect.hpp \
+	ft/public/ft/Vec.hpp ft/public/ft/assert.hpp \
+	ft/public/ft/templates/Rect.tpp ft/public/ft/templates/Vec2.tpp \
+	ft/public/ft/templates/Vec3.tpp ft/public/ft/templates/Vec4.tpp \
+	ft/public/ft/utils.hpp ftui/public/ftui/XmlParser.hpp \
+	ftui/public/ftui/XmlTokenizer.hpp ftui/public/ftui/libftui.hpp \
+	| $(O_DIR)/ftui/
+$(O_DIR)/ftui/XmlTokenizer.o: ftui/XmlTokenizer.cpp ft/public/ft/Rect.hpp \
+	ft/public/ft/Vec.hpp ft/public/ft/assert.hpp \
+	ft/public/ft/templates/Rect.tpp ft/public/ft/templates/Vec2.tpp \
+	ft/public/ft/templates/Vec3.tpp ft/public/ft/templates/Vec4.tpp \
+	ft/public/ft/utils.hpp ftui/public/ftui/XmlTokenizer.hpp \
+	ftui/public/ftui/libftui.hpp | $(O_DIR)/ftui/
 
+# module liblua
+LIBLUA_DIR		:= liblua/lua-5.3.1
+LIBLUA_PLATFORM	:= posix
+LIBLUA_ARCHIVE	:= $(LIBLUA_DIR).tar.gz
+LIBLUA_LIB		:= $(LIBLUA_DIR)/src/liblua.a
+LIBLUA			:= liblua/liblua.a
 
-MAX_SOURCE_LEN := 36
-o/srcs/ALayout.o: srcs/ALayout.cpp include/ft/Color.hpp include/ft/Rect.hpp \
-	include/ft/Vec.hpp include/ft/assert.hpp include/ft/templates/Vec2.tpp \
-	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
-	include/ftui/ALayout.hpp include/ftui/ASolidView.hpp \
-	include/ftui/AView.hpp include/ftui/Canvas.hpp include/ftui/libftui.hpp \
-	include/ftui/XmlParser.hpp include/ftui/XmlTokenizer.hpp \
-	include/ftui/IViewHolder.hpp include/ft/utils.hpp | o/srcs/
-o/srcs/ALayout_luaHandler.o: srcs/ALayout_luaHandler.cpp include/ft/Color.hpp \
-	include/ft/Rect.hpp include/ft/Vec.hpp include/ft/assert.hpp \
-	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
-	include/ft/templates/Vec4.tpp include/ftui/ALayout.hpp \
-	include/ftui/ASolidView.hpp include/ftui/AView.hpp include/ftui/Canvas.hpp \
-	include/ftui/libftui.hpp include/ft/utils.hpp include/ftlua/ftlua.hpp \
-	include/ftlua/templates/ftlua_caller.tpp \
-	include/ftlua/templates/ftlua_handler.tpp | o/srcs/
-o/srcs/ASolidView.o: srcs/ASolidView.cpp include/ft/Color.hpp \
-	include/ft/Rect.hpp include/ft/Vec.hpp include/ft/assert.hpp \
-	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
-	include/ft/templates/Vec4.tpp include/ftui/ASolidView.hpp \
-	include/ftui/AView.hpp include/ftui/Canvas.hpp include/ftui/libftui.hpp \
-	include/ftui/IViewHolder.hpp include/ftui/XmlParser.hpp \
-	include/ftui/XmlTokenizer.hpp | o/srcs/
-o/srcs/AView.o: srcs/AView.cpp include/ft/utils.hpp include/ft/Vec.hpp \
-	include/ft/assert.hpp include/ft/templates/Vec2.tpp \
-	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
-	include/ftlua/ftlua.hpp include/ftlua/templates/ftlua_caller.tpp \
-	include/ftlua/templates/ftlua_handler.tpp include/ftui/AView.hpp \
-	include/ftui/libftui.hpp include/ftui/Activity.hpp \
-	include/ftui/DefaultEventBox.hpp include/ftui/EventBox.hpp \
-	include/ftui/EventParams.hpp include/ftui/IEventBox.hpp \
-	include/ftui/IEventParams.hpp include/ftui/IViewHolder.hpp \
-	include/ftui/templates/Activity.tpp include/ftui/templates/EventBox.tpp \
-	include/ft/Color.hpp include/ft/Rect.hpp include/ftui/ALayout.hpp \
-	include/ftui/ASolidView.hpp include/ftui/Canvas.hpp \
-	include/ftui/XmlParser.hpp include/ftui/XmlTokenizer.hpp \
-	include/ftui/VerticalLayout.hpp \
-	include/ftui/templates/AView_callLuaCallback.tpp | o/srcs/
-o/srcs/AView_luaHandler.o: srcs/AView_luaHandler.cpp include/ft/assert.hpp \
-	include/ftui/AView.hpp include/ftui/libftui.hpp include/ft/Vec.hpp \
-	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
-	include/ft/templates/Vec4.tpp include/ftui/IViewHolder.hpp \
-	include/ft/Color.hpp include/ft/Rect.hpp include/ftui/ASolidView.hpp \
-	include/ftui/Canvas.hpp include/ftui/TextView.hpp include/ft/utils.hpp \
-	include/ftlua/ftlua.hpp include/ftlua/templates/ftlua_caller.tpp \
-	include/ftlua/templates/ftlua_handler.tpp | o/srcs/
-o/srcs/AView_statics.o: srcs/AView_statics.cpp include/ft/utils.hpp \
-	include/ft/assert.hpp include/ftui/AView.hpp include/ftui/libftui.hpp \
-	include/ft/Color.hpp include/ft/Rect.hpp include/ft/Vec.hpp \
-	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
-	include/ft/templates/Vec4.tpp include/ftui/ALayout.hpp \
-	include/ftui/ASolidView.hpp include/ftui/Canvas.hpp \
-	include/ftui/IViewHolder.hpp include/ftui/VerticalLayout.hpp \
-	include/ftui/HorizontalLayout.hpp include/ftui/SolidView.hpp \
-	include/ftui/TextView.hpp include/ftui/Button.hpp include/ftlua/ftlua.hpp \
-	include/ftlua/templates/ftlua_caller.tpp \
-	include/ftlua/templates/ftlua_handler.tpp | o/srcs/
-o/srcs/Activity.o: srcs/Activity.cpp include/ft/utils.hpp include/ft/Vec.hpp \
-	include/ft/assert.hpp include/ft/templates/Vec2.tpp \
-	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
-	include/ftlua/ftlua.hpp include/ftlua/templates/ftlua_caller.tpp \
-	include/ftlua/templates/ftlua_handler.tpp include/ftui/Activity.hpp \
-	include/ftui/DefaultEventBox.hpp include/ftui/EventBox.hpp \
-	include/ftui/EventParams.hpp include/ftui/IEventBox.hpp \
-	include/ftui/IEventParams.hpp include/ftui/IViewHolder.hpp \
-	include/ftui/libftui.hpp include/ftui/templates/Activity.tpp \
-	include/ftui/templates/EventBox.tpp include/ftui/AView.hpp \
-	include/ft/Color.hpp include/ft/Rect.hpp include/ftui/Canvas.hpp \
-	include/ftui/XmlParser.hpp include/ftui/XmlTokenizer.hpp | o/srcs/
-o/srcs/Activity_RootViewHolder.o: srcs/Activity_RootViewHolder.cpp \
-	include/ft/Vec.hpp include/ft/assert.hpp include/ft/templates/Vec2.tpp \
-	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
-	include/ftui/Activity.hpp include/ftui/DefaultEventBox.hpp \
-	include/ftui/EventBox.hpp include/ftui/EventParams.hpp \
-	include/ftui/IEventBox.hpp include/ftui/IEventParams.hpp \
-	include/ftui/IViewHolder.hpp include/ftui/libftui.hpp \
-	include/ftui/templates/Activity.tpp include/ftui/templates/EventBox.tpp \
-	include/ftui/AView.hpp include/ftui/XmlParser.hpp \
-	include/ftui/XmlTokenizer.hpp | o/srcs/
-o/srcs/Button.o: srcs/Button.cpp include/ft/Color.hpp include/ft/Rect.hpp \
-	include/ft/Vec.hpp include/ft/assert.hpp include/ft/templates/Vec2.tpp \
-	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
-	include/ftui/AView.hpp include/ftui/Button.hpp include/ftui/Canvas.hpp \
-	include/ftui/libftui.hpp include/ftui/Activity.hpp \
-	include/ftui/DefaultEventBox.hpp include/ftui/EventBox.hpp \
-	include/ftui/EventParams.hpp include/ftui/IEventBox.hpp \
-	include/ftui/IEventParams.hpp include/ftui/IViewHolder.hpp \
-	include/ftui/templates/Activity.tpp include/ftui/templates/EventBox.tpp \
-	| o/srcs/
-o/srcs/Canvas.o: srcs/Canvas.cpp include/ft/Color.hpp include/ft/Rect.hpp \
-	include/ft/Vec.hpp include/ft/assert.hpp include/ft/templates/Vec2.tpp \
-	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
-	include/ftui/Canvas.hpp include/ftui/libftui.hpp include/ft/utils.hpp \
-	include/ftlua/ftlua.hpp include/ftlua/templates/ftlua_caller.tpp \
-	include/ftlua/templates/ftlua_handler.tpp | o/srcs/
-o/srcs/HorizontalLayout.o: srcs/HorizontalLayout.cpp include/ft/Color.hpp \
-	include/ft/Rect.hpp include/ft/Vec.hpp include/ft/assert.hpp \
-	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
-	include/ft/templates/Vec4.tpp include/ftui/ALayout.hpp \
-	include/ftui/ASolidView.hpp include/ftui/AView.hpp include/ftui/Canvas.hpp \
-	include/ftui/HorizontalLayout.hpp include/ftui/IViewHolder.hpp \
-	include/ftui/libftui.hpp include/ftui/XmlParser.hpp \
-	include/ftui/XmlTokenizer.hpp include/ft/utils.hpp | o/srcs/
-o/srcs/HorizontalLayout_ViewHolder.o: srcs/HorizontalLayout_ViewHolder.cpp \
-	include/ft/utils.hpp include/ft/Color.hpp include/ft/Rect.hpp \
-	include/ft/Vec.hpp include/ft/assert.hpp include/ft/templates/Vec2.tpp \
-	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
-	include/ftui/ALayout.hpp include/ftui/ASolidView.hpp \
-	include/ftui/AView.hpp include/ftui/Canvas.hpp \
-	include/ftui/HorizontalLayout.hpp include/ftui/IViewHolder.hpp \
-	include/ftui/libftui.hpp include/ftui/XmlParser.hpp \
-	include/ftui/XmlTokenizer.hpp include/ftui/Activity.hpp \
-	include/ftui/DefaultEventBox.hpp include/ftui/EventBox.hpp \
-	include/ftui/EventParams.hpp include/ftui/IEventBox.hpp \
-	include/ftui/IEventParams.hpp include/ftui/templates/Activity.tpp \
-	include/ftui/templates/EventBox.tpp | o/srcs/
-o/srcs/SolidView.o: srcs/SolidView.cpp include/ft/Color.hpp \
-	include/ft/Rect.hpp include/ft/Vec.hpp include/ft/assert.hpp \
-	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
-	include/ft/templates/Vec4.tpp include/ftui/ASolidView.hpp \
-	include/ftui/AView.hpp include/ftui/Canvas.hpp include/ftui/SolidView.hpp \
-	include/ftui/libftui.hpp | o/srcs/
-o/srcs/TextView.o: srcs/TextView.cpp include/ft/Color.hpp include/ft/Rect.hpp \
-	include/ft/Vec.hpp include/ft/assert.hpp include/ft/templates/Vec2.tpp \
-	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
-	include/ftui/ASolidView.hpp include/ftui/AView.hpp include/ftui/Canvas.hpp \
-	include/ftui/TextView.hpp include/ftui/libftui.hpp \
-	include/ftui/IViewHolder.hpp | o/srcs/
-o/srcs/VerticalLayout.o: srcs/VerticalLayout.cpp include/ft/Color.hpp \
-	include/ft/Rect.hpp include/ft/Vec.hpp include/ft/assert.hpp \
-	include/ft/templates/Vec2.tpp include/ft/templates/Vec3.tpp \
-	include/ft/templates/Vec4.tpp include/ftui/ALayout.hpp \
-	include/ftui/ASolidView.hpp include/ftui/AView.hpp include/ftui/Canvas.hpp \
-	include/ftui/IViewHolder.hpp include/ftui/VerticalLayout.hpp \
-	include/ftui/libftui.hpp include/ftui/XmlParser.hpp \
-	include/ftui/XmlTokenizer.hpp include/ft/utils.hpp | o/srcs/
-o/srcs/VerticalLayout_ViewHolder.o: srcs/VerticalLayout_ViewHolder.cpp \
-	include/ft/utils.hpp include/ft/Color.hpp include/ft/Rect.hpp \
-	include/ft/Vec.hpp include/ft/assert.hpp include/ft/templates/Vec2.tpp \
-	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
-	include/ftui/ALayout.hpp include/ftui/ASolidView.hpp \
-	include/ftui/AView.hpp include/ftui/Canvas.hpp \
-	include/ftui/IViewHolder.hpp include/ftui/VerticalLayout.hpp \
-	include/ftui/libftui.hpp include/ftui/XmlParser.hpp \
-	include/ftui/XmlTokenizer.hpp include/ftui/Activity.hpp \
-	include/ftui/DefaultEventBox.hpp include/ftui/EventBox.hpp \
-	include/ftui/EventParams.hpp include/ftui/IEventBox.hpp \
-	include/ftui/IEventParams.hpp include/ftui/templates/Activity.tpp \
-	include/ftui/templates/EventBox.tpp | o/srcs/
-o/srcs/XmlParser.o: srcs/XmlParser.cpp include/ft/assert.hpp \
-	include/ftui/XmlParser.hpp include/ftui/XmlTokenizer.hpp \
-	include/ftui/libftui.hpp include/ft/utils.hpp | o/srcs/
-o/srcs/XmlTokenizer.o: srcs/XmlTokenizer.cpp include/ft/assert.hpp \
-	include/ftui/XmlTokenizer.hpp include/ftui/libftui.hpp \
-	include/ft/utils.hpp | o/srcs/
-o/srcs/ft/assert.o: srcs/ft/assert.cpp include/ft/assert.hpp \
-	include/ft/utils.hpp | o/srcs/ft/
-o/srcs/ft/padformat.o: srcs/ft/padformat.cpp include/ft/assert.hpp \
-	include/ft/utils.hpp | o/srcs/ft/
-o/srcs/ftlua/cpp_utils.o: srcs/ftlua/cpp_utils.cpp include/ft/Vec.hpp \
-	include/ft/assert.hpp include/ft/templates/Vec2.tpp \
-	include/ft/templates/Vec3.tpp include/ft/templates/Vec4.tpp \
-	include/ft/utils.hpp include/ftlua/ftlua.hpp \
-	include/ftlua/templates/ftlua_caller.tpp \
-	include/ftlua/templates/ftlua_handler.tpp | o/srcs/ftlua/
-o/srcs/ftlua/push_utils.o: srcs/ftlua/push_utils.cpp include/ft/assert.hpp \
-	| o/srcs/ftlua/
+_PLATFORM		:= $(shell uname)
+
+ifeq ($(_PLATFORM),Linux)
+  LIBLUA_PLATFORM = linux
+else
+  ifeq ($(_PLATFORM),Darwin)
+    LIBLUA_PLATFORM = macosx
+  endif
+endif
+
+liblua: $(LIBLUA)
+.PHONY: liblua
+
+$(LIBLUA):
+	echo Extract lua
+	tar -x -C liblua -f $(LIBLUA_ARCHIVE)
+	echo "Make lua ($(LIBLUA_PLATFORM))"
+	make -C $(LIBLUA_DIR) $(LIBLUA_PLATFORM)
+	cp $(LIBLUA_LIB) $(LIBLUA)
+	echo Done

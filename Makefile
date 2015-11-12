@@ -4,7 +4,7 @@
 NAME			:= npuzzle
 
 # Project directories
-DIRS			:= srcs include libftui/include
+DIRS			:= srcs include libftui/ft/public libftui/ftlua/public libftui/ftui/public libftui/liblua/public
 
 # Git submodule to init
 MODULES			:=
@@ -19,7 +19,7 @@ HEAD_FLAGS		= $(addprefix -I,$(DIRS))
 C_FLAGS			= $(HEAD_FLAGS) $(BASE_FLAGS)
 CPP_FLAGS		= $(HEAD_FLAGS) $(BASE_FLAGS) -std=c++14
 
-LINK_FLAGS		= $(BASE_FLAGS) -Llibftui -lftui -lfreetype
+LINK_FLAGS		= $(BASE_FLAGS) -Llibftui -lftui -Llibftui/liblua -llua -lfreetype
 
 ifeq ($(DEBUG_MODE),1)
 	# Extra flags used in debug mode
@@ -80,8 +80,10 @@ MODULE_RULES	:= $(addsuffix /.git,$(MODULES))
 PRINT_FILE		:= .tmp_print
 SHELL			:= /bin/bash
 
+MAX_SOURCE_LEN	= 20
+
 # Default rule (need to be before any include)
-all: $(MODULE_RULES) libs
+all: $(MODULE_RULES) libs_rules
 ifeq ($(COLUMN_OUTPUT),0)
 	make -j$(JOBS) $(NAME)
 else
@@ -110,7 +112,7 @@ endif
 include $(DEPEND)
 include $(ML_DEPEND)
 
-MAX_SOURCE_LEN	:= $(shell if [ $(MAX_SOURCE_LEN) -gt $(ML_MAX_LEN) ]; then echo $(MAX_SOURCE_LEN); else echo $(ML_MAX_LEN); fi)
+MAX_SOURCE_LEN	:= $(shell if [[ $(MAX_SOURCE_LEN) -gt $(ML_MAX_LEN) ]]; then echo $(MAX_SOURCE_LEN); else echo $(ML_MAX_LEN); fi)
 
 # Linking
 $(NAME): $(LIBS_DEPEND) $(O_FILES) $(OCAML_SOLVER)
@@ -133,6 +135,9 @@ $(OCAML_SOLVER): $(ML_OBJS)
 ocamldep:
 	bash ocaml_depend.sh > $(ML_DEPEND)
 .PHONY: ocamldep
+
+libs_rules: $(LIBS_RULES)
+.PHONY: libs_rules
 
 # Init submodules
 $(MODULE_RULES):

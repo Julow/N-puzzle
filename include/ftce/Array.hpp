@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/06/01 15:50:53 by ngoguey           #+#    #+#             //
-//   Updated: 2015/06/01 15:59:26 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/12 14:29:34 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -63,7 +63,7 @@ private:
 	size_t						_lastIndex;
 };
 
-#include "Array.tpp"
+#include "ftce/Array.tpp"
 };
 
 #endif // *************************************** ARRAY_CLASS_HPP //

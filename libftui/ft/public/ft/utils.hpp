@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 13:42:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/11 18:47:46 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/12 13:30:28 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,8 +18,8 @@
 # include <ostream>
 # include <sstream>
 # include <string>
-# include "Vec.hpp"
-# include "Rect.hpp"
+# include "ft/Vec.hpp"
+# include "ft/Rect.hpp"
 
 namespace ft
 {
