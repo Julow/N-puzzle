@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/11 11:58:44 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/03 16:22:32 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/12 18:18:03 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -241,7 +241,7 @@ void				Tiles::_initGlMesh(Tmp const &tmp)
 	return ;
 }
 
-void				Tiles::render(void)
+void				Tiles::render(void) const
 {
 	glUseProgram(_p);
 	glBindVertexArray(_vao);

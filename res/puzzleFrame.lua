@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 13:01:05 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/11 17:58:01 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/12 18:28:17 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -21,7 +21,7 @@ function drawTextCenter(canvas, text, x, y)
 end
 
 function puzzleFrame:reloadGrid()
-   puzzleFrame.curPuzzle = getGrid();
+   puzzleFrame.curPuzzle = Main:getGrid();
    puzzleFrame.w = getPuzzleW(puzzleFrame.curPuzzle);
    puzzleFrame:queryRedraw();
    return ;
@@ -29,7 +29,7 @@ end
 
 function puzzleFrame:onDraw(canvas)
    if self.curPuzzle == nil then
-	  puzzleFrame.curPuzzle = getGrid();
+	  puzzleFrame.curPuzzle = Main:getGrid();
 	  puzzleFrame.w = getPuzzleW(puzzleFrame.curPuzzle);
 	  -- TODO: relou de pas pouvoir acceder a un onLoad
    end

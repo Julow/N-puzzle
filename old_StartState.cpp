@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 09:02:27 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/11 20:01:11 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/12 14:10:49 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -43,7 +43,7 @@ void			SS::globalInit(void)
 	act.registerLuaCFun_global("setAlgorithmId", &setAlgorithmIdG);
 	act.registerLuaCFun_global("setHeuristicId", &setHeuristicIdG);
 	act.registerLuaCFun_global("setCost", &setCostG);
-	act.registerLuaCFun_global("launchSolving", &launchSolvingG);
+	act.registerLuaCFun_global("tagForSolving", &tagForSolvingG);
 	SS::tiles.init(WIN_SIZEVI);
 	return ;
 }
@@ -58,7 +58,7 @@ StartState		*SS::instance(void)
 
 SS::StartState(ftui::Canvas &can, OCamlBinding &ocaml)
 	: AState()
-	, _launchSolving(false)
+	, _tagSolve(false)
 {
 	(void)can;
 	(void)ocaml;
@@ -170,9 +170,9 @@ void			SS::setCost(int cost)
 { _cost = cost; }
 
 
-int				SS::launchSolvingG(lua_State *l)
+int				SS::tagForSolvingG(lua_State *l)
 {
-	return ftlua::handle<0, 0>(l, SS::instance(), &SS::launchSolving);
+	return ftlua::handle<0, 0>(l, SS::instance(), &SS::tagForSolving);
 }
-void			SS::launchSolving(void)
-{ _launchSolving = true; }
+void			SS::tagForSolving(void)
+{ _tagSolve = true; }
