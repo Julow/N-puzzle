@@ -3,10 +3,10 @@
 //                                                        :::      ::::::::   //
 //   gl.hpp                                             :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
-//   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        //
+//   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/10/07 22:46:21 by juloo             #+#    #+#             //
-//   Updated: 2015/10/07 22:46:55 by juloo            ###   ########.fr       //
+//   Created: 2015/11/12 20:10:20 by ngoguey           #+#    #+#             //
+//   Updated: 2015/11/12 20:10:47 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,15 +15,7 @@
 
 extern "C"
 {
-
-#ifdef MAC_OS_MODE
-# define GLFW_INCLUDE_GLCOREARB
-#else
-# include <GL/glew.h>
-#endif
-
-#include <GLFW/glfw3.h>
-
+# include "gl.h"
 }
 
-#endif
+#endif /* ************************************************************ GL_HPP */

@@ -4,7 +4,7 @@
 NAME			:= npuzzle
 
 # Project directories
-DIRS			:= srcs include modules/ft/public modules/ftlua/public modules/ftui/public modules/liblua/public
+DIRS			:= srcs include modules/ft/public modules/ftlua/public modules/ftui/public modules/liblua/public modules/tiles/include modules/gl
 
 # Git submodule to init
 MODULES			:=

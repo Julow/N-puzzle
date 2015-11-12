@@ -1,0 +1,4 @@
+module tiles:
+	public include include/
+	public require ft
+	private require gl

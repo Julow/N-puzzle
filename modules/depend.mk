@@ -11,8 +11,9 @@ O_FILES += $(O_DIR)/ft/assert.o $(O_DIR)/ft/padformat.o \
 	$(O_DIR)/ftui/HorizontalLayout_ViewHolder.o $(O_DIR)/ftui/SolidView.o \
 	$(O_DIR)/ftui/TextView.o $(O_DIR)/ftui/VerticalLayout.o \
 	$(O_DIR)/ftui/VerticalLayout_ViewHolder.o $(O_DIR)/ftui/XmlParser.o \
-	$(O_DIR)/ftui/XmlTokenizer.o
-PUBLIC_DIRS += ft/public ftlua/public ftui/public liblua/public
+	$(O_DIR)/ftui/XmlTokenizer.o $(O_DIR)/tiles/Tiles.o
+PUBLIC_DIRS += ft/public ftlua/public ftui/public gl liblua/public \
+	tiles/include
 
 # module ft
 $(O_DIR)/ft/assert.o $(O_DIR)/ft/padformat.o: INCLUDE_FLAGS += -Ift/public
@@ -28,7 +29,7 @@ $(O_DIR)/ft/padformat.o: ft/padformat.cpp ft/public/ft/Rect.hpp \
 
 # module ftlua
 $(O_DIR)/ftlua/cpp_utils.o $(O_DIR)/ftlua/push_utils.o: INCLUDE_FLAGS += \
-	-Ift/public -Iftlua/public -Iliblua/public
+	-Iftlua/public -Ift/public -Iliblua/public
 $(O_DIR)/ftlua/cpp_utils.o: ftlua/cpp_utils.cpp ft/public/ft/Rect.hpp \
 	ft/public/ft/Vec.hpp ft/public/ft/assert.hpp \
 	ft/public/ft/templates/Rect.tpp ft/public/ft/templates/Vec2.tpp \
@@ -55,7 +56,7 @@ $(O_DIR)/ftui/Button.o $(O_DIR)/ftui/Canvas.o $(O_DIR)/ftui/HorizontalLayout.o \
 $(O_DIR)/ftui/HorizontalLayout_ViewHolder.o $(O_DIR)/ftui/SolidView.o \
 $(O_DIR)/ftui/TextView.o $(O_DIR)/ftui/VerticalLayout.o \
 $(O_DIR)/ftui/VerticalLayout_ViewHolder.o $(O_DIR)/ftui/XmlParser.o \
-$(O_DIR)/ftui/XmlTokenizer.o: INCLUDE_FLAGS += -Ift/public -Iftlua/public \
+$(O_DIR)/ftui/XmlTokenizer.o: INCLUDE_FLAGS += -Iftlua/public -Ift/public \
 	-Iftui/public -Iliblua/public
 $(O_DIR)/ftui/ALayout.o: ftui/ALayout.cpp ft/public/ft/Color.hpp \
 	ft/public/ft/Rect.hpp ft/public/ft/Vec.hpp ft/public/ft/assert.hpp \
@@ -293,6 +294,14 @@ $(O_DIR)/ftui/XmlTokenizer.o: ftui/XmlTokenizer.cpp ft/public/ft/Rect.hpp \
 	ft/public/ft/utils.hpp ftui/public/ftui/XmlTokenizer.hpp \
 	ftui/public/ftui/libftui.hpp | $(O_DIR)/ftui/
 
+# module gl
+ifeq ($(shell uname),Darwin)
+  BASE_FLAGS += -DMAC_OS_MODE=1
+  LINK_FLAGS += -lglfw3 -framework OpenGL
+else
+  LINK_FLAGS += -lglfw -lGL -lGLEW
+endif
+
 # module liblua
 LIBLUA_DIR		:= liblua/lua-5.3.1
 LIBLUA_PLATFORM	:= posix
@@ -320,3 +329,10 @@ $(LIBLUA):
 	make -C $(LIBLUA_DIR) $(LIBLUA_PLATFORM)
 	cp $(LIBLUA_LIB) $(LIBLUA)
 	echo Done
+
+# module tiles
+$(O_DIR)/tiles/Tiles.o: INCLUDE_FLAGS += -Ift/public -Igl -Itiles/include
+$(O_DIR)/tiles/Tiles.o: tiles/Tiles.cpp ft/public/ft/Vec.hpp \
+	ft/public/ft/templates/Vec2.tpp ft/public/ft/templates/Vec3.tpp \
+	ft/public/ft/templates/Vec4.tpp gl/gl.h gl/gl.hpp \
+	tiles/include/tiles/Tiles.hpp | $(O_DIR)/tiles/
