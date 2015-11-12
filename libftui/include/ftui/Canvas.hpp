@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/09 15:12:05 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/12 11:06:24 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -30,16 +30,15 @@ namespace ftui
 ** -
 ** Draw
 ** -
-** Warning: copy constructor and assignation does not delete/copy the bitmap
-** -
 ** TODO: default font
+** TODO: draw offset (replace clip) ??
+** TODO: ACanvas
 */
 class	Canvas
 {
 public:
 	typedef uint32_t	font_t;
 
-// TODO: Anti aliasing and floating point rects
 	struct	Params
 	{
 	public:
@@ -56,7 +55,6 @@ public:
 
 	Canvas(Canvas const &src) = delete;
 	Canvas				&operator=(Canvas const &rhs) = delete;
-
 
 /*
 ** Lua interactions
@@ -133,9 +131,6 @@ public:
 	void				drawText(ft::Vec2<float> pos, std::string const &text,
 							Params const &opt);
 
-	// void		strokeLine(Vec2<int> a, Vec2<int> b, Params const &opt);
-	// void		strokeText(Vec2<int> pos, std::string const &text, Params const &opt);
-
 /*
 ** Font
 */
@@ -152,6 +147,11 @@ public:
 	static ft::Vec2<int>	measureText(std::string const &text,
 								Params const &opt);
 
+/*
+** Changed rect
+*/
+	ft::Rect<int> const	&getChangedRect(void) const;
+	void				resetChangedRect(void);
 
 protected:
 
@@ -163,6 +163,8 @@ protected:
 
 	float				_alpha;
 	float				_scale;
+
+	ft::Rect<int>		_changedRect;
 
 	font_t				_luaFont;
 
@@ -208,6 +210,12 @@ protected:
 	void				putAlphaBitmap(ft::Vec2<int> pos, uint8_t const *bitmap,
 							ft::Rect<int> const &rect, int pitch,
 							ft::Color::t color);
+
+/*
+** Changed Rect
+*/
+	void				applyChangedRect(ft::Vec2<int> vec);
+	void				applyChangedRect(ft::Rect<int> const &rect);
 
 /*
 ** Font

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/10 16:53:03 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/12 10:33:49 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -53,6 +53,7 @@ Canvas::Canvas(ft::Color::t *bitmap, int width, int height) :
 	_scale(1.f),
 	_luaFont(0)
 {
+	resetChangedRect();
 	return ;
 }
 
@@ -81,6 +82,7 @@ Canvas			&Canvas::operator=(Canvas &&rhs)
 }
 
 /*
+** ========================================================================== **
 ** LUA Interations
 */
 
@@ -201,6 +203,7 @@ bool			Canvas::isInLua(lua_State *l)
 }
 
 /*
+** ========================================================================== **
 ** Bitmap
 */
 ft::Color::t const	*Canvas::getBitmap(void) const
@@ -259,6 +262,7 @@ void			Canvas::clear(ft::Rect<int> const &rect)
 }
 
 /*
+** ========================================================================== **
 ** Scale
 */
 void			Canvas::setScale(float scale)
@@ -272,6 +276,7 @@ float			Canvas::getScale(void) const
 }
 
 /*
+** ========================================================================== **
 ** Clip
 */
 ft::Rect<int> const	&Canvas::getClip(void) const
@@ -307,6 +312,7 @@ void			Canvas::clearClip(void)
 }
 
 /*
+** ========================================================================== **
 ** Alpha
 */
 float			Canvas::getAlpha(void) const
@@ -325,39 +331,51 @@ void			Canvas::setAlpha(float alpha)
 }
 
 /*
+** ========================================================================== **
 ** Render rect
 */
 void			Canvas::drawRect(ft::Rect<float> const &rect, Params const &opt)
 {
 	ft::Rect<int>	int_rect = static_cast<ft::Rect<int>>(rect * _scale);
 
+	int_rect += ft::make_vec(_clip.left, _clip.top);
+	// if (int_rect.right > _clip.right)
+	// 	int_rect.right = _clip.right;
+	// if (int_rect.bottom > _clip.bottom)
+	// 	int_rect.bottom = _clip.bottom;
 	if (ft::Color::a(opt.strokeColor) != 0)
 	{
 		_strokeRect(int_rect, ft::Color::alpha(opt.strokeColor, _alpha),
 			opt.lineWidth);
-		int_rect.expand(-opt.lineWidth * _scale);
+		applyChangedRect(int_rect);
+		if (ft::Color::a(opt.fillColor) != 0)
+		{
+			int_rect.expand(-opt.lineWidth * _scale);
+			_fillRect(int_rect, ft::Color::alpha(opt.fillColor, _alpha));
+		}
 	}
-	if (ft::Color::a(opt.fillColor) != 0)
+	else if (ft::Color::a(opt.fillColor) != 0)
 	{
 		_fillRect(int_rect, ft::Color::alpha(opt.fillColor, _alpha));
+		applyChangedRect(int_rect);
 	}
 }
 
 void			Canvas::_strokeRect(ft::Rect<int> const &rect,
 					ft::Color::t color, int lineWidth)
 {
-	int const		left = rect.left + _clip.left;
-	int const		right = rect.right + _clip.left;
+	int const		left = rect.left;
+	int const		right = rect.right;
 	int				top;
 	int				y;
 
 	if (rect.getWidth() == 0 || rect.getHeight() == 0)
 		return ;
-	y = rect.bottom + _clip.top - 1;
-	top = std::max(rect.bottom - lineWidth, rect.top) + _clip.top;
+	y = rect.bottom - 1;
+	top = std::max(rect.bottom - lineWidth, rect.top);
 	while (y >= top)
 		putPixel(left, y--, color, rect.getWidth());
-	top = rect.top + _clip.top + lineWidth;
+	top = rect.top + lineWidth;
 	while (y >= top)
 	{
 		putPixel(left, y, color, lineWidth);
@@ -371,17 +389,18 @@ void			Canvas::_strokeRect(ft::Rect<int> const &rect,
 
 void			Canvas::_fillRect(ft::Rect<int> const &rect, ft::Color::t color)
 {
-	int const	left = rect.left + _clip.left;
-	int const	top = rect.top + _clip.top;
+	int const	left = rect.left;
+	int const	top = rect.top;
 	int const	width = rect.getWidth();
 	int			y;
 
-	y = rect.bottom + _clip.top;
+	y = rect.bottom;
 	while (--y >= top)
 		putPixel(left, y, color, width);
 }
 
 /*
+** ========================================================================== **
 ** Render text
 */
 void			Canvas::drawText(ft::Vec2<float> pos, std::string const &text,
@@ -398,6 +417,7 @@ void			Canvas::drawText(ft::Vec2<float> pos, std::string const &text,
 		|| opt.font >= g_faces.size())
 		return ;
 	int_vec += ft::make_vec(_clip.left, _clip.top);
+	applyChangedRect(int_vec);
 	face = g_faces[opt.font];
 	if (FT_Set_Pixel_Sizes(face, 0, opt.lineWidth))
 		throw std::runtime_error("Cannot resize font (drawText)");
@@ -417,6 +437,7 @@ void			Canvas::drawText(ft::Vec2<float> pos, std::string const &text,
 			opt.fillColor);
 		int_vec.x += face->glyph->advance.x >> 6;
 	}
+	applyChangedRect(int_vec);
 }
 
 ft::Vec2<int>	Canvas::measureText(std::string const &text, Params const &opt)
@@ -442,6 +463,7 @@ ft::Vec2<int>	Canvas::measureText(std::string const &text, Params const &opt)
 }
 
 /*
+** ========================================================================== **
 ** Font management
 */
 Canvas::font_t	Canvas::getFont(std::string const &file)
@@ -467,6 +489,43 @@ Canvas::font_t	Canvas::loadFont(std::string const &file)
 		throw std::runtime_error(ft::f("Cannot load %", file));
 	g_faces.push_back(face);
 	return (g_faces.size() - 1);
+}
+
+/*
+** Changed Rect
+*/
+ft::Rect<int> const	&Canvas::getChangedRect(void) const
+{
+	return (_changedRect);
+}
+
+void				Canvas::resetChangedRect(void)
+{
+	_changedRect = ft::make_rect(0, 0, 0, 0);
+}
+
+void				Canvas::applyChangedRect(ft::Vec2<int> vec)
+{
+	if (_changedRect.left == _changedRect.right
+		|| _changedRect.top == _changedRect.bottom)
+	{
+		_changedRect = ft::make_rect(vec.x, vec.y, vec.x + 1, vec.y + 1);
+		std::cout << "reset changed rect " << _changedRect << std::endl;
+	}
+	else
+		_changedRect.merge(vec);
+}
+
+void				Canvas::applyChangedRect(ft::Rect<int> const &rect)
+{
+	if (_changedRect.left == _changedRect.right
+		|| _changedRect.top == _changedRect.bottom)
+	{
+		_changedRect = rect;
+		std::cout << "reset changed rect " << _changedRect << std::endl;
+	}
+	else
+		_changedRect.merge(rect);
 }
 
 };

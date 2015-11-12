@@ -6,7 +6,7 @@
 //   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/07 21:38:50 by juloo             #+#    #+#             //
-//   Updated: 2015/10/11 15:36:45 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/12 11:17:06 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -50,18 +50,29 @@ ftui::Canvas	&GlCanvasHolder::getCanvas(void)
 
 void			GlCanvasHolder::render(void)
 {
-	if (_canvas.getBitmap() == NULL)
-		throw std::domain_error("render() call before init()");
+	ft::Rect<int> const	&changedRect = _canvas.getChangedRect();
+
 	glUseProgram(_shaders);
 	glBindVertexArray(_quad);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_BGRA,
-		GL_UNSIGNED_BYTE, _canvas.getBitmap());
-	// TODO: glTextSubImage2D
+	if (changedRect.left < changedRect.right
+		&& changedRect.top < changedRect.bottom)
+	{
+		// _canvas.drawRect(changedRect, ftui::Canvas::Params{0xFFFF0000, 0x55FF0000, 1, 0});
+		// ft::f(std::cout, "Update texture %\n", changedRect);
+		ft::Color::t const	*bitmap = _canvas.getBitmap() + changedRect.left;
+		for (int y = changedRect.top; y < changedRect.bottom; y++)
+		{
+			glTexSubImage2D(GL_TEXTURE_2D, 0, changedRect.left, y,
+				changedRect.getWidth(), 1, GL_BGRA, GL_UNSIGNED_BYTE,
+				bitmap + (y * _width));
+		}
+	}
 	glDrawArrays(GL_TRIANGLES, 0, 6),
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
+	_canvas.resetChangedRect();
 }
 
 /*

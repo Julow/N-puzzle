@@ -6,7 +6,7 @@
 //   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/07 20:31:56 by juloo             #+#    #+#             //
-//   Updated: 2015/10/08 08:40:20 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/12 11:17:22 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -17,7 +17,6 @@
 
 /*
 ** Hold and render a 2d canvas (ftui::Canvas)
-** TODO: Push to opengl only part that change
 */
 class	GlCanvasHolder
 {
