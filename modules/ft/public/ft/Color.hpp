@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 17:05:13 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/15 15:36:42 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/15 16:39:10 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,6 +16,7 @@
 # include "ft/assert.hpp"
 
 # include <stdint.h>
+# include <algorithm>
 
 namespace ft
 {
@@ -83,14 +84,14 @@ public:
 	{
 		uint32_t const	dst_a = a(dst);
 		uint32_t const	src_a = a(src);
-		uint32_t const	out_a = src_a + (dst_a * (256 - src_a) / 256);
 		uint32_t const	dst_fact = dst_a * (255 - src_a);
+		uint32_t const	out_a = src_a + (dst_a * (255 - src_a) / 255);
 
 		return make(
 			out_a
-			, (r(src) * src_a + r(dst) * dst_fact / 255) / out_a
-			, (g(src) * src_a + g(dst) * dst_fact / 255) / out_a
-			, (b(src) * src_a + b(dst) * dst_fact / 255) / out_a
+			, std::min((r(src) * src_a + r(dst) * dst_fact / 255) / out_a, 255u)
+			, std::min((g(src) * src_a + g(dst) * dst_fact / 255) / out_a, 255u)
+			, std::min((b(src) * src_a + b(dst) * dst_fact / 255) / out_a, 255u)
 
 			);
 

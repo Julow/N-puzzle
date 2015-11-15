@@ -12,13 +12,13 @@
 	<SolidView
 		id="left-holder-dummy"
 		width="250" height="800"
-		backgroundColor="0xFFBB0000" alpha="0.75"
+		backgroundColor="0xFFBB0000" alpha="0.66"
 		/>
 
 	<VerticalLayout
 		id="mid-holder"
 		verticalAlign="TOP"
-		backgroundColor="0xFFFF0000" alpha="0.75"
+		backgroundColor="0xFFFF0000" alpha="0.66"
 		>
 	  <SolidView
 		  id="puzzleFrame"
@@ -26,11 +26,11 @@
 		  marginTop="35"
 		  horizontalAlign="CENTER"
 		  width="500" height="500"
-		  backgroundColor="0x30FFFFFF"
+		  backgroundColor="0x30FFFFFF" alpha="0.66"
 		  />
 	  <HorizontalLayout
 		  id="mid-bot-holder"
-		  backgroundColor="0xFFFFFF00" alpha="0.75"
+		  backgroundColor="0xFFFFFF00" alpha="0.66"
 		  activity_scripts="res/start_activity/mid_bot_buttons.lua"
 		  >
 		<Button
@@ -39,29 +39,32 @@
 			horizontalAlign="CENTER"
 			width="60"
 			height="60"
-			alpha="0.75"
-			/>
+			alpha="0.66"
+/>
 		<Button
 			id="filePuzzleButton"
 			marginTop="10" marginBottom="10" marginLeft="10" marginRight="10"
 			horizontalAlign="CENTER"
 			width="60"
 			height="60"
-			/>
+			alpha="0.66"
+/>
 		<Button
 			id="defaultPuzzleButton"
 			marginTop="10" marginBottom="10" marginLeft="10" marginRight="10"
 			horizontalAlign="CENTER"
 			width="60"
 			height="60"
-			/>
+			alpha="0.66"
+/>
 		<Button
 			id="solveLaunchButton"
 			marginTop="10" marginBottom="10" marginLeft="10" marginRight="10"
 			horizontalAlign="CENTER"
 			width="120"
 			height="60"
-			/>
+			alpha="0.66"
+/>
 		<Bookmark
 			id="bm1"
 			marginTop="10" marginRight="10"

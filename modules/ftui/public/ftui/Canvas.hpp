@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/15 14:55:55 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/15 16:19:34 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -191,9 +191,11 @@ protected:
 		// 					 static_cast<int>(ft::Color::a(color))
 		// 					 * static_cast<int>(_alpha * 256.f)
 		// 					 / 256);
-		if (y == 600)
+		if (y == 100)
+		{
+			auto res = ft::Color::put(_bitmap[x + y * _width], color);
 		// if (x == 350 && n == 430)
-			ft::f(std::cout, "xy(%/%) n(%) putting(argb %/%/%/%)a(%f) on(argb %/%/%/%)\n"
+			ft::f(std::cout, "xy(%/%) n(%) putting(argb %/%/%/%)a(%f) on(argb %/%/%/%) ->(%/%/%/%)\n"
 				  , x, y, n
 				  , (int)ft::Color::a(color)
 				  , (int)ft::Color::r(color)
@@ -206,7 +208,15 @@ protected:
 				  , (int)ft::Color::r(_bitmap[x + y * _width])
 				  , (int)ft::Color::g(_bitmap[x + y * _width])
 				  , (int)ft::Color::b(_bitmap[x + y * _width])
+
+				  , (int)ft::Color::a(res)
+				  , (int)ft::Color::r(res)
+				  , (int)ft::Color::g(res)
+				  , (int)ft::Color::b(res)
+
+
 				);
+		}
 		x += y * _width;
 		n += x;
 		if (ft::Color::a(color) < 255)
