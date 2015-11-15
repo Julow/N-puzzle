@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:14:49 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/15 09:39:31 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/15 16:52:57 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -43,6 +43,7 @@ public:
 
 protected:
 private:
+	std::string				_text;
 };
 //std::ostream			&operator<<(std::ostream &o, Bookmark const &rhs);
 

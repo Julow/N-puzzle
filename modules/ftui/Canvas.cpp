@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/12 10:33:49 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/15 19:22:52 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -25,6 +25,7 @@ extern "C"
 #include <iostream> //d
 #include <vector>
 #include <unordered_map>
+#include <algorithm>
 
 #include <cmath>
 #include <cfenv>
@@ -226,14 +227,20 @@ void			Canvas::putAlphaBitmap(ft::Vec2<int> pos, uint8_t const *bitmap,
 {
 	int				x;
 	int				y;
+	ft::Color::t	col;
 
+	ft::f(std::cout, "putAlphaBitmap at (%)\n ", pos);
 	y = rect.top;
 	while (y < rect.bottom)
 	{
 		x = rect.left;
 		while (x < rect.right)
 		{
-			putPixel(x + pos.x, y + pos.y, ft::Color::alpha(color, bitmap[x]));
+			col = ft::Color::alpha(color, bitmap[x]);
+			if (ft::Color::a(col) > 0)
+				putPixel(x + pos.x, y + pos.y, ft::Color::alpha(color, bitmap[x]));
+			// else
+				// FTASSERT(false); //TODO: avoid reaching here
 			x++;
 		}
 		y++;
@@ -413,15 +420,21 @@ void			Canvas::drawText(ft::Vec2<float> pos, std::string const &text,
 
 	int_vec = ft::make_vec(static_cast<int>(pos.x * _scale),
 		static_cast<int>(pos.y * _scale));
+	FTASSERT(ft::Color::a(opt.fillColor) != 0);
+	FTASSERT(opt.lineWidth > 0);
+	FTASSERT(opt.font < g_faces.size());
 	if (ft::Color::a(opt.fillColor) == 0 || opt.lineWidth <= 0
 		|| opt.font >= g_faces.size())
 		return ;
 	int_vec += ft::make_vec(_clip.left, _clip.top);
+	ft::f(std::cout, "Drawing at '%' (%)  int_vec1(%)\n", text,  pos, int_vec);
 	applyChangedRect(int_vec);
 	face = g_faces[opt.font];
 	if (FT_Set_Pixel_Sizes(face, 0, opt.lineWidth))
 		throw std::runtime_error("Cannot resize font (drawText)");
-	int_vec.y += (face->descender * 2 + face->height + face->ascender) >> 6;
+	int_vec.y += opt.lineWidth;
+	// int_vec.y += (face->descender * 2 + face->height + face->ascender) >> 6;
+	// TODO: Fix les font height please
 	for (uint32_t i = 0; i < text.size(); i++)
 	{
 		glyph_index = FT_Get_Char_Index(face, text[i]);
@@ -431,21 +444,26 @@ void			Canvas::drawText(ft::Vec2<float> pos, std::string const &text,
 			continue ;
 		glyph_rect.right = face->glyph->bitmap.width;
 		glyph_rect.bottom = face->glyph->bitmap.rows;
-		putAlphaBitmap(int_vec + ft::make_vec(face->glyph->bitmap_left,
-				-face->glyph->bitmap_top),
+		putAlphaBitmap(
+			int_vec
+			+ ft::make_vec(face->glyph->bitmap_left, -face->glyph->bitmap_top)
+			,
 			face->glyph->bitmap.buffer, glyph_rect, face->glyph->bitmap.pitch,
-			opt.fillColor);
+					   opt.fillColor);
 		int_vec.x += face->glyph->advance.x >> 6;
 	}
 	applyChangedRect(int_vec);
+	return ;
 }
 
 ft::Vec2<int>	Canvas::measureText(std::string const &text, Params const &opt)
 {
-	ft::Vec2<int>	size(0, 0);
-	FT_Face			face;
-	FT_UInt			glyph_index;
+	ft::Vec2<FT_Fixed>	size(0, 0);
+	FT_Face				face;
+	FT_UInt				glyph_index;
 
+	FTASSERT(opt.lineWidth > 0);
+	FTASSERT(opt.font < g_faces.size());
 	if (opt.lineWidth <= 0 || opt.font >= g_faces.size())
 		return (size);
 	face = g_faces[opt.font];
@@ -456,9 +474,25 @@ ft::Vec2<int>	Canvas::measureText(std::string const &text, Params const &opt)
 		glyph_index = FT_Get_Char_Index(face, text[i]);
 		if (FT_Load_Glyph(face, glyph_index, FT_LOAD_DEFAULT))
 			continue ;
-		size.x += face->glyph->advance.x >> 6;
+		size.x += face->glyph->advance.x;
+		// size.y = std::max(size.y, face->glyph->advance.y);
 	}
-	size.y = (face->height + face->ascender + face->descender) >> 6;
+	// ft::f(std::cout, "texy % % %\n", face->height >> 6
+		  // , face->ascender >> 6, face->descender >> 6);
+	size.x >>= 6;
+	// size.y >>= 6;
+	// size.y = face->bbox.yMax;
+	// size.y = 12;
+	// size.y = face->size;
+	// ft::f(std::cout, "asc%  desc%  em%\n"
+	// 	  , face->ascender / 64
+	// 	  , face->descender / 64
+	// 	  , face->units_per_EM / 64
+	// 	);
+	// TODO: Fix les font height please
+	size.y = opt.lineWidth;
+	// size.y = (face->ascender - face->descender) >> 6;
+	// size.y = (face->height + face->ascender + face->descender) >> 6;
 	return (size);
 }
 

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/15 16:19:34 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/15 17:12:55 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -180,21 +180,20 @@ protected:
 	{
 		y = y * _width + x;
 		if (ft::Color::a(color) < 255)
+		{
 			_bitmap[y] = ft::Color::put(_bitmap[y], color);
+		}
 		else
+		{
 			_bitmap[y] = color;
+		}
 	}
 
 	inline void			putPixel(int x, int y, ft::Color::t color, int n)
 	{
-		// color = ft::Color::a(color,
-		// 					 static_cast<int>(ft::Color::a(color))
-		// 					 * static_cast<int>(_alpha * 256.f)
-		// 					 / 256);
-		if (y == 100)
+/*		if (y == 100)
 		{
 			auto res = ft::Color::put(_bitmap[x + y * _width], color);
-		// if (x == 350 && n == 430)
 			ft::f(std::cout, "xy(%/%) n(%) putting(argb %/%/%/%)a(%f) on(argb %/%/%/%) ->(%/%/%/%)\n"
 				  , x, y, n
 				  , (int)ft::Color::a(color)
@@ -216,7 +215,7 @@ protected:
 
 
 				);
-		}
+				}*/
 		x += y * _width;
 		n += x;
 		if (ft::Color::a(color) < 255)

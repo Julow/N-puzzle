@@ -40,7 +40,7 @@
 			width="60"
 			height="60"
 			alpha="0.66"
-/>
+			/>
 		<Button
 			id="filePuzzleButton"
 			marginTop="10" marginBottom="10" marginLeft="10" marginRight="10"
@@ -48,7 +48,7 @@
 			width="60"
 			height="60"
 			alpha="0.66"
-/>
+			/>
 		<Button
 			id="defaultPuzzleButton"
 			marginTop="10" marginBottom="10" marginLeft="10" marginRight="10"
@@ -56,7 +56,7 @@
 			width="60"
 			height="60"
 			alpha="0.66"
-/>
+			/>
 		<Button
 			id="solveLaunchButton"
 			marginTop="10" marginBottom="10" marginLeft="10" marginRight="10"
@@ -64,21 +64,28 @@
 			width="120"
 			height="60"
 			alpha="0.66"
-/>
-		<Bookmark
-			id="bm1"
-			marginTop="10" marginRight="10"
-			verticalAlign="TOP"
 			/>
 	  </HorizontalLayout>
 
 	</VerticalLayout>
-
-	<SolidView
-		id="right-holder-dummy"
-		width="250" height="800"
+	<VerticalLayout
+		id="right-holder"
 		backgroundColor="0xFFBB0000" alpha="0.75"
-		/>
+		verticalAlign="TOP"
+		>
+	  <SolidView
+		  id="right-holder-dummy"
+		  marginTop="5" marginBottom="5" marginLeft="10" marginRight="10"
+		  width="230" height="25"
+		  backgroundColor="0xFFBB0000" alpha="0.75"
+		  />
+	  <Bookmark
+	  	  id="bm1"
+	  	  marginTop="10" marginRight="10"
+	  	  verticalAlign="TOP"
+	  	  />
+
+	</VerticalLayout>
 
 
 

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/10 14:57:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/11 18:59:32 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/15 16:44:25 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -74,7 +74,7 @@ static std::string	build_header(void)
 	for (i = 0; i < padstack.size(); i++)
 		str += colors[i % colors.size()] + "  ";
 	str += "\033[0m";
-	applywidth(str, padstack.size() * 2, 2 * 7);
+	applywidth(str, padstack.size() * 2, 2 * 9);
 
 	std::tie(line, file, fun) = padstack.back();
 	pos = file.find_last_of('/');
