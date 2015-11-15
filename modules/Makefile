@@ -31,7 +31,7 @@ export DEBUG_MODE
 O_DIR			:= _objs
 
 # Jobs
-JOBS			:= 4
+JOBS			:= 8
 
 # Column output
 COLUMN_OUTPUT	:= 1

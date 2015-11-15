@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/12 14:12:58 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/15 14:55:55 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,6 +21,7 @@
 # include "ft/Vec.hpp"
 # include "ftlua/ftlua.hpp"
 
+# include "ft/utils.hpp"
 
 namespace ftui
 {
@@ -186,6 +187,26 @@ protected:
 
 	inline void			putPixel(int x, int y, ft::Color::t color, int n)
 	{
+		// color = ft::Color::a(color,
+		// 					 static_cast<int>(ft::Color::a(color))
+		// 					 * static_cast<int>(_alpha * 256.f)
+		// 					 / 256);
+		if (y == 600)
+		// if (x == 350 && n == 430)
+			ft::f(std::cout, "xy(%/%) n(%) putting(argb %/%/%/%)a(%f) on(argb %/%/%/%)\n"
+				  , x, y, n
+				  , (int)ft::Color::a(color)
+				  , (int)ft::Color::r(color)
+				  , (int)ft::Color::g(color)
+				  , (int)ft::Color::b(color)
+
+				  , _alpha
+
+				  , (int)ft::Color::a(_bitmap[x + y * _width])
+				  , (int)ft::Color::r(_bitmap[x + y * _width])
+				  , (int)ft::Color::g(_bitmap[x + y * _width])
+				  , (int)ft::Color::b(_bitmap[x + y * _width])
+				);
 		x += y * _width;
 		n += x;
 		if (ft::Color::a(color) < 255)

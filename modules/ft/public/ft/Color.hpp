@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 17:05:13 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/13 08:14:54 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/15 15:36:42 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -84,13 +84,23 @@ public:
 		uint32_t const	dst_a = a(dst);
 		uint32_t const	src_a = a(src);
 		uint32_t const	out_a = src_a + (dst_a * (256 - src_a) / 256);
-		uint32_t const	tmp = out_a * 256 / (256
-								- ((dst_a < src_a) ? dst_a : src_a)) + 1;
+		uint32_t const	dst_fact = dst_a * (255 - src_a);
 
-		return ((out_a << 24)
-			| (((dst_a * r(dst) + (src_a * r(src))) / tmp) << 16)
-			| (((dst_a * g(dst) + (src_a * g(src))) / tmp) << 8)
-			| (((dst_a * b(dst) + (src_a * b(src))) / tmp)));
+		return make(
+			out_a
+			, (r(src) * src_a + r(dst) * dst_fact / 255) / out_a
+			, (g(src) * src_a + g(dst) * dst_fact / 255) / out_a
+			, (b(src) * src_a + b(dst) * dst_fact / 255) / out_a
+
+			);
+
+		// uint32_t const	tmp = out_a * 256 / (256
+		// 						- ((dst_a < src_a) ? dst_a : src_a)) + 1;
+
+		// return ((out_a << 24)
+		// 	| (((dst_a * r(dst) + (src_a * r(src))) / tmp) << 16)
+		// 	| (((dst_a * g(dst) + (src_a * g(src))) / tmp) << 8)
+		// 	| (((dst_a * b(dst) + (src_a * b(src))) / tmp)));
 	}
 
 protected:

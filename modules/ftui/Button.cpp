@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:32:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/11 13:54:35 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/15 14:23:59 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -68,7 +68,7 @@ void		Button::onDraw(Canvas &canvas)
 {
 	IViewHolder		*vh = this->getViewHolder();
 
-	canvas.clearClip();
+	// canvas.clearClip();
 	if (this->isMouseCaptureTargeted())
 		canvas.drawRect(ft::make_rect(ft::make_vec(0, 0), _holder->getSize()),
 						_pushed);

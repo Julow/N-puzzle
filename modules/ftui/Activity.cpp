@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/12 21:04:43 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/15 14:24:41 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -163,6 +163,8 @@ void			Activity::render(Canvas &canvas)
 	}
 	if (rv->isRedrawQueried())
 	{
+		canvas.clear(); //debug
+		this->queryRedrawAll(); //debug
 		FTPADB("Redraw");
 		rv->onDraw(canvas);
 		FTPADE();

@@ -55,7 +55,7 @@ else
 endif
 
 # Jobs
-JOBS			:= 1
+JOBS			:= 8
 
 # Column output
 COLUMN_OUTPUT	:= 1

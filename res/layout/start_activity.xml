@@ -39,6 +39,7 @@
 			horizontalAlign="CENTER"
 			width="60"
 			height="60"
+			alpha="0.75"
 			/>
 		<Button
 			id="filePuzzleButton"
