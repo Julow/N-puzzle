@@ -1,7 +1,8 @@
 O_FILES :=	o/srcs/GlCanvasHolder.o o/srcs/Grid.o o/srcs/Main.o \
-			o/srcs/OCamlBinding.o o/srcs/PickState.o o/srcs/ftlua_extend.o
+			o/srcs/OCamlBinding.o o/srcs/PickState.o o/srcs/ftlua_extend.o \
+			o/srcs/libftui_extend/Bookmark.o
 
-LIBS_DEPEND := modules/libftui.a
+LIBS_DEPEND := modules/libmodules.a
 
 libs:
 	make -C modules
@@ -9,7 +10,7 @@ libs:
 
 
 
-MAX_SOURCE_LEN := 23
+MAX_SOURCE_LEN := 32
 o/srcs/GlCanvasHolder.o: srcs/GlCanvasHolder.cpp include/GlCanvasHolder.hpp \
 	modules/ft/public/ft/Color.hpp modules/ft/public/ft/Rect.hpp \
 	modules/ft/public/ft/Vec.hpp modules/ft/public/ft/assert.hpp \
@@ -52,7 +53,8 @@ o/srcs/Main.o: srcs/Main.cpp modules/ft/public/ft/Rect.hpp \
 	modules/ftui/public/ftui/templates/EventBox.tpp modules/gl/gl.h \
 	modules/gl/gl.hpp modules/liblua/public/liblua.hpp \
 	include/config_window.hpp include/ftce/math.hpp include/PickState.hpp \
-	modules/tiles/include/tiles/Tiles.hpp include/ftlua_extend.hpp | o/srcs/
+	modules/tiles/include/tiles/Tiles.hpp include/ftlua_extend.hpp \
+	include/libftui_extend/Bookmark.hpp | o/srcs/
 o/srcs/OCamlBinding.o: srcs/OCamlBinding.cpp include/Grid.hpp \
 	include/ISolverListener.hpp include/OCamlBinding.hpp \
 	modules/ft/public/ft/Rect.hpp modules/ft/public/ft/Vec.hpp \
@@ -97,3 +99,5 @@ o/srcs/ftlua_extend.o: srcs/ftlua_extend.cpp modules/ft/public/ft/Rect.hpp \
 	modules/ftlua/public/ftlua/templates/ftlua_caller.tpp \
 	modules/ftlua/public/ftlua/templates/ftlua_handler.tpp \
 	modules/liblua/public/liblua.hpp include/Grid.hpp | o/srcs/
+o/srcs/libftui_extend/Bookmark.o: srcs/libftui_extend/Bookmark.cpp \
+	include/libftui_extend/Bookmark.hpp | o/srcs/libftui_extend/

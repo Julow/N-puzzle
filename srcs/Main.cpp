@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/12 18:25:32 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/15 09:27:09 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -20,6 +20,7 @@
 #include "PickState.hpp"
 #include "ftlua/ftlua.hpp"
 #include "ftlua_extend.hpp"
+#include "libftui_extend/Bookmark.hpp"
 
 /*
 ** ************************************************************************** **
@@ -113,6 +114,7 @@ Main::Main(void)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	_canvasHolder.init();
+	Bookmark::declare_libftui();
 }
 
 Main::~Main(void)

@@ -15,7 +15,6 @@
 		backgroundColor="0xFFBB0000" alpha="0.75"
 		/>
 
-
 	<VerticalLayout
 		id="mid-holder"
 		verticalAlign="TOP"
@@ -61,6 +60,11 @@
 			horizontalAlign="CENTER"
 			width="120"
 			height="60"
+			/>
+		<Bookmark
+			id="bm1"
+			marginTop="10" marginRight="10"
+			verticalAlign="TOP"
 			/>
 	  </HorizontalLayout>
 
