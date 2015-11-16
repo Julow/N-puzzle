@@ -6,20 +6,18 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:14:49 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/15 16:52:57 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 13:47:11 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef BOOKMARK_HPP
 # define BOOKMARK_HPP
 
-// # include <iostream>
-// # include <>
-
 # include "ftui/Activity.hpp"
-# include "ftui/AView.hpp"
+# include "ftui/ALayout.hpp"
 
-class Bookmark : public ftui::AView
+/* BOOKMARK ************************* */
+class Bookmark : public ftui::ALayout
 {
 public:
 
@@ -27,6 +25,7 @@ public:
 	static void				declare_libftui(void);
 	static ftui::AView		*createView(ftui::XmlParser const &xml
 										, ftui::Activity &act);
+	void					setViewHolder(ftui::IViewHolder *holder);
 
 	Bookmark(ftui::XmlParser const &xml, ftui::Activity &act);
 	~Bookmark();
@@ -38,13 +37,65 @@ public:
 	Bookmark				&operator=(Bookmark &&rhs) = delete;
 
 	/* DRAW ************************* */
+	void					onUpdate(void);
 	void					onMeasure(void);
 	void					onDraw(ftui::Canvas &can);
 
-protected:
+	/* ALAYOUT LEGACY *************** */
+	void					addView(AView *v);
+	AView					*popView(AView *v);
+
+	AView					*at(int i);
+	AView const				*at(int i) const;
+	ftui::IViewHolder		*holderAt(int i);
+
+	int						size(void) const;
+
+	/* HOLDER *********************** */
+	class ViewHolder;
+
 private:
 	std::string				_text;
+	ViewHolder				*_buttonHolder;
+
 };
-//std::ostream			&operator<<(std::ostream &o, Bookmark const &rhs);
+
+/* HOLDER *************************** */
+class Bookmark::ViewHolder : public ftui::IViewHolder
+{
+public:
+
+	/* CONSTRUCTION ***************** */
+	ViewHolder(Bookmark *p, AView *v);
+	~ViewHolder();
+
+	ViewHolder() = delete;
+	ViewHolder(ViewHolder const &src) = delete;
+	ViewHolder(ViewHolder &&src) = delete;
+	ViewHolder				&operator=(ViewHolder const &rhs) = delete;
+	ViewHolder				&operator=(ViewHolder &&rhs) = delete;
+
+
+	/* IVIEWHOLDER LEGACY *********** */
+	AView					*getView(void);
+	AView const				*getView(void) const;
+
+	ALayout					*getParent(void);
+	ALayout const			*getParent(void) const;
+
+	ft::Vec2<int>			getPos(void) const;
+	ft::Vec2<int>			getSize(void) const;
+
+	ft::Vec2<int>			getRequestedSize(void) const;
+	void					setRequestedSize(ft::Vec2<int> size);
+
+	void					setParam(std::string const &k,
+									 std::string const &v);
+
+private:
+	AView				*_view;
+	Bookmark			*_parent;
+
+};
 
 #endif /* ****************************************************** BOOKMARK_HPP */

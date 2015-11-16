@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:32:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/15 14:23:59 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 13:42:58 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -46,6 +46,19 @@ Button::Button(XmlParser const &xml, Activity &a)
 	return ;
 }
 
+Button::Button(Activity &act, std::string const *id
+			   , std::string const &viewName /* = "Button" */)
+	: AView(act, id, viewName)
+	, _state(true)
+	, _normal{		0xFF00AA00, 0xFFFF0000, 5, 0}
+	, _disabled{	0, 0, 0, 0}
+	, _pushed{		0xFF00AA00, 0xFFAA0000, 2, 0}
+	, _highlight{	0xFF00AA00, 0x40FFFF00, 0, 0}
+	, _lastClick(_zero)
+{
+	return ;
+}
+
 Button::~Button()
 {
 	return ;
@@ -54,11 +67,25 @@ Button::~Button()
 void		Button::inflate(XmlParser &xml, Activity &act)
 {
 	AView::inflate(xml, act);
-	this->hookMouseMove(true);
-	this->hookMouseClick(true);
 	return ;
 }
 
+void		Button::setViewHolder(IViewHolder *holder)
+{
+	//TODO: onViewHolderChange
+	if (holder == nullptr)
+	{
+		this->hookMouseMove(false);
+		this->hookMouseClick(false);
+	}
+	AView::setViewHolder(holder);
+	if (holder != nullptr)
+	{
+		this->hookMouseMove(true);
+		this->hookMouseClick(true);
+	}
+	return ;
+}
 
 /* ************************************************************************** **
 ** DRAW

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/15 14:03:47 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 13:12:08 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -22,6 +22,12 @@ namespace ftui
 
 ASolidView::ASolidView(XmlParser const &xml, Activity &act) :
 	AView(xml, act), _bgParams{0x0, 0x0, 1, 0}
+{
+}
+
+ASolidView::ASolidView(Activity &act, std::string const *id
+					   , std::string const &viewName) :
+	AView(act, id, viewName), _bgParams{0x0, 0x0, 1, 0}
 {
 }
 

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/15 09:27:09 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 11:35:08 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -172,6 +172,7 @@ void			Main::onMouseMove(int x, int y)
 
 void			Main::onMouseUp(int x, int y, int button, int mods)
 {
+	FTASSERT(false);
 	_state->getActivity().onMouseUp(x, y, button, mods);
 }
 
@@ -214,6 +215,7 @@ void			Main::handleMouseButtonEvents(
 	main = reinterpret_cast<Main*>(glfwGetWindowUserPointer(window));
 	if (main == NULL)
 		return ;
+	FTASSERT(false);
 	glfwGetCursorPos(window, pos + 0, pos + 1);
 	if (action == GLFW_PRESS)
 		main->onMouseDown(static_cast<int>(pos[0]), static_cast<int>(pos[1])

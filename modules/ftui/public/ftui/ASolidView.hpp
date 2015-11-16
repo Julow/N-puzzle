@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:37 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 13:37:20 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/16 13:13:14 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -45,6 +45,7 @@ public:
 protected:
 
 	ASolidView(XmlParser const &xml, Activity &act);
+	ASolidView(Activity &act, std::string const *id, std::string const &viewName);
 
 	Canvas::Params		_bgParams;
 

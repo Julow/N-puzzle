@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/15 14:27:25 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 13:12:05 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -45,25 +45,21 @@ static std::string const	*retrieve_id(XmlParser const &xml)
 	return (nullptr);
 }
 
-AView::AView(XmlParser const &xml, Activity &act) :
-	_holder(nullptr),
-	_act(act),
-	_id(retrieve_id(xml)),
-	_flags(0),
-	_luaCallbacks(0),
-	_alpha(1.f)
+static void			push_to_lua(lua_State *l
+								, std::string const *id
+								, std::string const &viewName,
+								AView *vptr)
 {
-	lua_State *const	l = act.getLuaState();
 	int					err;
 
 	(void)lua_getglobal(l, "ftui");
 	(void)lua_pushstring(l, "push_view");
 	(void)lua_gettable(l, -2);
-	err = lua_getglobal(l, xml.getMarkupName().c_str());
+	err = lua_getglobal(l, viewName.c_str());
 	FTASSERT(err == LUA_TTABLE);
-	lua_pushlightuserdata(l, this);
-	if (_id != nullptr)
-		(void)lua_pushstring(l, _id->c_str());
+	lua_pushlightuserdata(l, vptr);
+	if (id != nullptr)
+		(void)lua_pushstring(l, id->c_str());
 	else
 		lua_pushnil(l);
 	err = lua_pcall(l, 3, 0, 0);
@@ -72,6 +68,30 @@ AView::AView(XmlParser const &xml, Activity &act) :
 	return ;
 }
 
+AView::AView(XmlParser const &xml, Activity &act) :
+	_holder(nullptr),
+	_act(act),
+	_id(retrieve_id(xml)),
+	_flags(0),
+	_luaCallbacks(0),
+	_alpha(1.f)
+{
+	push_to_lua(act.getLuaState(), _id, xml.getMarkupName(), this);
+	return ;
+}
+
+AView::AView(Activity &act, std::string const *id
+			 , std::string const &viewName) :
+	_holder(nullptr),
+	_act(act),
+	_id(id == nullptr ? nullptr : new std::string(*id)),
+	_flags(0),
+	_luaCallbacks(0),
+	_alpha(1.f)
+{
+	push_to_lua(act.getLuaState(), _id, viewName, this);
+	return ;
+}
 /*
 ** ========================================================================== **
 ** Render-time -> instance.CTOR from specific request NYI

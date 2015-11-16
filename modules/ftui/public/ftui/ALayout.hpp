@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/10 18:52:21 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 12:49:03 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -38,11 +38,8 @@ public:
 	ALayout(XmlParser const &xml, Activity &act);
 	virtual ~ALayout(void);
 
-	virtual void				addView(AView *v) = 0;
-	virtual AView				*popView(AView *v) = 0;
-
 /*
-** * AView legacy *********************************************************** **
+** AView legacy
 */
 	virtual void				inflate(XmlParser &xml, Activity &);
 
@@ -75,11 +72,17 @@ public:
 /*
 ** Child vector
 */
+	virtual void				addView(AView *v) = 0;
+	virtual AView				*popView(AView *v) = 0;
+
 	virtual AView				*at(int i) = 0;
 	virtual AView const			*at(int i) const = 0;
 
 	virtual int					size(void) const = 0;
 
+	virtual IViewHolder			*holderAt(int i) = 0; // TODO: check Moved to public
+
+public:
 /*
 ** Target spread
 */
@@ -99,8 +102,6 @@ public:
 protected:
 
 	uint32_t					_layoutFlags;
-
-	virtual IViewHolder			*holderAt(int i) = 0;
 
 private:
 
