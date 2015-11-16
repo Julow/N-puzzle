@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 18:14:56 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 20:04:53 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -35,13 +35,13 @@ class	ALayout : public ASolidView
 {
 public:
 
-	ALayout(ft::XmlParser const &xml, Activity &act);
+	ALayout(Activity &act, ft::XmlParser const &xml);
 	virtual ~ALayout(void);
 
 /*
 ** AView legacy
 */
-	virtual void				inflate(ft::XmlParser &xml, Activity &);
+	virtual void				inflate(Activity &a, ft::XmlParser &xml);
 
 	virtual void				onUpdate(void) = 0;
 	virtual void				onMeasure(void) = 0;

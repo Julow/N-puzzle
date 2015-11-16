@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/11 11:47:52 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/11 12:05:49 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 20:09:35 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -47,9 +47,14 @@ public:
 		BOTTOM
 	};
 
+	static AView            *createView(ftui::Activity &act
+										, ft::XmlParser const *xml = nullptr
+										, std::string const *id = nullptr);
+
+	HorizontalLayout(Activity &act, ft::XmlParser const &xml);
 	virtual ~HorizontalLayout(void);
 
-	virtual void			inflate(ft::XmlParser &xml, Activity &a);
+	virtual void			inflate(Activity &a, ft::XmlParser &xml);
 
 	virtual void			onUpdate(void);
 	virtual void			onMeasure(void);
@@ -72,7 +77,6 @@ protected:
 
 	std::vector<ViewHolder*>	_childs;
 
-	HorizontalLayout(ft::XmlParser const &xml, Activity &act);
 
 	virtual IViewHolder		*holderAt(int i);
 
@@ -88,7 +92,6 @@ private:
 */
 public:
 
-	static AView			*createView(ft::XmlParser const &xml, Activity &act);
 };
 
 /*

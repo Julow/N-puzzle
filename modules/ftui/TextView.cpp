@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/12 08:49:42 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/09 13:17:47 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/16 20:23:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,8 +18,8 @@
 namespace ftui
 {
 
-TextView::TextView(ft::XmlParser const &xml, Activity &a) :
-	ASolidView(xml, a), _text(""), _textParams{0x0, 0x0, 16, 0}
+TextView::TextView(Activity &a, ft::XmlParser const &xml) :
+	ASolidView(a, xml), _text(""), _textParams{0x0, 0x0, 16, 0}
 {
 }
 
@@ -110,9 +110,14 @@ void				TextView::setParam(std::string const &k,
 		ASolidView::setParam(k, v);
 }
 
-AView				*TextView::createView(ft::XmlParser const &xml, Activity &a)
+AView				*TextView::createView(ftui::Activity &act
+										  , ft::XmlParser const *xml /* = nullptr */
+										  , std::string const *id /* = nullptr */)
 {
-	return (new TextView(xml, a));
+    FTASSERT(xml != nullptr || id != nullptr);
+	if (xml == nullptr)
+		; // return new TextView(act, id);
+	return new TextView(act, *xml);
 }
 
 };

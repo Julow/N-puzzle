@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:12:43 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/11 11:49:24 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 20:09:21 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -47,9 +47,14 @@ public:
 		RIGHT
 	};
 
+	static AView			*createView(ftui::Activity &act
+										, ft::XmlParser const *xml = nullptr
+										, std::string const *id = nullptr);
+
+	VerticalLayout(Activity &act, ft::XmlParser const &xml); //TODO check, moved to public (Horiz too)
 	virtual ~VerticalLayout(void);
 
-	virtual void			inflate(ft::XmlParser &xml, Activity &a);
+	virtual void			inflate(Activity &a, ft::XmlParser &xml);
 
 	virtual void			onUpdate(void);
 	virtual void			onMeasure(void);
@@ -72,8 +77,6 @@ protected:
 
 	std::vector<ViewHolder*>	_childs;
 
-	VerticalLayout(ft::XmlParser const &xml, Activity &act);
-
 	virtual IViewHolder		*holderAt(int i);
 
 	virtual void			alignChilds(void);
@@ -88,7 +91,6 @@ private:
 */
 public:
 
-	static AView			*createView(ft::XmlParser const &xml, Activity &act);
 };
 
 /*

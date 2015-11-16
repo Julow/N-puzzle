@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 19:42:55 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 20:23:21 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,8 +21,8 @@
 namespace ftui
 {
 
-HorizontalLayout::HorizontalLayout(ft::XmlParser const &xml, Activity &act)
-	: ALayout(xml, act)
+HorizontalLayout::HorizontalLayout(Activity &act, ft::XmlParser const &xml)
+	: ALayout(act, xml)
 {
 }
 
@@ -41,9 +41,9 @@ void			HorizontalLayout::onUpdate(void)
 	_layoutFlags &= ~AView::UPDATE_QUERY;
 }
 
-void            HorizontalLayout::inflate(ft::XmlParser &xml, Activity &a)
+void            HorizontalLayout::inflate(Activity &a, ft::XmlParser &xml)
 {
-	ALayout::inflate(xml, a);
+	ALayout::inflate(a, xml);
 	return ;
 }
 
@@ -260,9 +260,14 @@ IViewHolder		*HorizontalLayout::holderAt(int i)
 /*
 ** Static
 */
-AView			*HorizontalLayout::createView(ft::XmlParser const &xml, Activity &act)
+AView			*HorizontalLayout::createView(ftui::Activity &act
+											  , ft::XmlParser const *xml /* = nullptr */
+											  , std::string const *id /* = nullptr */)
 {
-	return (new HorizontalLayout(xml, act));
+	FTASSERT(xml != nullptr || id != nullptr);
+	if (xml == nullptr)
+		; // return new HorizontalLayout(act, id);
+	return new HorizontalLayout(act, *xml);
 }
 
 };

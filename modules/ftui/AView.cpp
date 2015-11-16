@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 19:06:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 20:04:28 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -68,7 +68,7 @@ static void			push_to_lua(lua_State *l
 	return ;
 }
 
-AView::AView(ft::XmlParser const &xml, Activity &act) :
+AView::AView(Activity &act, ft::XmlParser const &xml) :
 	_holder(nullptr),
 	_act(act),
 	_id(retrieve_id(xml)),
@@ -99,7 +99,7 @@ AView::~AView(void)
 		delete _id;
 }
 
-void				AView::inflate(ft::XmlParser &xml, Activity &)
+void				AView::inflate(Activity &, ft::XmlParser &xml)
 {
 	ft::XmlParser::State	state;
 

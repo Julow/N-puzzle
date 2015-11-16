@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:14:49 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 19:07:18 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 19:58:33 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -23,10 +23,11 @@ public:
 
 	/* CONSTRUCTION ***************** */
 	static void				declare_libftui(void);
-	static ftui::AView		*createView(ft::XmlParser const &xml
-										, ftui::Activity &act);
+	static ftui::AView		*createView(ftui::Activity &act
+										, ft::XmlParser const *xml = nullptr
+										, std::string const *id = nullptr);
 
-	Bookmark(ft::XmlParser const &xml, ftui::Activity &act);
+	Bookmark(ftui::Activity &act, ft::XmlParser const &xml);
 	~Bookmark();
 
 	Bookmark() = delete;

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/12 08:49:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/12 18:03:41 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/16 20:13:38 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,7 +24,7 @@ namespace ftui
 class	TextView : public ASolidView
 {
 public:
-	TextView(ft::XmlParser const &xml, Activity &a);
+	TextView(Activity &a, ft::XmlParser const &xml);
 	virtual ~TextView(void);
 
 	virtual void		onMeasure(void);
@@ -58,7 +58,9 @@ private:
 ** Static
 */
 public:
-	static AView		*createView(ft::XmlParser const &xml, Activity &a);
+	static AView            *createView(ftui::Activity &act
+										, ft::XmlParser const *xml = nullptr
+										, std::string const *id = nullptr);
 
 	static int			getTextG(lua_State *l);
 	static int			setTextG(lua_State *l);

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 18:18:23 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 20:15:33 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -77,7 +77,7 @@ public:
 		__LAST
 	};
 
-	AView(ft::XmlParser const &xml, Activity &a);
+	AView(Activity &act, ft::XmlParser const &xml);
 	AView(Activity &act, std::string const *id, std::string const &viewName);
 	virtual ~AView(void);
 
@@ -90,7 +90,7 @@ public:
 	** v->setHolder(...)	// if any
 	** v->inflate(xml)
 	*/
-	virtual void				inflate(ft::XmlParser &xml, Activity &act);
+	virtual void				inflate(Activity &act, ft::XmlParser &xml);
 
 /*
 ** View core
@@ -241,7 +241,8 @@ protected:
 public:
 	struct view_info_s
 	{
-		typedef AView		*(*factory_t)(ft::XmlParser const &, Activity &);
+		typedef AView	*(*factory_t)(Activity &, ft::XmlParser const *
+									  , std::string const *);
 		typedef std::tuple<std::string, lua_CFunction>	luamethod_t;
 
 		std::string					parent;

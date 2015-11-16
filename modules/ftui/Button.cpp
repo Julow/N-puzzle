@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:32:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 19:04:41 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 20:23:33 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -29,13 +29,18 @@ Button::time_diff const	Button::_maxDelta =
 ** CONSTRUCTION
 */
 
-AView		*Button::createView(ft::XmlParser const &xml, Activity &a)
+AView		*Button::createView(ftui::Activity &act
+								, ft::XmlParser const *xml /* = nullptr */
+								, std::string const *id /* = nullptr */)
 {
-	return new Button(xml, a);
+	FTASSERT(xml != nullptr || id != nullptr);
+	if (xml == nullptr)
+		; // return new Button(act, id);
+	return new Button(act, *xml);
 }
 
-Button::Button(ft::XmlParser const &xml, Activity &a)
-	: AView(xml, a)
+Button::Button(Activity &act, ft::XmlParser const &xml)
+	: AView(act, xml)
 	, _state(true)
 	, _normal{		0xFF00AA00, 0xFFFF0000, 5, 0}
 	, _disabled{	0, 0, 0, 0}
@@ -64,9 +69,9 @@ Button::~Button()
 	return ;
 }
 
-void		Button::inflate(ft::XmlParser &xml, Activity &act)
+void		Button::inflate(Activity &act, ft::XmlParser &xml)
 {
-	AView::inflate(xml, act);
+	AView::inflate(act, xml);
 	return ;
 }
 

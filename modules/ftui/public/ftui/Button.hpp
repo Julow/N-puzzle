@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:26:40 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 19:01:43 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 20:05:04 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -36,9 +36,11 @@ public:
 	};
 
 	// CONSTRUCTION ***************** //
-	static AView		*createView(ft::XmlParser const &xml, Activity &a);
+	static AView		*createView(ftui::Activity &act
+									, ft::XmlParser const *xml = nullptr
+									, std::string const *id = nullptr);
 
-	Button(ft::XmlParser const &xml, Activity &a);
+	Button(Activity &act, ft::XmlParser const &xml);
 	Button(Activity &act, std::string const *id
 			, std::string const &viewName = "Button");
 	virtual ~Button();
@@ -47,7 +49,7 @@ public:
 	Button(Button const &src) = delete;
 	Button				&operator=(Button const &rhs) = delete;
 
-	virtual void		inflate(ft::XmlParser &xml, Activity &act);
+	virtual void		inflate(Activity &act, ft::XmlParser &xml);
 	// virtual void setParam(std::string const &k, std::string const &v); //TODO: this
 
 	virtual void		onAttach(void);

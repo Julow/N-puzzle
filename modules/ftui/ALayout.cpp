@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 18:40:37 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 20:15:46 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -23,8 +23,8 @@ using std::string;
 namespace ftui
 {
 
-ALayout::ALayout(ft::XmlParser const &xml, Activity &act) :
-	ASolidView(xml, act)
+ALayout::ALayout(Activity &act, ft::XmlParser const &xml) :
+	ASolidView(act, xml)
 {
 }
 
@@ -201,7 +201,7 @@ void				ALayout::spreadQueryRedraw(void)
 ** * AView legacy *********************************************************** **
 */
 
-void				ALayout::inflate(ft::XmlParser &xml, Activity &a)
+void				ALayout::inflate(Activity &a, ft::XmlParser &xml)
 {
 	AView				*v;
 	ft::XmlParser::State	state;
@@ -212,9 +212,9 @@ void				ALayout::inflate(ft::XmlParser &xml, Activity &a)
 	{
 		if (state == ft::XmlParser::State::START)
 		{
-			v = AView::getFactory(xml.getMarkupName())(xml, a);
+			v = AView::getFactory(xml.getMarkupName())(a, &xml, nullptr);
 			this->addView(v);
-			v->inflate(xml, a);
+			v->inflate(a, xml);
 		}
 		else if (state == ft::XmlParser::State::END)
 			return ;

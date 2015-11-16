@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/10 17:51:01 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/10 17:59:57 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/16 20:23:58 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,8 +15,8 @@
 namespace ftui
 {
 
-SolidView::SolidView(ft::XmlParser const &xml, Activity &act) :
-	ASolidView(xml, act)
+SolidView::SolidView(Activity &act, ft::XmlParser const &xml) :
+	ASolidView(act, xml)
 {
 }
 
@@ -24,9 +24,14 @@ SolidView::~SolidView(void)
 {
 }
 
-AView			*SolidView::createView(ft::XmlParser const &xml, Activity &act)
+AView			*SolidView::createView(ftui::Activity &act
+									   , ft::XmlParser const *xml /* = nullptr */
+									   , std::string const *id /* = nullptr */)
 {
-	return (new SolidView(xml, act));
+	FTASSERT(xml != nullptr || id != nullptr);
+	if (xml == nullptr)
+		; // return new SolidView(act, id);
+	return new SolidView(act, *xml);
 }
 
 };

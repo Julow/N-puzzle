@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 19:43:19 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 20:23:11 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,8 +21,8 @@
 namespace ftui
 {
 
-VerticalLayout::VerticalLayout(ft::XmlParser const &xml, Activity &act)
-	: ALayout(xml, act)
+VerticalLayout::VerticalLayout(Activity &act, ft::XmlParser const &xml)
+	: ALayout(act, xml)
 {
 }
 
@@ -41,9 +41,9 @@ void			VerticalLayout::onUpdate(void)
 	_layoutFlags &= ~AView::UPDATE_QUERY;
 }
 
-void            VerticalLayout::inflate(ft::XmlParser &xml, Activity &a)
+void            VerticalLayout::inflate(Activity &a, ft::XmlParser &xml)
 {
-	ALayout::inflate(xml, a);
+	ALayout::inflate(a, xml);
 	return ;
 }
 
@@ -259,9 +259,14 @@ IViewHolder		*VerticalLayout::holderAt(int i)
 /*
 ** Static
 */
-AView			*VerticalLayout::createView(ft::XmlParser const &xml, Activity &act)
+AView			*VerticalLayout::createView(ftui::Activity &act
+											, ft::XmlParser const *xml /* = nullptr */
+											, std::string const *id /* = nullptr */)
 {
-	return (new VerticalLayout(xml, act));
+	FTASSERT(xml != nullptr || id != nullptr);
+	if (xml == nullptr)
+		; // return new VerticalLayout(act, id);
+	return new VerticalLayout(act, *xml);
 }
 
 };

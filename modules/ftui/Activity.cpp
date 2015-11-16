@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 19:05:37 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 20:18:23 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -92,11 +92,11 @@ void			Activity::inflate(std::istream &stream)
 	if (!xml.next(state))
 		throw std::runtime_error("Activity should own at least 1 view");
 	FTASSERT(state == ft::XmlParser::State::START, "Cannot fail");
-	v = AView::getFactory(xml.getMarkupName())(xml, *this);
+	v = AView::getFactory(xml.getMarkupName())(*this, &xml, nullptr);
 	this->_rootView = new Activity::RootViewHolder(*this, xml, v, this->_size);
 	v->setViewHolder(this->_rootView);
 	v->setAttached(true);
-	v->inflate(xml, *this);
+	v->inflate(*this, xml);
 	if (xml.next(state))
 		throw std::runtime_error("Activity should not own more than 1 view");
 	load_views_scripts(_l, _scriptsPaths);
