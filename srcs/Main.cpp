@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 11:35:08 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 15:41:41 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -187,8 +187,7 @@ void			Main::handleKeyEvents(
 	Main		*main;
 
 	main = reinterpret_cast<Main*>(glfwGetWindowUserPointer(window));
-	if (main == NULL)
-		return ;
+	FTASSERT(main != NULL);
 	if (action == GLFW_RELEASE)
 		main->onKeyUp(key, scancode, mods);
 	else if (action == GLFW_PRESS)
@@ -201,8 +200,7 @@ void			Main::handleMousePosEvents(
 	Main		*main;
 
 	main = reinterpret_cast<Main*>(glfwGetWindowUserPointer(window));
-	if (main == NULL)
-		return ;
+	FTASSERT(main != NULL);
 	main->onMouseMove(x, y);
 }
 
@@ -213,9 +211,7 @@ void			Main::handleMouseButtonEvents(
 	double		pos[2];
 
 	main = reinterpret_cast<Main*>(glfwGetWindowUserPointer(window));
-	if (main == NULL)
-		return ;
-	FTASSERT(false);
+	FTASSERT(main != NULL);
 	glfwGetCursorPos(window, pos + 0, pos + 1);
 	if (action == GLFW_PRESS)
 		main->onMouseDown(static_cast<int>(pos[0]), static_cast<int>(pos[1])

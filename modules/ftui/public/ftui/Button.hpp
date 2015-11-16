@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:26:40 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 13:38:30 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 15:53:31 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -69,9 +69,17 @@ public:
 	virtual void		setState(bool status);
 	virtual bool		getState(void);
 
-	// TODO: Getter/Setters on all 4 Canvas::Params
-	// TODO: Fully replate Canvas::Params to Texture params
+	Canvas::Params const	&getNormalParams(void) const;
+	void					setNormalParams(Canvas::Params const &p);
 
+	Canvas::Params const	&getDisabledParams(void) const;
+	void					setDisabledParams(Canvas::Params const &p);
+
+	Canvas::Params const	&getPushedParams(void) const;
+	void					setPushedParams(Canvas::Params const &p);
+
+	Canvas::Params const	&getHighlightParams(void) const;
+	void					setHighlightParams(Canvas::Params const &p);
 
 protected:
 	bool				_state;

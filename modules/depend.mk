@@ -1,7 +1,7 @@
 LIBS_RULES += liblua
 LINK_FLAGS += -lfreetype -Lliblua/lua-5.3.1/src -llua
 O_FILES += $(O_DIR)/ft/assert.o $(O_DIR)/ft/padformat.o \
-	$(O_DIR)/ft_xml/XmlParser.o $(O_DIR)/ft_xml/XmlTokenizer.o \
+	$(O_DIR)/ft_xml/srcs/XmlParser.o $(O_DIR)/ft_xml/srcs/XmlTokenizer.o \
 	$(O_DIR)/ftlua/cpp_utils.o $(O_DIR)/ftlua/push_utils.o \
 	$(O_DIR)/ftui/ALayout.o $(O_DIR)/ftui/ALayout_luaHandler.o \
 	$(O_DIR)/ftui/ASolidView.o $(O_DIR)/ftui/AView.o \
@@ -28,19 +28,19 @@ $(O_DIR)/ft/padformat.o: ft/padformat.cpp ft/public/ft/Rect.hpp \
 	ft/public/ft/utils.hpp | $(O_DIR)/ft/
 
 # module ft_xml
-$(O_DIR)/ft_xml/XmlParser.o $(O_DIR)/ft_xml/XmlTokenizer.o: INCLUDE_FLAGS += \
+$(O_DIR)/ft_xml/srcs/XmlParser.o $(O_DIR)/ft_xml/srcs/XmlTokenizer.o: INCLUDE_FLAGS += \
 	-Ift_xml/include/public -Ift/public
-$(O_DIR)/ft_xml/XmlParser.o: ft_xml/XmlParser.cpp ft/public/ft/Rect.hpp \
-	ft/public/ft/Vec.hpp ft/public/ft/templates/Rect.tpp \
+$(O_DIR)/ft_xml/srcs/XmlParser.o: ft_xml/srcs/XmlParser.cpp \
+	ft/public/ft/Rect.hpp ft/public/ft/Vec.hpp ft/public/ft/templates/Rect.tpp \
 	ft/public/ft/templates/Vec2.tpp ft/public/ft/templates/Vec3.tpp \
 	ft/public/ft/templates/Vec4.tpp ft/public/ft/utils.hpp \
 	ft_xml/include/public/ft_xml/XmlParser.hpp \
-	ft_xml/include/public/ft_xml/XmlTokenizer.hpp | $(O_DIR)/ft_xml/
-$(O_DIR)/ft_xml/XmlTokenizer.o: ft_xml/XmlTokenizer.cpp ft/public/ft/Rect.hpp \
-	ft/public/ft/Vec.hpp ft/public/ft/templates/Rect.tpp \
+	ft_xml/include/public/ft_xml/XmlTokenizer.hpp | $(O_DIR)/ft_xml/srcs/
+$(O_DIR)/ft_xml/srcs/XmlTokenizer.o: ft_xml/srcs/XmlTokenizer.cpp \
+	ft/public/ft/Rect.hpp ft/public/ft/Vec.hpp ft/public/ft/templates/Rect.tpp \
 	ft/public/ft/templates/Vec2.tpp ft/public/ft/templates/Vec3.tpp \
 	ft/public/ft/templates/Vec4.tpp ft/public/ft/utils.hpp \
-	ft_xml/include/public/ft_xml/XmlTokenizer.hpp | $(O_DIR)/ft_xml/
+	ft_xml/include/public/ft_xml/XmlTokenizer.hpp | $(O_DIR)/ft_xml/srcs/
 
 # module ftlua
 $(O_DIR)/ftlua/cpp_utils.o $(O_DIR)/ftlua/push_utils.o: BASE_FLAGS += -DRES_PATH='"$(abspath ftlua/res/)"'

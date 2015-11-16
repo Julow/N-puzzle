@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:32:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 13:42:58 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 16:26:40 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -40,7 +40,7 @@ Button::Button(ft::XmlParser const &xml, Activity &a)
 	, _normal{		0xFF00AA00, 0xFFFF0000, 5, 0}
 	, _disabled{	0, 0, 0, 0}
 	, _pushed{		0xFF00AA00, 0xFFAA0000, 2, 0}
-	, _highlight{	0xFF00AA00, 0x40FFFF00, 0, 0}
+	, _highlight{	0, 0x40FFFF00, 5, 0}
 	, _lastClick(_zero)
 {
 	return ;
@@ -53,7 +53,7 @@ Button::Button(Activity &act, std::string const *id
 	, _normal{		0xFF00AA00, 0xFFFF0000, 5, 0}
 	, _disabled{	0, 0, 0, 0}
 	, _pushed{		0xFF00AA00, 0xFFAA0000, 2, 0}
-	, _highlight{	0xFF00AA00, 0x40FFFF00, 0, 0}
+	, _highlight{	0, 0x40FFFF00, 5, 0}
 	, _lastClick(_zero)
 {
 	return ;
@@ -106,10 +106,15 @@ void		Button::onDraw(Canvas &canvas)
 		canvas.drawRect(ft::make_rect(ft::make_vec(0, 0), _holder->getSize()),
 						_disabled);
 	if (this->isMouseOver())
-		canvas.drawRect({
-				{5.f, 5.f}
-				, ft::Vec2<float>(vh->getSize().x - 10, vh->getSize().y - 10)}
-			, _highlight); //TODO: pas beau
+	{
+		auto tmp = ft::make_vec(_highlight.lineWidth, _highlight.lineWidth);
+		canvas.drawRect(ft::make_rect<float>(tmp, _holder->getSize() - tmp * 2.)
+						, _highlight);
+		// canvas.drawRect({
+		// 		{5.f, 5.f}
+		// 		, ft::Vec2<float>(vh->getSize().x - 10, vh->getSize().y - 10)}
+		// 	, _highlight); //TODO: pas beau
+	}
 	AView::onDraw(canvas);
 	return ;
 }
@@ -125,7 +130,7 @@ bool        Button::onMouseDown(int x, int y, int button, int mods)
 		this->hookMouseCapture(true);
 		this->queryRedraw();
 	}
-	return AView::onMouseDown(x, y, button, mods);
+	return AView::onMouseDown(x, y, button, mods) || true;
 }
 
 bool        Button::onMouseUp(int x, int y, int button, int mods)
@@ -210,5 +215,32 @@ bool		Button::getState(void)
 {
 	return _state;
 }
+
+Canvas::Params const	&Button::getNormalParams(void) const
+{ return this->_normal ; }
+
+void					Button::setNormalParams(Canvas::Params const &p)
+{ this->_normal = p; }
+
+
+Canvas::Params const	&Button::getDisabledParams(void) const
+{ return this->_disabled ; }
+
+void					Button::setDisabledParams(Canvas::Params const &p)
+{ this->_disabled = p; }
+
+
+Canvas::Params const	&Button::getPushedParams(void) const
+{ return this->_pushed ; }
+
+void					Button::setPushedParams(Canvas::Params const &p)
+{ this->_pushed = p; }
+
+
+Canvas::Params const	&Button::getHighlightParams(void) const
+{ return this->_highlight ; }
+
+void					Button::setHighlightParams(Canvas::Params const &p)
+{ this->_highlight = p; }
 
 };

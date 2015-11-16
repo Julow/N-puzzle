@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:15:02 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 14:47:00 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 16:38:23 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,6 +16,15 @@
 
 using BM = Bookmark;
 using BMVH = Bookmark::ViewHolder;
+
+#define BM_WIDTHI 140
+#define BM_HEIGHTI 32
+#define BMTXT_POSXI 4
+#define BMDEL_PAD 7
+
+#define BMDEL_WIDTHI (BM_HEIGHTI - BMDEL_PAD * 2)
+#define BMDEL_POSYI ((BM_HEIGHTI - BMDEL_WIDTHI) / 2)
+#define BMDEL_POSXI (BM_WIDTHI - BMDEL_WIDTHI - BMDEL_PAD)
 
 // ========================================================================== //
 // CONSTRUCTION
@@ -35,10 +44,26 @@ ftui::AView		*BM::createView(ft::XmlParser const &xml, ftui::Activity &act)
 BM::Bookmark(ft::XmlParser const &xml, ftui::Activity &act)
 	: ALayout(xml, act)
 	, _text("Hello world")
-	, _buttonHolder(nullptr)
+	, _selHolder(nullptr)
+	, _delHolder(nullptr)
 {
-	ftui::Button		*b = new ftui::Button(act, nullptr);
-	this->_buttonHolder	= new BM::ViewHolder(this, b);
+	ftui::Button	*del = new ftui::Button(act, nullptr);
+	ftui::Button	*sel = new ftui::Button(act, nullptr);
+
+	del->setNormalParams({0xFFFF0000, 0xFFBB0000, 1, 0});
+	del->setPushedParams({0xFFFF0000, 0xFFBB0000, 2, 0});
+	del->setHighlightParams({0, 0x40FFFF00, 2, 0});
+	this->_delHolder = new BM::ViewHolder(this, del);
+	this->_delHolder->setSize({BMDEL_WIDTHI, BMDEL_WIDTHI});
+	this->_delHolder->setPos({BMDEL_POSXI, BMDEL_POSYI});
+
+	sel->setNormalParams({0xFFAAAAAA, 0xFF3d3838, 1, 0});
+	sel->setPushedParams({0xFFAAAAAA, 0xFF3d3838, 2, 0});
+	sel->setHighlightParams({0, 0x10FFFF00, 2, 0});
+	this->_selHolder = new BM::ViewHolder(this, sel);
+	this->_selHolder->setSize({BM_WIDTHI, BM_HEIGHTI});
+	this->_selHolder->setPos({0, 0});
+
 	return ;
 }
 
@@ -49,7 +74,8 @@ void			BM::setViewHolder(ftui::IViewHolder *holder)
 {
 	//TODO: onViewHolderChange
 	AView::setViewHolder(holder);
-	this->_buttonHolder->getView()->setViewHolder(this->_buttonHolder);
+	this->_selHolder->getView()->setViewHolder(this->_selHolder);
+	this->_delHolder->getView()->setViewHolder(this->_delHolder);
 	return ;
 }
 
@@ -64,7 +90,7 @@ void			BM::onUpdate(void)
 
 void			BM::onMeasure(void)
 {
-	_holder->setRequestedSize({100, 32});
+	_holder->setRequestedSize({BM_WIDTHI, BM_HEIGHTI});
 	return ;
 }
 
@@ -72,19 +98,19 @@ void			BM::onDraw(ftui::Canvas &can)
 {
 	ft::Vec2<int> const	size = this->_holder->getSize();
 	ft::Vec2<int> const	tsize = can.measureText(_text, {0, 0, 12, 0});
-	float const			oldAlpha = can.getAlpha();
 	ft::Rect<int> const	oldClip = can.getClip();
-	ViewHolder *const	bvh = this->_buttonHolder;
-	ftui::AView *const	b = bvh->getView();
+	ViewHolder *const	delVh = this->_delHolder;
+	ftui::AView *const	del = delVh->getView();
+	ViewHolder *const	selVh = this->_selHolder;
+	ftui::AView *const	sel = selVh->getView();
 
-	can.drawRect({{0, 0}, size}, {0xFFAAAAAA, 0xFF3d3838, 2, 0});
-	can.drawText({4, size.y / 2.f - tsize.y / 2}, _text, {0x0, 0xFFAAAAAA, 12, 0});
+	sel->onDraw(can);
+	can.drawText({BMTXT_POSXI, size.y / 2.f - tsize.y / 2},
+				 _text, {0x0, 0xFFAAAAAA, 12, 0});
 	AView::onDraw(can);
-	can.applyAlpha(b->getAlpha());
-	can.applyClip(ft::make_rect(bvh->getPos(), bvh->getSize()));
-	b->onDraw(can);
+	can.applyClip(ft::make_rect(delVh->getPos(), delVh->getSize()));
+	del->onDraw(can);
 	can.setClip(oldClip);
-	can.setAlpha(oldAlpha);
 	return ;
 }
 
@@ -108,25 +134,58 @@ ftui::AView		*BM::popView(ftui::AView *v)
 
 ftui::AView		*BM::at(int i)
 {
-	FTASSERT(i == 0);
-	return this->_buttonHolder->getView();
+	FTASSERT(i == 0 || i == 1);
+	if (i == 0)
+		return this->_selHolder->getView();
+	return this->_delHolder->getView();
 }
 
 ftui::AView const	*BM::at(int i) const
 {
-	FTASSERT(i == 0);
-	return this->_buttonHolder->getView();
+	FTASSERT(i == 0 || i == 1);
+	if (i == 0)
+		return this->_selHolder->getView();
+	return this->_delHolder->getView();
 }
 
 int				BM::size(void) const
 {
-	return 1;
+	return 2;
 }
 
 ftui::IViewHolder	*BM::holderAt(int i)
 {
-	FTASSERT(i == 0);
-	return this->_buttonHolder;
+	FTASSERT(i == 0 || i == 1);
+	if (i == 0)
+		return this->_selHolder;
+	return this->_delHolder;
+}
+
+bool				BM::onMouseDown(int x, int y, int button, int mods)
+{
+	AView	*sel = this->_selHolder->getView();
+	AView	*del = this->_delHolder->getView();
+
+	if (del->isMouseCaptureTargeted())
+		return del->onMouseDown(x, y, button, mods);
+	else if (sel->isMouseCaptureTargeted())
+		return sel->onMouseDown(x, y, button, mods);
+	else if (del->isMouseOver())
+		return del->onMouseDown(x, y, button, mods);
+	return sel->onMouseDown(x, y, button, mods);
+}
+bool				BM::onMouseUp(int x, int y, int button, int mods)
+{
+	AView	*sel = this->_selHolder->getView();
+	AView	*del = this->_delHolder->getView();
+
+	if (del->isMouseCaptureTargeted())
+		return del->onMouseUp(x, y, button, mods);
+	else if (sel->isMouseCaptureTargeted())
+		return sel->onMouseUp(x, y, button, mods);
+	else if (del->isMouseOver())
+		return del->onMouseUp(x, y, button, mods);
+	return sel->onMouseUp(x, y, button, mods);
 }
 
 // ========================================================================== //
@@ -164,11 +223,11 @@ ftui::ALayout const	*BMVH::getParent(void) const
 
 ft::Vec2<int>	BMVH::getPos(void) const
 {
-	return {71, 4};
+	return _pos;
 }
 ft::Vec2<int>	BMVH::getSize(void) const
 {
-	return {25, 25};
+	return _size;
 }
 
 ft::Vec2<int>	BMVH::getRequestedSize(void) const
@@ -184,10 +243,15 @@ void			BMVH::setRequestedSize(ft::Vec2<int> size)
 }
 
 void			BMVH::setParam(std::string const &k,
-							   std::string const &v)
+								std::string const &v)
 {
 	FTASSERT(false, "Should not be called");
 	(void)k;
 	(void)v;
 	return ;
 }
+
+void			BMVH::setSize(ft::Vec2<int> sz)
+{ this->_size = sz; }
+void			BMVH::setPos(ft::Vec2<int> pos)
+{ this->_pos = pos; }
