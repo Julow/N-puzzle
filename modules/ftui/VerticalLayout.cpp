@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 13:21:58 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/16 15:16:51 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -146,26 +146,25 @@ static ft::Rect<int>	calc_redraw_clip(
 	return clip;
 }
 
-//TODO: check, i nuked the previous definition
 void			VerticalLayout::onDraw(Canvas &canvas)
 {
 	float const			oldAlpha = canvas.getAlpha();
-	ft::Rect<int> const	oldClip = canvas.getClip();
+	ft::Vec2<int> const	oldOrigin = canvas.getOrigin();
 	auto				redrawChild =
-		[=, &canvas](AView *v, ft::Rect<int> const &clip)
+		[=, &canvas](AView *v, ft::Vec2<int> pos, ft::Vec2<int> size)
 	{
 		canvas.applyAlpha(v->getAlpha());
-		canvas.applyClip(clip);
+		canvas.applyOrigin(pos);
+		canvas.setClip(size);
 		v->onDraw(canvas);
-		canvas.setClip(oldClip);
+		canvas.setOrigin(oldOrigin);
 		canvas.setAlpha(oldAlpha);
 		return ;
 	};
 	ft::Rect<int>		redrawClip;
-	ft::Rect<int>		clip;
+	ft::Rect<int>		bounds;
 	AView				*v;
 
-	// TODO: Canvas::setOrigin
 	// canvas.setClip(redrawClip);
 	// ASolidView::onDraw(canvas);
 	// canvas.setClip(old_clip);
@@ -177,8 +176,7 @@ void			VerticalLayout::onDraw(Canvas &canvas)
 		_layoutFlags &= ~AView::REDRAW_QUERY;
 		for (ViewHolder *vh : _childs)
 		{
-			redrawChild(
-				vh->getView(), ft::make_rect(vh->getPos(), vh->getSize()));
+			redrawChild(vh->getView(), vh->getPos(), vh->getSize());
 		}
 	}
 	else if (_layoutFlags & AView::REDRAW_QUERY)
@@ -187,15 +185,15 @@ void			VerticalLayout::onDraw(Canvas &canvas)
 		for (ViewHolder *vh : _childs)
 		{
 			v = vh->getView();
-			clip = ft::make_rect(vh->getPos(), vh->getSize());
+			bounds = ft::make_rect(vh->getPos(), vh->getSize());
             FTPAD("% GVClip(%%%)",
 				  v->tostring()
 				  , v->isRedrawQueried()
 				  , v->AView::isRedrawQueried()
-				  , redrawClip.collides(clip)
+				  , redrawClip.collides(bounds)
 				);
-			if (v->isRedrawQueried() || redrawClip.collides(clip))
-				redrawChild(v, clip);
+			if (v->isRedrawQueried() || redrawClip.collides(bounds))
+				redrawChild(v, bounds.getPos(), bounds.getSize());
 		}
 		_layoutFlags &= ~AView::REDRAW_QUERY;
 	}

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 13:49:42 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/16 15:43:34 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -83,18 +83,23 @@ public:
 /*
 ** Clip
 ** -
-** The clip is used to change the size and origin of shape being drawn
-** So rect filled with fillRect(0, 0, ...) are draw inside the clip
-** The clip is usualy applied and restored by layouts
-** Warning: clear(ft::Rect<int> const&) is not affected by the clip
+** The clip rect is used to clip shapes being drawn
+** Drawings outside the clip are not processed
+** -
+** Warning: clear() functions are not affected by the clip
 */
-	ft::Rect<int> const	&getClip(void) const; // TODO: protected ?
-
+	/*
+	** Get the clip size
+	*/
 	int					getWidth(void) const;
 	int					getHeight(void) const;
+	ft::Vec2<int>		getSize(void) const;
 
-	// void				applyClip(ft::Rect<int> const &rect);
+	/*
+	** Set the clip (both relative to the origin)
+	*/
 	void				setClip(ft::Rect<int> const &rect);
+	void				setClip(ft::Vec2<int> size);
 
 	/*
 	** Clear the content of the clip
@@ -103,11 +108,20 @@ public:
 
 /*
 ** Origin
+** -
+** The origin vec is used to offset shapes being drawn
+** Generally used by layouts
 */
-	void				setOrigin(ft::Vec2<int> origin);
+	/*
+	** Set origin (relative)
+	*/
 	void				applyOrigin(ft::Vec2<int> apply);
 
+	/*
+	** Absolute origin
+	*/
 	ft::Vec2<int>		getOrigin(void) const;
+	void				setOrigin(ft::Vec2<int> origin);
 
 /*
 ** Alpha

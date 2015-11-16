@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:15:02 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 13:58:25 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 15:52:41 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -73,7 +73,7 @@ void			BM::onDraw(ftui::Canvas &can)
 	ft::Vec2<int> const	size = this->_holder->getSize();
 	ft::Vec2<int> const	tsize = can.measureText(_text, {0, 0, 12, 0});
 	float const			oldAlpha = can.getAlpha();
-	ft::Rect<int> const	oldClip = can.getClip();
+	ft::Vec2<int>		oldOrigin = can.getOrigin();
 	ViewHolder *const	bvh = this->_buttonHolder;
 	ftui::AView *const	b = bvh->getView();
 
@@ -81,9 +81,10 @@ void			BM::onDraw(ftui::Canvas &can)
 	can.drawText({4, size.y / 2.f - tsize.y / 2}, _text, {0x0, 0xFFAAAAAA, 12, 0});
 	AView::onDraw(can);
 	can.applyAlpha(b->getAlpha());
-	can.applyClip(ft::make_rect(bvh->getPos(), bvh->getSize()));
+	can.applyOrigin(bvh->getPos());
+	can.setClip(bvh->getSize());
 	b->onDraw(can);
-	can.setClip(oldClip);
+	can.setOrigin(oldOrigin);
 	can.setAlpha(oldAlpha);
 	return ;
 }

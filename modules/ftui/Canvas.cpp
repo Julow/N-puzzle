@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 13:48:52 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 15:45:36 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -304,9 +304,9 @@ float			Canvas::getScale(void) const
 ** ========================================================================== **
 ** Clip
 */
-ft::Rect<int> const	&Canvas::getClip(void) const
+ft::Vec2<int>	Canvas::getSize(void) const
 {
-	return (_clip);
+	return (_clip.getPos());
 }
 
 int				Canvas::getWidth(void) const
@@ -319,21 +319,19 @@ int				Canvas::getHeight(void) const
 	return (_clip.getHeight());
 }
 
-// void			Canvas::applyClip(ft::Rect<int> const &rect)
-// {
-// 	_clip.top += rect.top;
-// 	_clip.left += rect.left;
-// 	_clip.setSize(ft::make_vec(rect.getWidth(), rect.getHeight()));
-// }
-
-void			Canvas::setClip(ft::Rect<int> const &rect)
+void			Canvas::setClip(ft::Rect<int> const &clip)
 {
-	_clip = rect;
+	_clip = clip + _origin;
+}
+
+void			Canvas::setClip(ft::Vec2<int> size)
+{
+	_clip = ft::make_rect(_origin, size);
 }
 
 void			Canvas::clearClip(void)
 {
-	clear(getClip());
+	clear(_clip);
 }
 
 /*
