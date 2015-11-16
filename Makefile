@@ -62,10 +62,10 @@ COLUMN_OUTPUT	:= 1
 
 ifeq ($(COLUMN_OUTPUT),0)
 	PRINT_OK	= printf '\033[32m$<\033[0m\n'
-	PRINT_LINK	= printf '\033[32m$@\033[0m\n'
+	PRINT_LINK	= printf '\033[32m$(NAME)\033[0m\n'
 else
 	PRINT_OK	= echo $(patsubst $(firstword $(DIRS))/%,%,$<) >> $(PRINT_FILE)
-	PRINT_LINK	= printf '\n\033[32m$@\033[0m\n'
+	PRINT_LINK	= printf '\n\033[32m$(NAME)\033[0m\n'
 endif
 
 # Objects directory
@@ -115,8 +115,8 @@ include $(ML_DEPEND)
 MAX_SOURCE_LEN	:= $(shell if [[ $(MAX_SOURCE_LEN) -gt $(ML_MAX_LEN) ]]; then echo $(MAX_SOURCE_LEN); else echo $(ML_MAX_LEN); fi)
 
 # Linking
-$(NAME): $(O_FILES) $(OCAML_SOLVER)
-	clang++ -o $@ $(O_FILES) $(OCAML_SOLVER) $(LINK_FLAGS) && $(PRINT_LINK)
+$(NAME): $(LIBS_DEPEND) $(O_FILES) $(OCAML_SOLVER)
+	clang++ -o $(NAME) $(O_FILES) $(OCAML_SOLVER) $(LINK_FLAGS) && $(PRINT_LINK)
 
 # C
 $(O_DIR)/%.o: %.c

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 15:45:36 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/16 18:13:22 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -207,6 +207,7 @@ bool			Canvas::isInLua(lua_State *l)
 ** ========================================================================== **
 ** Bitmap
 */
+
 ft::Color::t const	*Canvas::getBitmap(void) const
 {
 	return (_bitmap);
@@ -225,21 +226,20 @@ int				Canvas::getBitmapHeight(void) const
 void			Canvas::putAlphaBitmap(ft::Vec2<int> pos, uint8_t const *bitmap,
 					ft::Rect<int> const &rect, int pitch, ft::Color::t color)
 {
+	int const		max_x = std::min(rect.right, _clip.right - pos.x);
+	int const		max_y = std::min(rect.bottom, _clip.bottom - pos.y);
 	int				x;
 	int				y;
-	ft::Color::t	col;
 
-	y = rect.top;
-	while (y < rect.bottom)
+	y = std::max(rect.top, _clip.top - pos.y);
+	while (y < max_y)
 	{
-		x = rect.left;
-		while (x < rect.right)
+		x = std::max(rect.left, _clip.left - pos.x);
+		while (x < max_x)
 		{
-			col = ft::Color::alpha(color, bitmap[x]);
-			if (ft::Color::a(col) > 0)
-				putPixel(x + pos.x, y + pos.y, ft::Color::alpha(color, bitmap[x]));
-			// else
-				// FTASSERT(false); //TODO: avoid reaching here
+			if (bitmap[x] > 0)
+				putPixel(x + pos.x, y + pos.y,
+					ft::Color::alpha(color, bitmap[x]));
 			x++;
 		}
 		y++;
@@ -271,6 +271,7 @@ void			Canvas::clear(ft::Rect<int> const &rect)
 ** ========================================================================== **
 ** Origin
 */
+
 void			Canvas::setOrigin(ft::Vec2<int> origin)
 {
 	_origin = origin;
@@ -304,19 +305,9 @@ float			Canvas::getScale(void) const
 ** ========================================================================== **
 ** Clip
 */
-ft::Vec2<int>	Canvas::getSize(void) const
+ft::Rect<int>	Canvas::getClip(void) const
 {
-	return (_clip.getPos());
-}
-
-int				Canvas::getWidth(void) const
-{
-	return (_clip.getWidth());
-}
-
-int				Canvas::getHeight(void) const
-{
-	return (_clip.getHeight());
+	return (_clip - _origin);
 }
 
 void			Canvas::setClip(ft::Rect<int> const &clip)
@@ -362,10 +353,6 @@ void			Canvas::drawRect(ft::Rect<float> const &rect, Params const &opt)
 	ft::Rect<int>	int_rect = static_cast<ft::Rect<int>>(rect * _scale);
 
 	int_rect += _origin;
-	// if (int_rect.right > _clip.right)
-	// 	int_rect.right = _clip.right;
-	// if (int_rect.bottom > _clip.bottom)
-	// 	int_rect.bottom = _clip.bottom;
 	if (ft::Color::a(opt.strokeColor) != 0)
 	{
 		_strokeRect(int_rect, ft::Color::alpha(opt.strokeColor, _alpha),
@@ -412,14 +399,15 @@ void			Canvas::_strokeRect(ft::Rect<int> const &rect,
 
 void			Canvas::_fillRect(ft::Rect<int> const &rect, ft::Color::t color)
 {
-	int const	left = rect.left;
-	int const	top = rect.top;
-	int const	width = rect.getWidth();
+	int const	left = std::max(rect.left, _clip.left);
+	int const	top = std::max(rect.top, _clip.top);
+	int const	width = std::min(rect.right, _clip.right) - left;
 	int			y;
 
-	y = rect.bottom;
-	while (--y >= top)
-		putPixel(left, y, color, width);
+	y = std::min(rect.bottom, _clip.bottom);
+	if (width > 0)
+		while (--y >= top)
+			putPixel(left, y, color, width);
 }
 
 /*
@@ -443,29 +431,37 @@ void			Canvas::drawText(ft::Vec2<float> pos, std::string const &text,
 		|| opt.font >= g_faces.size())
 		return ;
 	int_vec += _origin;
-	ft::f(std::cout, "Drawing at '%' (%)  int_vec1(%)\n", text,  pos, int_vec);
+	ft::f(std::cout, "Drawing at % (\"%\")  int_vec1(%)\n", pos, text, int_vec);
 	applyChangedRect(int_vec);
 	face = g_faces[opt.font];
 	if (FT_Set_Pixel_Sizes(face, 0, opt.lineWidth))
 		throw std::runtime_error("Cannot resize font (drawText)");
+	if (int_vec.y >= _clip.bottom)
+		return ;
 	int_vec.y += opt.lineWidth;
+	if (int_vec.y < _clip.top)
+		return ;
 	// int_vec.y += (face->descender * 2 + face->height + face->ascender) >> 6;
 	// TODO: Fix les font height please
 	for (uint32_t i = 0; i < text.size(); i++)
 	{
+		if (int_vec.x >= _clip.right)
+			break ;
 		glyph_index = FT_Get_Char_Index(face, text[i]);
 		if (FT_Load_Glyph(face, glyph_index, FT_LOAD_DEFAULT))
 			continue ;
-		if (FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL))
-			continue ;
-		glyph_rect.right = face->glyph->bitmap.width;
-		glyph_rect.bottom = face->glyph->bitmap.rows;
-		putAlphaBitmap(
-			int_vec
-			+ ft::make_vec(face->glyph->bitmap_left, -face->glyph->bitmap_top)
-			,
-			face->glyph->bitmap.buffer, glyph_rect, face->glyph->bitmap.pitch,
-					   opt.fillColor);
+		if ((int_vec.x + (face->glyph->advance.x >> 6)) > _clip.left)
+		{
+			std::cout << "draw " << text[i] << " at fucking " << int_vec.x << " clip: " << _clip.left << std::endl;
+			if (FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL))
+				continue ;
+			glyph_rect.right = face->glyph->bitmap.width;
+			glyph_rect.bottom = face->glyph->bitmap.rows;
+			putAlphaBitmap(int_vec
+				+ ft::make_vec(face->glyph->bitmap_left, -face->glyph->bitmap_top),
+				face->glyph->bitmap.buffer, glyph_rect, face->glyph->bitmap.pitch,
+						   opt.fillColor);
+		}
 		int_vec.x += face->glyph->advance.x >> 6;
 	}
 	applyChangedRect(int_vec);
