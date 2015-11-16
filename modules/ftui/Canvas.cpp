@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/15 19:22:52 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 13:48:52 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -229,7 +229,6 @@ void			Canvas::putAlphaBitmap(ft::Vec2<int> pos, uint8_t const *bitmap,
 	int				y;
 	ft::Color::t	col;
 
-	ft::f(std::cout, "putAlphaBitmap at (%)\n ", pos);
 	y = rect.top;
 	while (y < rect.bottom)
 	{
@@ -427,7 +426,6 @@ void			Canvas::drawText(ft::Vec2<float> pos, std::string const &text,
 		|| opt.font >= g_faces.size())
 		return ;
 	int_vec += ft::make_vec(_clip.left, _clip.top);
-	ft::f(std::cout, "Drawing at '%' (%)  int_vec1(%)\n", text,  pos, int_vec);
 	applyChangedRect(int_vec);
 	face = g_faces[opt.font];
 	if (FT_Set_Pixel_Sizes(face, 0, opt.lineWidth))
@@ -475,24 +473,10 @@ ft::Vec2<int>	Canvas::measureText(std::string const &text, Params const &opt)
 		if (FT_Load_Glyph(face, glyph_index, FT_LOAD_DEFAULT))
 			continue ;
 		size.x += face->glyph->advance.x;
-		// size.y = std::max(size.y, face->glyph->advance.y);
 	}
-	// ft::f(std::cout, "texy % % %\n", face->height >> 6
-		  // , face->ascender >> 6, face->descender >> 6);
 	size.x >>= 6;
-	// size.y >>= 6;
-	// size.y = face->bbox.yMax;
-	// size.y = 12;
-	// size.y = face->size;
-	// ft::f(std::cout, "asc%  desc%  em%\n"
-	// 	  , face->ascender / 64
-	// 	  , face->descender / 64
-	// 	  , face->units_per_EM / 64
-	// 	);
 	// TODO: Fix les font height please
 	size.y = opt.lineWidth;
-	// size.y = (face->ascender - face->descender) >> 6;
-	// size.y = (face->height + face->ascender + face->descender) >> 6;
 	return (size);
 }
 

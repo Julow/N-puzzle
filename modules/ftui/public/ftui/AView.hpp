@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/12 14:13:02 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/16 13:36:57 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -74,6 +74,7 @@ public:
 	};
 
 	AView(XmlParser const &xml, Activity &a);
+	AView(Activity &act, std::string const *id, std::string const &viewName);
 	virtual ~AView(void);
 
 /*
@@ -85,7 +86,7 @@ public:
 
 	IViewHolder					*getViewHolder(void);
 	IViewHolder const			*getViewHolder(void) const;
-	void						setViewHolder(IViewHolder *holder);
+	virtual void				setViewHolder(IViewHolder *holder);
 	void						setMouseOver(int x, int y, bool state);
 
 	/*

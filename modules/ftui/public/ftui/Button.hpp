@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:26:40 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/10 20:03:33 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 13:38:30 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -38,14 +38,17 @@ public:
 	// CONSTRUCTION ***************** //
 	static AView		*createView(XmlParser const &xml, Activity &a);
 
-	Button() = delete;
 	Button(XmlParser const &xml, Activity &a);
-	Button(Button const &src) = delete;
-	Button				&operator=(Button const &rhs) = delete;
+	Button(Activity &act, std::string const *id
+		   , std::string const &viewName = "Button");
 	virtual ~Button();
 
-	virtual void                inflate(XmlParser &xml, Activity &act);
+	Button() = delete;
+	Button(Button const &src) = delete;
+	Button				&operator=(Button const &rhs) = delete;
 
+	virtual void                inflate(XmlParser &xml, Activity &act);
+	virtual void				setViewHolder(IViewHolder *holder);
 	// virtual void		 setParam(std::string const &k, std::string const &v); //TODO: this
 
 	// DRAW ************************* //

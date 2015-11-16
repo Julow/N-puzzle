@@ -6,14 +6,16 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:15:02 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/15 19:27:21 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 13:58:25 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "libftui_extend/Bookmark.hpp"
 #include "ftui/Canvas.hpp"
+#include "ftui/Button.hpp"
 
 using BM = Bookmark;
+using BMVH = Bookmark::ViewHolder;
 
 // ========================================================================== //
 // CONSTRUCTION
@@ -31,42 +33,161 @@ ftui::AView		*BM::createView(ftui::XmlParser const &xml, ftui::Activity &act)
 }
 
 BM::Bookmark(ftui::XmlParser const &xml, ftui::Activity &act)
-	: AView(xml, act)
+	: ALayout(xml, act)
 	, _text("Hello world")
+	, _buttonHolder(nullptr)
 {
+	ftui::Button		*b = new ftui::Button(act, nullptr);
+	this->_buttonHolder	= new BM::ViewHolder(this, b);
 	return ;
 }
 
 BM::~Bookmark()
 { }
 
+void			BM::setViewHolder(ftui::IViewHolder *holder)
+{
+	//TODO: onViewHolderChange
+	AView::setViewHolder(holder);
+	this->_buttonHolder->getView()->setViewHolder(this->_buttonHolder);
+	return ;
+}
+
 // ========================================================================== //
 // DRAW
 //
+
+void			BM::onUpdate(void)
+{
+	return ;
+}
 
 void			BM::onMeasure(void)
 {
 	_holder->setRequestedSize({100, 32});
 	return ;
 }
+
 void			BM::onDraw(ftui::Canvas &can)
 {
-	ft::Vec2<int> const		size = this->_holder->getSize();
-	ft::Vec2<int> const		tsize = can.measureText(_text, {0x0, 4283782485, 12, 0});
+	ft::Vec2<int> const	size = this->_holder->getSize();
+	ft::Vec2<int> const	tsize = can.measureText(_text, {0, 0, 12, 0});
+	float const			oldAlpha = can.getAlpha();
+	ft::Rect<int> const	oldClip = can.getClip();
+	ViewHolder *const	bvh = this->_buttonHolder;
+	ftui::AView *const	b = bvh->getView();
 
 	can.drawRect({{0, 0}, size}, {0xFFAAAAAA, 0xFF3d3838, 2, 0});
-	// can.drawRect({{4, 0}, tsize}, {0, 0xFF3d3838, 0, 0});
-	// can.drawRect({this->_holder->getPos(), tsize}, {0, 0xFF3d3838, 0, 0});
 	can.drawText({4, size.y / 2.f - tsize.y / 2}, _text, {0x0, 0xFFAAAAAA, 12, 0});
-	// can.drawText({30, 0}, _text, {0x0, 4283782485, 12, 0});
-	// can.drawText({-30, 0}, _text, {0x0, 4283782485, 12, 0});
-	// can.drawText({0, 30}, _text, {0x0, 4283782485, 12, 0});
-	// can.drawText({0, 100}, std::to_string(size.x), {0x0, 4283782485, 12, 0});
-	// can.drawText({0, 110}, std::to_string(size.y), {0x0, 4283782485, 12, 0});
-	// can.drawText({0, 120}, std::to_string(this->_holder->getPos().x), {0x0, 4283782485, 12, 0});
-	// can.drawText({0, 130}, std::to_string(this->_holder->getPos().y), {0x0, 4283782485, 12, 0});
-	// can.drawText({0, 150}, std::to_string(tsize.x), {0x0, 4283782485, 12, 0});
-	// can.drawText({0, 160}, std::to_string(tsize.y), {0x0, 4283782485, 12, 0});
 	AView::onDraw(can);
+	can.applyAlpha(b->getAlpha());
+	can.applyClip(ft::make_rect(bvh->getPos(), bvh->getSize()));
+	b->onDraw(can);
+	can.setClip(oldClip);
+	can.setAlpha(oldAlpha);
+	return ;
+}
+
+// ========================================================================== //
+// ALAYOUT LEGACY
+//
+
+void			BM::addView(ftui::AView *v)
+{
+	FTASSERT(false, "Should not be called");
+	(void)v;
+	return ;
+}
+
+ftui::AView		*BM::popView(ftui::AView *v)
+{
+	FTASSERT(false, "Should not be called");
+	(void)v;
+	return nullptr;
+}
+
+ftui::AView		*BM::at(int i)
+{
+	FTASSERT(i == 0);
+	return this->_buttonHolder->getView();
+}
+
+ftui::AView const	*BM::at(int i) const
+{
+	FTASSERT(i == 0);
+	return this->_buttonHolder->getView();
+}
+
+int				BM::size(void) const
+{
+	return 1;
+}
+
+ftui::IViewHolder	*BM::holderAt(int i)
+{
+	FTASSERT(i == 0);
+	return this->_buttonHolder;
+}
+
+// ========================================================================== //
+// HOLDER
+//
+
+BMVH::ViewHolder(Bookmark *p, AView *v)
+	: _view(v), _parent(p)
+{
+
+}
+BMVH::~ViewHolder()
+{
+	return ;
+}
+
+ftui::AView		*BMVH::getView(void)
+{
+	return this->_view;
+}
+
+ftui::AView const	*BMVH::getView(void) const
+{
+	return this->_view;
+}
+
+ftui::ALayout	*BMVH::getParent(void)
+{
+	return this->_parent;
+}
+ftui::ALayout const	*BMVH::getParent(void) const
+{
+	return this->_parent;
+}
+
+ft::Vec2<int>	BMVH::getPos(void) const
+{
+	return {71, 4};
+}
+ft::Vec2<int>	BMVH::getSize(void) const
+{
+	return {25, 25};
+}
+
+ft::Vec2<int>	BMVH::getRequestedSize(void) const
+{
+	FTASSERT(false, "Should not be called");
+	return {};
+}
+void			BMVH::setRequestedSize(ft::Vec2<int> size)
+{
+	FTASSERT(false, "Should not be called");
+	(void)size;
+	return ;
+}
+
+void			BMVH::setParam(std::string const &k,
+							   std::string const &v)
+{
+	FTASSERT(false, "Should not be called");
+	(void)k;
+	(void)v;
 	return ;
 }
