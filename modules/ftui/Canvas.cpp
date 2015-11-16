@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 18:13:22 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/16 18:30:41 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -374,27 +374,16 @@ void			Canvas::drawRect(ft::Rect<float> const &rect, Params const &opt)
 void			Canvas::_strokeRect(ft::Rect<int> const &rect,
 					ft::Color::t color, int lineWidth)
 {
-	int const		left = rect.left;
-	int const		right = rect.right;
-	int				top;
-	int				y;
-
-	if (rect.getWidth() == 0 || rect.getHeight() == 0)
+	if (!rect)
 		return ;
-	y = rect.bottom - 1;
-	top = std::max(rect.bottom - lineWidth, rect.top);
-	while (y >= top)
-		putPixel(left, y--, color, rect.getWidth());
-	top = rect.top + lineWidth;
-	while (y >= top)
-	{
-		putPixel(left, y, color, lineWidth);
-		putPixel(right - lineWidth, y, color, lineWidth);
-		y--;
-	}
-	top -= lineWidth;
-	while (y >= top)
-		putPixel(left, y--, color, rect.getWidth());
+	_fillRect(ft::make_rect(rect.left, rect.top,
+			rect.right, rect.top + lineWidth), color);
+	_fillRect(ft::make_rect(rect.right - lineWidth, rect.top + lineWidth,
+			rect.right, rect.bottom - lineWidth), color);
+	_fillRect(ft::make_rect(rect.left, rect.bottom - lineWidth,
+			rect.right, rect.bottom), color);
+	_fillRect(ft::make_rect(rect.left, rect.top + lineWidth,
+			rect.left + lineWidth, rect.bottom - lineWidth), color);
 }
 
 void			Canvas::_fillRect(ft::Rect<int> const &rect, ft::Color::t color)
@@ -431,7 +420,6 @@ void			Canvas::drawText(ft::Vec2<float> pos, std::string const &text,
 		|| opt.font >= g_faces.size())
 		return ;
 	int_vec += _origin;
-	ft::f(std::cout, "Drawing at % (\"%\")  int_vec1(%)\n", pos, text, int_vec);
 	applyChangedRect(int_vec);
 	face = g_faces[opt.font];
 	if (FT_Set_Pixel_Sizes(face, 0, opt.lineWidth))
@@ -452,7 +440,6 @@ void			Canvas::drawText(ft::Vec2<float> pos, std::string const &text,
 			continue ;
 		if ((int_vec.x + (face->glyph->advance.x >> 6)) > _clip.left)
 		{
-			std::cout << "draw " << text[i] << " at fucking " << int_vec.x << " clip: " << _clip.left << std::endl;
 			if (FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL))
 				continue ;
 			glyph_rect.right = face->glyph->bitmap.width;

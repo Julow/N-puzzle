@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/05 14:06:16 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 13:15:39 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/16 18:32:34 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -167,6 +167,12 @@ void		Rect<T>::merge(Vec2<T> pt)
 		top = pt.y;
 	else if (pt.y > bottom)
 		bottom = pt.y;
+}
+
+template<typename T>
+Rect<T>::operator bool(void) const
+{
+	return (left < right && top < bottom);
 }
 
 template<typename T>
