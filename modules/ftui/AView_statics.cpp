@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/12 20:59:09 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 19:09:14 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -86,6 +86,8 @@ AView::callback_map_t	AView::callback_map
 	{"onCaptureChange",		LUA_CALLBACK_ID(CAPTURE_CHANGE)},
 	{"onSizeChange",		LUA_CALLBACK_ID(SIZE_CHANGE)},
 	{"onVisibilityChange",	LUA_CALLBACK_ID(VISIBILITY_CHANGE)},
+	{"onAttach",			LUA_CALLBACK_ID(ATTACH)},
+	{"onDetach",			LUA_CALLBACK_ID(ATTACH)},
 
 	{"onClick", static_cast<uint32_t>(Button::LuaCallback::CLICK)},
 	{"onDoubleClick", static_cast<uint32_t>(Button::LuaCallback::DOUBLE_CLICK)},

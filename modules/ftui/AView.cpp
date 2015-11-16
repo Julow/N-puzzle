@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 13:12:05 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 19:06:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -33,7 +33,7 @@ namespace ftui
 
 /*
 ** ========================================================================== **
-** Init-time -> instance.CTOR from xml parsing
+** CONSTRUCTION
 */
 
 static std::string const	*retrieve_id(ft::XmlParser const &xml)
@@ -92,21 +92,23 @@ AView::AView(Activity &act, std::string const *id
 	push_to_lua(act.getLuaState(), _id, viewName, this);
 	return ;
 }
-/*
-** ========================================================================== **
-** Render-time -> instance.CTOR from specific request NYI
-** TODO: Implement
-*/
-
-/*
-** ========================================================================== **
-** End-time -> instance.DTOR from activity or parent
-*/
 
 AView::~AView(void)
 {
 	if (_id != nullptr)
 		delete _id;
+}
+
+void				AView::inflate(ft::XmlParser &xml, Activity &)
+{
+	ft::XmlParser::State	state;
+
+	for (auto const &p : xml.getParams())
+		setParam(p.first, p.second);
+	if (!xml.next(state))
+		FTASSERT(false);
+	FTASSERT(state == ft::XmlParser::State::END);
+	return ;
 }
 
 /*
@@ -138,24 +140,70 @@ IViewHolder const	*AView::getViewHolder(void) const
 	return (this->_holder);
 }
 
+void				AView::setMouseOver(int x, int y, bool state)
+{
+	if (static_cast<bool>(this->_flags & AView::MOUSE_OVER) != state)
+	{
+		if (state == true)
+		{
+			this->_flags |= AView::MOUSE_OVER;
+			this->onMouseEnter(x, y);
+		}
+		else
+		{
+			this->_flags &= ~AView::MOUSE_OVER;
+			this->onMouseLeave(x, y);
+		}
+	}
+	return ;
+}
+
 void				AView::setViewHolder(IViewHolder *holder)
 {
-	FTASSERT(this->_holder == nullptr);
-	this->_holder = holder;
+	if (holder == nullptr)
+	{
+		if (this->isAttached())
+			this->setAttached(false);
+		this->_holder = holder;
+	}
+	else
+	{
+		FTASSERT(holder->getParent() != nullptr);
+		if (holder->getParent() == nullptr
+			|| !holder->getParent()->isAttached())
+		{
+			if (this->isAttached())
+				this->setAttached(false);
+			this->_holder = holder;
+		}
+		else
+		{
+			this->_holder = holder;
+			if (!this->isAttached())
+				this->setAttached(true);
+		}
+	}
 	return ;
 }
 
-void				AView::inflate(ft::XmlParser &xml, Activity &)
+void				AView::setAttached(bool state)
 {
-	ft::XmlParser::State	state;
-
-	for (auto const &p : xml.getParams())
-		setParam(p.first, p.second);
-	if (!xml.next(state))
-		FTASSERT(false);
-	FTASSERT(state == ft::XmlParser::State::END);
+	if (static_cast<bool>(this->_flags & AView::ATTACHED) != state)
+	{
+		if (state == true)
+		{
+			this->_flags |= AView::ATTACHED;
+			this->onAttach();
+		}
+		else
+		{
+			this->_flags &= ~AView::ATTACHED;
+			this->onDetach();
+		}
+	}
 	return ;
 }
+
 
 /*
 ** ========================================================================== **
@@ -194,6 +242,12 @@ bool				AView::isMouseOver(void) const
 {
 	return (this->_flags & AView::MOUSE_OVER);
 }
+
+bool				AView::isAttached(void) const
+{
+	return (this->_flags & AView::ATTACHED);
+}
+
 
 void				AView::setParam(string const &k, string const &v)
 {
@@ -263,7 +317,7 @@ void				AView::onDraw(Canvas &canvas)
 	uint32_t const		id = static_cast<uint32_t>(LuaCallback::DRAW);
 	lua_State			*l;
 
-	FTPAD("%", this->tostring());
+	// FTPAD("%", this->tostring());
 	this->_flags &= ~AView::REDRAW_QUERY;
 	if (!(_luaCallbacks & (1 << id)))
 		return ;
@@ -350,6 +404,16 @@ void				AView::onMouseLeave(int x, int y)
 	this->callLuaCallback(_act.getLuaState(), LuaCallback::MOUSE_LEAVE, x, y);
 	return ;
 }
+void				AView::onAttach(void)
+{
+	this->callLuaCallback(_act.getLuaState(), LuaCallback::ATTACH);
+	return ;
+}
+void				AView::onDetach(void)
+{
+	this->callLuaCallback(_act.getLuaState(), LuaCallback::DETACH);
+	return ;
+}
 void				AView::onEvent(std::string const &event, IEventParams *p)
 {
 	this->callLuaCallback(_act.getLuaState(), LuaCallback::EVENT, event);
@@ -429,24 +493,6 @@ bool				AView::isRedrawQueried(void) const
 /*
 ** View core
 */
-void				AView::setMouseOver(int x, int y, bool state)
-{
-	if (static_cast<bool>(this->_flags & AView::MOUSE_OVER) != state)
-	{
-		if (state == true)
-		{
-			this->_flags |= AView::MOUSE_OVER;
-			this->onMouseEnter(x, y);
-		}
-		else
-		{
-			this->_flags &= ~AView::MOUSE_OVER;
-			this->onMouseLeave(x, y);
-		}
-	}
-	return ;
-}
-
 /*
 ** ========================================================================== **
 ** Register target
@@ -490,10 +536,10 @@ void			AView::hookMouseMove(bool state)
 {
 	ALayout			*p;
 
-	FTPADB("%", (_id ? *_id : "noname"));
+	// FTPADB("%", (_id ? *_id : "noname"));
 	if (static_cast<bool>(this->_flags & AView::MOUSE_MOVE_TARGET) != state)
 	{
-		FTPAD("ENTERING");
+		// FTPAD("ENTERING");
 		if (state == true)
 			this->_flags |= AView::MOUSE_MOVE_TARGET;
 		else
@@ -502,7 +548,7 @@ void			AView::hookMouseMove(bool state)
 		if (p != nullptr)
 			p->spreadTargetMouseMove(state);
 	}
-	FTPADE();
+	// FTPADE();
 	return ;
 }
 

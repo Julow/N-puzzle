@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:15:02 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 16:38:23 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 19:07:38 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -56,6 +56,7 @@ BM::Bookmark(ft::XmlParser const &xml, ftui::Activity &act)
 	this->_delHolder = new BM::ViewHolder(this, del);
 	this->_delHolder->setSize({BMDEL_WIDTHI, BMDEL_WIDTHI});
 	this->_delHolder->setPos({BMDEL_POSXI, BMDEL_POSYI});
+	del->setViewHolder(this->_delHolder);
 
 	sel->setNormalParams({0xFFAAAAAA, 0xFF3d3838, 1, 0});
 	sel->setPushedParams({0xFFAAAAAA, 0xFF3d3838, 2, 0});
@@ -63,21 +64,13 @@ BM::Bookmark(ft::XmlParser const &xml, ftui::Activity &act)
 	this->_selHolder = new BM::ViewHolder(this, sel);
 	this->_selHolder->setSize({BM_WIDTHI, BM_HEIGHTI});
 	this->_selHolder->setPos({0, 0});
+	sel->setViewHolder(this->_selHolder);
 
 	return ;
 }
 
 BM::~Bookmark()
 { }
-
-void			BM::setViewHolder(ftui::IViewHolder *holder)
-{
-	//TODO: onViewHolderChange
-	AView::setViewHolder(holder);
-	this->_selHolder->getView()->setViewHolder(this->_selHolder);
-	this->_delHolder->getView()->setViewHolder(this->_delHolder);
-	return ;
-}
 
 // ========================================================================== //
 // DRAW
@@ -96,6 +89,7 @@ void			BM::onMeasure(void)
 
 void			BM::onDraw(ftui::Canvas &can)
 {
+	FTASSERT(_selHolder != nullptr && _delHolder != nullptr);
 	ft::Vec2<int> const	size = this->_holder->getSize();
 	ft::Vec2<int> const	tsize = can.measureText(_text, {0, 0, 12, 0});
 	ft::Rect<int> const	oldClip = can.getClip();
@@ -104,6 +98,7 @@ void			BM::onDraw(ftui::Canvas &can)
 	ViewHolder *const	selVh = this->_selHolder;
 	ftui::AView *const	sel = selVh->getView();
 
+	FTASSERT(sel != nullptr && del != nullptr);
 	sel->onDraw(can);
 	can.drawText({BMTXT_POSXI, size.y / 2.f - tsize.y / 2},
 				 _text, {0x0, 0xFFAAAAAA, 12, 0});
@@ -113,6 +108,21 @@ void			BM::onDraw(ftui::Canvas &can)
 	can.setClip(oldClip);
 	return ;
 }
+
+// void			BM::onAttach(void)
+// {
+// 	AView::onAttach();
+// 	this->_selHolder->getView()->setViewHolder(this->_selHolder);
+// 	this->_delHolder->getView()->setViewHolder(this->_delHolder);
+// 	return ;
+// }
+
+// void			BM::onDetach(void)
+// {
+// 	this->_selHolder->getView()->setViewHolder(this->_selHolder);
+// 	this->_delHolder->getView()->setViewHolder(this->_delHolder);
+// 	return ;
+// }
 
 // ========================================================================== //
 // ALAYOUT LEGACY

@@ -70,7 +70,7 @@
 	</VerticalLayout>
 	<VerticalLayout
 		id="right-holder"
-		backgroundColor="0xFFBB0000" alpha="0.75"
+		backgroundColor="0x20BB0000" alpha="0.75"
 		verticalAlign="TOP"
 		>
 	  <SolidView

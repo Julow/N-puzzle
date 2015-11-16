@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 15:40:15 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 19:05:37 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -95,6 +95,7 @@ void			Activity::inflate(std::istream &stream)
 	v = AView::getFactory(xml.getMarkupName())(xml, *this);
 	this->_rootView = new Activity::RootViewHolder(*this, xml, v, this->_size);
 	v->setViewHolder(this->_rootView);
+	v->setAttached(true);
 	v->inflate(xml, *this);
 	if (xml.next(state))
 		throw std::runtime_error("Activity should not own more than 1 view");
@@ -165,9 +166,9 @@ void			Activity::render(Canvas &canvas)
 	{
 		canvas.clear(); //debug
 		this->queryRedrawAll(); //debug
-		FTPADB("Redraw");
+		// FTPADB("Redraw");
 		rv->onDraw(canvas);
-		FTPADE();
+		// FTPADE();
 	}
 	return ;
 }

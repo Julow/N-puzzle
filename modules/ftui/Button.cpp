@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:32:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 16:26:40 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 19:04:41 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -70,20 +70,17 @@ void		Button::inflate(ft::XmlParser &xml, Activity &act)
 	return ;
 }
 
-void		Button::setViewHolder(IViewHolder *holder)
+void		Button::onAttach(void)
 {
-	//TODO: onViewHolderChange
-	if (holder == nullptr)
-	{
-		this->hookMouseMove(false);
-		this->hookMouseClick(false);
-	}
-	AView::setViewHolder(holder);
-	if (holder != nullptr)
-	{
-		this->hookMouseMove(true);
-		this->hookMouseClick(true);
-	}
+	this->hookMouseMove(true);
+	this->hookMouseClick(true);
+	return ;
+}
+
+void		Button::onDetach(void)
+{
+	this->hookMouseMove(false);
+	this->hookMouseClick(false);
 	return ;
 }
 
@@ -95,6 +92,7 @@ void		Button::onDraw(Canvas &canvas)
 {
 	IViewHolder		*vh = this->getViewHolder();
 
+	FTASSERT(vh != nullptr);
 	// canvas.clearClip();
 	if (this->isMouseCaptureTargeted())
 		canvas.drawRect(ft::make_rect(ft::make_vec(0, 0), _holder->getSize()),

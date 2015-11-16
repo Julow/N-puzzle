@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/11 18:52:44 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 18:52:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -166,12 +166,8 @@ void			HorizontalLayout::onDraw(Canvas &canvas)
 	ft::Rect<int>		clip;
 	AView				*v;
 
-	// TODO: Canvas::setOrigin
-	// canvas.setClip(redrawClip);
-	// ASolidView::onDraw(canvas);
-	// canvas.setClip(old_clip);
-	FTPADB("% GV(%%)", this->tostring()
-		   , isRedrawQueried(), AView::isRedrawQueried());
+	// FTPADB("% GV(%%)", this->tostring()
+	// 	   , isRedrawQueried(), AView::isRedrawQueried());
 	if (AView::isRedrawQueried())
 	{
 		ASolidView::onDraw(canvas);
@@ -189,18 +185,18 @@ void			HorizontalLayout::onDraw(Canvas &canvas)
 		{
 			v = vh->getView();
 			clip = ft::make_rect(vh->getPos(), vh->getSize());
-			FTPAD("% GVClip(%%%)",
-				  v->tostring()
-				  , v->isRedrawQueried()
-				  , v->AView::isRedrawQueried()
-				  , redrawClip.collides(clip)
-				);
+			// FTPAD("% GVClip(%%%)",
+			// 	  v->tostring()
+			// 	  , v->isRedrawQueried()
+			// 	  , v->AView::isRedrawQueried()
+			// 	  , redrawClip.collides(clip)
+			// 	);
 			if (v->isRedrawQueried() || redrawClip.collides(clip))
 				redrawChild(v, clip);
 		}
 		_layoutFlags &= ~AView::REDRAW_QUERY;
 	}
-	FTPADE();
+	// FTPADE();
 	return ;
 }
 

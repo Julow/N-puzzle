@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 13:12:08 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 18:43:33 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -37,8 +37,7 @@ ASolidView::~ASolidView(void)
 
 void			ASolidView::onDraw(Canvas &canvas)
 {
-	// canvas.clearClip();
-	FTPAD("%", this->tostring());
+	// FTPAD("%", this->tostring());
 	canvas.drawRect(ft::make_rect(ft::make_vec(0, 0), _holder->getSize()),
 			_bgParams);
 	AView::onDraw(canvas);

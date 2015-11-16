@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 14:37:33 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 18:18:23 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -46,12 +46,13 @@ public:
 		MOUSE_CLICK_TARGET = (1 << 9),
 		MOUSE_MOVE_TARGET = (1 << 10),
 		MOUSE_CAPTURE_TARGET = (1 << 11),
-		KEYBOARD_TARGET = (1 << 12),
+		KEYBOARD_TARGET = (1 << 12)
 	};
 	enum		Misc
 	{
 		MOUSE_OVER = (1 << 16),
 		HIDDEN = (1 << 17),
+		ATTACHED = (1 << 18)
 	};
 	enum class	LuaCallback : uint32_t
 	{
@@ -71,24 +72,14 @@ public:
 		UPDATE,
 		MEASURE,
 		DRAW,
+		ATTACH,
+		DETACH,
 		__LAST
 	};
 
 	AView(ft::XmlParser const &xml, Activity &a);
 	AView(Activity &act, std::string const *id, std::string const &viewName);
 	virtual ~AView(void);
-
-/*
-** View core
-*/
-	std::string const			*getId(void) const;
-	ALayout						*getParent(void);
-	std::string					tostring(void) const;
-
-	IViewHolder					*getViewHolder(void);
-	IViewHolder const			*getViewHolder(void) const;
-	virtual void				setViewHolder(IViewHolder *holder);
-	void						setMouseOver(int x, int y, bool state);
 
 	/*
 	** Extract the view tree from a xml file
@@ -101,6 +92,20 @@ public:
 	*/
 	virtual void				inflate(ft::XmlParser &xml, Activity &act);
 
+/*
+** View core
+*/
+
+	std::string					tostring(void) const;
+	std::string const			*getId(void) const;
+	ALayout						*getParent(void);
+
+	IViewHolder					*getViewHolder(void);
+	IViewHolder const			*getViewHolder(void) const;
+	void						setMouseOver(int x, int y, bool state);
+	void						setViewHolder(IViewHolder *holder);
+	void						setAttached(bool state);
+
 	/*
 	** View properties
 	*/
@@ -111,6 +116,7 @@ public:
 	void						setVisibility(bool hidden);
 
 	bool						isMouseOver(void) const;
+	bool						isAttached(void) const;
 
 	/*
 	** Set param
@@ -148,6 +154,8 @@ public:
 	*/
 	virtual void				onMouseEnter(int x, int y);
 	virtual void				onMouseLeave(int x, int y);
+	virtual void				onAttach(void);
+	virtual void				onDetach(void);
 	virtual void				onEvent(std::string const &event
 										, IEventParams *p);
 	virtual void				onPositionChange(void);

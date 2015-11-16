@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:26:40 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 15:53:31 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 19:01:43 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -28,7 +28,7 @@ class Button : public AView
 {
 public:
 
-	enum class  LuaCallback : uint32_t
+	enum class	LuaCallback : uint32_t
 	{
 		CLICK = static_cast<uint32_t>(AView::LuaCallback::__LAST),
 		DOUBLE_CLICK,
@@ -40,16 +40,18 @@ public:
 
 	Button(ft::XmlParser const &xml, Activity &a);
 	Button(Activity &act, std::string const *id
-		   , std::string const &viewName = "Button");
+			, std::string const &viewName = "Button");
 	virtual ~Button();
 
 	Button() = delete;
 	Button(Button const &src) = delete;
 	Button				&operator=(Button const &rhs) = delete;
 
-	virtual void                inflate(ft::XmlParser &xml, Activity &act);
-	virtual void				setViewHolder(IViewHolder *holder);
-	// virtual void		 setParam(std::string const &k, std::string const &v); //TODO: this
+	virtual void		inflate(ft::XmlParser &xml, Activity &act);
+	// virtual void setParam(std::string const &k, std::string const &v); //TODO: this
+
+	virtual void		onAttach(void);
+	virtual void		onDetach(void);
 
 	// DRAW ************************* //
 	virtual void		onDraw(Canvas &canvas);
@@ -63,7 +65,6 @@ public:
 
 	virtual void		onClick(int mods);
 	virtual void		onDoubleClick(int mods);
-	// TODO: double click
 
 	// INTERACTIONS ***************** //
 	virtual void		setState(bool status);

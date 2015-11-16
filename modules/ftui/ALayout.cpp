@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 16:17:27 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 18:40:37 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -103,11 +103,11 @@ void				ALayout::spreadTargetMouseMove(bool state)
 {
 	ALayout			*p;
 
-	FTPADB("%", (_id ? *_id : "noname"));
+	// FTPADB("%", (_id ? *_id : "noname"));
 	if (static_cast<bool>(this->_layoutFlags & AView::MOUSE_MOVE_TARGET)
 		!= state)
 	{
-		FTPAD("ENTERING");
+		// FTPAD("ENTERING");
 		if (state)
 			this->_layoutFlags |= AView::MOUSE_MOVE_TARGET;
 		else
@@ -124,7 +124,7 @@ void				ALayout::spreadTargetMouseMove(bool state)
 		if (p != nullptr)
 			p->spreadTargetMouseMove(state);
 	}
-	FTPADE();
+	// FTPADE();
 	return ;
 }
 
@@ -372,13 +372,40 @@ void				ALayout::onMouseLeave(int x, int y)
 		v = at(i);
 		FTASSERT(v != nullptr);
 		if (v->isMouseOver())
-		{
 			v->setMouseOver(x, y, false);
-			// v->onMouseLeave(x, y);
-		}
 	}
 	return ;
 }
+
+void				ALayout::onAttach(void)
+{
+	AView		*v;
+
+	AView::onAttach();
+	for (int i = 0; i < size(); i++)
+	{
+		v = at(i);
+		FTASSERT(v != nullptr);
+		FTASSERT(!v->isAttached());
+		v->setAttached(true);
+	}
+	return ;
+}
+void				ALayout::onDetach(void)
+{
+	AView		*v;
+
+	AView::onDetach();
+	for (int i = 0; i < size(); i++)
+	{
+		v = at(i);
+		FTASSERT(v != nullptr);
+		FTASSERT(v->isAttached());
+		v->setAttached(false);
+	}
+	return ;
+}
+
 
 bool				ALayout::isMouseScrollTargeted(void) const
 {
