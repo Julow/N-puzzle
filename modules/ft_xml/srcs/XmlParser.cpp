@@ -6,15 +6,15 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:45 by jaguillo          #+#    #+#             //
-//   Updated: 2015/10/14 09:27:39 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/16 14:23:51 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#include "ftui/XmlParser.hpp"
+#include "ft_xml/XmlParser.hpp"
 #include "ft/utils.hpp"
 #include <stdexcept>
 
-namespace ftui
+namespace ft
 {
 
 XmlParser::XmlParser(std::istream &stream) :

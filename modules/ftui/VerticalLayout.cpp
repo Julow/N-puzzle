@@ -12,7 +12,7 @@
 
 #include "ftui/VerticalLayout.hpp"
 #include "ftui/Canvas.hpp"
-#include "ftui/XmlParser.hpp"
+#include "ft_xml/XmlParser.hpp"
 #include "ft/utils.hpp"
 
 #include <algorithm>
@@ -21,7 +21,7 @@
 namespace ftui
 {
 
-VerticalLayout::VerticalLayout(XmlParser const &xml, Activity &act)
+VerticalLayout::VerticalLayout(ft::XmlParser const &xml, Activity &act)
 	: ALayout(xml, act)
 {
 }
@@ -41,7 +41,7 @@ void			VerticalLayout::onUpdate(void)
 	_layoutFlags &= ~AView::UPDATE_QUERY;
 }
 
-void            VerticalLayout::inflate(XmlParser &xml, Activity &a)
+void            VerticalLayout::inflate(ft::XmlParser &xml, Activity &a)
 {
 	ALayout::inflate(xml, a);
 	return ;
@@ -259,7 +259,7 @@ IViewHolder		*VerticalLayout::holderAt(int i)
 /*
 ** Static
 */
-AView			*VerticalLayout::createView(XmlParser const &xml, Activity &act)
+AView			*VerticalLayout::createView(ft::XmlParser const &xml, Activity &act)
 {
 	return (new VerticalLayout(xml, act));
 }

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:26:40 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 13:38:30 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 15:53:31 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -36,9 +36,9 @@ public:
 	};
 
 	// CONSTRUCTION ***************** //
-	static AView		*createView(XmlParser const &xml, Activity &a);
+	static AView		*createView(ft::XmlParser const &xml, Activity &a);
 
-	Button(XmlParser const &xml, Activity &a);
+	Button(ft::XmlParser const &xml, Activity &a);
 	Button(Activity &act, std::string const *id
 		   , std::string const &viewName = "Button");
 	virtual ~Button();
@@ -47,7 +47,7 @@ public:
 	Button(Button const &src) = delete;
 	Button				&operator=(Button const &rhs) = delete;
 
-	virtual void                inflate(XmlParser &xml, Activity &act);
+	virtual void                inflate(ft::XmlParser &xml, Activity &act);
 	virtual void				setViewHolder(IViewHolder *holder);
 	// virtual void		 setParam(std::string const &k, std::string const &v); //TODO: this
 
@@ -69,9 +69,17 @@ public:
 	virtual void		setState(bool status);
 	virtual bool		getState(void);
 
-	// TODO: Getter/Setters on all 4 Canvas::Params
-	// TODO: Fully replate Canvas::Params to Texture params
+	Canvas::Params const	&getNormalParams(void) const;
+	void					setNormalParams(Canvas::Params const &p);
 
+	Canvas::Params const	&getDisabledParams(void) const;
+	void					setDisabledParams(Canvas::Params const &p);
+
+	Canvas::Params const	&getPushedParams(void) const;
+	void					setPushedParams(Canvas::Params const &p);
+
+	Canvas::Params const	&getHighlightParams(void) const;
+	void					setHighlightParams(Canvas::Params const &p);
 
 protected:
 	bool				_state;

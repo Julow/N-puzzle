@@ -2,6 +2,7 @@ module ftui:
 	public include public/
 
 	public require ft
+	public require ft_xml
 	public require ftlua
 
 	put LINK_FLAGS -lfreetype

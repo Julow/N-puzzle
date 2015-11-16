@@ -21,7 +21,7 @@
 #include "ftui/ALayout.hpp"
 #include "ftui/IViewHolder.hpp"
 #include "ftui/EventParams.hpp"
-#include "ftui/XmlParser.hpp"
+#include "ft_xml/XmlParser.hpp"
 #include "ftui/VerticalLayout.hpp"
 
 #include "ftui/templates/AView_callLuaCallback.tpp"
@@ -36,7 +36,7 @@ namespace ftui
 ** Init-time -> instance.CTOR from xml parsing
 */
 
-static std::string const	*retrieve_id(XmlParser const &xml)
+static std::string const	*retrieve_id(ft::XmlParser const &xml)
 {
 	auto const		&it = xml.getParams().find("id");
 
@@ -68,7 +68,7 @@ static void			push_to_lua(lua_State *l
 	return ;
 }
 
-AView::AView(XmlParser const &xml, Activity &act) :
+AView::AView(ft::XmlParser const &xml, Activity &act) :
 	_holder(nullptr),
 	_act(act),
 	_id(retrieve_id(xml)),
@@ -145,15 +145,15 @@ void				AView::setViewHolder(IViewHolder *holder)
 	return ;
 }
 
-void				AView::inflate(XmlParser &xml, Activity &)
+void				AView::inflate(ft::XmlParser &xml, Activity &)
 {
-	XmlParser::State	state;
+	ft::XmlParser::State	state;
 
 	for (auto const &p : xml.getParams())
 		setParam(p.first, p.second);
 	if (!xml.next(state))
 		FTASSERT(false);
-	FTASSERT(state == XmlParser::State::END);
+	FTASSERT(state == ft::XmlParser::State::END);
 	return ;
 }
 

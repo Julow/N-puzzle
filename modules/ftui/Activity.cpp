@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/15 14:24:41 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 15:40:15 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,7 +18,7 @@
 #include "ftui/Activity.hpp"
 #include "ftui/AView.hpp"
 #include "ftui/Canvas.hpp"
-#include "ftui/XmlParser.hpp"
+#include "ft_xml/XmlParser.hpp"
 
 namespace ftui
 {
@@ -83,15 +83,15 @@ static void			load_views_scripts(
 
 void			Activity::inflate(std::istream &stream)
 {
-	XmlParser			xml(stream);
+	ft::XmlParser			xml(stream);
 	AView				*v;
-	XmlParser::State	state;
+	ft::XmlParser::State	state;
 
 	FTASSERT(_l == nullptr, "Activity.inflate called again");
 	_l = new_lua_env();
 	if (!xml.next(state))
 		throw std::runtime_error("Activity should own at least 1 view");
-	FTASSERT(state == XmlParser::State::START, "Cannot fail");
+	FTASSERT(state == ft::XmlParser::State::START, "Cannot fail");
 	v = AView::getFactory(xml.getMarkupName())(xml, *this);
 	this->_rootView = new Activity::RootViewHolder(*this, xml, v, this->_size);
 	v->setViewHolder(this->_rootView);

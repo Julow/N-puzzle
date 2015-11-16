@@ -79,12 +79,17 @@
 		  width="230" height="25"
 		  backgroundColor="0xFFBB0000" alpha="0.75"
 		  />
-	  <Bookmark
-	  	  id="bm1"
+	  <VerticalLayout
+		  id="bookmark-holder"
 	  	  marginTop="10" marginRight="10"
-	  	  verticalAlign="TOP"
-	  	  />
+		  verticalAlign="LEFT"
+		  >
+		<Bookmark
+	  		id="bm1"
+	  		verticalAlign="TOP"
+	  		/>
 
+	  </VerticalLayout>
 	</VerticalLayout>
 
 

@@ -12,7 +12,7 @@
 
 #include "ftui/ASolidView.hpp"
 #include "ftui/IViewHolder.hpp"
-#include "ftui/XmlParser.hpp"
+#include "ft_xml/XmlParser.hpp"
 #include "ft/utils.hpp"
 
 #include <string>
@@ -20,7 +20,7 @@
 namespace ftui
 {
 
-ASolidView::ASolidView(XmlParser const &xml, Activity &act) :
+ASolidView::ASolidView(ft::XmlParser const &xml, Activity &act) :
 	AView(xml, act), _bgParams{0x0, 0x0, 1, 0}
 {
 }

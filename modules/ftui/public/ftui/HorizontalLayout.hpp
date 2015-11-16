@@ -49,7 +49,7 @@ public:
 
 	virtual ~HorizontalLayout(void);
 
-	virtual void			inflate(XmlParser &xml, Activity &a);
+	virtual void			inflate(ft::XmlParser &xml, Activity &a);
 
 	virtual void			onUpdate(void);
 	virtual void			onMeasure(void);
@@ -72,7 +72,7 @@ protected:
 
 	std::vector<ViewHolder*>	_childs;
 
-	HorizontalLayout(XmlParser const &xml, Activity &act);
+	HorizontalLayout(ft::XmlParser const &xml, Activity &act);
 
 	virtual IViewHolder		*holderAt(int i);
 
@@ -88,7 +88,7 @@ private:
 */
 public:
 
-	static AView			*createView(XmlParser const &xml, Activity &act);
+	static AView			*createView(ft::XmlParser const &xml, Activity &act);
 };
 
 /*

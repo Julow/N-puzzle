@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:14:49 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 13:47:11 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 16:22:24 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -23,11 +23,11 @@ public:
 
 	/* CONSTRUCTION ***************** */
 	static void				declare_libftui(void);
-	static ftui::AView		*createView(ftui::XmlParser const &xml
+	static ftui::AView		*createView(ft::XmlParser const &xml
 										, ftui::Activity &act);
 	void					setViewHolder(ftui::IViewHolder *holder);
 
-	Bookmark(ftui::XmlParser const &xml, ftui::Activity &act);
+	Bookmark(ft::XmlParser const &xml, ftui::Activity &act);
 	~Bookmark();
 
 	Bookmark() = delete;
@@ -51,12 +51,16 @@ public:
 
 	int						size(void) const;
 
+	bool					onMouseDown(int x, int y, int button, int mods);
+	bool					onMouseUp(int x, int y, int button, int mods);
+
 	/* HOLDER *********************** */
 	class ViewHolder;
 
 private:
 	std::string				_text;
-	ViewHolder				*_buttonHolder;
+	ViewHolder				*_selHolder;
+	ViewHolder				*_delHolder;
 
 };
 
@@ -90,11 +94,16 @@ public:
 	void					setRequestedSize(ft::Vec2<int> size);
 
 	void					setParam(std::string const &k,
-									 std::string const &v);
+									std::string const &v);
+
+	void					setSize(ft::Vec2<int> sz);
+	void					setPos(ft::Vec2<int> pos);
 
 private:
 	AView				*_view;
 	Bookmark			*_parent;
+	ft::Vec2<int>		_size;
+	ft::Vec2<int>		_pos;
 
 };
 

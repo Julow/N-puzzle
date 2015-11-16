@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/12 14:13:06 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/16 14:37:51 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,6 +14,7 @@
 # define ACTIVITY_HPP
 
 # include "ftui/libftui.hpp"
+# include "ft_xml/XmlParser.hpp"
 
 # include <vector>
 # include <unordered_map>
@@ -139,7 +140,7 @@ private:
 class	Activity::RootViewHolder : public IViewHolder
 {
 public:
-	RootViewHolder(Activity &act, XmlParser const &xml, AView *v,
+	RootViewHolder(Activity &act, ft::XmlParser const &xml, AView *v,
 					ft::Vec2<int> s);
 	virtual ~RootViewHolder(void);
 

@@ -18,7 +18,7 @@
 namespace ftui
 {
 
-TextView::TextView(XmlParser const &xml, Activity &a) :
+TextView::TextView(ft::XmlParser const &xml, Activity &a) :
 	ASolidView(xml, a), _text(""), _textParams{0x0, 0x0, 16, 0}
 {
 }
@@ -110,7 +110,7 @@ void				TextView::setParam(std::string const &k,
 		ASolidView::setParam(k, v);
 }
 
-AView				*TextView::createView(XmlParser const &xml, Activity &a)
+AView				*TextView::createView(ft::XmlParser const &xml, Activity &a)
 {
 	return (new TextView(xml, a));
 }

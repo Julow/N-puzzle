@@ -44,7 +44,7 @@ public:
 
 protected:
 
-	ASolidView(XmlParser const &xml, Activity &act);
+	ASolidView(ft::XmlParser const &xml, Activity &act);
 	ASolidView(Activity &act, std::string const *id, std::string const &viewName);
 
 	Canvas::Params		_bgParams;

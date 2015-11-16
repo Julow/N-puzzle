@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:55:01 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/09 15:07:23 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/16 14:33:23 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -126,9 +126,6 @@ class	ALayout;
 class	AbsoluteLayout;
 class	RelativeLayout;
 class	VerticalLayout;
-
-class	XmlTokenizer;
-class	XmlParser;
 
 };
 

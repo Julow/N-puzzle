@@ -6,12 +6,12 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/10 18:52:33 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 16:17:27 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "ftui/ALayout.hpp"
-#include "ftui/XmlParser.hpp"
+#include "ft_xml/XmlParser.hpp"
 #include "ftui/IViewHolder.hpp"
 #include "ft/utils.hpp"
 
@@ -23,7 +23,7 @@ using std::string;
 namespace ftui
 {
 
-ALayout::ALayout(XmlParser const &xml, Activity &act) :
+ALayout::ALayout(ft::XmlParser const &xml, Activity &act) :
 	ASolidView(xml, act)
 {
 }
@@ -201,22 +201,22 @@ void				ALayout::spreadQueryRedraw(void)
 ** * AView legacy *********************************************************** **
 */
 
-void				ALayout::inflate(XmlParser &xml, Activity &a)
+void				ALayout::inflate(ft::XmlParser &xml, Activity &a)
 {
 	AView				*v;
-	XmlParser::State	state;
+	ft::XmlParser::State	state;
 
 	for (auto const &p : xml.getParams())
 		setParam(p.first, p.second);
 	while (xml.next(state))
 	{
-		if (state == XmlParser::State::START)
+		if (state == ft::XmlParser::State::START)
 		{
 			v = AView::getFactory(xml.getMarkupName())(xml, a);
 			this->addView(v);
 			v->inflate(xml, a);
 		}
-		else if (state == XmlParser::State::END)
+		else if (state == ft::XmlParser::State::END)
 			return ;
 		else
 			break ;
@@ -236,6 +236,8 @@ bool				ALayout::onMouseScroll(int x, int y, float delta)
 		FTASSERT(v != nullptr);
 		if (v->isMouseScrollTargeted() && v->isMouseOver())
 			ret |= v->onMouseScroll(x, y, delta);
+		if (ret)
+			return true;
 	}
 	if (AView::isMouseScrollTargeted())
 		ret |= AView::onMouseScroll(x, y, delta);
@@ -255,6 +257,8 @@ bool				ALayout::onMouseDown(int x, int y, int button, int mods)
 		if (v->isMouseClickTargeted() &&
 			(v->isMouseOver() || v->isMouseCaptureTargeted()))
 			ret |= v->onMouseDown(x, y, button, mods);
+		if (ret)
+			return true;
 	}
 	if (AView::isMouseClickTargeted())
 		ret |= AView::onMouseDown(x, y, button, mods);
@@ -274,6 +278,8 @@ bool				ALayout::onMouseUp(int x, int y, int button, int mods)
 		if (v->isMouseClickTargeted() &&
 			(v->isMouseOver() || v->isMouseCaptureTargeted()))
 			ret |= v->onMouseUp(x, y, button, mods);
+		if (ret)
+			return true;
 	}
 	if (AView::isMouseClickTargeted())
 		ret |= AView::onMouseUp(x, y, button, mods);
@@ -307,6 +313,8 @@ bool				ALayout::onMouseMove(int x, int y)
 			}
 			if (v->isMouseOver() || v->isMouseCaptureTargeted())
 				ret |= v->onMouseMove(x - vh->getPos().x, y - vh->getPos().y);
+			if (ret)
+				return true;
 		}
 	}
 	if (AView::isMouseMoveTargeted())
@@ -326,6 +334,8 @@ bool				ALayout::onKeyDown(int key_code, int mods)
 		FTASSERT(v != nullptr);
 		if (v->isKeyboardTargeted())
 			ret |= v->onKeyDown(key_code, mods);
+		if (ret)
+			return true;
 	}
 	if (AView::isKeyboardTargeted())
 		ret |= AView::onKeyDown(key_code, mods);
@@ -344,6 +354,8 @@ bool				ALayout::onKeyUp(int key_code, int mods)
 		FTASSERT(v != nullptr);
 		if (v->isKeyboardTargeted())
 			ret |= v->onKeyUp(key_code, mods);
+		if (ret) //TODO clean those 6 'ret' variables (here and 5 above)
+			return true;
 	}
 	if (AView::isKeyboardTargeted())
 		ret |= AView::onKeyUp(key_code, mods);

@@ -6,22 +6,20 @@
 /*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/22 13:12:32 by jaguillo          #+#    #+#             */
-/*   Updated: 2015/10/02 10:25:16 by jaguillo         ###   ########.fr       */
+//   Updated: 2015/11/16 14:43:44 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef XMLPARSER_HPP
 # define XMLPARSER_HPP
 
-# include "ftui/libftui.hpp"
-
 # include <istream>
 # include <unordered_map>
 # include <stack>
 
-# include "ftui/XmlTokenizer.hpp"
+# include "ft_xml/XmlTokenizer.hpp"
 
-namespace ftui
+namespace ft
 {
 
 /*
@@ -62,7 +60,7 @@ public:
 	** Return current markup name
 	*/
 	std::string const	&getMarkupName(void) const;
-	
+
 	/*
 	** Return current markup params
 	*/

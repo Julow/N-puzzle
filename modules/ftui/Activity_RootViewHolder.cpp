@@ -12,12 +12,12 @@
 
 #include "ftui/Activity.hpp"
 #include "ftui/AView.hpp"
-#include "ftui/XmlParser.hpp"
+#include "ft_xml/XmlParser.hpp"
 
 namespace ftui
 {
 
-Activity::RootViewHolder::RootViewHolder(Activity &act, XmlParser const &xml,
+Activity::RootViewHolder::RootViewHolder(Activity &act, ft::XmlParser const &xml,
 		AView *v, ft::Vec2<int> s) :
 	_activity(act),
 	_view(v),

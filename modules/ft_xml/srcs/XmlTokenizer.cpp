@@ -6,16 +6,16 @@
 //   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/24 21:50:50 by juloo             #+#    #+#             //
-//   Updated: 2015/10/10 16:29:21 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/16 14:44:05 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#include "ftui/XmlTokenizer.hpp"
+#include "ft_xml/XmlTokenizer.hpp"
 #include "ft/utils.hpp"
 #include <stdexcept>
 #include <cstring>
 
-namespace ftui
+namespace ft
 {
 
 XmlTokenizer::XmlTokenizer(std::istream &stream)
