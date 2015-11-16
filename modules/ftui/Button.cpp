@@ -29,12 +29,12 @@ Button::time_diff const	Button::_maxDelta =
 ** CONSTRUCTION
 */
 
-AView		*Button::createView(XmlParser const &xml, Activity &a)
+AView		*Button::createView(ft::XmlParser const &xml, Activity &a)
 {
 	return new Button(xml, a);
 }
 
-Button::Button(XmlParser const &xml, Activity &a)
+Button::Button(ft::XmlParser const &xml, Activity &a)
 	: AView(xml, a)
 	, _state(true)
 	, _normal{		0xFF00AA00, 0xFFFF0000, 5, 0}
@@ -64,7 +64,7 @@ Button::~Button()
 	return ;
 }
 
-void		Button::inflate(XmlParser &xml, Activity &act)
+void		Button::inflate(ft::XmlParser &xml, Activity &act)
 {
 	AView::inflate(xml, act);
 	return ;

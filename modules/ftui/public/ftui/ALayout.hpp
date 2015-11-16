@@ -35,13 +35,13 @@ class	ALayout : public ASolidView
 {
 public:
 
-	ALayout(XmlParser const &xml, Activity &act);
+	ALayout(ft::XmlParser const &xml, Activity &act);
 	virtual ~ALayout(void);
 
 /*
 ** AView legacy
 */
-	virtual void				inflate(XmlParser &xml, Activity &);
+	virtual void				inflate(ft::XmlParser &xml, Activity &);
 
 	virtual void				onUpdate(void) = 0;
 	virtual void				onMeasure(void) = 0;

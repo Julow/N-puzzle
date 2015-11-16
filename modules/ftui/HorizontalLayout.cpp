@@ -12,7 +12,7 @@
 
 #include "ftui/HorizontalLayout.hpp"
 #include "ftui/Canvas.hpp"
-#include "ftui/XmlParser.hpp"
+#include "ft_xml/XmlParser.hpp"
 #include "ft/utils.hpp"
 
 #include <algorithm>
@@ -21,7 +21,7 @@
 namespace ftui
 {
 
-HorizontalLayout::HorizontalLayout(XmlParser const &xml, Activity &act)
+HorizontalLayout::HorizontalLayout(ft::XmlParser const &xml, Activity &act)
 	: ALayout(xml, act)
 {
 }
@@ -41,7 +41,7 @@ void			HorizontalLayout::onUpdate(void)
 	_layoutFlags &= ~AView::UPDATE_QUERY;
 }
 
-void            HorizontalLayout::inflate(XmlParser &xml, Activity &a)
+void            HorizontalLayout::inflate(ft::XmlParser &xml, Activity &a)
 {
 	ALayout::inflate(xml, a);
 	return ;
@@ -262,7 +262,7 @@ IViewHolder		*HorizontalLayout::holderAt(int i)
 /*
 ** Static
 */
-AView			*HorizontalLayout::createView(XmlParser const &xml, Activity &act)
+AView			*HorizontalLayout::createView(ft::XmlParser const &xml, Activity &act)
 {
 	return (new HorizontalLayout(xml, act));
 }

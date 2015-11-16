@@ -54,7 +54,9 @@ o/srcs/Main.o: srcs/Main.cpp modules/ft/public/ft/Rect.hpp \
 	modules/gl/gl.hpp modules/liblua/public/liblua.hpp \
 	include/config_window.hpp include/ftce/math.hpp include/PickState.hpp \
 	modules/tiles/include/tiles/Tiles.hpp include/ftlua_extend.hpp \
-	include/libftui_extend/Bookmark.hpp | o/srcs/
+	include/libftui_extend/Bookmark.hpp modules/ftui/public/ftui/ALayout.hpp \
+	modules/ftui/public/ftui/ASolidView.hpp modules/ftui/public/ftui/AView.hpp \
+	| o/srcs/
 o/srcs/OCamlBinding.o: srcs/OCamlBinding.cpp include/Grid.hpp \
 	include/ISolverListener.hpp include/OCamlBinding.hpp \
 	modules/ft/public/ft/Rect.hpp modules/ft/public/ft/Vec.hpp \
@@ -100,4 +102,27 @@ o/srcs/ftlua_extend.o: srcs/ftlua_extend.cpp modules/ft/public/ft/Rect.hpp \
 	modules/ftlua/public/ftlua/templates/ftlua_handler.tpp \
 	modules/liblua/public/liblua.hpp include/Grid.hpp | o/srcs/
 o/srcs/libftui_extend/Bookmark.o: srcs/libftui_extend/Bookmark.cpp \
-	include/libftui_extend/Bookmark.hpp | o/srcs/libftui_extend/
+	include/libftui_extend/Bookmark.hpp modules/ft/public/ft/Color.hpp \
+	modules/ft/public/ft/Rect.hpp modules/ft/public/ft/Vec.hpp \
+	modules/ft/public/ft/assert.hpp modules/ft/public/ft/templates/Rect.tpp \
+	modules/ft/public/ft/templates/Vec2.tpp \
+	modules/ft/public/ft/templates/Vec3.tpp \
+	modules/ft/public/ft/templates/Vec4.tpp modules/ft/public/ft/utils.hpp \
+	modules/ftlua/public/ftlua/ftlua.hpp \
+	modules/ftlua/public/ftlua/templates/ftlua_caller.tpp \
+	modules/ftlua/public/ftlua/templates/ftlua_handler.tpp \
+	modules/ftui/public/ftui/ALayout.hpp \
+	modules/ftui/public/ftui/ASolidView.hpp modules/ftui/public/ftui/AView.hpp \
+	modules/ftui/public/ftui/Activity.hpp modules/ftui/public/ftui/Canvas.hpp \
+	modules/ftui/public/ftui/DefaultEventBox.hpp \
+	modules/ftui/public/ftui/EventBox.hpp \
+	modules/ftui/public/ftui/EventParams.hpp \
+	modules/ftui/public/ftui/IEventBox.hpp \
+	modules/ftui/public/ftui/IEventParams.hpp \
+	modules/ftui/public/ftui/IViewHolder.hpp \
+	modules/ftui/public/ftui/libftui.hpp \
+	modules/ftui/public/ftui/templates/Activity.tpp \
+	modules/ftui/public/ftui/templates/DefaultEventBox.tpp \
+	modules/ftui/public/ftui/templates/EventBox.tpp \
+	modules/liblua/public/liblua.hpp modules/ftui/public/ftui/Button.hpp \
+	| o/srcs/libftui_extend/

@@ -14,7 +14,7 @@
 
 #include "ft/utils.hpp"
 #include "ftui/VerticalLayout.hpp"
-#include "ftui/XmlParser.hpp"
+#include "ft_xml/XmlParser.hpp"
 #include "ftui/Activity.hpp"
 
 namespace ftui

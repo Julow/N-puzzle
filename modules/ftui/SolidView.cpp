@@ -15,7 +15,7 @@
 namespace ftui
 {
 
-SolidView::SolidView(XmlParser const &xml, Activity &act) :
+SolidView::SolidView(ft::XmlParser const &xml, Activity &act) :
 	ASolidView(xml, act)
 {
 }
@@ -24,7 +24,7 @@ SolidView::~SolidView(void)
 {
 }
 
-AView			*SolidView::createView(XmlParser const &xml, Activity &act)
+AView			*SolidView::createView(ft::XmlParser const &xml, Activity &act)
 {
 	return (new SolidView(xml, act));
 }

@@ -36,9 +36,9 @@ public:
 	};
 
 	// CONSTRUCTION ***************** //
-	static AView		*createView(XmlParser const &xml, Activity &a);
+	static AView		*createView(ft::XmlParser const &xml, Activity &a);
 
-	Button(XmlParser const &xml, Activity &a);
+	Button(ft::XmlParser const &xml, Activity &a);
 	Button(Activity &act, std::string const *id
 		   , std::string const &viewName = "Button");
 	virtual ~Button();
@@ -47,7 +47,7 @@ public:
 	Button(Button const &src) = delete;
 	Button				&operator=(Button const &rhs) = delete;
 
-	virtual void                inflate(XmlParser &xml, Activity &act);
+	virtual void                inflate(ft::XmlParser &xml, Activity &act);
 	virtual void				setViewHolder(IViewHolder *holder);
 	// virtual void		 setParam(std::string const &k, std::string const &v); //TODO: this
 

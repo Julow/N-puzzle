@@ -24,7 +24,7 @@ namespace ftui
 class	TextView : public ASolidView
 {
 public:
-	TextView(XmlParser const &xml, Activity &a);
+	TextView(ft::XmlParser const &xml, Activity &a);
 	virtual ~TextView(void);
 
 	virtual void		onMeasure(void);
@@ -58,7 +58,7 @@ private:
 ** Static
 */
 public:
-	static AView		*createView(XmlParser const &xml, Activity &a);
+	static AView		*createView(ft::XmlParser const &xml, Activity &a);
 
 	static int			getTextG(lua_State *l);
 	static int			setTextG(lua_State *l);

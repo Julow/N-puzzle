@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:15:02 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 13:58:25 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 14:47:00 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -27,12 +27,12 @@ void			BM::declare_libftui(void)
 	return ;
 }
 
-ftui::AView		*BM::createView(ftui::XmlParser const &xml, ftui::Activity &act)
+ftui::AView		*BM::createView(ft::XmlParser const &xml, ftui::Activity &act)
 {
 	return new Bookmark(xml, act);
 }
 
-BM::Bookmark(ftui::XmlParser const &xml, ftui::Activity &act)
+BM::Bookmark(ft::XmlParser const &xml, ftui::Activity &act)
 	: ALayout(xml, act)
 	, _text("Hello world")
 	, _buttonHolder(nullptr)

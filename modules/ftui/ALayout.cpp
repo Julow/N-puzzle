@@ -11,7 +11,7 @@
 // ************************************************************************** //
 
 #include "ftui/ALayout.hpp"
-#include "ftui/XmlParser.hpp"
+#include "ft_xml/XmlParser.hpp"
 #include "ftui/IViewHolder.hpp"
 #include "ft/utils.hpp"
 
@@ -23,7 +23,7 @@ using std::string;
 namespace ftui
 {
 
-ALayout::ALayout(XmlParser const &xml, Activity &act) :
+ALayout::ALayout(ft::XmlParser const &xml, Activity &act) :
 	ASolidView(xml, act)
 {
 }
@@ -201,22 +201,22 @@ void				ALayout::spreadQueryRedraw(void)
 ** * AView legacy *********************************************************** **
 */
 
-void				ALayout::inflate(XmlParser &xml, Activity &a)
+void				ALayout::inflate(ft::XmlParser &xml, Activity &a)
 {
 	AView				*v;
-	XmlParser::State	state;
+	ft::XmlParser::State	state;
 
 	for (auto const &p : xml.getParams())
 		setParam(p.first, p.second);
 	while (xml.next(state))
 	{
-		if (state == XmlParser::State::START)
+		if (state == ft::XmlParser::State::START)
 		{
 			v = AView::getFactory(xml.getMarkupName())(xml, a);
 			this->addView(v);
 			v->inflate(xml, a);
 		}
-		else if (state == XmlParser::State::END)
+		else if (state == ft::XmlParser::State::END)
 			return ;
 		else
 			break ;

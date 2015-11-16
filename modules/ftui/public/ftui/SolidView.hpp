@@ -24,7 +24,7 @@ namespace ftui
 class	SolidView : public ASolidView
 {
 public:
-	SolidView(XmlParser const &xml, Activity &act);
+	SolidView(ft::XmlParser const &xml, Activity &act);
 	virtual ~SolidView(void);
 
 protected:
@@ -37,7 +37,7 @@ private:
 ** Static
 */
 public:
-	static AView		*createView(XmlParser const &xml, Activity &act);
+	static AView		*createView(ft::XmlParser const &xml, Activity &act);
 };
 
 };

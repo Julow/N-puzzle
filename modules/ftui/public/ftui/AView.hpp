@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 13:36:57 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 14:37:33 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,6 +14,7 @@
 # define AVIEW_HPP
 
 # include "ftui/libftui.hpp"
+# include "ft_xml/XmlParser.hpp"
 
 # include <string>
 # include <vector>
@@ -73,7 +74,7 @@ public:
 		__LAST
 	};
 
-	AView(XmlParser const &xml, Activity &a);
+	AView(ft::XmlParser const &xml, Activity &a);
 	AView(Activity &act, std::string const *id, std::string const &viewName);
 	virtual ~AView(void);
 
@@ -98,7 +99,7 @@ public:
 	** v->setHolder(...)	// if any
 	** v->inflate(xml)
 	*/
-	virtual void				inflate(XmlParser &xml, Activity &act);
+	virtual void				inflate(ft::XmlParser &xml, Activity &act);
 
 	/*
 	** View properties
@@ -232,7 +233,7 @@ protected:
 public:
 	struct view_info_s
 	{
-		typedef AView		*(*factory_t)(XmlParser const &, Activity &);
+		typedef AView		*(*factory_t)(ft::XmlParser const &, Activity &);
 		typedef std::tuple<std::string, lua_CFunction>	luamethod_t;
 
 		std::string					parent;
