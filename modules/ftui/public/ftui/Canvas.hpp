@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/15 17:12:55 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 13:49:42 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -93,13 +93,21 @@ public:
 	int					getWidth(void) const;
 	int					getHeight(void) const;
 
-	void				applyClip(ft::Rect<int> const &rect);
+	// void				applyClip(ft::Rect<int> const &rect);
 	void				setClip(ft::Rect<int> const &rect);
 
 	/*
 	** Clear the content of the clip
 	*/
 	void				clearClip(void);
+
+/*
+** Origin
+*/
+	void				setOrigin(ft::Vec2<int> origin);
+	void				applyOrigin(ft::Vec2<int> apply);
+
+	ft::Vec2<int>		getOrigin(void) const;
 
 /*
 ** Alpha
@@ -162,6 +170,7 @@ protected:
 
 	ft::Rect<int>		_clip;
 
+	ft::Vec2<int>		_origin;
 	float				_alpha;
 	float				_scale;
 

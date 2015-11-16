@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/15 19:22:52 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 13:49:53 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -270,6 +270,25 @@ void			Canvas::clear(ft::Rect<int> const &rect)
 
 /*
 ** ========================================================================== **
+** Origin
+*/
+void			Canvas::setOrigin(ft::Vec2<int> origin)
+{
+	_origin = origin;
+}
+
+void			Canvas::applyOrigin(ft::Vec2<int> apply)
+{
+	_origin += apply;
+}
+
+ft::Vec2<int>	Canvas::getOrigin(void) const
+{
+	return (_origin);
+}
+
+/*
+** ========================================================================== **
 ** Scale
 */
 void			Canvas::setScale(float scale)
@@ -301,12 +320,12 @@ int				Canvas::getHeight(void) const
 	return (_clip.getHeight());
 }
 
-void			Canvas::applyClip(ft::Rect<int> const &rect)
-{
-	_clip.top += rect.top;
-	_clip.left += rect.left;
-	_clip.setSize(ft::make_vec(rect.getWidth(), rect.getHeight()));
-}
+// void			Canvas::applyClip(ft::Rect<int> const &rect)
+// {
+// 	_clip.top += rect.top;
+// 	_clip.left += rect.left;
+// 	_clip.setSize(ft::make_vec(rect.getWidth(), rect.getHeight()));
+// }
 
 void			Canvas::setClip(ft::Rect<int> const &rect)
 {
@@ -345,7 +364,7 @@ void			Canvas::drawRect(ft::Rect<float> const &rect, Params const &opt)
 {
 	ft::Rect<int>	int_rect = static_cast<ft::Rect<int>>(rect * _scale);
 
-	int_rect += ft::make_vec(_clip.left, _clip.top);
+	int_rect += _origin;
 	// if (int_rect.right > _clip.right)
 	// 	int_rect.right = _clip.right;
 	// if (int_rect.bottom > _clip.bottom)
@@ -426,7 +445,7 @@ void			Canvas::drawText(ft::Vec2<float> pos, std::string const &text,
 	if (ft::Color::a(opt.fillColor) == 0 || opt.lineWidth <= 0
 		|| opt.font >= g_faces.size())
 		return ;
-	int_vec += ft::make_vec(_clip.left, _clip.top);
+	int_vec += _origin;
 	ft::f(std::cout, "Drawing at '%' (%)  int_vec1(%)\n", text,  pos, int_vec);
 	applyChangedRect(int_vec);
 	face = g_faces[opt.font];

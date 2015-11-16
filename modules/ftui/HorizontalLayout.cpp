@@ -1,12 +1,12 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   HorizontalLayout.cpp                                 :+:      :+:    :+:   //
+//   HorizontalLayout.cpp                               :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/11 18:52:44 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 14:16:57 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -63,7 +63,7 @@ void			HorizontalLayout::alignChilds(void)
 		childSize = h->getRequestedSize();
 		vm = h->getVerticalMargin();
 		if (childSize.y + vm.x + vm.y > layoutSize.y)
-			childSize.y = layoutSize.y;//TODO: why?, de tt facon ca depasse
+			childSize.y = layoutSize.y - vm.x - vm.y;
 		switch (h->getVerticalAlign())
 		{
 		case Align::TOP:
@@ -77,7 +77,7 @@ void			HorizontalLayout::alignChilds(void)
 			break ;
 		}
 		h->setPosY(childPosY);
-		h->setSize(childSize);//TODO: faut-il verifier que la taille a bien change?
+		h->setSize(childSize);
 	}
 }
 /*
@@ -144,7 +144,7 @@ static ft::Rect<int>	calc_redraw_clip(
 		}
 		// ft::f(std::cout, "clip: %  (%)\n", clip, ft::make_rect(vh->getPos(), vh->getSize()));
 	}
-	return clip;
+	return (clip);
 }
 
 //TODO: check, i nuked the previous definition
@@ -156,7 +156,7 @@ void			HorizontalLayout::onDraw(Canvas &canvas)
 		[=, &canvas](AView *v, ft::Rect<int> const &clip)
 	{
 		canvas.applyAlpha(v->getAlpha());
-		canvas.applyClip(clip);
+		canvas.applyOrigin(clip);
 		v->onDraw(canvas);
 		canvas.setClip(oldClip);
 		canvas.setAlpha(oldAlpha);
@@ -166,7 +166,6 @@ void			HorizontalLayout::onDraw(Canvas &canvas)
 	ft::Rect<int>		clip;
 	AView				*v;
 
-	// TODO: Canvas::setOrigin
 	// canvas.setClip(redrawClip);
 	// ASolidView::onDraw(canvas);
 	// canvas.setClip(old_clip);

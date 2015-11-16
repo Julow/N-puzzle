@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/11 18:52:29 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 13:21:58 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -63,7 +63,7 @@ void			VerticalLayout::alignChilds(void)
 		childSize = h->getRequestedSize();
 		hm = h->getHorizontalMargin();
 		if (childSize.x + hm.x + hm.y > layoutSize.x)
-			childSize.x = layoutSize.x;//TODO: why?, de tt facon ca depasse
+			childSize.x = layoutSize.x - hm.x - hm.y;
 		switch (h->getHorizontalAlign())
 		{
 		case Align::LEFT:
@@ -77,7 +77,7 @@ void			VerticalLayout::alignChilds(void)
 			break ;
 		}
 		h->setPosX(childPosX);
-		h->setSize(childSize);//TODO: faut-il verifier que la taille a bien change?
+		h->setSize(childSize);
 	}
 }
 /*
