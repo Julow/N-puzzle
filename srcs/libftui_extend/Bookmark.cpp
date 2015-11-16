@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:15:02 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 19:07:38 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 18:39:07 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -92,7 +92,7 @@ void			BM::onDraw(ftui::Canvas &can)
 	FTASSERT(_selHolder != nullptr && _delHolder != nullptr);
 	ft::Vec2<int> const	size = this->_holder->getSize();
 	ft::Vec2<int> const	tsize = can.measureText(_text, {0, 0, 12, 0});
-	ft::Rect<int> const	oldClip = can.getClip();
+	ft::Vec2<int> const	oldOrigin = can.getOrigin();
 	ViewHolder *const	delVh = this->_delHolder;
 	ftui::AView *const	del = delVh->getView();
 	ViewHolder *const	selVh = this->_selHolder;
@@ -103,9 +103,10 @@ void			BM::onDraw(ftui::Canvas &can)
 	can.drawText({BMTXT_POSXI, size.y / 2.f - tsize.y / 2},
 				 _text, {0x0, 0xFFAAAAAA, 12, 0});
 	AView::onDraw(can);
-	can.applyClip(ft::make_rect(delVh->getPos(), delVh->getSize()));
+	can.applyOrigin(delVh->getPos());
+	can.setClip(delVh->getSize());
 	del->onDraw(can);
-	can.setClip(oldClip);
+	can.setOrigin(oldOrigin);
 	return ;
 }
 

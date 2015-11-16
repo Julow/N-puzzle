@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/05 14:06:16 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/12 12:15:19 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/16 18:32:34 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -128,7 +128,6 @@ bool		Rect<T>::collides(Rect<T> const &rect, Rect<T> &res) const
 template<typename T>
 bool		Rect<T>::contains(Rect<T> const &rect) const
 {
-//TODO: check, j'ai remove les >=/<= en >/<
 	if (rect.left >= left && rect.top >= top
 		&& rect.right < right && rect.bottom < bottom)
 		return (true);
@@ -138,7 +137,6 @@ bool		Rect<T>::contains(Rect<T> const &rect) const
 template<typename T>
 bool		Rect<T>::contains(Vec2<T> pt) const
 {
-//TODO: check, j'ai remove les >=/<= en >/<
 	if (pt.x >= left && pt.x < right
 		&& pt.y >= top && pt.y < bottom)
 		return (true);
@@ -169,6 +167,12 @@ void		Rect<T>::merge(Vec2<T> pt)
 		top = pt.y;
 	else if (pt.y > bottom)
 		bottom = pt.y;
+}
+
+template<typename T>
+Rect<T>::operator bool(void) const
+{
+	return (left < right && top < bottom);
 }
 
 template<typename T>

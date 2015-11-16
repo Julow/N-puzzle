@@ -37,6 +37,8 @@ o/srcs/Main.o: srcs/Main.cpp modules/ft/public/ft/Rect.hpp \
 	include/GlCanvasHolder.hpp include/Grid.hpp include/ISolverListener.hpp \
 	include/IState.hpp include/Main.hpp include/OCamlBinding.hpp \
 	modules/ft/public/ft/Color.hpp modules/ft/public/ft/assert.hpp \
+	modules/ft_xml/include/public/ft_xml/XmlParser.hpp \
+	modules/ft_xml/include/public/ft_xml/XmlTokenizer.hpp \
 	modules/ftlua/public/ftlua/ftlua.hpp \
 	modules/ftlua/public/ftlua/templates/ftlua_caller.tpp \
 	modules/ftlua/public/ftlua/templates/ftlua_handler.tpp \
@@ -74,6 +76,8 @@ o/srcs/PickState.o: srcs/PickState.cpp include/GlCanvasHolder.hpp \
 	modules/ft/public/ft/templates/Vec2.tpp \
 	modules/ft/public/ft/templates/Vec3.tpp \
 	modules/ft/public/ft/templates/Vec4.tpp modules/ft/public/ft/utils.hpp \
+	modules/ft_xml/include/public/ft_xml/XmlParser.hpp \
+	modules/ft_xml/include/public/ft_xml/XmlTokenizer.hpp \
 	modules/ftlua/public/ftlua/ftlua.hpp \
 	modules/ftlua/public/ftlua/templates/ftlua_caller.tpp \
 	modules/ftlua/public/ftlua/templates/ftlua_handler.tpp \
@@ -108,6 +112,8 @@ o/srcs/libftui_extend/Bookmark.o: srcs/libftui_extend/Bookmark.cpp \
 	modules/ft/public/ft/templates/Vec2.tpp \
 	modules/ft/public/ft/templates/Vec3.tpp \
 	modules/ft/public/ft/templates/Vec4.tpp modules/ft/public/ft/utils.hpp \
+	modules/ft_xml/include/public/ft_xml/XmlParser.hpp \
+	modules/ft_xml/include/public/ft_xml/XmlTokenizer.hpp \
 	modules/ftlua/public/ftlua/ftlua.hpp \
 	modules/ftlua/public/ftlua/templates/ftlua_caller.tpp \
 	modules/ftlua/public/ftlua/templates/ftlua_handler.tpp \

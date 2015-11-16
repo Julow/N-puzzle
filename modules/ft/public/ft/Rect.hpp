@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/02 18:43:04 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/12 13:30:47 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/16 18:32:57 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -100,6 +100,12 @@ public:
 ** Operators
 */
 	Rect<T>		&operator=(Rect<T> const &rhs);
+
+	/*
+	** Check if the rect is empty
+	** (width <= 0 || height <= 0)
+	*/
+	operator bool(void) const;
 
 	/*
 	** Offset the rect

@@ -1,12 +1,12 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   HorizontalLayout.cpp                                 :+:      :+:    :+:   //
+//   HorizontalLayout.cpp                               :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 18:52:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/16 19:42:55 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -63,7 +63,7 @@ void			HorizontalLayout::alignChilds(void)
 		childSize = h->getRequestedSize();
 		vm = h->getVerticalMargin();
 		if (childSize.y + vm.x + vm.y > layoutSize.y)
-			childSize.y = layoutSize.y;//TODO: why?, de tt facon ca depasse
+			childSize.y = layoutSize.y - vm.x - vm.y;
 		switch (h->getVerticalAlign())
 		{
 		case Align::TOP:
@@ -77,7 +77,7 @@ void			HorizontalLayout::alignChilds(void)
 			break ;
 		}
 		h->setPosY(childPosY);
-		h->setSize(childSize);//TODO: faut-il verifier que la taille a bien change?
+		h->setSize(childSize);
 	}
 }
 /*
@@ -144,28 +144,31 @@ static ft::Rect<int>	calc_redraw_clip(
 		}
 		// ft::f(std::cout, "clip: %  (%)\n", clip, ft::make_rect(vh->getPos(), vh->getSize()));
 	}
-	return clip;
+	return (clip);
 }
 
-//TODO: check, i nuked the previous definition
 void			HorizontalLayout::onDraw(Canvas &canvas)
 {
 	float const			oldAlpha = canvas.getAlpha();
-	ft::Rect<int> const	oldClip = canvas.getClip();
+	ft::Vec2<int> const	oldOrigin = canvas.getOrigin();
 	auto				redrawChild =
-		[=, &canvas](AView *v, ft::Rect<int> const &clip)
+		[=, &canvas](AView *v, ft::Vec2<int> pos, ft::Vec2<int> size)
 	{
 		canvas.applyAlpha(v->getAlpha());
-		canvas.applyClip(clip);
+		canvas.applyOrigin(pos);
+		canvas.setClip(size);
 		v->onDraw(canvas);
-		canvas.setClip(oldClip);
+		canvas.setOrigin(oldOrigin);
 		canvas.setAlpha(oldAlpha);
 		return ;
 	};
 	ft::Rect<int>		redrawClip;
-	ft::Rect<int>		clip;
+	ft::Rect<int>		bounds;
 	AView				*v;
 
+	// canvas.setClip(redrawClip);
+	// ASolidView::onDraw(canvas);
+	// canvas.setClip(old_clip);
 	// FTPADB("% GV(%%)", this->tostring()
 	// 	   , isRedrawQueried(), AView::isRedrawQueried());
 	if (AView::isRedrawQueried())
@@ -174,8 +177,7 @@ void			HorizontalLayout::onDraw(Canvas &canvas)
 		_layoutFlags &= ~AView::REDRAW_QUERY;
 		for (ViewHolder *vh : _childs)
 		{
-			redrawChild(
-				vh->getView(), ft::make_rect(vh->getPos(), vh->getSize()));
+			redrawChild(vh->getView(), vh->getPos(), vh->getSize());
 		}
 	}
 	else if (_layoutFlags & AView::REDRAW_QUERY)
@@ -184,15 +186,15 @@ void			HorizontalLayout::onDraw(Canvas &canvas)
 		for (ViewHolder *vh : _childs)
 		{
 			v = vh->getView();
-			clip = ft::make_rect(vh->getPos(), vh->getSize());
+			bounds = ft::make_rect(vh->getPos(), vh->getSize());
 			// FTPAD("% GVClip(%%%)",
 			// 	  v->tostring()
 			// 	  , v->isRedrawQueried()
 			// 	  , v->AView::isRedrawQueried()
-			// 	  , redrawClip.collides(clip)
+			// 	  , redrawClip.collides(bounds)
 			// 	);
-			if (v->isRedrawQueried() || redrawClip.collides(clip))
-				redrawChild(v, clip);
+			if (v->isRedrawQueried() || redrawClip.collides(bounds))
+				redrawChild(v, bounds.getPos(), bounds.getSize());
 		}
 		_layoutFlags &= ~AView::REDRAW_QUERY;
 	}
