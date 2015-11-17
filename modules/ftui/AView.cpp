@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 20:04:28 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 11:07:12 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -168,7 +168,6 @@ void				AView::setViewHolder(IViewHolder *holder)
 	}
 	else
 	{
-		FTASSERT(holder->getParent() != nullptr);
 		if (holder->getParent() == nullptr
 			|| !holder->getParent()->isAttached())
 		{

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 12:58:38 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/12 19:19:48 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/17 13:43:37 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -29,6 +29,7 @@ class StartState;
 # include "GlCanvasHolder.hpp"
 # include "OCamlBinding.hpp"
 # include "IState.hpp"
+# include "IBundle.hpp"
 # include "Grid.hpp"
 
 class Main
@@ -36,7 +37,7 @@ class Main
 	/* CONSTRUCTION ***************** */
 public:
 	static Main				*instance(void);
-	static void				loadSharedScripts(ftui::Activity &a);
+	void					loadSharedScripts(ftui::Activity &a);
 
 private:
 	Main(void);
@@ -46,6 +47,8 @@ public:
 	/* LOOP ************************* */
 public:
 	void					loop(void);
+	IBundle					*popBundle(std::string const &str);
+	void					pushBundle(std::string const &str, IBundle *b);
 
 public:
 	/* GLFW INTERACTIONS ************ */
@@ -85,6 +88,7 @@ private:
 	GlCanvasHolder			_canvasHolder;
 	std::unique_ptr<IState>	_state;
 	OCamlBinding			_ocaml;
+	std::unordered_map<std::string, IBundle*>	_bundles;
 
 public:
 

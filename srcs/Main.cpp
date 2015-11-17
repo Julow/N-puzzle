@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 15:41:41 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 13:43:51 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -56,7 +56,7 @@ void			Main::loadSharedScripts(ftui::Activity &act)
 	FTASSERT(ret == LUA_TTABLE);
 
 	lua_pushinteger(l, 0);
-	lua_pushlightuserdata(l, Main::instance());
+	lua_pushlightuserdata(l, this);
 	lua_settable(l, -3);
 
 	lua_pop(l, 1);
@@ -144,6 +144,29 @@ void				Main::loop(void)
 		glfwSwapBuffers(_window);
 	}
 }
+
+IBundle				*Main::popBundle(std::string const &str)
+{
+	auto		it = this->_bundles.find(str);
+	IBundle		*b{nullptr};
+
+	if (it != this->_bundles.end())
+	{
+		b = it->second;
+		this->_bundles.erase(it);
+	}
+	return b;
+}
+
+void				Main::pushBundle(std::string const &str, IBundle *b)
+{
+	bool 	success;
+
+	std::tie(std::ignore, success) = this->_bundles.insert({str, b});
+	FTASSERT(success == true, "Key already taken");
+	return ;
+}
+
 
 /*
 ** ************************************************************************** **

@@ -1,36 +1,25 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   IState.hpp                                         :+:      :+:    :+:   //
+//   IBundle.hpp                                        :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/11/12 18:06:30 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 11:35:23 by ngoguey          ###   ########.fr       //
+//   Created: 2015/11/17 11:34:50 by ngoguey           #+#    #+#             //
+//   Updated: 2015/11/17 11:36:15 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#ifndef ISTATE_HPP
-# define ISTATE_HPP
+#ifndef IBUNDLE_HPP
+# define IBUNDLE_HPP
 
-// # include <iostream>
-# include <memory>
-
-# include "ftui/Canvas.hpp"
-# include "ftui/Activity.hpp"
-
-class IState
+class IBundle
 {
 public:
 
 	/* CONSTRUCTION ***************** */
-	virtual ~IState(){}
-
-	virtual void			loop(
-		std::unique_ptr<IState> &ptr
-		, ftui::Canvas &can) = 0;
-	virtual ftui::Activity	&getActivity(void) = 0;
+	virtual ~IBundle(){}
 
 };
 
-#endif /* ******************************************************** ISTATE_HPP */
+#endif /* ******************************************************* IBUNDLE_HPP */

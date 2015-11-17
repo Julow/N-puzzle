@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/11 11:58:44 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 13:57:55 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/17 13:17:06 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -29,6 +29,17 @@ static ft::Vec3<float>		c255to1(ft::Vec3<int> const c)
 // * CONSTRUCTORS *********************************************************** //
 // * TILES ************************** //
 Tiles::Tiles() { return ; }
+Tiles::~Tiles() { return ; }
+Tiles::Tiles(Tiles &&src)
+	: _p(src._p)
+	, _vao(src._vao)
+	, _vbo(src._vbo)
+{
+	src._p = 0;
+	src._vao = 0;
+    src._vbo.clear();
+	return ;
+}
 
 // * TMP **************************** //
 Tiles::Tmp::Tmp(ft::Vec2<int> const rectSize
@@ -52,7 +63,6 @@ Tiles::Tmp::Tmp(ft::Vec2<int> const rectSize
 	return ;
 }
 
-Tiles::~Tiles() { return ; }
 Tiles::Tmp::~Tmp() { return ; }
 
 // * MEMBER FUNCTIONS / METHODS ********************************************* //
