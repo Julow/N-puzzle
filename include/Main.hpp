@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 12:58:38 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 13:43:37 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 14:46:00 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,7 +24,7 @@ class StartState;
 # include <iostream>
 
 # include "ftlua/ftlua.hpp"
-# include "gl.hpp"
+# include "gl/gl.hpp"
 
 # include "GlCanvasHolder.hpp"
 # include "OCamlBinding.hpp"

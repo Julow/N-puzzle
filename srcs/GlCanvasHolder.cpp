@@ -6,12 +6,12 @@
 //   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/07 21:38:50 by juloo             #+#    #+#             //
-//   Updated: 2015/11/12 12:17:15 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/17 14:45:33 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "GlCanvasHolder.hpp"
-#include "gl.hpp"
+#include "gl/gl.hpp"
 #include "ft/Color.hpp"
 #include "ft/utils.hpp"
 

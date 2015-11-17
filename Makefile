@@ -4,16 +4,19 @@
 NAME			:= npuzzle
 
 # Project directories
-DIRS			:= srcs include modules/ft/public modules/ftlua/public modules/ftui/public modules/liblua/public modules/tiles/include modules/gl modules/ft_xml/include/public
+DIRS			:= srcs include
 
 # Git submodule to init
 MODULES			:=
 # Makefiles to call
 LIBS			:= modules
 
+# Includes dirs
+INCLUDE_DIRS	= modules/liblua/lua-5.3.1/src $(wildcard modules/_objs/*/_public)
+
 # Base flags
 BASE_FLAGS		= -Wall -Wextra
-HEAD_FLAGS		= $(addprefix -I,$(DIRS))
+HEAD_FLAGS		= $(addprefix -I,$(DIRS) $(INCLUDE_DIRS))
 
 # Compilation flags (per language)
 C_FLAGS			= $(HEAD_FLAGS) $(BASE_FLAGS)
