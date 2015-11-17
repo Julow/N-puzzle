@@ -1,4 +1,4 @@
 module ft_xml:
-	public include include/public/
+	public include public/
 
 	private require ft

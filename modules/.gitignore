@@ -1,2 +1,3 @@
 libftui.a
 *.o
+_objs/*

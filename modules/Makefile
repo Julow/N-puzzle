@@ -34,7 +34,7 @@ O_DIR			:= _objs
 JOBS			:= 8
 
 # Column output
-COLUMN_OUTPUT	:= 0
+COLUMN_OUTPUT	:= 1
 
 ifeq ($(COLUMN_OUTPUT),0)
 	PRINT_OK	= printf '\033[32m$<\033[0m\n'
@@ -97,6 +97,9 @@ $(SUBMODULE_RULES):
 	git submodule init $(@:.git=)
 	git submodule update $(@:.git=)
 
+# Create include links
+$(PUBLIC_LINKS):
+	ln -s $(abspath $<) $@
 # Create obj directories
 $(O_DIR)/%/:
 	mkdir -p $@
@@ -110,7 +113,7 @@ rebug: fclean debug
 # Clean obj files
 clean:
 	rm -f $(PRINT_FILE)
-	rm -f $(O_FILES)
+	rm -f $(O_FILES) $(PUBLIC_LINKS)
 
 # Clean everything
 fclean: clean

@@ -15,7 +15,7 @@
 #include <cstdlib>
 #include <string>
 #include "tiles/Tiles.hpp"
-#include "gl.hpp"
+#include "gl/gl.hpp"
 
 static ft::Vec3<float>		c255to1(ft::Vec3<int> const c)
 {

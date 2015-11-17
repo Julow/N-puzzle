@@ -1,5 +1,5 @@
 module liblua:
-	public include public/
+	public include lua-5.3.1/src/
 
 	disable auto
 
