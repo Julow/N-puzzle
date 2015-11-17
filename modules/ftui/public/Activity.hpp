@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 14:37:51 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 17:17:43 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -46,6 +46,10 @@ public:
 	void				inflate(std::istream &stream);
 	void				saveScriptPath(std::string const &str);
 
+	static int			createViewG(lua_State *l);
+	static Activity		*retrieveActivity(lua_State *l);
+	void				pushActivity(void);
+
 	lua_State			*getLuaState(void) const;
 	AView				*getRoot(void);
 	AView const			*getRoot(void) const;
@@ -76,15 +80,15 @@ public:
 	 *	AView::onEvent handles the call to lua.
 	 * 	********************************************************************* **
 	 *	onFire case1: (c++ callback)
-	 *	  DerivedView::fname()	  ->(optional)	AView::onEvent()
-	 *	  AView::onEvent		  ->			self:fname() || self:onEvent()
+	 *		DerivedView::fname()		->(optional)	AView::onEvent()
+	 *		AView::onEvent			->			self:fname() || self:onEvent()
 	 *	*
 	 *	onFire case2: (AView::onEvent extended)
-	 *	  DerivedView::onEvent()  ->(optional)	AView::onEvent()
-	 *	  AView::onEvent		  ->			self:fname() || self:onEvent()
+	 *		DerivedView::onEvent()	->(optional)	AView::onEvent()
+	 *		AView::onEvent			->			self:fname() || self:onEvent()
 	 *	*
 	 *	onFire case3: (AView::onEvent notextended)
-	 *	  AView::onEvent		  ->			self:fname() || self:onEvent()
+	 *		AView::onEvent			->			self:fname() || self:onEvent()
 	 */
 	template<typename... Args>
 	void				registerEvent(std::string const &event, AView *v);

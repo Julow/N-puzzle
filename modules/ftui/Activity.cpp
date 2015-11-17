@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 20:18:23 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 17:29:32 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,6 +15,7 @@
 
 #include "ft/utils.hpp"
 #include "ftlua/ftlua.hpp"
+#include "liblua/lua.hpp"
 #include "ftui/Activity.hpp"
 #include "ftui/AView.hpp"
 #include "ftui/Canvas.hpp"
@@ -50,7 +51,7 @@ Activity::~Activity(void)
 ** Init-time -> instance.inflate
 */
 
-static lua_State	*new_lua_env(void)
+static lua_State	*new_lua_env()
 {
 	lua_State *const	l = luaL_newstate();
 	int					err{0};
@@ -60,6 +61,7 @@ static lua_State	*new_lua_env(void)
 	luaL_openlibs(l);
 	err = luaL_dofile(l, (RES_PATH "/utils.lua"));
 	FTASSERT(err == LUA_OK);
+	ftlua::registerLuaCFunTable(l, "_G", "createView", &Activity::createViewG);
 	ftlua::pushUtils(l);
 	Canvas::pushTemplate(l);
 	AView::pushViewTemplates(l);
@@ -84,11 +86,12 @@ static void			load_views_scripts(
 void			Activity::inflate(std::istream &stream)
 {
 	ft::XmlParser			xml(stream);
-	AView				*v;
+	AView					*v;
 	ft::XmlParser::State	state;
 
 	FTASSERT(_l == nullptr, "Activity.inflate called again");
 	_l = new_lua_env();
+	this->pushActivity();
 	if (!xml.next(state))
 		throw std::runtime_error("Activity should own at least 1 view");
 	FTASSERT(state == ft::XmlParser::State::START, "Cannot fail");
@@ -119,6 +122,60 @@ void			Activity::saveScriptPath(std::string const &str)
 ** ************************************************************************** **
 ** Render-time -> internal functions
 */
+
+Activity		*Activity::retrieveActivity(lua_State *l)
+{
+	Activity	*act;
+
+	if (lua_getglobal(l, "ftui") != LUA_TTABLE)
+		luaL_error(l, "Could not retrieve _G['ftui']");
+	lua_pushstring(l, "activity");
+	if (lua_gettable(l, -2) != LUA_TLIGHTUSERDATA)
+		luaL_error(l, "Could not retrieve activity pointer");
+	act = reinterpret_cast<Activity*>(lua_touserdata(l, -1));
+	lua_pop(l, 2);
+	return act;
+}
+
+void			Activity::pushActivity(void)
+{
+	if (lua_getglobal(_l, "ftui") != LUA_TTABLE)
+		throw std::runtime_error("Could not retrieve _G['ftui']");
+	lua_pushstring(_l, "activity");
+	lua_pushlightuserdata(_l, this);
+	lua_settable(_l, -3);
+	lua_pop(_l, 1);
+	return ;
+}
+
+
+int				Activity::createViewG(lua_State *l)
+{
+	int const						top = lua_gettop(l);
+	AView							*v;
+	AView::view_info_s::factory_t	fact;
+	int								err;
+	std::string const				type(luaL_checkstring(l, 1));
+	std::string	const *const		id = top == 2
+		? (std::string[]){std::string(luaL_checkstring(l, 2))} : nullptr;
+
+	if (top > 2)
+		luaL_error(l, "Too many arguments");
+	try {
+		fact = AView::getFactory(type); }
+	catch (...) {
+		luaL_error(l, ft::f("Cannot find '%'", type).c_str()); }
+	if (fact == nullptr)
+		luaL_error(l, ft::f("Cannot instanciate '%'", type).c_str());
+	lua_pop(l, top);
+	v = fact(*Activity::retrieveActivity(l), nullptr, id);
+	lua_pushglobaltable(l);
+	lua_pushlightuserdata(l, v);
+	err = lua_gettable(l, -2);
+	FTASSERT(err == LUA_TTABLE);
+	lua_remove(l, 1);
+	return 1;
+}
 
 lua_State		*Activity::getLuaState(void) const
 {
