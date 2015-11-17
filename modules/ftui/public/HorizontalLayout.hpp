@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/11 11:47:52 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 14:45:34 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 15:39:18 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -58,9 +58,6 @@ public:
 	HorizontalLayout(void) = delete;
 	HorizontalLayout(HorizontalLayout const &src) = delete;
 	HorizontalLayout			&operator=(HorizontalLayout const &rhs) = delete;
-
-	virtual void			inflate(Activity &a, ft::XmlParser &xml);
-
 
 	virtual void			onUpdate(void);
 	virtual void			onMeasure(void);

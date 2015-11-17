@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/12 08:49:42 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/17 15:02:47 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 15:36:55 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -44,9 +44,6 @@ TextView::TextView(Activity &act, std::string const *id
 TextView::~TextView(void)
 {
 }
-
-//TODO: TextView inflate?
-
 
 void				TextView::onMeasure(void)
 {

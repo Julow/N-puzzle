@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/17 15:02:58 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 15:38:40 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -48,13 +48,6 @@ VerticalLayout::VerticalLayout(
 VerticalLayout::~VerticalLayout(void)
 {
 }
-
-void            VerticalLayout::inflate(Activity &a, ft::XmlParser &xml)
-{
-	ALayout::inflate(a, xml);
-	return ;
-}
-
 
 void			VerticalLayout::onUpdate(void)
 {

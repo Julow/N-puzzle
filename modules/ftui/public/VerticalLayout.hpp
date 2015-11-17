@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:12:43 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/17 14:45:38 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 15:39:22 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -58,9 +58,6 @@ public:
 	VerticalLayout(void) = delete;
 	VerticalLayout(VerticalLayout const &src) = delete;
 	VerticalLayout			&operator=(VerticalLayout const &rhs) = delete;
-
-	virtual void			inflate(Activity &a, ft::XmlParser &xml);
-
 
 	virtual void			onUpdate(void);
 	virtual void			onMeasure(void);

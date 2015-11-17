@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:26:40 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 14:36:43 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 15:39:13 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -48,7 +48,6 @@ public:
 	Button(Button const &src) = delete;
 	Button				&operator=(Button const &rhs) = delete;
 
-	virtual void		inflate(Activity &act, ft::XmlParser &xml);
 	// virtual void setParam(std::string const &k, std::string const &v); //TODO: this
 
 	// DRAW ************************* //

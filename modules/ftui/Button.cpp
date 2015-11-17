@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:32:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 15:02:38 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 15:37:00 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -64,12 +64,6 @@ Button::Button(Activity &act, std::string const *id
 
 Button::~Button()
 {
-	return ;
-}
-
-void		Button::inflate(Activity &act, ft::XmlParser &xml)
-{
-	AView::inflate(act, xml);
 	return ;
 }
 
