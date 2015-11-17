@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 19:09:14 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 17:45:51 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -58,7 +58,7 @@ AView::views_info_t				AView::viewsInfo
 	{"Button", {"ASolidView", &Button::createView, {
 	}, {}}},
 	{"ALayout", {"ASolidView", nullptr, {
-		INSG(ALayout, size), INSG(ALayout, at)
+		INSG(ALayout, size), INSG(ALayout, at), INSG(ALayout, addView)
 	}, "ALayout = ftui.ALayoutdef; ftui.ALayoutdef = nil;"}},
 	{"VerticalLayout", {"ALayout", &VerticalLayout::createView, {}, {}}},
 	{"HorizontalLayout", {"ALayout", &HorizontalLayout::createView, {}, {}}},

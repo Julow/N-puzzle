@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:15:02 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 15:10:07 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 16:03:53 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -74,6 +74,7 @@ BM::Bookmark(ftui::Activity &act, ft::XmlParser const &xml)
 	, _selHolder(nullptr)
 	, _delHolder(nullptr)
 {
+	FTASSERT(false, "This constructor should not be used");
 	this->_genSlaveButton();
 	return ;
 }

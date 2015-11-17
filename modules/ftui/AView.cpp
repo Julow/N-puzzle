@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/17 11:07:12 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 18:33:25 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -215,7 +215,7 @@ float				AView::getAlpha(void) const
 
 bool				AView::isVisible(void) const
 {
-	return (this->_flags & AView::HIDDEN);
+	return (!(this->_flags & AView::HIDDEN));
 }
 
 void				AView::setAlpha(float value)
@@ -224,15 +224,15 @@ void				AView::setAlpha(float value)
 	return ;
 }
 
-void				AView::setVisibility(bool hidden)
+void				AView::setVisibility(bool show)
 {
-	if (static_cast<bool>(this->_flags & AView::HIDDEN) != hidden)
+	if (this->isVisible() != show)
 	{
-		if (hidden == true)
-			this->_flags |= AView::HIDDEN;
-		else
+		if (show == true)
 			this->_flags &= ~AView::HIDDEN;
-		onVisibilityChange(hidden);
+		else
+			this->_flags |= AView::HIDDEN;
+		onVisibilityChange(show);
 	}
 	return ;
 }

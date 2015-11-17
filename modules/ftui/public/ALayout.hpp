@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/17 15:30:38 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 17:35:19 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -116,7 +116,7 @@ private:
 ** Static
 */
 public:
-	static int					setParamG(lua_State *l);
+	static int					setParamG(lua_State *l); //TODO: remove ?
 	static int					atG(lua_State *l);
 
 	static int					sizeG(lua_State *l);
