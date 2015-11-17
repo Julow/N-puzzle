@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:15:02 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 20:23:26 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 15:07:37 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -46,14 +46,10 @@ ftui::AView		*BM::createView(ftui::Activity &act
 	return new Bookmark(act, *xml);
 }
 
-BM::Bookmark(ftui::Activity &act, ft::XmlParser const &xml)
-	: ALayout(act, xml)
-	, _text("Hello world")
-	, _selHolder(nullptr)
-	, _delHolder(nullptr)
+void			BM::_genSlaveButton(void)
 {
-	ftui::Button	*del = new ftui::Button(act, nullptr);
-	ftui::Button	*sel = new ftui::Button(act, nullptr);
+	ftui::Button	*del = new ftui::Button(this->_act, nullptr);
+	ftui::Button	*sel = new ftui::Button(this->_act, nullptr);
 
 	del->setNormalParams({0xFFFF0000, 0xFFBB0000, 1, 0});
 	del->setPushedParams({0xFFFF0000, 0xFFBB0000, 2, 0});
@@ -70,7 +66,27 @@ BM::Bookmark(ftui::Activity &act, ft::XmlParser const &xml)
 	this->_selHolder->setSize({BM_WIDTHI, BM_HEIGHTI});
 	this->_selHolder->setPos({0, 0});
 	sel->setViewHolder(this->_selHolder);
+	return ;
+}
 
+BM::Bookmark(ftui::Activity &act, ft::XmlParser const &xml)
+	: ALayout(act, xml)
+	, _text("Hello world")
+	, _selHolder(nullptr)
+	, _delHolder(nullptr)
+{
+	this->_genSlaveButton();
+	return ;
+}
+
+BM::Bookmark(
+	ftui::Activity &act, std::string const *id, std::string const &viewName)
+    : ALayout(act, id, viewName)
+	, _text("Hello world")
+	, _selHolder(nullptr)
+	, _delHolder(nullptr)
+{
+	this->_genSlaveButton();
 	return ;
 }
 

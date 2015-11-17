@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 20:15:46 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 15:02:03 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -27,6 +27,13 @@ ALayout::ALayout(Activity &act, ft::XmlParser const &xml) :
 	ASolidView(act, xml)
 {
 }
+
+ALayout::ALayout(
+	Activity &act, std::string const *id, std::string const &viewName) :
+	ASolidView(act, id, viewName)
+{
+}
+
 
 ALayout::~ALayout(void)
 {

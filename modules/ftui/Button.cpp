@@ -6,11 +6,10 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:32:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 20:23:33 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 15:02:38 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-//#include <iostream>
 #include "ftui/Button.hpp"
 #include "ftui/Activity.hpp"
 #include "ftui/IViewHolder.hpp"
@@ -29,13 +28,12 @@ Button::time_diff const	Button::_maxDelta =
 ** CONSTRUCTION
 */
 
-AView		*Button::createView(ftui::Activity &act
-								, ft::XmlParser const *xml /* = nullptr */
-								, std::string const *id /* = nullptr */)
+AView		*Button::createView(
+	ftui::Activity &act, ft::XmlParser const *xml, std::string const *id)
 {
-	FTASSERT(xml != nullptr || id != nullptr);
+	FTASSERT((xml == nullptr) != (id == nullptr));
 	if (xml == nullptr)
-		; // return new Button(act, id);
+		return new Button(act, id);
 	return new Button(act, *xml);
 }
 

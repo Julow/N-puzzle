@@ -6,26 +6,47 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/12 08:49:42 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 20:23:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 15:02:47 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "ftui/TextView.hpp"
 #include "ftui/IViewHolder.hpp"
 
-#include <string>
-
 namespace ftui
 {
 
-TextView::TextView(Activity &a, ft::XmlParser const &xml) :
-	ASolidView(a, xml), _text(""), _textParams{0x0, 0x0, 16, 0}
+/* ************************************************************************** **
+** CONSTRUCTION
+*/
+
+AView				*TextView::createView(
+	ftui::Activity &act, ft::XmlParser const *xml, std::string const *id)
+{
+	FTASSERT((xml == nullptr) != (id == nullptr));
+	if (xml == nullptr)
+		return new TextView(act, id);
+	return new TextView(act, *xml);
+}
+
+TextView::TextView(Activity &a, ft::XmlParser const &xml)
+	: ASolidView(a, xml), _text(""), _textParams{0x0, 0x0, 16, 0}
+{
+}
+
+
+TextView::TextView(Activity &act, std::string const *id
+			   , std::string const &viewName /* = "TextView" */)
+	: ASolidView(act, id, viewName), _text(""), _textParams{0x0, 0x0, 16, 0}
 {
 }
 
 TextView::~TextView(void)
 {
 }
+
+//TODO: TextView inflate?
+
 
 void				TextView::onMeasure(void)
 {
@@ -108,16 +129,6 @@ void				TextView::setParam(std::string const &k,
 		it->second(this, v);
 	else
 		ASolidView::setParam(k, v);
-}
-
-AView				*TextView::createView(ftui::Activity &act
-										  , ft::XmlParser const *xml /* = nullptr */
-										  , std::string const *id /* = nullptr */)
-{
-    FTASSERT(xml != nullptr || id != nullptr);
-	if (xml == nullptr)
-		; // return new TextView(act, id);
-	return new TextView(act, *xml);
 }
 
 };

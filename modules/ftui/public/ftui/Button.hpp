@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:26:40 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 20:05:04 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 14:36:43 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -36,9 +36,8 @@ public:
 	};
 
 	// CONSTRUCTION ***************** //
-	static AView		*createView(ftui::Activity &act
-									, ft::XmlParser const *xml = nullptr
-									, std::string const *id = nullptr);
+	static AView		*createView(
+		ftui::Activity &act, ft::XmlParser const *xml, std::string const *id);
 
 	Button(Activity &act, ft::XmlParser const &xml);
 	Button(Activity &act, std::string const *id
@@ -51,9 +50,6 @@ public:
 
 	virtual void		inflate(Activity &act, ft::XmlParser &xml);
 	// virtual void setParam(std::string const &k, std::string const &v); //TODO: this
-
-	virtual void		onAttach(void);
-	virtual void		onDetach(void);
 
 	// DRAW ************************* //
 	virtual void		onDraw(Canvas &canvas);
@@ -69,6 +65,9 @@ public:
 	virtual void		onDoubleClick(int mods);
 
 	// INTERACTIONS ***************** //
+	virtual void		onAttach(void);
+	virtual void		onDetach(void);
+
 	virtual void		setState(bool status);
 	virtual bool		getState(void);
 

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:12:43 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 20:09:21 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 14:45:38 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -47,14 +47,20 @@ public:
 		RIGHT
 	};
 
-	static AView			*createView(ftui::Activity &act
-										, ft::XmlParser const *xml = nullptr
-										, std::string const *id = nullptr);
+	static AView			*createView(
+		ftui::Activity &act, ft::XmlParser const *xml, std::string const *id);
 
-	VerticalLayout(Activity &act, ft::XmlParser const &xml); //TODO check, moved to public (Horiz too)
+	VerticalLayout(Activity &act, ft::XmlParser const &xml);
+	VerticalLayout(Activity &act, std::string const *id
+	 , std::string const &viewName = "VerticalLayout");
 	virtual ~VerticalLayout(void);
 
+	VerticalLayout(void) = delete;
+	VerticalLayout(VerticalLayout const &src) = delete;
+	VerticalLayout			&operator=(VerticalLayout const &rhs) = delete;
+
 	virtual void			inflate(Activity &a, ft::XmlParser &xml);
+
 
 	virtual void			onUpdate(void);
 	virtual void			onMeasure(void);
@@ -80,11 +86,6 @@ protected:
 	virtual IViewHolder		*holderAt(int i);
 
 	virtual void			alignChilds(void);
-
-private:
-	VerticalLayout(void) = delete;
-	VerticalLayout(VerticalLayout const &src) = delete;
-	VerticalLayout			&operator=(VerticalLayout const &rhs) = delete;
 
 /*
 ** Static

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:14:49 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 19:58:33 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 15:07:05 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -28,6 +28,8 @@ public:
 										, std::string const *id = nullptr);
 
 	Bookmark(ftui::Activity &act, ft::XmlParser const &xml);
+	Bookmark(ftui::Activity &act, std::string const *id
+			 , std::string const &viewName);
 	~Bookmark();
 
 	Bookmark() = delete;
@@ -61,6 +63,8 @@ private:
 	std::string				_text;
 	ViewHolder				*_selHolder;
 	ViewHolder				*_delHolder;
+
+	void					_genSlaveButton(void);
 
 };
 

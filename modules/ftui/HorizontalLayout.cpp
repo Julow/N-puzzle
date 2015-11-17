@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 20:23:21 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 15:02:55 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,19 +16,45 @@
 #include "ft/utils.hpp"
 
 #include <algorithm>
-#include <iostream>
 
 namespace ftui
 {
+
+/* ************************************************************************** **
+** CONSTRUCTION
+*/
+
+AView			*HorizontalLayout::createView(
+	ftui::Activity &act, ft::XmlParser const *xml, std::string const *id)
+{
+	FTASSERT((xml == nullptr) != (id == nullptr));
+	if (xml == nullptr)
+		return new HorizontalLayout(act, id);
+	return new HorizontalLayout(act, *xml);
+}
 
 HorizontalLayout::HorizontalLayout(Activity &act, ft::XmlParser const &xml)
 	: ALayout(act, xml)
 {
 }
 
+HorizontalLayout::HorizontalLayout(
+	Activity &act, std::string const *id
+	, std::string const &viewName /* = "HorizontalLayout" */)
+	: ALayout(act, id, viewName)
+{
+}
+
 HorizontalLayout::~HorizontalLayout(void)
 {
 }
+
+void            HorizontalLayout::inflate(Activity &a, ft::XmlParser &xml)
+{
+	ALayout::inflate(a, xml);
+	return ;
+}
+
 
 void			HorizontalLayout::onUpdate(void)
 {
@@ -39,12 +65,6 @@ void			HorizontalLayout::onUpdate(void)
 			h->getView()->onUpdate();
 	}
 	_layoutFlags &= ~AView::UPDATE_QUERY;
-}
-
-void            HorizontalLayout::inflate(Activity &a, ft::XmlParser &xml)
-{
-	ALayout::inflate(a, xml);
-	return ;
 }
 
 /*
@@ -255,19 +275,6 @@ int				HorizontalLayout::size(void) const
 IViewHolder		*HorizontalLayout::holderAt(int i)
 {
 	return (_childs[i]);
-}
-
-/*
-** Static
-*/
-AView			*HorizontalLayout::createView(ftui::Activity &act
-											  , ft::XmlParser const *xml /* = nullptr */
-											  , std::string const *id /* = nullptr */)
-{
-	FTASSERT(xml != nullptr || id != nullptr);
-	if (xml == nullptr)
-		; // return new HorizontalLayout(act, id);
-	return new HorizontalLayout(act, *xml);
 }
 
 };

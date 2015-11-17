@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/12 08:49:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 20:13:38 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 14:45:19 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,8 +24,20 @@ namespace ftui
 class	TextView : public ASolidView
 {
 public:
+
+	// CONSTRUCTION ***************** //
+	static AView		*createView(
+		ftui::Activity &act, ft::XmlParser const *xml, std::string const *id);
+
 	TextView(Activity &a, ft::XmlParser const &xml);
+	TextView(Activity &act, std::string const *id
+			 , std::string const &viewName = "TextView");
 	virtual ~TextView(void);
+
+	TextView(void) = delete;
+	TextView(TextView const &src) = delete;
+	TextView			&operator=(TextView const &rhs) = delete;
+
 
 	virtual void		onMeasure(void);
 	virtual void		onDraw(Canvas &canvas);
@@ -45,23 +57,13 @@ public:
 	virtual void		setParam(std::string const &k, std::string const &v);
 
 protected:
-
 	std::string			_text;
 	Canvas::Params		_textParams;
-
-private:
-	TextView(void);
-	TextView(TextView const &src);
-	TextView			&operator=(TextView const &rhs);
 
 /*
 ** Static
 */
 public:
-	static AView            *createView(ftui::Activity &act
-										, ft::XmlParser const *xml = nullptr
-										, std::string const *id = nullptr);
-
 	static int			getTextG(lua_State *l);
 	static int			setTextG(lua_State *l);
 	static int			getFontG(lua_State *l);

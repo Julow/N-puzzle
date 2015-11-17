@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/10 17:50:52 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 20:16:55 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 14:45:27 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,22 +24,18 @@ namespace ftui
 class	SolidView : public ASolidView
 {
 public:
+
+	static AView		*createView(
+		ftui::Activity &act, ft::XmlParser const *xml, std::string const *id);
+
 	SolidView(Activity &act, ft::XmlParser const &xml);
+	SolidView(Activity &act, std::string const *id
+	 , std::string const &viewName = "SolidView");
 	virtual ~SolidView(void);
 
-protected:
-
-private:
-	SolidView(void);
-	SolidView(SolidView const &src);
-	SolidView			&operator=(SolidView const &rhs);
-/*
-** Static
-*/
-public:
-	static AView		*createView(ftui::Activity &act
-									, ft::XmlParser const *xml = nullptr
-									, std::string const *id = nullptr);
+	SolidView(void) = delete;
+	SolidView(SolidView const &src) = delete;
+	SolidView			&operator=(SolidView const &rhs) = delete;
 
 };
 

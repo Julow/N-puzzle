@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 20:04:53 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 15:01:24 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -36,6 +36,7 @@ class	ALayout : public ASolidView
 public:
 
 	ALayout(Activity &act, ft::XmlParser const &xml);
+	ALayout(Activity &act, std::string const *id, std::string const &viewName);
 	virtual ~ALayout(void);
 
 /*

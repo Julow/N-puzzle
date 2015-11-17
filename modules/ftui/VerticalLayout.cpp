@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 20:23:11 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 15:02:58 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,19 +16,45 @@
 #include "ft/utils.hpp"
 
 #include <algorithm>
-#include <iostream>
 
 namespace ftui
 {
+
+/* ************************************************************************** **
+** CONSTRUCTION
+*/
+
+AView			*VerticalLayout::createView(
+	ftui::Activity &act, ft::XmlParser const *xml, std::string const *id)
+{
+	FTASSERT((xml == nullptr) != (id == nullptr));
+	if (xml == nullptr)
+		return new VerticalLayout(act, id);
+	return new VerticalLayout(act, *xml);
+}
 
 VerticalLayout::VerticalLayout(Activity &act, ft::XmlParser const &xml)
 	: ALayout(act, xml)
 {
 }
 
+VerticalLayout::VerticalLayout(
+	Activity &act, std::string const *id
+	, std::string const &viewName /* = "VerticalLayout" */)
+	: ALayout(act, id, viewName)
+{
+}
+
 VerticalLayout::~VerticalLayout(void)
 {
 }
+
+void            VerticalLayout::inflate(Activity &a, ft::XmlParser &xml)
+{
+	ALayout::inflate(a, xml);
+	return ;
+}
+
 
 void			VerticalLayout::onUpdate(void)
 {
@@ -39,12 +65,6 @@ void			VerticalLayout::onUpdate(void)
 			h->getView()->onUpdate();
 	}
 	_layoutFlags &= ~AView::UPDATE_QUERY;
-}
-
-void            VerticalLayout::inflate(Activity &a, ft::XmlParser &xml)
-{
-	ALayout::inflate(a, xml);
-	return ;
 }
 
 /*
@@ -80,6 +100,7 @@ void			VerticalLayout::alignChilds(void)
 		h->setSize(childSize);
 	}
 }
+
 /*
 ** onMeasure
 ** -
@@ -256,17 +277,5 @@ IViewHolder		*VerticalLayout::holderAt(int i)
 	return (_childs[i]);
 }
 
-/*
-** Static
-*/
-AView			*VerticalLayout::createView(ftui::Activity &act
-											, ft::XmlParser const *xml /* = nullptr */
-											, std::string const *id /* = nullptr */)
-{
-	FTASSERT(xml != nullptr || id != nullptr);
-	if (xml == nullptr)
-		; // return new VerticalLayout(act, id);
-	return new VerticalLayout(act, *xml);
-}
 
 };
