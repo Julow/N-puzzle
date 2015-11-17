@@ -1,6 +1,6 @@
 O_FILES :=	o/srcs/GlCanvasHolder.o o/srcs/Grid.o o/srcs/Main.o \
-			o/srcs/OCamlBinding.o o/srcs/PickState.o o/srcs/ftlua_extend.o \
-			o/srcs/libftui_extend/Bookmark.o
+			o/srcs/OCamlBinding.o o/srcs/PickState.o o/srcs/Tokenizer.o \
+			o/srcs/ftlua_extend.o o/srcs/libftui_extend/Bookmark.o
 
 LIBS_DEPEND := modules/libmodules.a
 
@@ -31,7 +31,7 @@ o/srcs/GlCanvasHolder.o: srcs/GlCanvasHolder.cpp include/GlCanvasHolder.hpp \
 	modules/liblua/lua-5.3.1/src/luaconf.h \
 	modules/liblua/lua-5.3.1/src/lualib.h \
 	modules/_objs/tiles/_public/gl/gl.hpp | o/srcs/
-o/srcs/Grid.o: srcs/Grid.cpp include/Grid.hpp \
+o/srcs/Grid.o: srcs/Grid.cpp include/Grid.hpp include/Tokenizer.hpp \
 	modules/_objs/tiles/_public/ft/Rect.hpp \
 	modules/_objs/tiles/_public/ft/Vec.hpp \
 	modules/_objs/tiles/_public/ft/templates/Rect.tpp \
@@ -123,6 +123,14 @@ o/srcs/PickState.o: srcs/PickState.cpp include/GlCanvasHolder.hpp \
 	modules/liblua/lua-5.3.1/src/luaconf.h \
 	modules/liblua/lua-5.3.1/src/lualib.h include/config_window.hpp \
 	include/ftce/math.hpp | o/srcs/
+o/srcs/Tokenizer.o: srcs/Tokenizer.cpp include/Tokenizer.hpp \
+	modules/_objs/tiles/_public/ft/Rect.hpp \
+	modules/_objs/tiles/_public/ft/Vec.hpp \
+	modules/_objs/tiles/_public/ft/templates/Rect.tpp \
+	modules/_objs/tiles/_public/ft/templates/Vec2.tpp \
+	modules/_objs/tiles/_public/ft/templates/Vec3.tpp \
+	modules/_objs/tiles/_public/ft/templates/Vec4.tpp \
+	modules/_objs/tiles/_public/ft/utils.hpp | o/srcs/
 o/srcs/ftlua_extend.o: srcs/ftlua_extend.cpp \
 	modules/_objs/ftui/_public/ftlua/ftlua.hpp \
 	modules/_objs/ftui/_public/ftlua/templates/ftlua_caller.tpp \

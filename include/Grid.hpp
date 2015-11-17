@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/17 14:14:48 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 20:06:47 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,12 +15,13 @@
 
 # include <string>
 
+# define MAX_GRID_SIZE		999
+# define MIN_GRID_SIZE		2
+
 class	Grid
 {
-
-	/* CONSTRUCTION ***************** */
 public:
-	static Grid const	def;
+	static Grid const	def; // c pa ici ke sa doi etr
 
 	Grid(void);
 	Grid(int size);
@@ -48,6 +49,8 @@ protected:
 
 	int					**_data;
 	int					_size;
+
+	void				alloc(int size);
 
 private:
 };
