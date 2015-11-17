@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 16:41:33 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/17 17:50:40 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/17 18:48:56 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -52,9 +52,13 @@ local solveButton = solveLaunchButton
 assert(solveButton ~= nil);
 
 function solveButton:onClick(_, _)
-  _G['bookmark-holder']:addView(createView("Bookmark", "view_de_merde"));
-  PickState:tagForSolving();
+  local bmh = _G['bookmark-holder'];
 
+  local r = math.random(24) - 1;
+  local v = bmh:at(r);
+  v:setVisibility(1);
+  -- bmh:addView(createView("Bookmark", "view_de_merde"));
+  PickState:tagForSolving();
 end
 
 solveButton:setCallback('onClick', solveButton.onClick);

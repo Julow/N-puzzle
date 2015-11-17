@@ -80,6 +80,7 @@
 		  backgroundColor="0xFFBB0000" alpha="0.75"
 		  />
 	  <VerticalLayout
+		  activity_scripts="res/start_activity/bookmark_holder.lua"
 		  id="bookmark-holder"
 	  	  marginTop="10" marginRight="10"
 		  verticalAlign="LEFT"

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/17 15:38:40 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 18:27:50 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -190,7 +190,9 @@ void			VerticalLayout::onDraw(Canvas &canvas)
 		_layoutFlags &= ~AView::REDRAW_QUERY;
 		for (ViewHolder *vh : _childs)
 		{
-			redrawChild(vh->getView(), vh->getPos(), vh->getSize());
+			v = vh->getView();
+			if (v->isVisible())
+				redrawChild(v, vh->getPos(), vh->getSize());
 		}
 	}
 	else if (_layoutFlags & AView::REDRAW_QUERY)
@@ -206,7 +208,8 @@ void			VerticalLayout::onDraw(Canvas &canvas)
 			// 	  , v->AView::isRedrawQueried()
 			// 	  , redrawClip.collides(bounds)
 			// 	);
-			if (v->isRedrawQueried() || redrawClip.collides(bounds))
+			if (v->isVisible()
+				&& (v->isRedrawQueried() || redrawClip.collides(bounds)))
 				redrawChild(v, bounds.getPos(), bounds.getSize());
 		}
 		_layoutFlags &= ~AView::REDRAW_QUERY;
