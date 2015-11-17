@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 18:30:41 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/17 17:50:21 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -529,7 +529,6 @@ void				Canvas::applyChangedRect(ft::Vec2<int> vec)
 		|| _changedRect.top == _changedRect.bottom)
 	{
 		_changedRect = ft::make_rect(vec.x, vec.y, vec.x + 1, vec.y + 1);
-		std::cout << "reset changed rect " << _changedRect << std::endl;
 	}
 	else
 		_changedRect.merge(vec);
@@ -541,7 +540,6 @@ void				Canvas::applyChangedRect(ft::Rect<int> const &rect)
 		|| _changedRect.top == _changedRect.bottom)
 	{
 		_changedRect = rect;
-		std::cout << "reset changed rect " << _changedRect << std::endl;
 	}
 	else
 		_changedRect.merge(rect);
