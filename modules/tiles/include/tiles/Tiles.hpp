@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/11 11:52:03 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/12 20:12:35 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 13:11:49 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,6 +24,10 @@ public:
 
 	Tiles();
 	virtual ~Tiles();
+	Tiles(Tiles &&src);
+
+	Tiles(Tiles const &src) = delete;
+	Tiles		&operator=(Tiles const &rhs) = delete;
 
 	void		init(ft::Vec2<int> const rectSize
 		  , ft::Vec2<int> const triangleSize = ft::Vec2<int>(95, 95)
@@ -32,7 +36,7 @@ public:
 		  , ft::Vec3<int> const gray = ft::Vec3<int>(150, 150, 150)
 		  , ft::Vec3<int> const pink = ft::Vec3<int>(140, 212, 202)
 		  , ft::Vec3<int> const deltaPink = ft::Vec3<int>(10, 10, 52));
-	void			render(void) const;
+	void		render(void) const;
 
 protected:
 private:
@@ -78,6 +82,11 @@ private:
 			, ft::Vec3<float> const deltaPink);
 		~Tmp();
 
+		Tmp() = delete;
+		Tmp(Tmp const &src) = delete;
+		Tmp(Tmp &&src);
+		Tmp						&operator=(Tmp const &rhs) = delete;
+
 	private:
 		void					_buildGridDim(void);
 		void					_buildGrid(void);
@@ -86,16 +95,10 @@ private:
 		ft::Vec2<float>			_pointDeltaPos(void);
 		ft::Vec3<float>			_pointDeltaPink(void);
 
-		Tmp() = delete;
-		Tmp(Tmp const &src) = delete;
-		Tmp						&operator=(Tmp const &rhs) = delete;
 	};
 
 	void						_initGlProgram();
 	void						_initGlMesh(Tmp const &);
-
-	Tiles(Tiles const &src) = delete;
-	Tiles						&operator=(Tiles const &rhs) = delete;
 };
 
 #endif // ********************************************************* TILES_HPP //

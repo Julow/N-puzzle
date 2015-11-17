@@ -6,27 +6,29 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 18:05:46 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/12 18:09:22 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 13:50:05 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef PICKSTATE_HPP
 # define PICKSTATE_HPP
 
-// # include <iostream>
-// # include <>
-
 # include "Main.hpp"
 # include "tiles/Tiles.hpp"
-// # include ""
 
 class PickState : public IState
 {
-	/* CONSTRUCTION ***************** */
+	/* ATTRIBUTES ******************* */
 private:
-	static Tiles const		*tilesInstance(void);
-	static ftui::Activity	*activityInstance(void);
+	class Bundle;
+	static Bundle			*loadBundle(Main &main);
 
+	Main					&_main;
+	OCamlBinding			&_ocaml;
+	Bundle					*_b;
+	bool					_launchSolvingState;
+
+	/* CONSTRUCTION ***************** */
 public:
 	PickState(Main &main, OCamlBinding &ocaml);
 	~PickState();
@@ -62,12 +64,27 @@ public:
 	static int				tagForSolvingG(lua_State *l);
 	void					tagForSolving(void);
 
-private:
-	Main					&_main;
-	OCamlBinding			&_ocaml;
-	bool					_launchSolvingState;
+};
+
+/* BUNDLE DECLARATION *************** */
+class PickState::Bundle : public IBundle
+{
+public:
+	/* CONSTRUCTION ***************** */
+	Bundle(Main &main);
+	~Bundle();
+
+	Bundle() = delete;
+	Bundle(Bundle const &src) = delete;
+	Bundle(Bundle &&src) = delete;
+	Bundle					&operator=(Bundle const &rhs) = delete;
+	Bundle					&operator=(Bundle &&rhs) = delete;
+
+	/* ATTRIBUTES ******************* */
+	Tiles const				tiles;
+	ftui::Activity			act;
+	std::vector<Grid>		grids;
 
 };
-//std::ostream			&operator<<(std::ostream &o, PickState const &rhs);
 
 #endif /* ***************************************************** PICKSTATE_HPP */

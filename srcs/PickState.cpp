@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/12 18:25:13 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 13:54:55 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,47 +24,26 @@ using PS = PickState;
 ** CONSTRUCTION
 */
 
-Tiles const				*PS::tilesInstance(void)
+PS::Bundle		*PS::loadBundle(Main &main) /*static*/
 {
-	static Tiles			*t = nullptr;
+	IBundle *const		ib = main.popBundle("PickState");
+	PS::Bundle *const	b = dynamic_cast<PS::Bundle*>(ib);
 
-	if (t == nullptr)
+	if (b == nullptr)
 	{
-		t = new Tiles;
-		t->init(WIN_SIZEVI);
+		FTASSERT(ib == nullptr, "Dynamic cast failed");
+		return new PS::Bundle(main);
 	}
-	return t;
-}
-
-ftui::Activity			*PS::activityInstance(void)
-{
-	static ftui::Activity	*act = nullptr;
-	auto					pushFun =
-		[&](std::string const &fname, lua_CFunction f)
-		{ act->registerLuaCFun_table("PickState", fname, f); };
-
-	if (act == nullptr)
-	{
-		act = new ftui::Activity(WIN_SIZEVI);
-		std::ifstream		is("res/layout/start_activity.xml");
-		act->inflate(is);
-		Main::loadSharedScripts(*act);
-		luaL_dostring(act->getLuaState(), "PickState = {}");
-		pushFun("useDefaultGrid", &useDefaultGridG);
-		pushFun("useRandomGrid", &useRandomGridG);
-		pushFun("setAlgorithmId", &setAlgorithmIdG);
-		pushFun("setHeuristicId", &setHeuristicIdG);
-		pushFun("setCost", &setCostG);
-		pushFun("tagForSolving", &tagForSolvingG);
-	}
-	return act;
+	return b;
 }
 
 PS::PickState(Main &main, OCamlBinding &ocaml)
-	:
-	_main(main), _ocaml(ocaml), _launchSolvingState(false)
+	: _main(main)
+	, _ocaml(ocaml)
+	, _b(loadBundle(main))
+	, _launchSolvingState(false)
 {
-	lua_State	*l = PS::activityInstance()->getLuaState();
+	lua_State	*l = this->_b->act.getLuaState();
 	int			ret;
 
 	ret = lua_getglobal(l, "PickState");
@@ -80,25 +59,26 @@ PS::PickState(Main &main, OCamlBinding &ocaml)
 
 PS::~PickState()
 {
+	this->_main.pushBundle("PickState", this->_b);
 	return ;
 }
 
 /*
 ** ************************************************************************** **
-** CONSTRUCTION
+** ISTATE LEGACY
 */
 
 void            PS::loop(std::unique_ptr<IState> &ptr, ftui::Canvas &can)
 {
 	(void)ptr;
-	PS::tilesInstance()->render();
-	PS::activityInstance()->render(can);
+	this->_b->tiles.render();
+	this->_b->act.render(can);
 	return ;
 }
 
 ftui::Activity  &PS::getActivity(void)
 {
-	return *PS::activityInstance();
+	return this->_b->act;
 }
 
 /*
@@ -106,7 +86,7 @@ ftui::Activity  &PS::getActivity(void)
 ** LIBFTUI INTERACTIONS
 */
 
-int				PS::useDefaultGridG(lua_State *l)
+int				PS::useDefaultGridG(lua_State *l) /*static*/
 {
 	return ftlua::handle<1, 0>(l, &PS::useDefaultGrid);
 }
@@ -114,7 +94,7 @@ void			PS::useDefaultGrid(void)
 { _main.grid = DEFGRID; }
 
 
-int				PS::useRandomGridG(lua_State *l)
+int				PS::useRandomGridG(lua_State *l) /*static*/
 {
 	return ftlua::handle<3, 0>(l, &PS::useRandomGrid);
 }
@@ -125,7 +105,7 @@ void			PS::useRandomGrid(int w, bool solvable)
 }
 
 
-int				PS::setAlgorithmIdG(lua_State *l)
+int				PS::setAlgorithmIdG(lua_State *l) /*static*/
 {
 	return ftlua::handle<2, 0>(l, &PS::setAlgorithmId);
 }
@@ -133,7 +113,7 @@ void			PS::setAlgorithmId(int id)
 { _main.algorithmId = id; }
 
 
-int				PS::setHeuristicIdG(lua_State *l)
+int				PS::setHeuristicIdG(lua_State *l) /*static*/
 {
 	return ftlua::handle<2, 0>(l, &PS::setHeuristicId);
 }
@@ -141,7 +121,7 @@ void			PS::setHeuristicId(int id)
 { _main.heuristicId = id; }
 
 
-int				PS::setCostG(lua_State *l)
+int				PS::setCostG(lua_State *l) /*static*/
 {
 	return ftlua::handle<2, 0>(l, &PS::setCost);
 }
@@ -149,9 +129,48 @@ void			PS::setCost(int cost)
 { _main.cost = cost; }
 
 
-int				PS::tagForSolvingG(lua_State *l)
+int				PS::tagForSolvingG(lua_State *l) /*static*/
 {
 	return ftlua::handle<1, 0>(l, &PS::tagForSolving);
 }
 void			PS::tagForSolving(void)
 { _launchSolvingState = true; }
+
+/*
+** ************************************************************************** **
+** BUNDLE IMPLEMENTATION
+*/
+
+static Tiles	make_tiles(void)
+{
+	Tiles		t;
+
+	t.init(WIN_SIZEVI);
+	return t;
+}
+
+PS::Bundle::Bundle(Main &main)
+	: tiles(make_tiles())
+	, act(WIN_SIZEVI)
+	, grids()
+{
+	ftui::Activity		&act = this->act;
+	auto				pushFun =
+		[&](std::string const &fname, lua_CFunction f)
+		{ act.registerLuaCFun_table("PickState", fname, f); };
+	std::ifstream		is("res/layout/start_activity.xml");
+
+	act.inflate(is);
+	main.loadSharedScripts(act);
+	luaL_dostring(act.getLuaState(), "PickState = {}");
+	pushFun("useDefaultGrid", &useDefaultGridG);
+	pushFun("useRandomGrid", &useRandomGridG);
+	pushFun("setAlgorithmId", &setAlgorithmIdG);
+	pushFun("setHeuristicId", &setHeuristicIdG);
+	pushFun("setCost", &setCostG);
+	pushFun("tagForSolving", &tagForSolvingG);
+}
+
+PS::Bundle::~Bundle()
+{
+}
