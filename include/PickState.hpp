@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 18:05:46 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 13:50:05 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 14:17:06 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -25,7 +25,7 @@ private:
 
 	Main					&_main;
 	OCamlBinding			&_ocaml;
-	Bundle					*_b;
+	Bundle *const			_b;
 	bool					_launchSolvingState;
 
 	/* CONSTRUCTION ***************** */

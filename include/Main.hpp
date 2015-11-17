@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 12:58:38 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 13:43:37 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 14:09:08 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,9 +16,6 @@
 //TODO: move to own file
 class Main;
 class StartState;
-# define MATRIX33I(...) std::array<int*, 3>{{__VA_ARGS__}}.data()
-# define LINE3I(...) std::array<int, 3>{{__VA_ARGS__}}.data()
-# define DEFGRID Grid(MATRIX33I(LINE3I(0,1,2), LINE3I(3,4,5), LINE3I(6,7,8)), 3)
 //TODO: move to own file
 
 # include <iostream>
@@ -84,18 +81,19 @@ public:
 
 
 private:
-	GLFWwindow				*_window;
-	GlCanvasHolder			_canvasHolder;
-	std::unique_ptr<IState>	_state;
-	OCamlBinding			_ocaml;
+	GLFWwindow									*_window;
+	GlCanvasHolder								_canvasHolder;
+	std::unique_ptr<IState>						_state;
+	OCamlBinding								_ocaml;
 	std::unordered_map<std::string, IBundle*>	_bundles;
 
 public:
 
-	Grid					grid;
-	unsigned int			algorithmId;
-	unsigned int			heuristicId;
-	int						cost;
+	std::vector<std::string>					files;
+	Grid										grid;
+	unsigned int								algorithmId;
+	unsigned int								heuristicId;
+	int											cost;
 
 };
 

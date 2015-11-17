@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 13:43:51 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 14:16:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -82,7 +82,8 @@ Main::Main(void)
 	, _canvasHolder(WIN_WIDTHI, WIN_HEIGHTI)
 		// , _state()
 	, _ocaml()
-	, grid(DEFGRID)
+	, files({"g54m_hard.np", "g60m_hard.np", "g64m_hard.np"})
+	, grid(Grid::def)
 	, algorithmId(0)
 	, heuristicId(0)
 	, cost(0)

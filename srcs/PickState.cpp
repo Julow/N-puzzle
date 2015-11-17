@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 13:54:55 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 14:16:56 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -91,7 +91,7 @@ int				PS::useDefaultGridG(lua_State *l) /*static*/
 	return ftlua::handle<1, 0>(l, &PS::useDefaultGrid);
 }
 void			PS::useDefaultGrid(void)
-{ _main.grid = DEFGRID; }
+{ _main.grid = Grid::def; }
 
 
 int				PS::useRandomGridG(lua_State *l) /*static*/
@@ -169,6 +169,8 @@ PS::Bundle::Bundle(Main &main)
 	pushFun("setHeuristicId", &setHeuristicIdG);
 	pushFun("setCost", &setCostG);
 	pushFun("tagForSolving", &tagForSolvingG);
+	for (auto const &fileName : main.files)
+		this->grids.emplace_back(fileName);
 }
 
 PS::Bundle::~Bundle()
