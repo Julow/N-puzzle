@@ -34,10 +34,9 @@ O_DIR			:= _objs
 JOBS			:= 8
 
 # Column output
-COLUMN_OUTPUT	:= 0
+COLUMN_OUTPUT	:= 1
 
 ifeq ($(COLUMN_OUTPUT),0)
-	PRINT_DBUG	= printf '\033[33m$@\033[0m\n'
 	PRINT_OK	= printf '\033[32m$<\033[0m\n'
 	PRINT_LINK	= printf '\033[32m$@\033[0m\n'
 else
@@ -100,10 +99,10 @@ $(SUBMODULE_RULES):
 
 # Create include links
 $(PUBLIC_LINKS):
-	ln -s $(abspath $<) $@ && $(PRINT_DBUG)
+	ln -s $(abspath $<) $@
 # Create obj directories
 $(O_DIR)/%/:
-	mkdir -p $@ && $(PRINT_DBUG)
+	mkdir -p $@
 
 # Set debug mode and make
 debug: _debug all

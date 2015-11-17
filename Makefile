@@ -4,15 +4,13 @@
 NAME			:= npuzzle
 
 # Project directories
-DIRS			:= srcs include
+DIRS			:= srcs
+INCLUDE_DIRS	:= include modules/_objs/ft/_public modules/_objs/ft_xml/_public modules/_objs/ftui/_public modules/_objs/tiles/_public modules/liblua/lua-5.3.1/src
 
 # Git submodule to init
 MODULES			:=
 # Makefiles to call
 LIBS			:= modules
-
-# Includes dirs
-INCLUDE_DIRS	= modules/liblua/lua-5.3.1/src $(wildcard modules/_objs/*/_public)
 
 # Base flags
 BASE_FLAGS		= -Wall -Wextra
@@ -135,9 +133,9 @@ $(O_DIR)/%.o: %.cpp
 $(OCAML_SOLVER): $(ML_OBJS)
 	ocamlopt.opt $(OCAML_LINKS) -output-obj -o $@ $(filter %.cmx,$^)
 
-ocamldep:
-	bash ocaml_depend.sh > $(ML_DEPEND)
-.PHONY: ocamldep
+gen:
+	bash mk_gen.sh
+.PHONY: gen
 
 # Init submodules
 $(MODULE_RULES):

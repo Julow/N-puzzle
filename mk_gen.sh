@@ -2,16 +2,14 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    ocaml_depend.sh                                    :+:      :+:    :+:    #
+#    mk_gen.sh                                          :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2015/11/02 13:29:23 by jaguillo          #+#    #+#              #
-#    Updated: 2015/11/08 09:05:44 by ngoguey          ###   ########.fr        #
+#    Created: 2015/11/17 15:02:58 by jaguillo          #+#    #+#              #
+#    Updated: 2015/11/17 15:13:47 by jaguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-# Wrapper around ocamldep
 
 OCAML_DIRS="srcs/solver batteries-included"
 
@@ -35,14 +33,28 @@ for file_name in `ocamldep -sort -native $OCAML_FLAGS $OCAML_SOURCES`; do
 	OCAML_OBJS="$OCAML_OBJS $file_name"
 done
 
-printf "ML_OBJS ="
-for obj in $OCAML_OBJS; do
-	printf " \\\\\n\t%s" "$obj"
-done
-echo
-echo
-echo "OCAML_FLAGS +=$OCAML_FLAGS"
-echo "ML_MAX_LEN = $ML_MAX_LEN"
-echo
+(cd modules && makemake2 gen) || exit 1
 
-ocamldep -all -native $OCAML_FLAGS $OCAML_SOURCES
+echo "modules/depend.mk generated"
+
+make -C modules
+
+(
+	printf "ML_OBJS ="
+	for obj in $OCAML_OBJS; do
+		printf " \\\\\n\t%s" "$obj"
+	done
+	echo
+	echo
+	echo "OCAML_FLAGS +=$OCAML_FLAGS"
+	echo "ML_MAX_LEN = $ML_MAX_LEN"
+	echo
+
+	ocamldep -all -native $OCAML_FLAGS $OCAML_SOURCES
+) > "ml_depend.mk" || exit 1
+
+echo "ml_depend.mk generated"
+
+makemake
+
+echo "depend.mk generated"
