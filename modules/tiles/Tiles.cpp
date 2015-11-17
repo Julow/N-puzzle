@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/11 11:58:44 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/12 20:14:12 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/17 13:57:55 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,7 +15,7 @@
 #include <cstdlib>
 #include <string>
 #include "tiles/Tiles.hpp"
-#include "gl.hpp"
+#include "gl/gl.hpp"
 
 static ft::Vec3<float>		c255to1(ft::Vec3<int> const c)
 {

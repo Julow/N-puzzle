@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/13 07:39:43 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/12 14:24:18 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/17 14:08:02 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,7 +15,7 @@
 
 # include <stdint.h>
 # include <string>
-# include "liblua.hpp"
+# include "liblua/lua.hpp"
 
 namespace ftlua
 {
