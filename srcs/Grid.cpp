@@ -6,15 +6,15 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:12 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/17 20:31:44 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/18 18:04:29 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "Grid.hpp"
-#include "Tokenizer.hpp"
+#include "GridParser.hpp"
+#include "ft/assert.hpp"
 #include "ft/utils.hpp"
 #include <cstring>
-#include <fstream>
 #include <stdexcept>
 #include <array>
 
@@ -27,28 +27,6 @@
 #define DEFGRID Grid(MATRIX33I(LINE3I(0,1,2), LINE3I(3,4,5), LINE3I(6,7,8)), 3)
 
 Grid const		Grid::def = DEFGRID; /*static*/
-
-/*
-** Token declarations
-** Yes, it's ugly as fuck
-*/
-enum Token
-{
-	TOKEN_COMMENT,
-	TOKEN_ENDL,
-	TOKEN_SPACE,
-	TOKEN_NUMBER
-};
-
-static Tokenizer::token_def_s const	gridTokens[] = {
-	{{.str="#"}, Tokenizer::TOKEN_CHR1, TOKEN_COMMENT},
-	{{.str="\n"}, Tokenizer::TOKEN_CHR1, TOKEN_ENDL},
-	{{.f=&std::isspace}, Tokenizer::TOKEN_F, TOKEN_SPACE},
-	{{.f=&std::isdigit}, Tokenizer::TOKEN_F, TOKEN_NUMBER}
-};
-/*
-** -
-*/
 
 Grid::Grid()
 	: _data(nullptr), _size(0)
@@ -70,88 +48,65 @@ Grid::Grid(int const* const* data, int size)
 	return ;
 }
 
-/*
-** TODO: GridParser
-** - check nl after grid_size token
-** - Code is too big and ugly
-*/
 Grid::Grid(std::string const &fileName)
 {
-	std::ifstream	in(fileName);
-	Tokenizer		tokenizer(gridTokens, sizeof(gridTokens) / sizeof(*gridTokens));
-	int				grid_size;
-	int				x;
-	int				y;
-	int				line;
+	GridParser			parser(fileName);
+	int					grid_size;
+	int					x;
+	int					y;
 
-	line = 1;
-	while (tokenizer.next(in) && tokenizer.getTokenId() != TOKEN_NUMBER)
-		if (tokenizer.getTokenId() == TOKEN_COMMENT
-			|| tokenizer.getTokenId() == TOKEN_ENDL)
-		{
-			if (tokenizer.getTokenId() == TOKEN_COMMENT)
-				in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-			line++;
-		}
-	if (tokenizer.getTokenId() != TOKEN_NUMBER)
-	{
-		if (in.eof())
-			throw std::runtime_error(ft::f("%: Empty grid file", fileName));
-		else
-			throw std::runtime_error(ft::f("%:%: Syntax error: '%'",
-				fileName, line, tokenizer.getToken()));
-	}
-	grid_size = std::stoi(tokenizer.getToken());
-	if (grid_size < MIN_GRID_SIZE || grid_size > MAX_GRID_SIZE)
-		throw std::runtime_error(ft::f("%: Grid too % (%)", fileName,
-			(grid_size < MIN_GRID_SIZE) ? "small" : "big", grid_size));
-	alloc(grid_size);
+	grid_size = -1;
 	x = 0;
 	y = 0;
-	while (tokenizer.next(in))
-	{
-		switch (tokenizer.getTokenId())
+	while (true)
+		switch (parser.next())
 		{
-		case TOKEN_COMMENT:
-			in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		case TOKEN_ENDL:
-			line++;
-			if (x == 0)
+		case GridParser::Token::ENDL:
+			if (x > 0)
+			{
+				FTASSERT(grid_size > 0);
+				if (x != grid_size)
+					parser.error(ft::f("Incomplete row (%/%)", x, grid_size));
+				y++;
+				x = 0;
+			}
+			break ;
+		case GridParser::Token::NUMBER:
+			if (grid_size == -1)
+			{
+				grid_size = parser.getIntToken();
+				if (grid_size < MIN_GRID_SIZE || grid_size > MAX_GRID_SIZE)
+					parser.error(ft::f("Grid too % (%)",
+						(grid_size < MIN_GRID_SIZE) ? "small" : "big",
+						grid_size));
+				alloc(grid_size);
+				if (parser.next() != GridParser::Token::ENDL)
+					parser.error(ft::f("Unexpected token: %",
+						parser.getStrToken()));
 				break ;
-			if (x != grid_size)
-				throw std::runtime_error(ft::f("%:%: Incomplete row (%/%)",
-					fileName, line, x, grid_size));
-			x = 0;
-			y++;
-			break ;
-		case TOKEN_SPACE:
-			break ;
-		case TOKEN_NUMBER:
+			}
 			if (x >= grid_size || y >= grid_size)
-				throw std::runtime_error(ft::f("%:%: %", fileName, line,
-					(x >= grid_size) ? "Row too large" : "Too many rows"));
-			_data[y][x] = std::stoi(tokenizer.getToken());
+				parser.error((x >= grid_size) ? "Row too large" : "Too many rows");
+			_data[y][x] = parser.getIntToken();
 			x++;
 			break ;
+		case GridParser::Token::END_OF_FILE:
+			if (!(y == grid_size || (y == (grid_size - 1) && x == grid_size)))
+				parser.error("Incomplete grid");
+			// debug
+			std::cout << "Grid " << fileName << ':' << std::endl;
+			for (y = 0; y < grid_size; y++)
+			{
+				for (x = 0; x < grid_size; x++)
+				{
+					std::cout.width(2);
+					std::cout << _data[y][x] << ' ';
+				}
+				std::cout << std::endl;
+			}
+			// -
+			return ;
 		}
-	}
-	if (!in.eof())
-		throw std::runtime_error(ft::f("%:%: Syntax error: '%'",
-			fileName, line, tokenizer.getToken()));
-	if (!(y == grid_size || (y == (grid_size - 1) && x == grid_size)))
-		throw std::runtime_error(ft::f("%: Incomplete grid", fileName));
-	// debug
-	std::cout << "Grid " << fileName << ':' << std::endl;
-	for (y = 0; y < grid_size; y++)
-	{
-		for (x = 0; x < grid_size; x++)
-		{
-			std::cout.width(2);
-			std::cout << _data[y][x] << ' ';
-		}
-		std::cout << std::endl;
-	}
-	// -
 }
 
 Grid::Grid(Grid const &src) :
