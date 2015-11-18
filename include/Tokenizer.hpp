@@ -6,14 +6,14 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/17 16:47:01 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/17 20:17:13 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/18 17:25:41 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef TOKENIZER_HPP
 # define TOKENIZER_HPP
 
-# include <fstream>
+# include <istream>
 # include <sstream>
 
 /*

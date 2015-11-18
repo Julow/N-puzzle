@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/17 20:06:47 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/18 18:06:15 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,7 +21,7 @@
 class	Grid
 {
 public:
-	static Grid const	def; // c pa ici ke sa doi etr
+	static Grid const	def; // TODO: c pa ici ke sa doi etr
 
 	Grid(void);
 	Grid(int size);
