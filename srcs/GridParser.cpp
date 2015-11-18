@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/18 17:14:03 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/18 18:03:51 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/18 18:11:01 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -26,6 +26,7 @@ GridParser::GridParser(std::string const &fileName) :
 	_fileName(fileName),
 	_in(fileName),
 	_tokenizer(gridTokens, sizeof(gridTokens) / sizeof(*gridTokens)),
+	_newLine(false),
 	_line(1)
 {
 }
@@ -38,12 +39,17 @@ GridParser::Token	GridParser::next(void)
 {
 	while (_tokenizer.next(_in))
 	{
+		if (_newLine)
+		{
+			_newLine = false;
+			_line++;
+		}
 		switch (_tokenizer.getTokenId())
 		{
 		case GridParser::TOKEN_COMMENT:
 			_in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		case GridParser::TOKEN_ENDL:
-			_line++;
+			_newLine = true;
 			return (GridParser::Token::ENDL);
 		case GridParser::TOKEN_SPACE:
 			break ;

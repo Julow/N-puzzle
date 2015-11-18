@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/18 17:13:52 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/18 18:02:30 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/18 18:10:15 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -43,6 +43,7 @@ protected:
 	std::ifstream		_in;
 	Tokenizer			_tokenizer;
 
+	bool				_newLine;
 	int					_line;
 
 	static Tokenizer::token_def_s const	gridTokens[];
