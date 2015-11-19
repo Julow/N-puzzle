@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/13 07:39:43 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/19 12:17:19 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/19 14:09:50 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -20,6 +20,7 @@
 # include "ftlua/types.hpp"
 # include "ftlua/push.hpp"
 # include "ftlua/pop.hpp"
+# include "ftlua/utils.hpp"
 
 namespace ftlua
 {
@@ -99,14 +100,6 @@ void		call(lua_State *l, ARGS ...args);
 
 template <typename T>
 T					*retrieveSelf(lua_State *l, int index, bool pop = true);
-
-void	pushUtils(lua_State *l);
-void	stackdump(lua_State *l);
-void	registerLuaCFunTable(
-	    lua_State *l
-		, std::string const &tabName
-		, std::string const &funName
-		, lua_CFunction f);
 
 };
 

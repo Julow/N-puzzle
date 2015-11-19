@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/19 13:26:13 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/19 15:33:40 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,10 +19,12 @@
 # include "liblua/lua.hpp"
 # include "ft/Vec.hpp"
 # include "ft/Rect.hpp"
+# include "ft/utils.hpp"
 
 # include "ftlua/types.hpp"
+# include "ftlua/utils.hpp"
 
-namespace ftlua
+namespace ftlua // ========================================================== //
 {
 
 template<bool USELUAERR = false>
@@ -126,31 +128,66 @@ inline int			push(lua_State *l, ft::Rect<T> const &v)
 namespace internal // ======================================================= //
 {
 
-template<bool USELUAERR
-		 , typename HEAD, typename... TAIL
-		 , class T = KeysWrapper<HEAD, TAIL...> >
-void				_push(lua_State *l, KeysWrapper<HEAD, TAIL...> const &wrap)
+template<size_t I, bool USELUAERR
+		 , typename... ARGS, class T = KeysWrapper<ARGS...>
+		 , typename std::enable_if<(sizeof...(ARGS) - I == 1)>::type* = nullptr
+		 >
+void		_unfoldKey(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 {
-	ftlua::push<USELUAERR>(l, wrap.head());
-	if (sizeof...(TAIL) > 0)
-		_push<USELUAERR>(l, wrap.tail());
+	(void)wrap;
+	ftlua::push<USELUAERR>(l, std::get<I>(wrap.tup));
+	if (!lua_istable(l, -2))
+	{
+		ft::f(std::cerr, "Stack(-2) should have been a table\n");
+		ftlua::stackdump(l);
+		if (USELUAERR)
+			luaL_error(l, "Could not unfold key");
+		else
+			throw std::runtime_error("Could not unfold key");
+	}
+	lua_gettable(l, -2);
+	lua_remove(l, -2);
 	return ;
 }
 
+template<size_t I, bool USELUAERR
+		 , typename... ARGS, class T = KeysWrapper<ARGS...>
+		 , typename std::enable_if<(sizeof...(ARGS) - I != 1)>::type* = nullptr
+		 >
+void		_unfoldKey(lua_State *l, KeysWrapper<ARGS...> const &wrap)
+{
+	(void)wrap;
+	ftlua::push<USELUAERR>(l, std::get<I>(wrap.tup));
+	if (!lua_istable(l, -2))
+	{
+		ft::f(std::cerr, "Stack(-2) should have been a table\n");
+		ftlua::stackdump(l);
+		if (USELUAERR)
+			luaL_error(l, "Could not unfold key");
+		else
+			throw std::runtime_error("Could not unfold key");
+	}
+	lua_gettable(l, -2);
+	lua_remove(l, -2);
+	internal::_unfoldKey<I + 1, USELUAERR>(l, wrap);
+	return ;
+}
 
-}; // ==================================================== NAMESPACE INTERNAL //
+}; // ============================================= END OF NAMESPACE INTERNAL //
 
 template<bool FIRSTISTOP = false, bool USELUAERR = false
 		 , typename... ARGS, class T = KeysWrapper<ARGS...> >
 int					push(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 {
+	(void)l;
+	(void)wrap;
 	if (!FIRSTISTOP)
 		lua_pushglobaltable(l);
-	internal::_push<USELUAERR>(l, wrap);
+	internal::_unfoldKey<0, USELUAERR>(l, wrap);
 	return 1;
 }
 
 
-};
+}; // ================================================ END OF NAMESPACE FTLUA //
 
 #endif

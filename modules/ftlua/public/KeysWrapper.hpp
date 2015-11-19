@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:23:28 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/19 13:26:49 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/19 14:26:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,34 +18,33 @@
 namespace ftlua
 {
 
-template<typename HEAD, typename... TAIL>
-class KeysWrapper
+template<typename... ARGS>
+struct KeysWrapper
 {
 
 	/* CONSTRUCTION ***************** */
-public:
-	KeysWrapper(HEAD const &h, TAIL const &...t) : _head(h), _tail{t...} { }
+	KeysWrapper(ARGS const &...args)	: tup{args...} { }
+	KeysWrapper(KeysWrapper &&src)		: tup(src.tup) { }
 	~KeysWrapper(void) { }
 
 	KeysWrapper() = delete;
 	KeysWrapper(KeysWrapper const &src) = delete;
-	KeysWrapper(KeysWrapper &&src) = delete;
 	KeysWrapper				&operator=(KeysWrapper const &rhs) = delete;
 	KeysWrapper				&operator=(KeysWrapper &&rhs) = delete;
 
-	/* UNPACKING ******************** */
-	HEAD const				&head(void) const
-		{ return this->_head; }
-
-	KeysWrapper<TAIL...>	tail(void) const
-		{ return KeysWrapper<TAIL...>(this->_tail); }
-
 	/* ATTRIBUTES ******************* */
-private:
-	HEAD const							&_head;
-	std::tuple<TAIL const &...>	const	_tail;
+	typedef std::tuple<ARGS const &...>		tuple_t;
+	tuple_t const			tup;
+
+	static_assert(sizeof...(ARGS) > 0, "This should hold at least one key");
 
 };
+
+template<typename... ARGS>
+KeysWrapper<ARGS...>		make_keys(ARGS const& ...args)
+{
+	return KeysWrapper<ARGS...>(args...);
+}
 
 };
 

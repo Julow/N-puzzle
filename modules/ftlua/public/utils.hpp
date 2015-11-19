@@ -1,33 +1,33 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   ftlua_extend.hpp                                   :+:      :+:    :+:   //
+//   utils.hpp                                          :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/11/19 12:20:10 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/19 14:17:05 by ngoguey          ###   ########.fr       //
+//   Created: 2015/11/19 14:08:42 by ngoguey           #+#    #+#             //
+//   Updated: 2015/11/19 14:09:29 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#ifndef FTLUA_EXTEND_HPP
-# define FTLUA_EXTEND_HPP
+#ifndef FTLUA_UTILS_HPP
+# define FTLUA_UTILS_HPP
 
-# include "ftlua/ftlua.hpp"
+# include <string>
 
-# include "AView.hpp"
+# include "liblua/lua.hpp"
 
 namespace ftlua
 {
 
-template <bool USELUAERR = false>
-int			push(lua_State *l, ftui::AView *const &v)
-{
-	ftlua::push<USELUAERR>(
-		l, ftlua::make_keys(reinterpret_cast<void* const&>(v)));
-	return 1;
-}
+void	pushUtils(lua_State *l);
+void	stackdump(lua_State *l);
+void	registerLuaCFunTable(
+	    lua_State *l
+		, std::string const &tabName
+		, std::string const &funName
+		, lua_CFunction f);
 
 };
 
-#endif /* ************************************************** FTLUA_EXTEND_HPP */
+#endif

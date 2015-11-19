@@ -6,22 +6,23 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/19 12:50:30 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/19 14:15:51 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef AVIEW_HPP
 # define AVIEW_HPP
 
-# include "ftui/libftui.hpp"
-# include "ft_xml/XmlParser.hpp"
-
 # include <string>
 # include <vector>
 # include <unordered_map>
 # include <stdint.h>
 
+# include "ft_xml/XmlParser.hpp"
 # include "ftlua/ftlua.hpp"
+
+# include "ftui/libftui.hpp"
+# include "ftui/ftlua_extend.hpp"
 
 namespace ftui
 {

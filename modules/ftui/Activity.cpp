@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/19 12:45:23 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/19 15:33:06 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -127,13 +127,18 @@ Activity		*Activity::retrieveActivity(lua_State *l)
 {
 	Activity	*act;
 
-	if (lua_getglobal(l, "ftui") != LUA_TTABLE)
-		luaL_error(l, "Could not retrieve _G['ftui']");
-	lua_pushstring(l, "activity");
-	if (lua_gettable(l, -2) != LUA_TLIGHTUSERDATA)
+	// if (lua_getglobal(l, "ftui") != LUA_TTABLE)
+	// 	luaL_error(l, "Could not retrieve _G['ftui']");
+	// lua_pushstring(l, "activity");
+	// if (lua_gettable(l, -2) != LUA_TLIGHTUSERDATA)
+	// ftlua::push(l, ftlua::make_keys("ftui", "activity"));
+	ftlua::push(l, ftlua::make_keys("ftui", "activity"));
+	// ftlua::push(l, ftlua::make_keys(42));
+	if (!lua_islightuserdata(l, -1))
 		luaL_error(l, "Could not retrieve activity pointer");
 	act = reinterpret_cast<Activity*>(lua_touserdata(l, -1));
-	lua_pop(l, 2);
+	lua_pop(l, 1);
+	// lua_pop(l, 2);
 	return act;
 }
 
