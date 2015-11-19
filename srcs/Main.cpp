@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 14:16:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/19 12:05:47 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -52,7 +52,7 @@ void			Main::loadSharedScripts(ftui::Activity &act)
 	pushFun("getHeuristicId", &Main::getHeuristicIdG);
 	pushFun("getCost", &Main::getCostG);
 
-	ret = lua_getglobal(l, "Main");
+	ret = lua_getglobal(l, "Main"); // TTAG push0
 	FTASSERT(ret == LUA_TTABLE);
 
 	lua_pushinteger(l, 0);
@@ -253,12 +253,13 @@ void			Main::handleMouseButtonEvents(
 int				Main::getGridG(lua_State *l)
 {
 	Main *const		main = ftlua::retrieveSelf<Main>(l, 1);
-
+// TTAG: push pop
 	FTASSERT(lua_gettop(l) == 0); //TODO: FTLUAAASERT
-	ftlua::pushgrid(l, main->grid);
+	ftlua::push(l, main->grid);
+	// ftlua::pushgrid(l, main->grid);
 	return 1;
 }
-Grid const	&Main::getGrid(void) const
+Grid const		&Main::getGrid(void) const
 { return this->grid; }
 
 int				Main::getAlgorithmIdG(lua_State *l)

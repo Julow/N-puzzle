@@ -1,20 +1,28 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   ftlua_extend.cpp                                   :+:      :+:    :+:   //
+//   types.hpp                                          :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/11/11 16:25:11 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/19 12:05:32 by ngoguey          ###   ########.fr       //
+//   Created: 2015/11/19 12:12:33 by ngoguey           #+#    #+#             //
+//   Updated: 2015/11/19 12:23:19 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#include "ftlua/ftlua.hpp"
-#include "ft/assert.hpp"
-#include "Grid.hpp"
+#ifndef FTLUA_TYPES_HPP
+# define FTLUA_TYPES_HPP
+
+# include <cstddef>
+
+# include "ftlua/KeysWrapper.hpp"
 
 namespace ftlua
 {
 
+typedef std::nullptr_t	nil_t;
+static nil_t			nil{};
+
 };
+
+#endif
