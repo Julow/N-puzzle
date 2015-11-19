@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/17 17:50:21 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/19 18:53:35 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -145,18 +145,14 @@ int				Canvas::setFontG(lua_State *l)
 int				Canvas::measureTextG(lua_State *l)
 {
 	Canvas *const		self = ftlua::retrieveSelf<Canvas>(l, 1);
-	ft::Vec2<int>		measure;
 	std::string			text;
 	Canvas::Params		params;
 
 	text = luaL_checkstring(l, 1);
 	params.lineWidth = luaL_checkinteger(l, 2);
 	params.font = self->_luaFont;
-	measure = self->measureText(text, params);
 	lua_pop(l, lua_gettop(l));
-	lua_pushinteger(l, measure.x);
-	lua_pushinteger(l, measure.y);
-	return (2);
+	return ftlua::push(l, self->measureText(text, params));
 }
 
 void			Canvas::pushTemplate(lua_State *l)
@@ -174,16 +170,17 @@ void			Canvas::pushLua(lua_State *l)
 	lua_pushglobaltable(l);				// _G
 	lua_newtable(l);					// [], _G
 
-	lua_pushlightuserdata(l, this);		// this, [], _G
+	ftlua::push(l, this);
 	lua_pushvalue(l, -2);				// [], this, [], _G
 	lua_settable(l, -4);				// [], _G
 
-	if (lua_getglobal(l, "Canvas") != LUA_TTABLE)	// template, [], _G
+	ftlua::push(l, ftlua::make_keys("Canvas"));
+	if (!lua_istable(l, -1))
 		throw std::runtime_error("Canvas template should be present in _G");
 	lua_setmetatable(l, -2);			// [], _G
 
-	lua_pushinteger(l, 0);				// 0, [], _G
-	lua_pushlightuserdata(l, this);		// this, 0, [], _G
+	ftlua::push(l, 0);
+	ftlua::push(l, this);
 	lua_settable(l, -3);				// [], _G
 
 	lua_pop(l, 2);						// empty
@@ -192,14 +189,13 @@ void			Canvas::pushLua(lua_State *l)
 
 bool			Canvas::isInLua(lua_State *l)
 {
-	lua_pushglobaltable(l);
-	lua_pushlightuserdata(l, this);
-	if (lua_gettable(l, -2) != LUA_TTABLE)
+	ftlua::push(l, ftlua::make_keys(this));
+	if (!lua_istable(l, -1))
 	{
-		lua_pop(l, 2);
+		lua_pop(l, 1);
 		return false;
 	}
-	lua_pop(l, 2);
+	lua_pop(l, 1);
 	return true;
 }
 

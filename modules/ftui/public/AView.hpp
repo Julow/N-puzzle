@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/19 14:15:51 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/19 18:34:30 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -22,7 +22,6 @@
 # include "ftlua/ftlua.hpp"
 
 # include "ftui/libftui.hpp"
-# include "ftui/ftlua_extend.hpp"
 
 namespace ftui
 {
@@ -231,10 +230,10 @@ protected:
 	*/
 	template<typename ...ARGS>
 	bool						callLuaCallback(lua_State *l, LuaCallback id,
-									ARGS ...args);
+									ARGS const &...args);
 	template<typename ...ARGS>
 	bool						callLuaCallback(lua_State *l, uint32_t id,
-									ARGS ...args);
+									ARGS const &...args);
 
 /*
 ** Static

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/19 16:24:10 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/19 18:45:50 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -137,10 +137,11 @@ Activity		*Activity::retrieveActivity(lua_State *l)
 
 void			Activity::pushActivity(void)
 {
-	if (lua_getglobal(_l, "ftui") != LUA_TTABLE)
+	ftlua::push(_l, ftlua::make_keys("ftui"));
+	if (!lua_istable(_l, -1))
 		throw std::runtime_error("Could not retrieve _G['ftui']");
-	lua_pushstring(_l, "activity");
-	lua_pushlightuserdata(_l, this);
+	ftlua::push(_l, "activity");
+	ftlua::push(_l, this);
 	lua_settable(_l, -3);
 	lua_pop(_l, 1);
 	return ;

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/13 07:39:43 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/19 14:09:50 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/19 17:10:18 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,6 +21,7 @@
 # include "ftlua/push.hpp"
 # include "ftlua/pop.hpp"
 # include "ftlua/utils.hpp"
+# include "ftlua/call.hpp"
 
 namespace ftlua
 {

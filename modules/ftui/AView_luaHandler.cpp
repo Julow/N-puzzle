@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/08 10:47:08 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/19 18:39:54 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -48,8 +48,7 @@ int			TextView::getTextG(lua_State *l)
 {
 	TextView *const				i = ftlua::retrieveSelf<TextView>(l, -1);
 
-	(void)lua_pushstring(l, i->getText().c_str());
-	return (1);
+	return ftlua::push(l, i->getText());
 }
 
 /*
@@ -101,52 +100,29 @@ int			AView::setCallbackG(lua_State *l)
 int			AView::getIdG(lua_State *l)
 {
 	AView *const				i = ftlua::retrieveSelf<AView>(l, -1);
-	std::string const *const	s = i->getId();
 
-	if (s == nullptr)
-		lua_pushnil(l);
-	else
-		lua_pushstring(l, s->c_str());
-	return (1);
+	return ftlua::push(l, i->getId());
 }
 
 int			AView::getRequestedSizeG(lua_State *l)
 {
 	IViewHolder *const	h = ftlua::retrieveSelf<AView>(l, -1)->getViewHolder();
-	ft::Vec2<int>		s;
 
-	if (h == nullptr)
-		return (0);
-	s = h->getRequestedSize();
-	lua_pushinteger(l, s.x);
-	lua_pushinteger(l, s.y);
-	return (2);
+	return ftlua::push(l, h->getRequestedSize());
 }
 
 int			AView::getPosG(lua_State *l)
 {
 	IViewHolder *const	h = ftlua::retrieveSelf<AView>(l, -1)->getViewHolder();
-	ft::Vec2<int>		s;
 
-	if (h == nullptr)
-		return (0);
-	s = h->getPos();
-	lua_pushinteger(l, s.x);
-	lua_pushinteger(l, s.y);
-	return (2);
+	return ftlua::push(l, h->getPos());
 }
 
 int			AView::getSizeG(lua_State *l)
 {
 	IViewHolder *const	h = ftlua::retrieveSelf<AView>(l, -1)->getViewHolder();
-	ft::Vec2<int>		s;
 
-	if (h == nullptr)
-		return (0);
-	s = h->getSize();
-	lua_pushinteger(l, s.x);
-	lua_pushinteger(l, s.y);
-	return (2);
+	return ftlua::push(l, h->getSize());
 }
 
 int			AView::setRequestedSizeG(lua_State *l)

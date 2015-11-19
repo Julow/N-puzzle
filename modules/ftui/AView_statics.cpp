@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 17:45:51 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/19 18:43:28 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -153,15 +153,10 @@ static void     finalize_template(
 {
 	int     err;
 
-	err = 0;
-	(void)lua_getglobal(l, "ftui");
-	lua_pushstring(l, "finalize_template");
-	(void)lua_gettable(l, -2);
-	(void)lua_getglobal(l, name.c_str());
-	(void)lua_getglobal(l, i.parent.c_str());
-	err |= lua_pcall(l, 2, 0, 0);
+	err = ftlua::pcallGlobalFun(
+		l, 0, ftlua::make_keys("ftui", "finalize_template")
+		, ftlua::make_keys(name), ftlua::make_keys(i.parent));
 	FTASSERT(err == 0);
-	lua_pop(l, 1);
 	return ;
 }
 

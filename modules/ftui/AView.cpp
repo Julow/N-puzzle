@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/19 16:44:05 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/19 18:35:10 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -23,6 +23,8 @@
 #include "ftui/EventParams.hpp"
 #include "ft_xml/XmlParser.hpp"
 #include "ftui/VerticalLayout.hpp"
+
+#include "ftui/ftlua_extend.hpp"
 
 using std::string;
 
@@ -48,12 +50,12 @@ static void			push_to_lua(lua_State *l
 								, std::string const &viewName,
 								AView *vptr)
 {
-	int					err;
+	int		err;
 
 	ftlua::push(l, ftlua::make_keys("ftui", "push_view"));
-	err = lua_getglobal(l, viewName.c_str());
-	FTASSERT(err == LUA_TTABLE);
-	lua_pushlightuserdata(l, vptr);
+	ftlua::push(l, ftlua::make_keys(viewName));
+	FTASSERT(lua_istable(l, -1));
+	ftlua::push(l, reinterpret_cast<void*>(vptr));
 	ftlua::push(l, id);
 	err = lua_pcall(l, 3, 0, 0);
 	FTASSERT(err == LUA_OK);
@@ -305,29 +307,9 @@ void				AView::onMeasure(void)
 
 void				AView::onDraw(Canvas &canvas)
 {
-	uint32_t const		id = static_cast<uint32_t>(LuaCallback::DRAW);
-	lua_State			*l;
-
-	// FTPAD("%", this->tostring());
 	this->_flags &= ~AView::REDRAW_QUERY;
-	if (!(_luaCallbacks & (1 << id)))
-		return ;
-	l = _act.getLuaState();
-	lua_pushglobaltable(l);							// _G
-	lua_pushlightuserdata(l, this);					// this, _G
-	if (lua_gettable(l, -2) != LUA_TTABLE)			// [], _G
-		throw std::runtime_error("Lua missing table");
-	lua_pushinteger(l, id);							// callback_id, [], _G
-	if (lua_gettable(l, -2) != LUA_TFUNCTION)		// fun, [], _G
-		throw std::runtime_error("Lua missing callback");
-	lua_pushvalue(l, -2);							// [], fun, [], _G
-
-	lua_pushlightuserdata(l, &canvas);				// &can, [], fun, [], _G
-	if (lua_gettable(l, -5) != LUA_TTABLE)			// [c], [], fun, [], _G
-		throw std::runtime_error("Lua missing canvas table");
-	if (lua_pcall(l, 2, 0, 0))						// [], _G
-		throw std::runtime_error(ft::f("Lua: %", luaL_checkstring(l, -1)));
-	lua_pop(l, 2);									// empty
+	this->callLuaCallback(_act.getLuaState(), LuaCallback::DRAW
+						  , ftlua::make_keys(&canvas));
 	return ;
 }
 
