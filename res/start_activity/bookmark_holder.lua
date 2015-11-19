@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/16 15:14:38 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/17 18:43:27 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/19 16:43:38 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -21,7 +21,7 @@ function frame:at(i)
 	return self:rawat(i);
   end
   while (sz < i + 1) do
-	v = createView('Bookmark', 'Bookmark' .. tostring(i));
+	v = createView('Bookmark', 'Bookmark' .. tostring(sz));
 	self:addView(v);
 	v:setVisibility(0);
 	sz = sz + 1;

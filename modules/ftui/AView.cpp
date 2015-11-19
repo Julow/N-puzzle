@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/19 12:50:34 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/19 16:44:05 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -50,19 +50,13 @@ static void			push_to_lua(lua_State *l
 {
 	int					err;
 
-	(void)lua_getglobal(l, "ftui");
-	(void)lua_pushstring(l, "push_view");
-	(void)lua_gettable(l, -2);
+	ftlua::push(l, ftlua::make_keys("ftui", "push_view"));
 	err = lua_getglobal(l, viewName.c_str());
 	FTASSERT(err == LUA_TTABLE);
 	lua_pushlightuserdata(l, vptr);
-	if (id != nullptr)
-		(void)lua_pushstring(l, id->c_str());
-	else
-		lua_pushnil(l);
+	ftlua::push(l, id);
 	err = lua_pcall(l, 3, 0, 0);
 	FTASSERT(err == LUA_OK);
-	lua_pop(l, 1);
 	return ;
 }
 
