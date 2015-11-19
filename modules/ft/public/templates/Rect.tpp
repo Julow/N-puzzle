@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/05 14:06:16 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 18:32:34 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/19 13:29:19 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -106,9 +106,8 @@ void		Rect<T>::expand(T expand)
 template<typename T>
 bool		Rect<T>::collides(Rect<T> const &rect) const
 {
-//TODO: check, j'ai remove les >=/<= en >/<
-	if (rect.left < right && rect.right > left
-		&& rect.top < bottom && rect.bottom > top)
+	if (rect.left <= right && rect.right > left
+		&& rect.top <= bottom && rect.bottom > top)
 		return (true);
 	return (false);
 }

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:32:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 15:37:00 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/19 12:50:25 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -178,8 +178,7 @@ void        Button::onClick(int mods)
 {
 	this->callLuaCallback(
 		_act.getLuaState()
-		, static_cast<uint32_t>(LuaCallback::CLICK), mods, 0);
-	//TODO: does not compile without the trailing '0'
+		, static_cast<uint32_t>(LuaCallback::CLICK), mods);
 	return ;
 }
 
@@ -187,8 +186,7 @@ void        Button::onDoubleClick(int mods)
 {
 	this->callLuaCallback(
 		_act.getLuaState()
-		, static_cast<uint32_t>(LuaCallback::DOUBLE_CLICK), mods, 0);
-	//TODO: does not compile without the trailing '0'
+		, static_cast<uint32_t>(LuaCallback::DOUBLE_CLICK), mods);
 	return ;
 }
 

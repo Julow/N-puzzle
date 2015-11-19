@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 15:04:00 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/09 16:09:20 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/19 13:30:58 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -37,7 +37,7 @@ namespace ft
 	_OPERATORS(TYPE, /)											\
 	constexpr TYPE<T>	&operator=(TYPE<T> const &rhs);			\
 	template<typename C>										\
-	operator TYPE<C>(void) const;								\
+	constexpr operator TYPE<C>(void) const;								\
 	constexpr bool		operator==(TYPE<T> const &rhs) const;
 
 template <typename T>

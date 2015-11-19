@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/11 11:03:51 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 15:00:12 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/19 12:34:54 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -33,7 +33,7 @@ typedef std::integral_constant<int, ftce::round_toi(WIN_WIDTHF / WIN_RATIOF)>
 	win_height_t;
 # define WIN_HEIGHTI win_height_t()
 # define WIN_HEIGHTF static_cast<float>(WIN_HEIGHTI)
-# define WIN_SIZEVI ft::Vec2<int>(WIN_WIDTHI, WIN_HEIGHTI) // TODO: constexpr class
-# define WIN_SIZEVF ft::Vec2<float>(WIN_WIDTHF, WIN_HEIGHTF) // TODO: constexpr class
+# define WIN_SIZEVI ft::Vec2<int>(WIN_WIDTHI, WIN_HEIGHTI)
+# define WIN_SIZEVF ft::Vec2<float>(WIN_WIDTHF, WIN_HEIGHTF)
 
 #endif // ************************************************* CONFIG_WINDOW_HPP //

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/05 14:45:49 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/09 16:03:10 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/19 13:29:03 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -120,7 +120,7 @@ DECLARE_OPERATOR(/)
 
 template<typename T>
 template<typename C>
-Vec3<T>::operator Vec3<C>(void) const
+constexpr Vec3<T>::operator Vec3<C>(void) const
 {
 	return (ft::make_vec(
 		static_cast<C>(x),

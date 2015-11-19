@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 16:32:58 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/19 12:50:30 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -327,5 +327,7 @@ private:
 };
 
 };
+
+# include "ftui/templates/AView_callLuaCallback.tpp"
 
 #endif

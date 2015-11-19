@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/17 16:47:01 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/18 17:25:41 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/19 12:53:54 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,10 +15,6 @@
 
 # include <istream>
 # include <sstream>
-
-/*
-** TODO: improve
-*/
 
 class	Tokenizer
 {

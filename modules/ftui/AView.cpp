@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/17 18:33:25 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/19 12:50:34 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -23,8 +23,6 @@
 #include "ftui/EventParams.hpp"
 #include "ft_xml/XmlParser.hpp"
 #include "ftui/VerticalLayout.hpp"
-
-#include "ftui/templates/AView_callLuaCallback.tpp"
 
 using std::string;
 

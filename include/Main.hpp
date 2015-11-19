@@ -6,17 +6,12 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 12:58:38 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 14:46:00 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/19 12:51:39 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef MAIN_HPP
 # define MAIN_HPP
-
-//TODO: move to own file
-class Main;
-class StartState;
-//TODO: move to own file
 
 # include <iostream>
 
