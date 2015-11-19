@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 14:16:56 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/19 10:58:54 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -45,7 +45,7 @@ PS::PickState(Main &main, OCamlBinding &ocaml)
 {
 	lua_State	*l = this->_b->act.getLuaState();
 	int			ret;
-
+// TTAG push0
 	ret = lua_getglobal(l, "PickState");
 	FTASSERT(ret == LUA_TTABLE);
 

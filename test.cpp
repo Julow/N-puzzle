@@ -62,6 +62,22 @@ static nil_t			nil{};
 
 };
 
+
+template<typename HEAD, typename... TAIL, std::size_t ...I>
+std::tuple<TAIL...>			getTail(
+	std::tuple<HEAD, TAIL...> const &tup, std::index_sequence<I...>)
+{
+	return  std::make_tuple( std::get<I>(tup)... );
+}
+
+template<typename HEAD, typename... TAIL>
+std::tuple<TAIL...>			getTailPUBLIC(
+	std::tuple<HEAD, TAIL...> const &tup)
+{
+	return  getTail(tup, std::index_sequence_for<TAIL...>{});
+}
+
+
 int							main(void)
 {
 	void			*trux = (void*)0x42;
@@ -72,6 +88,9 @@ int							main(void)
 	ftlua::push<false>(l, 42);
 	// make_key(trux, "callbacks", 18);
 	ftlua::push(l, ftlua::make_key(trux, "callbacks", 18));
+
+	auto tup = std::make_tuple("salut", 42, 18.1f);
+	auto tail = getTailPUBLIC(tup);
 
 	// push(nil);
 	// make_asGKeys(42);

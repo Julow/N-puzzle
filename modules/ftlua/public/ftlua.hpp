@@ -6,16 +6,20 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/13 07:39:43 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 14:08:02 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/19 12:17:19 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef FTLUA_HPP
 # define FTLUA_HPP
 
-# include <stdint.h>
 # include <string>
+
 # include "liblua/lua.hpp"
+
+# include "ftlua/types.hpp"
+# include "ftlua/push.hpp"
+# include "ftlua/pop.hpp"
 
 namespace ftlua
 {
@@ -85,36 +89,6 @@ void		call(lua_State *l, std::string const &name, ARGS ...args);
 template<size_t N, typename ...ARGS>
 void		call(lua_State *l, ARGS ...args);
 
-/*
-** ========================================================================== **
-** Utils
-*/
-
-/*
-** Push a value on the top of the stack
-*/
-static inline void		push(lua_State *l, int8_t v) { lua_pushinteger(l, v); }
-static inline void		push(lua_State *l, int16_t v) { lua_pushinteger(l, v); }
-static inline void		push(lua_State *l, int32_t v) { lua_pushinteger(l, v); }
-static inline void		push(lua_State *l, int64_t v) { lua_pushinteger(l, v); }
-static inline void		push(lua_State *l, uint8_t v) { lua_pushinteger(l, v); }
-static inline void		push(lua_State *l, uint16_t v) { lua_pushinteger(l, v); }
-static inline void		push(lua_State *l, uint32_t v) { lua_pushinteger(l, v); }
-static inline void		push(lua_State *l, uint64_t v) { lua_pushinteger(l, v); }
-static inline void		push(lua_State *l, float v) { lua_pushnumber(l, v); }
-static inline void		push(lua_State *l, double v) { lua_pushnumber(l, v); }
-static inline void		push(lua_State *l, std::string const &v)
-{
-	lua_pushstring(l, v.c_str());
-}
-static inline void		push(lua_State *l, char const *v) { lua_pushstring(l, v); }
-static inline void		push(lua_State *l, void *v)
-{
-	if (v == nullptr)
-		lua_pushnil(l);
-	else
-		lua_pushlightuserdata(l, v);
-}
 
 /*
 ** 'retrieveSelf'				1. Looks for a table at index.		(may throw)
