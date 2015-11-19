@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/17 15:30:04 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/19 12:31:13 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -233,73 +233,62 @@ void				ALayout::inflate(Activity &a, ft::XmlParser &xml)
 
 bool				ALayout::onMouseScroll(int x, int y, float delta)
 {
-	bool		ret;
 	AView		*v;
 
-	ret = false;
 	for (int i = 0; i < size(); i++)
 	{
 		v = at(i);
 		FTASSERT(v != nullptr);
-		if (v->isMouseScrollTargeted() && v->isMouseOver())
-			ret |= v->onMouseScroll(x, y, delta);
-		if (ret)
-			return true;
+		if (v->isMouseScrollTargeted() && v->isMouseOver()
+			&& v->onMouseScroll(x, y, delta))
+			return (true);
 	}
 	if (AView::isMouseScrollTargeted())
-		ret |= AView::onMouseScroll(x, y, delta);
-	return (ret);
+		return (AView::onMouseScroll(x, y, delta));
+	return (false);
 }
 
 bool				ALayout::onMouseDown(int x, int y, int button, int mods)
 {
-	bool		ret;
 	AView		*v;
 
-	ret = false;
 	for (int i = 0; i < size(); i++)
 	{
 		v = at(i);
 		FTASSERT(v != nullptr);
-		if (v->isMouseClickTargeted() &&
-			(v->isMouseOver() || v->isMouseCaptureTargeted()))
-			ret |= v->onMouseDown(x, y, button, mods);
-		if (ret)
-			return true;
+		if (v->isMouseClickTargeted()
+			&& (v->isMouseOver() || v->isMouseCaptureTargeted())
+			&& v->onMouseDown(x, y, button, mods))
+			return (true);
 	}
 	if (AView::isMouseClickTargeted())
-		ret |= AView::onMouseDown(x, y, button, mods);
-	return (ret);
+		return (AView::onMouseDown(x, y, button, mods));
+	return (false);
 }
 
 bool				ALayout::onMouseUp(int x, int y, int button, int mods)
 {
-	bool		ret;
 	AView		*v;
 
-	ret = false;
 	for (int i = 0; i < size(); i++)
 	{
 		v = at(i);
 		FTASSERT(v != nullptr);
-		if (v->isMouseClickTargeted() &&
-			(v->isMouseOver() || v->isMouseCaptureTargeted()))
-			ret |= v->onMouseUp(x, y, button, mods);
-		if (ret)
-			return true;
+		if (v->isMouseClickTargeted()
+			&& (v->isMouseOver() || v->isMouseCaptureTargeted())
+			&& v->onMouseUp(x, y, button, mods))
+			return (true);
 	}
 	if (AView::isMouseClickTargeted())
-		ret |= AView::onMouseUp(x, y, button, mods);
-	return (ret);
+		return (AView::onMouseUp(x, y, button, mods));
+	return (false);
 }
 
 bool				ALayout::onMouseMove(int x, int y)
 {
-	bool			ret;
 	IViewHolder		*vh;
 	AView			*v;
 
-	ret = false;
 	for (int i = 0; i < size(); i++)
 	{
 		vh = this->holderAt(i);
@@ -318,55 +307,46 @@ bool				ALayout::onMouseMove(int x, int y)
 				if (v->isMouseOver())
 					v->setMouseOver(x, y, false);
 			}
-			if (v->isMouseOver() || v->isMouseCaptureTargeted())
-				ret |= v->onMouseMove(x - vh->getPos().x, y - vh->getPos().y);
-			if (ret)
-				return true;
+			if ((v->isMouseOver() || v->isMouseCaptureTargeted())
+				&& v->onMouseMove(x - vh->getPos().x, y - vh->getPos().y))
+				return (true);
 		}
 	}
 	if (AView::isMouseMoveTargeted())
-		ret |= AView::onMouseMove(x, y);
-	return (ret);
+		return (AView::onMouseMove(x, y));
+	return (false);
 }
 
 bool				ALayout::onKeyDown(int key_code, int mods)
 {
-	bool		ret;
 	AView		*v;
 
-	ret = false;
 	for (int i = 0; i < size(); i++)
 	{
 		v = at(i);
 		FTASSERT(v != nullptr);
-		if (v->isKeyboardTargeted())
-			ret |= v->onKeyDown(key_code, mods);
-		if (ret)
-			return true;
+		if (v->isKeyboardTargeted() && v->onKeyDown(key_code, mods))
+			return (true);
 	}
 	if (AView::isKeyboardTargeted())
-		ret |= AView::onKeyDown(key_code, mods);
-	return (ret);
+		return (AView::onKeyDown(key_code, mods));
+	return (false);
 }
 
 bool				ALayout::onKeyUp(int key_code, int mods)
 {
-	bool		ret;
 	AView		*v;
 
-	ret = false;
 	for (int i = 0; i < size(); i++)
 	{
 		v = at(i);
 		FTASSERT(v != nullptr);
-		if (v->isKeyboardTargeted())
-			ret |= v->onKeyUp(key_code, mods);
-		if (ret) //TODO clean those 6 'ret' variables (here and 5 above)
-			return true;
+		if (v->isKeyboardTargeted() && v->onKeyUp(key_code, mods))
+			return (true);
 	}
 	if (AView::isKeyboardTargeted())
-		ret |= AView::onKeyUp(key_code, mods);
-	return (ret);
+		return (AView::onKeyUp(key_code, mods));
+	return (false);
 }
 
 void				ALayout::onMouseLeave(int x, int y)
