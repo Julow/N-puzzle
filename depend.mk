@@ -12,6 +12,7 @@ libs:
 
 MAX_SOURCE_LEN := 32
 o/srcs/GlCanvasHolder.o: srcs/GlCanvasHolder.cpp include/GlCanvasHolder.hpp \
+	modules/_objs/ftui/_public/ftlua/Converter.hpp \
 	modules/_objs/ftui/_public/ftlua/KeysWrapper.hpp \
 	modules/_objs/ftui/_public/ftlua/call.hpp \
 	modules/_objs/ftui/_public/ftlua/ftlua.hpp \
@@ -67,6 +68,7 @@ o/srcs/Main.o: srcs/Main.cpp modules/_objs/tiles/_public/ft/Rect.hpp \
 	include/IState.hpp include/Main.hpp include/OCamlBinding.hpp \
 	include/ftlua_extend.hpp modules/_objs/ftui/_public/ft_xml/XmlParser.hpp \
 	modules/_objs/ftui/_public/ft_xml/XmlTokenizer.hpp \
+	modules/_objs/ftui/_public/ftlua/Converter.hpp \
 	modules/_objs/ftui/_public/ftlua/KeysWrapper.hpp \
 	modules/_objs/ftui/_public/ftlua/call.hpp \
 	modules/_objs/ftui/_public/ftlua/ftlua.hpp \
@@ -119,6 +121,7 @@ o/srcs/PickState.o: srcs/PickState.cpp include/GlCanvasHolder.hpp \
 	include/PickState.hpp include/ftlua_extend.hpp \
 	modules/_objs/ftui/_public/ft_xml/XmlParser.hpp \
 	modules/_objs/ftui/_public/ft_xml/XmlTokenizer.hpp \
+	modules/_objs/ftui/_public/ftlua/Converter.hpp \
 	modules/_objs/ftui/_public/ftlua/KeysWrapper.hpp \
 	modules/_objs/ftui/_public/ftlua/call.hpp \
 	modules/_objs/ftui/_public/ftlua/ftlua.hpp \
@@ -169,6 +172,7 @@ o/srcs/libftui_extend/Bookmark.o: srcs/libftui_extend/Bookmark.cpp \
 	include/libftui_extend/Bookmark.hpp \
 	modules/_objs/ftui/_public/ft_xml/XmlParser.hpp \
 	modules/_objs/ftui/_public/ft_xml/XmlTokenizer.hpp \
+	modules/_objs/ftui/_public/ftlua/Converter.hpp \
 	modules/_objs/ftui/_public/ftlua/KeysWrapper.hpp \
 	modules/_objs/ftui/_public/ftlua/call.hpp \
 	modules/_objs/ftui/_public/ftlua/ftlua.hpp \
