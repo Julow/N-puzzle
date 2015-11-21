@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/19 18:36:39 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 16:17:13 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -20,6 +20,7 @@
 # include "ft/Vec.hpp"
 # include "ft/Rect.hpp"
 # include "ft/utils.hpp"
+# include "ft/assert.hpp" //debug
 
 # include "ftlua/types.hpp"
 # include "ftlua/utils.hpp"
@@ -27,8 +28,50 @@
 namespace ftlua // ========================================================== //
 {
 
-template<bool USELUAERR = false >
-int			push(lua_State *l, bool const &v)
+# define DELPTR(T) typename std::remove_pointer<T>::type
+# define DELCONST(T) typename std::remove_const<T>::type
+# define ISCONV(A, B) std::is_convertible<A, B>::value
+# define ISPTR(A) std::is_pointer<A>::value
+# define ISCONST(A) std::is_const<A>::value
+# define OK_IFNODEF(PRED) typename std::enable_if<PRED>::type*
+# define OK_IF(PRED) typename std::enable_if<PRED>::type* = nullptr
+# define ISSAME(A, B) std::is_same<A, B>::value
+
+// Some prototypes ========================================================== //
+
+template<bool FIRSTISTOP, bool USELUAERR
+		 , typename... ARGS>
+int			push(lua_State *l, KeysWrapper<ARGS...> const &wrap);
+
+
+// Push (T to Converter<T>) || (const-T to Converter<const-T>)
+template <bool USELUAERR, typename T
+		  , OK_IFNODEF(ISCONV(T, Converter<T>)) >
+int			push(lua_State *l, T &v);
+
+
+// Push (const-T to Converter<T>)
+// Overload allowing const cast in User's cast-operator
+template <bool USELUAERR, typename T
+		  , OK_IFNODEF(ISCONST(T))
+		  , typename NOCONST
+		  , OK_IFNODEF(ISCONV(T, Converter<NOCONST>)) >
+int			push(lua_State *l, T &v);
+
+// Push (T* to push<T>) || (T-const * to push<T-const>)
+template <bool USELUAERR, typename T
+		  , OK_IFNODEF(ISPTR(T))
+		  , typename NOPTR
+		  , typename NOPTRCONST
+		  , OK_IFNODEF(ISCONV(NOPTRCONST, Converter<NOPTRCONST>))
+		  >
+int			push(lua_State *l, T v);
+
+// Def ====================================================================== //
+
+
+template<bool USELUAERR = false, typename T, OK_IF(ISSAME(T, bool))>
+int			push(lua_State *l, T const &v)
 { lua_pushboolean(l, v); return 1;}
 template<bool USELUAERR = false>
 int			push(lua_State *l, int8_t const &v)
@@ -105,9 +148,10 @@ int			push(lua_State *l, std::string const *const &v)
 template<bool USELUAERR = false>
 int			push(lua_State *l, char const *v)
 { if (v == NULL) lua_pushnil(l); else lua_pushstring(l, v); return 1; }
-template<bool USELUAERR = false>
-int			push(lua_State *l, void *const &v)
-{ if (v == nullptr) lua_pushnil(l); else lua_pushlightuserdata(l, v); return 1; }
+template<bool USELUAERR = false, typename T, OK_IF(ISSAME(T, void*))>
+int			push(lua_State *l, T const &v)
+{
+	if (v == nullptr) lua_pushnil(l); else lua_pushlightuserdata(l, v); return 1; }
 template<bool USELUAERR = false>
 int			push(lua_State *l, nil_t const &)
 { lua_pushnil(l); return 1; }
@@ -124,6 +168,40 @@ inline int	push(lua_State *l, ft::Vec4<T> const &v)
 template <bool USELUAERR = false, typename T>
 inline int	push(lua_State *l, ft::Rect<T> const &v)
 { push(l, v.left); push(l, v.top); push(l, v.right); push(l, v.bottom); return 4; }
+
+
+
+template <bool USELUAERR = false, typename T
+		  , OK_IF(ISCONV(T, Converter<T>)) >
+int			push(lua_State *l, T &v)
+{
+	// FTASSERT(false, "pushconverter nn / cc");
+	return Converter<T>{v}.callPush(l);
+}
+
+template <bool USELUAERR = false, typename T
+		  , OK_IF(ISCONST(T))
+		  , typename NOCONST = DELCONST(T)
+		  , OK_IF(ISCONV(T, Converter<NOCONST>)) >
+int			push(lua_State *l, T &v)
+{
+	// FTASSERT(false, "pushconverter nc");
+	return Converter<NOCONST>{v}.callPush(l);
+}
+
+template <bool USELUAERR = false, typename T
+		  , OK_IF(ISPTR(T))
+		  , typename NOPTR = DELPTR(T)
+		  , typename NOPTRCONST = DELCONST(NOPTR)
+		  , OK_IF(ISCONV(NOPTRCONST, Converter<NOPTRCONST>))
+		  >
+int			push(lua_State *l, T v)
+{
+	// FTASSERT(false, "pushconverter p/p");
+	return push<USELUAERR>(l, *v);
+}
+
+
 
 namespace internal // ======================================================= //
 {
@@ -175,17 +253,22 @@ void		_loopKey(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 
 template<bool FIRSTISTOP = false, bool USELUAERR = false
 		 , typename... ARGS, class T = KeysWrapper<ARGS...> >
-int					push(lua_State *l, KeysWrapper<ARGS...> const &wrap)
+int			push(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 {
-	(void)l;
-	(void)wrap;
 	if (!FIRSTISTOP)
 		lua_pushglobaltable(l);
 	internal::_loopKey<0, USELUAERR>(l, wrap);
 	return 1;
 }
 
-
 }; // ================================================ END OF NAMESPACE FTLUA //
+
+# undef DELPTR
+# undef DELCONST
+# undef ISCONV
+# undef ISPTR
+# undef ISCONST
+# undef OK_IF
+# undef ISSAME
 
 #endif

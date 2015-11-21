@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/21 09:00:52 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 16:13:40 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -307,7 +307,8 @@ void				AView::onDraw(Canvas &canvas)
 {
 	this->_flags &= ~AView::REDRAW_QUERY;
 	this->callLuaCallback(_act.getLuaState(), LuaCallback::DRAW
-						  , ftlua::make_keys(&canvas));
+						  , &canvas);
+						  // , ftlua::make_keys(&canvas));
 	return ;
 }
 

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 08:48:43 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 16:18:02 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -194,7 +194,6 @@ void			Main::onMouseMove(int x, int y)
 
 void			Main::onMouseUp(int x, int y, int button, int mods)
 {
-	FTASSERT(false);
 	_state->getActivity().onMouseUp(x, y, button, mods);
 }
 
