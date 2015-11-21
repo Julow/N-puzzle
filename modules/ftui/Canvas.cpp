@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/21 17:49:07 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 17:59:42 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -169,7 +169,7 @@ void			Canvas::pushLua(lua_State *l)
 	lua_pushglobaltable(l);				// _G
 	lua_newtable(l);					// [], _G
 
-	ftlua::push(l, reinterpret_cast<void*>(this));
+	ftlua::pushLight(l, this);
 	lua_pushvalue(l, -2);				// [], this, [], _G
 	lua_settable(l, -4);				// [], _G
 
@@ -178,8 +178,9 @@ void			Canvas::pushLua(lua_State *l)
 		throw std::runtime_error("Canvas template should be present in _G");
 	lua_setmetatable(l, -2);			// [], _G
 
-	ftlua::push(l, 0);
-	ftlua::push(l, reinterpret_cast<void*>(this));
+	ftlua::multiPush(l, 0, ftlua::light(this));
+	// ftlua::push(l, 0);
+	// ftlua::pushLight(l, this);
 	lua_settable(l, -3);				// [], _G
 
 	lua_pop(l, 2);						// empty

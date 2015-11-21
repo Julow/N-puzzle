@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 17:09:57 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 16:42:22 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 17:49:56 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -40,54 +40,6 @@ int					pcallMethod(
 	lua_remove(l, -3);					// []	f
 	return lua_pcall(l, multiPush(l, args...) + 1, nRet, 0);
 }
-
-// template <typename ...ARGS, typename ...FKEYS>
-// int					pcallTableFun(
-// 	lua_State *l, unsigned int nRet
-// 	, KeysWrapper<FKEYS...> const &funTabKeys
-// 	, ARGS const & ...args)
-// {
-// 	push<true>(l, funTabKeys);
-// 	return lua_pcall(l, internal::_pushLoop(l, args...), nRet, 0);
-// }
-
-// template <typename ...ARGS, typename ...FKEYS>
-// int					pcallGlobalFun(
-// 	lua_State *l, unsigned int nRet
-// 	, KeysWrapper<FKEYS...> const &funGlobalKeys
-// 	, ARGS const & ...args)
-// {
-// 	push(l, funGlobalKeys);
-// 	return lua_pcall(l, internal::_pushLoop(l, args...), nRet, 0);
-// }
-
-// template <typename ...ARGS, typename ...FKEYS>
-// int					pcallTableMethod(
-// 	lua_State *l, unsigned int nRet
-// 	, KeysWrapper<FKEYS...> const &methodTabKeys
-// 	, ARGS const & ...args)
-// {
-// 	lua_pushvalue(l, -1);				// []	[]
-// 	push<true>(l, methodTabKeys);			// f	[]
-// 	lua_pushvalue(l, -2);				// []	f	[]
-// 	lua_remove(l, -3);					// []	f
-// 	return lua_pcall(l, internal::_pushLoop(l, args...) + 1, nRet, 0);
-// }
-
-// template <typename ...ARGS, typename ...TKEYS, typename ...FKEYS>
-// int					pcallGlobalMethod(
-// 	lua_State *l, unsigned int nRet
-// 	, KeysWrapper<TKEYS...> const &tabGlobalKeys
-// 	, KeysWrapper<FKEYS...> const &methodTabKeys
-// 	, ARGS const & ...args)
-// {
-// 	push(l, tabGlobalKeys);				// []
-// 	lua_pushvalue(l, -1);				// []	[]
-// 	push<true>(l, methodTabKeys);			// f	[]
-// 	lua_pushvalue(l, -2);				// []	f	[]
-// 	lua_remove(l, -3);					// []	f
-// 	return lua_pcall(l, internal::_pushLoop(l, args...) + 1, nRet, 0);
-// }
 
 }; // ================================================ END OF NAMESPACE FTLUA //
 

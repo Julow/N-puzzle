@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:20:10 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 16:01:26 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 18:06:54 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -17,26 +17,6 @@
 
 # include "ftui/libftui.hpp"
 
-
-namespace ftlua
-{
-
-// template <bool USELUAERR = false>
-// int			push(lua_State *l, ftui::AView *const &v)
-// {
-// 	ftlua::push<USELUAERR>(
-// 		l, ftlua::make_keys(reinterpret_cast<void* const&>(v)));
-// 	return 1;
-// }
-
-// template <bool USELUAERR = false>
-// int			push(lua_State *l, ftui::Canvas *const &v)
-// {
-// 	ftlua::push<USELUAERR>(
-// 		l, ftlua::make_keys(reinterpret_cast<void* const&>(v)));
-// 	return 1;
-// }
-
-};
+// TODO: remove file
 
 #endif /* ********************************************* FTUI_FTLUA_EXTEND_HPP */

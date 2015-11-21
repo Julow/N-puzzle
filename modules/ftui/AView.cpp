@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/21 16:51:40 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 18:25:55 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -53,7 +53,7 @@ static void			push_to_lua(lua_State *l
 	ftlua::push(l, ftlua::make_keys("ftui", "push_view"));
 	ftlua::push(l, ftlua::make_keys(viewName));
 	FTASSERT(lua_istable(l, -1));
-	err = ftlua::pcall(l, 0, 1, reinterpret_cast<void*>(vptr), id);
+	err = ftlua::pcall(l, 0, 1, ftlua::light(vptr), id);
 	FTASSERT(err == LUA_OK);
 	return ;
 }

@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 16:41:33 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/17 18:48:56 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/21 18:13:44 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -30,8 +30,8 @@ local fileButton = filePuzzleButton
 assert(fileButton ~= nil);
 
 function fileButton:onClick(_, _)
-  -- useFileGrid();
-  puzzleFrame:reloadGrid();
+  ft.pchildren(UIParent);
+  ft.pparents(self);
 end
 
 fileButton:setCallback('onClick', fileButton.onClick);

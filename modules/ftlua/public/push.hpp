@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 17:41:44 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 18:26:16 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -211,8 +211,11 @@ template <bool USELUAERR = false, typename T
 int			push(lua_State *l, T v)
 {
 	// FTASSERT(false, "pushconverter p/p");
+	if (v == nullptr)
+		return push<USELUAERR>(l, nil);
+	else
+		return push<USELUAERR>(l, *v);
 	// TODO: check nullptr
-	return push<USELUAERR>(l, *v);
 }
 
 
@@ -282,7 +285,7 @@ int			push(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 
 // ========================================================================== //
 // ========================================================================== //
-// MULTI-PUSH
+// MULTI-PUSH / PUSHLIGHT
 //
 
 namespace internal // ======================================================= //
@@ -308,6 +311,28 @@ int			multiPush(lua_State *l, ARGS const & ...args)
 {
 	return internal::_pushLoop<USELUAERR>(l, args...);
 }
+
+inline void					*light(void *ptr)
+{
+	return ptr;
+}
+
+inline int					pushLight(lua_State *l, void *ptr)
+{
+	lua_pushlightuserdata(l, ptr);
+	return 1;
+}
+
+inline KeysWrapper<void*>	lightKey(void *ptr)
+{
+	return make_keys(ptr);
+}
+
+inline int					pushLightKey(lua_State *l, void *ptr)
+{
+	return ftlua::push(l, make_keys(ptr));
+}
+
 
 }; // ================================================ END OF NAMESPACE FTLUA //
 

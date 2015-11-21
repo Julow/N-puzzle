@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 17:42:51 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 17:50:08 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -77,70 +77,6 @@ BASICPOPSTACK(float, luaL_checknumber)
 BASICPOPSTACK(double, luaL_checknumber)
 
 #undef BASICPOPSTACK
-
-// * STEP 4 HELPERS ********************************************************* //
-template <int NumOut, typename Ret,
-	typename std::enable_if<!std::is_pointer<Ret>::value>::type* = nullptr>
-void					pushStack(lua_State *, Ret&&)
-{
-	static_assert(!std::is_same<Ret, Ret>::value
-				  , "This return type is not supported by LOLhelper function "
-				  " or Wrong number of arguments for return value");
-	return ;
-}
-
-template <int NumOut, typename Ret,
-	typename std::enable_if<std::is_pointer<Ret>::value>::type* = nullptr>
-void					pushStack(lua_State *l, Ret&& r)
-{
-	static_assert(NumOut == 1, "Wrong number of arguments for return value");
-	void *const		ptr = reinterpret_cast<void*>(r);
-
-	if (r == nullptr)
-	{
-		lua_pushnil(l);
-		return ;
-	}
-	lua_pushglobaltable(l);
-	lua_pushlightuserdata(l, ptr);
-	lua_gettable(l, -2);
-	lua_remove(l, -2);
-
-	if (lua_isnil(l, -1))
-	{
-		lua_pop(l, 1);
-		lua_pushlightuserdata(l, ptr);
-	}
-	// FTASSERT(!lua_isnil(l, -1), "lightuserdata not found in _G");
-	return ;
-}
-
-template <> inline void	pushStack<1, std::string>(lua_State *l, std::string&& r)
-{ (void)lua_pushstring(l, r.c_str()); }
-template <> inline void	pushStack<2, ft::Vec2<int> >(
-	lua_State *l, ft::Vec2<int>&& r)
-{
-	(void)lua_pushinteger(l, r.x);//TODO right order ?
-	(void)lua_pushinteger(l, r.y);
-	return ;
-}
-
-#define BASICPUSHSTACK(TYPE, FUNCTION)								\
-template <>															\
-inline void				pushStack<1, TYPE>(lua_State *l, TYPE &&r)	\
-{																	\
-	(void)FUNCTION(l, r);											\
-	return ;														\
-}
-
-BASICPUSHSTACK(int, lua_pushinteger)
-BASICPUSHSTACK(unsigned int, lua_pushinteger) //TODO regler les PB?
-// BASICPUSHSTACK(uint32_t, lua_pushinteger)
-BASICPUSHSTACK(bool, lua_pushinteger)
-BASICPUSHSTACK(float, lua_pushnumber)
-BASICPUSHSTACK(double, lua_pushnumber)
-
-#undef BASICPUSHSTACK
 
 // * STEP 4 *** Call the function ******************************************* //
 // * Function *** //

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 15:51:32 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 18:06:00 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -86,8 +86,7 @@ public:
 			return ftlua::Converter<AView>(
 				*this, [](lua_State *l, AView &v)
 				{
-					return ftlua::push(
-						l, ftlua::make_keys(reinterpret_cast<void*>(&v)));
+					return ftlua::pushLightKey(l, &v);
 				});
 		}
 	operator ftlua::Converter<AView>() const
@@ -95,8 +94,7 @@ public:
 			return ftlua::Converter<AView>(
 				*const_cast<AView*>(this), [](lua_State *l, AView &v)
 				{
-					return ftlua::push(
-						l, ftlua::make_keys(reinterpret_cast<void*>(&v)));
+					return ftlua::pushLightKey(l, &v);
 				});
 		}
 
