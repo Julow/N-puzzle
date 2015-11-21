@@ -65,7 +65,7 @@ o/srcs/Main.o: srcs/Main.cpp modules/_objs/tiles/_public/ft/Rect.hpp \
 	modules/_objs/tiles/_public/ft/utils.hpp include/GlCanvasHolder.hpp \
 	include/Grid.hpp include/IBundle.hpp include/ISolverListener.hpp \
 	include/IState.hpp include/Main.hpp include/OCamlBinding.hpp \
-	modules/_objs/ftui/_public/ft_xml/XmlParser.hpp \
+	include/ftlua_extend.hpp modules/_objs/ftui/_public/ft_xml/XmlParser.hpp \
 	modules/_objs/ftui/_public/ft_xml/XmlTokenizer.hpp \
 	modules/_objs/ftui/_public/ftlua/KeysWrapper.hpp \
 	modules/_objs/ftui/_public/ftlua/call.hpp \
@@ -116,7 +116,8 @@ o/srcs/OCamlBinding.o: srcs/OCamlBinding.cpp include/Grid.hpp \
 o/srcs/PickState.o: srcs/PickState.cpp include/GlCanvasHolder.hpp \
 	include/Grid.hpp include/IBundle.hpp include/ISolverListener.hpp \
 	include/IState.hpp include/Main.hpp include/OCamlBinding.hpp \
-	include/PickState.hpp modules/_objs/ftui/_public/ft_xml/XmlParser.hpp \
+	include/PickState.hpp include/ftlua_extend.hpp \
+	modules/_objs/ftui/_public/ft_xml/XmlParser.hpp \
 	modules/_objs/ftui/_public/ft_xml/XmlTokenizer.hpp \
 	modules/_objs/ftui/_public/ftlua/KeysWrapper.hpp \
 	modules/_objs/ftui/_public/ftlua/call.hpp \

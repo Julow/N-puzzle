@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/21 08:58:20 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 09:34:30 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -22,11 +22,12 @@
 namespace ftui
 {
 
-/*
-** ************************************************************************** **
-** Init-time / End-time -> instance.CTOR / instance.DTOR
-*/
 
+// ========================================================================== //
+// CONSTRUCTION
+//
+
+// CTOR / DTOR ====================== //
 Activity::Activity(ft::Vec2<int> size) :
 	_rootView(NULL),
 	_eventMap(),
@@ -44,11 +45,7 @@ Activity::~Activity(void)
 	return ;
 }
 
-/*
-** ************************************************************************** **
-** Init-time -> instance.inflate
-*/
-
+// INFLATE ========================== //
 static lua_State	*new_lua_env()
 {
 	lua_State *const	l = luaL_newstate();
@@ -78,6 +75,19 @@ static void			load_views_scripts(
 	}
 	scripts_paths.clear();
 	scripts_paths.shrink_to_fit();
+	return ;
+}
+
+
+void			Activity::pushActivity(void)
+{
+	ftlua::push(_l, ftlua::make_keys("ftui"));
+	if (!lua_istable(_l, -1))
+		throw std::runtime_error("Could not retrieve _G['ftui']");
+	ftlua::push(_l, "activity");
+	ftlua::push(_l, this);
+	lua_settable(_l, -3);
+	lua_pop(_l, 1);
 	return ;
 }
 
@@ -116,83 +126,9 @@ void			Activity::saveScriptPath(std::string const &str)
 	return ;
 }
 
-/*
-** ************************************************************************** **
-** Render-time -> internal functions
-*/
-
-Activity		*Activity::retrieveActivity(lua_State *l)
-{
-	Activity	*act;
-
-	ftlua::push(l, ftlua::make_keys("ftui", "activity"));
-	if (!lua_islightuserdata(l, -1))
-		luaL_error(l, "Could not retrieve activity pointer");
-	act = reinterpret_cast<Activity*>(lua_touserdata(l, -1));
-	lua_pop(l, 1);
-	return act;
-}
-
-void			Activity::pushActivity(void)
-{
-	ftlua::push(_l, ftlua::make_keys("ftui"));
-	if (!lua_istable(_l, -1))
-		throw std::runtime_error("Could not retrieve _G['ftui']");
-	ftlua::push(_l, "activity");
-	ftlua::push(_l, this);
-	lua_settable(_l, -3);
-	lua_pop(_l, 1);
-	return ;
-}
-
-
-int				Activity::createViewG(lua_State *l)
-{
-	int const						top = lua_gettop(l);
-	AView							*v;
-	AView::view_info_s::factory_t	fact;
-	std::string const				type(luaL_checkstring(l, 1));
-	std::string	const *const		id = top == 2
-		? (std::string[]){std::string(luaL_checkstring(l, 2))} : nullptr;
-
-	if (top > 2)
-		luaL_error(l, "Too many arguments");
-	try {
-		fact = AView::getFactory(type); }
-	catch (...) {
-		luaL_error(l, ft::f("Cannot find '%'", type).c_str()); }
-	if (fact == nullptr)
-		luaL_error(l, ft::f("Cannot instanciate '%'", type).c_str());
-	lua_pop(l, top);
-	v = fact(*Activity::retrieveActivity(l), nullptr, id);
-	ftlua::push(l, v);
-	FTASSERT(lua_istable(l, -1));
-	return 1;
-}
-
-lua_State		*Activity::getLuaState(void) const
-{
-	return (_l);
-}
-
-AView			*Activity::getRoot(void)
-{
-	if (_rootView == NULL)
-		return (NULL);
-	return (_rootView->getView());
-}
-
-AView const		*Activity::getRoot(void) const
-{
-	if (_rootView == NULL)
-		return (NULL);
-	return (_rootView->getView());
-}
-
-/*
-** ************************************************************************** **
-** Render-time -> instance.render
-*/
+// ========================================================================== //
+// LOOP TIME
+//
 
 void			Activity::render(Canvas &canvas)
 {
@@ -223,29 +159,7 @@ void			Activity::render(Canvas &canvas)
 	return ;
 }
 
-void			Activity::queryRedrawAll(void)
-{
-	if (_rootView != NULL)
-		_rootView->getView()->queryRedraw();
-}
-
-void			Activity::queryMeasureAll(void)
-{
-	if (_rootView != NULL)
-		_rootView->getView()->queryMeasure();
-}
-
-void			Activity::queryUpdateAll(void)
-{
-	if (_rootView != NULL)
-		_rootView->getView()->queryUpdate();
-}
-
-/*
-** ************************************************************************** **
-** Render-time -> key/mouse entry point 'window event'->'activity event'
-*/
-
+// MOUSE / KEYBOARD INTERACTIONS ==== //
 bool			Activity::onKeyUp(int key_code, int mods)
 {
 	if (_rootView != NULL && _rootView->getView()->isKeyboardTargeted())
@@ -314,11 +228,25 @@ bool			Activity::onMouseDown(int x, int y, int button, int mods)
 	return false;
 }
 
+//
 
-/*
-** ************************************************************************** **
-** Render-time -> instance.*Event		(more in Activity.tpp)
-*/
+void			Activity::queryRedrawAll(void)
+{
+	if (_rootView != NULL)
+		_rootView->getView()->queryRedraw();
+}
+
+void			Activity::queryMeasureAll(void)
+{
+	if (_rootView != NULL)
+		_rootView->getView()->queryMeasure();
+}
+
+void			Activity::queryUpdateAll(void)
+{
+	if (_rootView != NULL)
+		_rootView->getView()->queryUpdate();
+}
 
 void			Activity::unregisterEvent(std::string const &event, AView *v)
 {
@@ -338,11 +266,6 @@ void			Activity::unregisterEvent(std::string const &event, AView *v)
 	return ;
 }
 
-/*
-** ************************************************************************** **
-** Render-time -> register 'c' function for 'lua->c' callback
-*/
-
 void			Activity::registerLuaCFun_global(
 	std::string const &funName, lua_CFunction f)
 {
@@ -358,5 +281,63 @@ void			Activity::registerLuaCFun_table(
 	ftlua::registerLuaCFunTable(_l, tabName, funName, f);
 	return ;
 }
+
+//
+
+int				Activity::createViewG(lua_State *l)
+{
+	int const						top = lua_gettop(l);
+	AView							*v;
+	AView::view_info_s::factory_t	fact;
+	std::string const				type(luaL_checkstring(l, 1));
+	std::string	const *const		id = top == 2
+		? (std::string[]){std::string(luaL_checkstring(l, 2))} : nullptr;
+
+	if (top > 2)
+		luaL_error(l, "Too many arguments");
+	try {
+		fact = AView::getFactory(type); }
+	catch (...) {
+		luaL_error(l, ft::f("Cannot find '%'", type).c_str()); }
+	if (fact == nullptr)
+		luaL_error(l, ft::f("Cannot instanciate '%'", type).c_str());
+	lua_pop(l, top);
+	v = fact(*Activity::retrieveActivity(l), nullptr, id);
+	ftlua::push(l, v);
+	FTASSERT(lua_istable(l, -1));
+	return 1;
+}
+
+Activity		*Activity::retrieveActivity(lua_State *l)
+{
+	Activity	*act;
+
+	ftlua::push(l, ftlua::make_keys("ftui", "activity"));
+	if (!lua_islightuserdata(l, -1))
+		luaL_error(l, "Could not retrieve activity pointer");
+	act = reinterpret_cast<Activity*>(lua_touserdata(l, -1));
+	lua_pop(l, 1);
+	return act;
+}
+
+lua_State		*Activity::getLuaState(void) const
+{
+	return (_l);
+}
+
+AView			*Activity::getRoot(void)
+{
+	if (_rootView == NULL)
+		return (NULL);
+	return (_rootView->getView());
+}
+
+AView const		*Activity::getRoot(void) const
+{
+	if (_rootView == NULL)
+		return (NULL);
+	return (_rootView->getView());
+}
+
 
 };

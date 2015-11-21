@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/21 08:51:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 09:27:41 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -36,37 +36,33 @@ namespace ftui
 class	Activity
 {
 public:
-	class	RootViewHolder;
 
-	typedef std::unordered_multimap<std::string, IEventBox*>	event_map_t;
+	// ====================================================================== //
+	// Interactions with application
+	// ====================================================================== //
 
+	// CONSTRUCTION ================= //
 	Activity(ft::Vec2<int> size);
+	void				inflate(std::istream &stream);
+
 	virtual ~Activity(void);
 
-	void				inflate(std::istream &stream);
-	void				saveScriptPath(std::string const &str);
+	Activity(void) = delete;
+	Activity(Activity const &src) = delete;
+	Activity			&operator=(Activity const &rhs) = delete;
 
-	static int			createViewG(lua_State *l);
-	static Activity		*retrieveActivity(lua_State *l);
-	void				pushActivity(void);
-
-	lua_State			*getLuaState(void) const;
-	AView				*getRoot(void);
-	AView const			*getRoot(void) const;
-
+	// LOOP TIME ==================== //
 	void				render(Canvas &canvas);
+
+	bool				onKeyUp(int key_code, int mods);
+	bool				onKeyDown(int key_code, int mods);
+	void				onMouseMove(int x, int y);
+	void				onMouseUp(int x, int y, int button, int mods);
+	bool				onMouseDown(int x, int y, int button, int mods);
 
 	void				queryRedrawAll(void);
 	void				queryMeasureAll(void);
 	void				queryUpdateAll(void);
-
-	bool				onKeyUp(int key_code, int mods);
-	bool				onKeyDown(int key_code, int mods);
-
-	void				onMouseMove(int x, int y);
-
-	void				onMouseUp(int x, int y, int button, int mods);
-	bool				onMouseDown(int x, int y, int button, int mods);
 
 	/*
 	 *	registerEvent(e,v)		Registers an event for a given view:
@@ -108,12 +104,10 @@ public:
 
 	/*
 	 *	registerGFun() 		Registers a cfun to lua _G
-	 *	registerMemfuns()	Registers several cfuns to a specific table in _G
+	 *	registerMemfuns()	Registers a cfuns to a specific table in _G
 	 * 	********************************************************************* **
-	 *		The user must handle the lua-stack in those functions. Two optional
-	 *	functions are available to assist you in the process:
-	 *		- ftui::LOLfun
-	 *		- ftui::LOLmemfun
+	 *		The user must handle the lua-stack in the registered functions.
+	 * 	(See ftlua)
 	 */
 	void				registerLuaCFun_global(
 		std::string const &funName, lua_CFunction f);
@@ -122,17 +116,34 @@ public:
 		, std::string const &funName
 		, lua_CFunction f);
 
+
+	// ====================================================================== //
+	// Internal interactions
+	// ====================================================================== //
+
+	// CONSTRUCTION ================= //
+	void				saveScriptPath(std::string const &str);
+	void				pushActivity(void);
+
+	// LOOP TIME ==================== //
+	static int			createViewG(lua_State *l);
+	static Activity		*retrieveActivity(lua_State *l);
+
+	lua_State			*getLuaState(void) const;
+	AView				*getRoot(void);
+	AView const			*getRoot(void) const;
+
 protected:
-	RootViewHolder		*_rootView;
-	event_map_t			_eventMap;
-	ft::Vec2<int>		_size;
-	lua_State			*_l;
+	class RootViewHolder;
+	typedef std::unordered_multimap<std::string, IEventBox*> event_map_t;
+
+	RootViewHolder				*_rootView;
+	event_map_t					_eventMap;
+	ft::Vec2<int>				_size;
+	lua_State					*_l;
 	std::vector<std::string>	_scriptsPaths;
 
 private:
-	Activity(void) = delete;
-	Activity(Activity const &src) = delete;
-	Activity			&operator=(Activity const &rhs) = delete;
 
 };
 
@@ -144,38 +155,41 @@ private:
 class	Activity::RootViewHolder : public IViewHolder
 {
 public:
-	RootViewHolder(Activity &act, ft::XmlParser const &xml, AView *v,
-					ft::Vec2<int> s);
-	virtual ~RootViewHolder(void);
 
-	virtual ALayout			*getParent(void);
-	virtual ALayout const	*getParent(void) const;
+	// CONSTRUCTION ================= //
+	RootViewHolder(
+		Activity &act, ft::XmlParser const &xml, AView *v, ft::Vec2<int> s);
+	~RootViewHolder(void);
 
-	virtual AView			*getView(void);
-	virtual AView const		*getView(void) const;
-
-	virtual ft::Vec2<int>	getPos(void) const;
-	virtual ft::Vec2<int>	getSize(void) const;
-
-	virtual void			setRequestedSize(ft::Vec2<int> size);
-	virtual ft::Vec2<int>	getRequestedSize(void) const;
-
-	virtual void			setParam(std::string const &k
-									, std::string const &v);
-
-	void					setSize(ft::Vec2<int> size);
-
-protected:
-
-	Activity				&_activity;
-	AView					*_view;
-	ft::Vec2<int>			_size;
-	ft::Vec2<int>			_requestedSize;
-
-private:
 	RootViewHolder(void) = delete;
 	RootViewHolder(RootViewHolder const &src) = delete;
-	RootViewHolder			&operator=(RootViewHolder const &rhs) = delete;
+	RootViewHolder		&operator=(RootViewHolder const &rhs) = delete;
+
+	// IVIEWHOLDER LEGACY =========== //
+	ALayout				*getParent(void);
+	ALayout const		*getParent(void) const;
+
+	AView				*getView(void);
+	AView const			*getView(void) const;
+
+	ft::Vec2<int>		getPos(void) const;
+	ft::Vec2<int>		getSize(void) const;
+
+	void				setRequestedSize(ft::Vec2<int> size);
+	ft::Vec2<int>		getRequestedSize(void) const;
+
+	void				setParam(std::string const &k, std::string const &v);
+
+	// SPECIFIC FUNCTIONS =========== //
+	void				setSize(ft::Vec2<int> size);
+
+private:
+
+	Activity			&_activity;
+	AView				*_view;
+	ft::Vec2<int>		_size;
+	ft::Vec2<int>		_requestedSize;
+
 };
 
 };

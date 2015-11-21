@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/21 08:48:04 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 09:09:36 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -169,7 +169,7 @@ void			Canvas::pushLua(lua_State *l)
 	lua_pushglobaltable(l);				// _G
 	lua_newtable(l);					// [], _G
 
-	ftlua::push(l, this);
+	ftlua::push(l, reinterpret_cast<void*>(this));
 	lua_pushvalue(l, -2);				// [], this, [], _G
 	lua_settable(l, -4);				// [], _G
 
@@ -179,7 +179,8 @@ void			Canvas::pushLua(lua_State *l)
 	lua_setmetatable(l, -2);			// [], _G
 
 	ftlua::push(l, 0);
-	ftlua::push(l, this);
+	ftlua::push(l, reinterpret_cast<void*>(this));
+	// ftlua::push(l, this);
 	lua_settable(l, -3);				// [], _G
 
 	lua_pop(l, 2);						// empty
@@ -188,7 +189,7 @@ void			Canvas::pushLua(lua_State *l)
 
 bool			Canvas::isInLua(lua_State *l)
 {
-	ftlua::push(l, ftlua::make_keys(this));
+	ftlua::push(l, this);
 	if (!lua_istable(l, -1))
 	{
 		lua_pop(l, 1);
