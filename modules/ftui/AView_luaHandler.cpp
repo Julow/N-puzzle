@@ -6,11 +6,12 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 08:47:53 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 17:48:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "ftui/AView.hpp"
+#include "ftui/ALayout.hpp" // Do not remove, gives info about cast operator
 #include "ftui/IViewHolder.hpp"
 #include "ftui/ASolidView.hpp"
 #include "ftui/TextView.hpp"
@@ -88,6 +89,7 @@ DEF_LUACFUN_GSUFFIX(AView, isMeasureQueried,		1,	1)
 DEF_LUACFUN_GSUFFIX(AView, isRedrawQueried,			1,	1)
 DEF_LUACFUN_GSUFFIX(AView, getParent,				1,	1)
 
+
 int			AView::setCallbackG(lua_State *l)
 {
 	AView *const		i = ftlua::retrieveSelf<AView>(l, -3, false);
@@ -96,12 +98,8 @@ int			AView::setCallbackG(lua_State *l)
 	return (0);
 }
 
-int			AView::getIdG(lua_State *l)
-{
-	AView *const				i = ftlua::retrieveSelf<AView>(l, -1);
+DEF_LUACFUN_GSUFFIX(AView, getId,					1,	1)
 
-	return ftlua::push(l, i->getId());
-}
 
 int			AView::getRequestedSizeG(lua_State *l)
 {

@@ -6,20 +6,20 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/21 09:01:51 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 17:12:52 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef ALAYOUT_HPP
 # define ALAYOUT_HPP
 
-# include "ftui/libftui.hpp"
-
 # include <iterator>
 # include <vector>
 # include <stdint.h>
 
+# include "ftui/libftui.hpp"
 # include "ftui/ASolidView.hpp"
+# include "ftui/ftlua_extend.hpp"
 
 namespace ftui
 {
@@ -38,6 +38,26 @@ public:
 	ALayout(Activity &act, ft::XmlParser const &xml);
 	ALayout(Activity &act, std::string const *id, std::string const &viewName);
 	virtual ~ALayout(void);
+
+
+    operator ftlua::Converter<ALayout>()
+		{
+			return ftlua::Converter<ALayout>(
+				*this, [](lua_State *l, ALayout &v)
+				{
+					return ftlua::push(
+						l, ftlua::make_keys(reinterpret_cast<void*>(&v)));
+				});
+		}
+	operator ftlua::Converter<ALayout>() const
+		{
+			return ftlua::Converter<ALayout>(
+				*const_cast<ALayout*>(this), [](lua_State *l, ALayout &v)
+				{
+					return ftlua::push(
+						l, ftlua::make_keys(reinterpret_cast<void*>(&v)));
+				});
+		}
 
 /*
 ** AView legacy

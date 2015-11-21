@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/11 16:17:34 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 17:42:51 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,6 +15,8 @@
 #include "ft/Vec.hpp"
 #include "ft/utils.hpp"
 #include "ft/assert.hpp"
+
+#include "ftlua/push.hpp"
 
 namespace ftlua
 {
@@ -145,7 +147,7 @@ BASICPUSHSTACK(double, lua_pushnumber)
 template <int NumOut, typename Ret, typename... Params>
 void	helperCall(lua_State *l, Ret (*f)(Params...), Params ...p)
 {
-	pushStack<NumOut>(l, f(p...));
+	ftlua::push<true>(l, f(p...));
 	// luaFT_stackdump(l);
 	return ;
 }
@@ -163,7 +165,7 @@ void	helperCall(lua_State *l, void (*f)(Params...), Params ...p)
 template <int NumOut, typename Ret, class C, typename... Params>
 void	helperCall(lua_State *l, C *i, Ret (C::*f)(Params...), Params ...p)
 {
-	pushStack<NumOut>(l, (i->*f)(p...));
+	ftlua::push<true>(l, (i->*f)(p...));
 	// luaFT_stackdump(l);
 	return ;
 }

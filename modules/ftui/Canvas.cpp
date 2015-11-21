@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/21 09:09:36 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 17:49:07 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -180,7 +180,6 @@ void			Canvas::pushLua(lua_State *l)
 
 	ftlua::push(l, 0);
 	ftlua::push(l, reinterpret_cast<void*>(this));
-	// ftlua::push(l, this);
 	lua_settable(l, -3);				// [], _G
 
 	lua_pop(l, 2);						// empty

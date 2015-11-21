@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 17:09:57 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 16:26:53 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 16:42:22 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,29 +19,13 @@
 namespace ftlua // ========================================================== //
 {
 
-namespace internal // ======================================================= //
-{
-
-inline unsigned int		_pushLoop(lua_State *)
-{
-	return 0;
-}
-
-template<typename HEAD, typename ...TAIL>
-unsigned int		_pushLoop(lua_State *l, HEAD const &h, TAIL const & ...t)
-{
-	return ftlua::push(l, h) + internal::_pushLoop(l, t...);
-}
-
-}; // ============================================= END OF NAMESPACE INTERNAL //
-
 template <typename ...ARGS>
 int					pcall(
 	lua_State *l, unsigned int nRet, unsigned int nArgsStack
 	, ARGS const & ...args)
 {
 	return lua_pcall(
-		l, internal::_pushLoop(l, args...) + nArgsStack, nRet, 0);
+		l, multiPush(l, args...) + nArgsStack, nRet, 0);
 }
 
 template <typename ...ARGS, typename ...FKEYS>
@@ -54,7 +38,7 @@ int					pcallMethod(
 	push<true>(l, methodTabKeys);		// f	[]
 	lua_pushvalue(l, -2);				// []	f	[]
 	lua_remove(l, -3);					// []	f
-	return lua_pcall(l, internal::_pushLoop(l, args...) + 1, nRet, 0);
+	return lua_pcall(l, multiPush(l, args...) + 1, nRet, 0);
 }
 
 // template <typename ...ARGS, typename ...FKEYS>

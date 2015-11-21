@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 16:17:13 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 17:41:44 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -39,6 +39,9 @@ namespace ftlua // ========================================================== //
 
 // Some prototypes ========================================================== //
 
+// TODO: Split hpp/cpp (ps: No default parameters in hpp)
+
+
 template<bool FIRSTISTOP, bool USELUAERR
 		 , typename... ARGS>
 int			push(lua_State *l, KeysWrapper<ARGS...> const &wrap);
@@ -67,8 +70,11 @@ template <bool USELUAERR, typename T
 		  >
 int			push(lua_State *l, T v);
 
-// Def ====================================================================== //
 
+// ========================================================================== //
+// ========================================================================== //
+// STRAIGHTFORWARD PUSH-OVERLOADS
+//
 
 template<bool USELUAERR = false, typename T, OK_IF(ISSAME(T, bool))>
 int			push(lua_State *l, T const &v)
@@ -170,8 +176,13 @@ inline int	push(lua_State *l, ft::Rect<T> const &v)
 { push(l, v.left); push(l, v.top); push(l, v.right); push(l, v.bottom); return 4; }
 
 
+// ========================================================================== //
+// ========================================================================== //
+// CONVERTER<T> PUSH-OVERLOADS
+//
 
 template <bool USELUAERR = false, typename T
+		  , OK_IF((sizeof(T) > 0u)) // Checks if T is a complete type
 		  , OK_IF(ISCONV(T, Converter<T>)) >
 int			push(lua_State *l, T &v)
 {
@@ -180,6 +191,7 @@ int			push(lua_State *l, T &v)
 }
 
 template <bool USELUAERR = false, typename T
+		  , OK_IF((sizeof(T) > 0u)) // Checks if T is a complete type
 		  , OK_IF(ISCONST(T))
 		  , typename NOCONST = DELCONST(T)
 		  , OK_IF(ISCONV(T, Converter<NOCONST>)) >
@@ -192,16 +204,22 @@ int			push(lua_State *l, T &v)
 template <bool USELUAERR = false, typename T
 		  , OK_IF(ISPTR(T))
 		  , typename NOPTR = DELPTR(T)
+		  , OK_IF((sizeof(NOPTR) > 0u)) // Checks if T is a complete type
 		  , typename NOPTRCONST = DELCONST(NOPTR)
 		  , OK_IF(ISCONV(NOPTRCONST, Converter<NOPTRCONST>))
 		  >
 int			push(lua_State *l, T v)
 {
 	// FTASSERT(false, "pushconverter p/p");
+	// TODO: check nullptr
 	return push<USELUAERR>(l, *v);
 }
 
 
+// ========================================================================== //
+// ========================================================================== //
+// KeysWrapper<...> PUSH-OVERLOADS
+//
 
 namespace internal // ======================================================= //
 {
@@ -252,13 +270,43 @@ void		_loopKey(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 }; // ============================================= END OF NAMESPACE INTERNAL //
 
 template<bool FIRSTISTOP = false, bool USELUAERR = false
-		 , typename... ARGS, class T = KeysWrapper<ARGS...> >
+		 , typename ...ARGS, class T = KeysWrapper<ARGS...> >
 int			push(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 {
 	if (!FIRSTISTOP)
 		lua_pushglobaltable(l);
 	internal::_loopKey<0, USELUAERR>(l, wrap);
 	return 1;
+}
+
+
+// ========================================================================== //
+// ========================================================================== //
+// MULTI-PUSH
+//
+
+namespace internal // ======================================================= //
+{
+
+template <bool USELUAERR>
+unsigned int		_pushLoop(lua_State *)
+{
+	return 0;
+}
+
+template <bool USELUAERR, typename HEAD, typename ...TAIL>
+unsigned int		_pushLoop(lua_State *l, HEAD const &h, TAIL const &...t)
+{
+	return push<USELUAERR>(l, h) + _pushLoop<USELUAERR>(l, t...);
+}
+
+}; // ============================================= END OF NAMESPACE INTERNAL //
+
+
+template<bool USELUAERR = false, typename ...ARGS>
+int			multiPush(lua_State *l, ARGS const & ...args)
+{
+	return internal::_pushLoop<USELUAERR>(l, args...);
 }
 
 }; // ================================================ END OF NAMESPACE FTLUA //

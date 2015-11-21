@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/21 16:17:48 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 16:49:15 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -81,11 +81,10 @@ static void			load_views_scripts(
 
 void			Activity::pushActivity(void)
 {
-	ftlua::push(_l, ftlua::make_keys("ftui"));
-	if (!lua_istable(_l, -1))
+	ftlua::multiPush(_l, ftlua::make_keys("ftui")
+					 , "activity", reinterpret_cast<void*>(this));
+	if (!lua_istable(_l, -3))
 		throw std::runtime_error("Could not retrieve _G['ftui']");
-	ftlua::push(_l, "activity");
-	ftlua::push(_l, reinterpret_cast<void*>(this));
 	lua_settable(_l, -3);
 	lua_pop(_l, 1);
 	return ;
