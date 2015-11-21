@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/19 12:05:47 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 08:48:43 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,8 +18,6 @@
 #include "Main.hpp"
 #include "config_window.hpp"
 #include "PickState.hpp"
-#include "ftlua/ftlua.hpp"
-#include "ftlua_extend.hpp"
 #include "libftui_extend/Bookmark.hpp"
 
 /*

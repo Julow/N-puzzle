@@ -6,12 +6,11 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/19 18:53:35 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 08:48:04 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "ftui/Canvas.hpp"
-#include "ftlua/ftlua.hpp"
 #include "ft/utils.hpp"
 
 extern "C"

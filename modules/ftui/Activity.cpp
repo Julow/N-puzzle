@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/19 18:45:50 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 08:58:20 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,8 +14,6 @@
 #include <iostream>
 
 #include "ft/utils.hpp"
-#include "ftlua/ftlua.hpp"
-#include "liblua/lua.hpp"
 #include "ftui/Activity.hpp"
 #include "ftui/AView.hpp"
 #include "ftui/Canvas.hpp"
@@ -153,7 +151,6 @@ int				Activity::createViewG(lua_State *l)
 	int const						top = lua_gettop(l);
 	AView							*v;
 	AView::view_info_s::factory_t	fact;
-	// int								err;
 	std::string const				type(luaL_checkstring(l, 1));
 	std::string	const *const		id = top == 2
 		? (std::string[]){std::string(luaL_checkstring(l, 2))} : nullptr;
@@ -168,7 +165,7 @@ int				Activity::createViewG(lua_State *l)
 		luaL_error(l, ft::f("Cannot instanciate '%'", type).c_str());
 	lua_pop(l, top);
 	v = fact(*Activity::retrieveActivity(l), nullptr, id);
-	ftlua::push(l, ftlua::make_keys(v));
+	ftlua::push(l, v);
 	FTASSERT(lua_istable(l, -1));
 	return 1;
 }

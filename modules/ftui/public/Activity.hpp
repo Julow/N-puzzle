@@ -6,23 +6,23 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/17 17:17:43 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 08:51:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef ACTIVITY_HPP
 # define ACTIVITY_HPP
 
-# include "ftui/libftui.hpp"
-# include "ft_xml/XmlParser.hpp"
-
 # include <vector>
 # include <unordered_map>
 # include <string>
 # include <istream>
 
+# include "ft_xml/XmlParser.hpp"
+
+# include "ftui/libftui.hpp"
 # include "ftui/IViewHolder.hpp"
-# include "ftlua/ftlua.hpp"
+# include "ftui/ftlua_extend.hpp"
 
 namespace ftui
 {

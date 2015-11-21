@@ -6,14 +6,14 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/11 16:30:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/19 17:04:31 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 08:54:48 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#ifndef FTLUA_EXTEND_HPP
-# define FTLUA_EXTEND_HPP
+#ifndef NPUZZLE_FTLUA_EXTEND_HPP
+# define NPUZZLE_FTLUA_EXTEND_HPP
 
-#include "ftlua/ftlua.hpp"
+# include "ftui/ftlua_extend.hpp"
 
 #include "Grid.hpp"
 
@@ -37,4 +37,4 @@ int			push(lua_State *l, Grid const &gr)
 
 };
 
-#endif // ************************************************** FTLUA_EXTEND_HPP //
+#endif // ****************************************** NPUZZLE_FTLUA_EXTEND_HPP //

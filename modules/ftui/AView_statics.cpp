@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/19 18:43:28 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 08:47:58 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,7 +21,6 @@
 #include "ftui/ASolidView.hpp"
 #include "ftui/TextView.hpp"
 #include "ftui/Button.hpp"
-#include "ftlua/ftlua.hpp"
 
 namespace ftui
 {

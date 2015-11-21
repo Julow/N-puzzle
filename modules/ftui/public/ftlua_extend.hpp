@@ -6,16 +6,17 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:20:10 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/19 17:54:58 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 08:55:35 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#ifndef FTLUA_EXTEND_HPP
-# define FTLUA_EXTEND_HPP
+#ifndef FTUI_FTLUA_EXTEND_HPP
+# define FTUI_FTLUA_EXTEND_HPP
 
 # include "ftlua/ftlua.hpp"
 
-# include "AView.hpp"
+# include "ftui/libftui.hpp"
+
 
 namespace ftlua
 {
@@ -30,4 +31,4 @@ int			push(lua_State *l, ftui::AView *const &v)
 
 };
 
-#endif /* ************************************************** FTLUA_EXTEND_HPP */
+#endif /* ********************************************* FTUI_FTLUA_EXTEND_HPP */

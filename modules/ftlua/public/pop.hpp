@@ -6,12 +6,12 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:16:24 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/19 12:17:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 08:53:46 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#ifndef POP_HPP
-# define POP_HPP
+#ifndef FTLUA_POP_HPP
+# define FTLUA_POP_HPP
 
 # include <cstdint>
 # include <string>

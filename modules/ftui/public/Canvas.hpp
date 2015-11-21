@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 16:06:25 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/21 08:50:08 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,13 +15,13 @@
 
 # include <stdint.h>
 
-# include "ftui/libftui.hpp"
 # include "ft/Color.hpp"
 # include "ft/Rect.hpp"
 # include "ft/Vec.hpp"
-# include "ftlua/ftlua.hpp"
-
 # include "ft/utils.hpp"
+
+# include "ftui/ftlua_extend.hpp"
+# include "ftui/libftui.hpp"
 
 namespace ftui
 {

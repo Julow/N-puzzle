@@ -6,12 +6,11 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/11 17:10:07 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 17:45:17 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 08:47:37 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "ftui/ALayout.hpp"
-#include "ftlua/ftlua.hpp"
 
 namespace ftui
 {

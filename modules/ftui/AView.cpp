@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/19 18:35:10 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 09:00:52 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,16 +15,14 @@
 #include <iostream>
 
 #include "ft/utils.hpp"
-#include "ftlua/ftlua.hpp"
+#include "ft_xml/XmlParser.hpp"
+
 #include "ftui/AView.hpp"
 #include "ftui/Activity.hpp"
 #include "ftui/ALayout.hpp"
 #include "ftui/IViewHolder.hpp"
 #include "ftui/EventParams.hpp"
-#include "ft_xml/XmlParser.hpp"
 #include "ftui/VerticalLayout.hpp"
-
-#include "ftui/ftlua_extend.hpp"
 
 using std::string;
 

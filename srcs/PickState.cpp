@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/19 10:58:54 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 08:48:51 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,7 +15,6 @@
 
 #include "PickState.hpp"
 #include "config_window.hpp"
-#include "ftlua/ftlua.hpp"
 
 using PS = PickState;
 

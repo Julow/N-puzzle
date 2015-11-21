@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/13 07:39:43 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/19 17:10:18 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 08:42:12 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -69,28 +69,6 @@ template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
 int			handle(lua_State *l, Ret (C::*f)(Args...));
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
 int			handle(lua_State *l, Ret (C::*f)(Args...) const);
-
-/*
-** ========================================================================== **
-** Caller
-*/
-
-/*
-** Call the function 'name' in the table currently on the top of the stack
-** -
-** A table or the global table have to be on the top of the stack
-*/
-template<typename ...ARGS>
-void		call(lua_State *l, std::string const &name, ARGS ...args);
-
-/*
-** Call a lua function that is already on the top of the lua stack
-** -
-** n_args is the count of argument already pushed on the stack or 0
-*/
-template<size_t N, typename ...ARGS>
-void		call(lua_State *l, ARGS ...args);
-
 
 /*
 ** 'retrieveSelf'				1. Looks for a table at index.		(may throw)

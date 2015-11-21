@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/19 18:34:30 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/21 09:02:29 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,9 +19,9 @@
 # include <stdint.h>
 
 # include "ft_xml/XmlParser.hpp"
-# include "ftlua/ftlua.hpp"
 
 # include "ftui/libftui.hpp"
+# include "ftui/ftlua_extend.hpp"
 
 namespace ftui
 {
