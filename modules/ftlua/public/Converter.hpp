@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/21 10:27:37 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 16:04:18 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/22 13:39:57 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -30,8 +30,8 @@ public:
 	/* CONSTRUCTION ***************** */
 	typedef int				(*push_t)(lua_State *l, T &);
 
-	Converter(T &v, push_t p) : _v(v), _p(p) { }
-	Converter(Converter const &src) : _v(src._v), _p(src._p) { }
+	Converter(T &v, push_t p) : _v(v), _p(p) {}
+	Converter(Converter const &src) : _v(src._v), _p(src._p) {}
 	~Converter() {}
 
 	Converter() = delete;

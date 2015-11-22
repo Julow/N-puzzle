@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/22 09:46:04 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/22 13:12:36 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,17 +18,14 @@
 
 #include "ftlua/push.hpp"
 
-namespace ftlua
-{
 
-/*
-** ************************************************************************** //
-** * handle ***************************************************************** //
-** ************************************************************************** //
-*/
+namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
+
 // * STEP 2 HELPERS ********************************************************* //
-namespace internal
-{
 template <typename T>
 constexpr inline int	decay(void){ return 1; }
 
@@ -79,17 +76,18 @@ BASICPOPSTACK(double, luaL_checknumber)
 template <int NumOut, typename Ret, typename... Params>
 void	helperCall(lua_State *l, Ret (*f)(Params...), Params ...p)
 {
-	ftlua::push<true>(l, f(p...));
-	// luaFT_stackdump(l);
+	int const	npushed = ftlua::push<true>(l, f(p...));
+
+	if (npushed != NumOut)
+		luaL_error(l, ft::f("%/% arguments returned", npushed, NumOut).c_str());
 	return ;
 }
 template <int NumOut, typename... Params>
-void	helperCall(lua_State *l, void (*f)(Params...), Params ...p)
+void	helperCall(lua_State *, void (*f)(Params...), Params ...p)
 {
 	static_assert(NumOut == 0, "Wrong number of arguments for return value");
+
 	f(p...);
-	// luaFT_stackdump(l);
-	(void)l;
 	return ;
 }
 
@@ -97,21 +95,22 @@ void	helperCall(lua_State *l, void (*f)(Params...), Params ...p)
 template <int NumOut, typename Ret, class C, typename... Params>
 void	helperCall(lua_State *l, C *i, Ret (C::*f)(Params...), Params ...p)
 {
-	ftlua::push<true>(l, (i->*f)(p...));
-	// luaFT_stackdump(l);
+	int const	npushed = ftlua::push<true>(l, (i->*f)(p...));
+
+	if (npushed != NumOut)
+		luaL_error(l, ft::f("%/% arguments returned", npushed, NumOut).c_str());
 	return ;
 }
 template <int NumOut, class C, typename... Params>
-void	helperCall(lua_State *l, C *i, void (C::*f)(Params...), Params ...p)
+void	helperCall(lua_State *, C *i, void (C::*f)(Params...), Params ...p)
 {
 	static_assert(NumOut == 0, "Wrong number of arguments for return value");
+
 	(i->*f)(p...);
-	// luaFT_stackdump(l);
-	(void)l;
 	return ;
 }
 
-// * STEP 3 *** Clean the function pointer and check NumIn ****************** //
+// * STEP 3 *** Restore the function pointer and check NumIn **************** //
 // * Function *** //
 template <int NumIn, int NumOut
 		  , typename Ret, typename... Retreived>
@@ -119,6 +118,7 @@ void		helperLoop(
 	lua_State *l, Ret (*f)(), Retreived const &&...r)
 {
 	static_assert(NumIn == 0, "Wrong number of arguments provided");
+
 	helperCall<NumOut>(l, reinterpret_cast<Ret (*)(Retreived...)>(f), r...);
 	return ;
 }
@@ -130,6 +130,7 @@ void		helperLoop(
 	lua_State *l, C *i, Ret (C::*f)(), Retreived const &&...r)
 {
 	static_assert(NumIn == 0, "Wrong number of arguments provided");
+
 	helperCall<NumOut>(l, i
 		, reinterpret_cast<Ret (C::*)(Retreived...)>(f), r...);
 	return ;
@@ -145,9 +146,8 @@ void		helperLoop(
 {
 	using HeadCleanRef = typename std::remove_reference<Head>::type;
 	using HeadCleanAll = typename std::remove_cv<HeadCleanRef>::type;
-	// luaFT_stackdump(l);
+
 	HeadCleanAll	p{popStack<HeadCleanAll>(l, NumIn)};
-	// ft::f(std::cout, "got '%' at index %\n", p, -NumIn);
 
 	helperLoop<NumIn - decay<HeadCleanAll>(), NumOut>(
 		l, reinterpret_cast<Ret (*)(ArgsLeft...)>(f)
@@ -166,9 +166,8 @@ void		helperLoop(
 {
 	using HeadCleanRef = typename std::remove_reference<Head>::type;
 	using HeadCleanAll = typename std::remove_cv<HeadCleanRef>::type;
-	// luaFT_stackdump(l);
+
 	HeadCleanAll	p{popStack<HeadCleanAll>(l, NumIn)};
-	// ft::f(std::cout, "got '%' at index %\n", p, -NumIn);
 
 	helperLoop<NumIn - decay<HeadCleanAll>(), NumOut>(
 		l, i, reinterpret_cast<Ret (C::*)(ArgsLeft...)>(f)
@@ -177,7 +176,11 @@ void		helperLoop(
 		);
 	return ;
 }
-};// end internal //
+
+
+}; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE INTERNAL //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
 
 // * STEP 1 *** Call the helperLoop ***************************************** //
 // * Function *** //
@@ -200,6 +203,7 @@ int		handle(lua_State *l, C const *i, Ret (C::*f)(Args...) const)
 {
 	using FClean = Ret (C::*)(Args...);
 	using CClean = C*;
+
 	internal::helperLoop<NumIn, NumOut>(
 		l, const_cast<CClean>(i), reinterpret_cast<FClean>(f));
 	// TODO: sorry world this is a const_cast :( TODO: fix_later
@@ -217,17 +221,15 @@ int		handle(lua_State *l, Ret (C::*f)(Args...) const)
 {
 	using F = Ret (C::*)(Args...);
 	using FClean = typename std::remove_cv<F>::type;
+
 	return (handle<NumIn, NumOut>(l, reinterpret_cast<FClean>(f)));
 }
 
-/*
-** ************************************************************************** //
-** * retrieveSelf *********************************************************** //
-** ************************************************************************** //
-*/
 
-template <typename T>
-inline T	*retrieveSelf(lua_State *l, int index, bool pop)
+
+
+template <typename T> //TODO: get rid of this
+T		*retrieveSelf(lua_State *l, int index, bool pop)
 {
 	void		*i;
 
@@ -251,4 +253,5 @@ inline T	*retrieveSelf(lua_State *l, int index, bool pop)
 	return (reinterpret_cast<T*>(i));
 }
 
-};
+}; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
