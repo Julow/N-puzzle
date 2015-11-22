@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/21 09:27:41 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/22 10:39:57 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -123,7 +123,6 @@ public:
 
 	// CONSTRUCTION ================= //
 	void				saveScriptPath(std::string const &str);
-	void				pushActivity(void);
 
 	// LOOP TIME ==================== //
 	static int			createViewG(lua_State *l);

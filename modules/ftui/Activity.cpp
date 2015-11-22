@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/22 10:15:14 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/22 11:41:10 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -56,7 +56,7 @@ static lua_State	*new_lua_env()
 	luaL_openlibs(l);
 	err = luaL_dofile(l, (RES_PATH "/utils.lua"));
 	FTASSERT(err == LUA_OK);
-	ftlua::set(l, ftlua::make_keys("_G"), "createView", &Activity::createViewG);
+	ftlua::set(l, "createView", &Activity::createViewG);
 	ftlua::pushUtils(l);
 	Canvas::pushTemplate(l);
 	AView::pushViewTemplates(l);
@@ -78,18 +78,6 @@ static void			load_views_scripts(
 	return ;
 }
 
-
-void			Activity::pushActivity(void)
-{
-	ftlua::multiPush(
-		_l, ftlua::make_keys("ftui"), "activity", ftlua::light(this));
-	if (!lua_istable(_l, -3))
-		throw std::runtime_error("Could not retrieve _G['ftui']");
-	lua_settable(_l, -3);
-	lua_pop(_l, 1);
-	return ;
-}
-
 void			Activity::inflate(std::istream &stream)
 {
 	ft::XmlParser			xml(stream);
@@ -98,7 +86,7 @@ void			Activity::inflate(std::istream &stream)
 
 	FTASSERT(_l == nullptr, "Activity.inflate called again");
 	_l = new_lua_env();
-	this->pushActivity();
+	ftlua::set(_l, ftlua::make_keys("ftui"), "activity", ftlua::light(this));
 	if (!xml.next(state))
 		throw std::runtime_error("Activity should own at least 1 view");
 	FTASSERT(state == ft::XmlParser::State::START, "Cannot fail");

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/21 18:25:55 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/22 11:44:59 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -419,12 +419,11 @@ void				AView::setLuaCallback(lua_State *l)
 	auto const			&it = AView::callback_map.find(std::string(callback));
 	uint32_t			callbackId;
 
+	// f, cbstr, [view]
 	if (it == AView::callback_map.end())
 		luaL_error(l, "Unknow lua callback: %s", callback);
 	callbackId = it->second;
-	lua_pushinteger(l, callbackId);		// <-	id, f, name, view_table
-	lua_pushvalue(l, -2);				// <-	f, id, f, name, view_table
-	lua_settable(l, -5);				// <-	f, name, view_table
+	ftlua::set(l, -5, callbackId, ftlua::dup(-2));
 	if (lua_isfunction(l, -1))
 		_luaCallbacks |= 1 << callbackId;
 	else

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/22 10:12:19 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/22 11:41:35 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -128,10 +128,7 @@ static void     init_template_table(
 	if (luaL_dostring(l, tableinit_luacode.c_str()) != LUA_OK)
 		throw std::runtime_error(ft::f("Cannot init table '%'", view_name));
 	if (lua_getglobal(l, view_name.c_str()) != LUA_TTABLE)
-	{
-		lua_createtable(l, 0, 0);
-		lua_setglobal(l, view_name.c_str());
-	}
+		ftlua::set(l, view_name, ftlua::newtab);
 	lua_pop(l, 1);
 	return ;
 }
@@ -144,8 +141,6 @@ static void     push_luacfun_methods(
 	for (auto itm : methods)
 		ftlua::set(l, ftlua::make_keys(view_name)
 				   , std::get<0>(itm), std::get<1>(itm));
-		// ftlua::registerLuaCFunTable(
-			// l, view_name, std::get<0>(itm), std::get<1>(itm));
 	return ;
 }
 

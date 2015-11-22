@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:12:33 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 15:14:26 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/22 11:33:15 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,8 +21,15 @@
 namespace ftlua
 {
 
-typedef std::nullptr_t	nil_t;
+typedef struct {}		nil_t;
 static nil_t			nil{};
+
+typedef struct {}		newtab_t;
+static newtab_t			newtab;
+
+typedef struct {int i;}	dup_t;
+inline dup_t			dup(int i)
+{ return dup_t{i}; }
 
 };
 

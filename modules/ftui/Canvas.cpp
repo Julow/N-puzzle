@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/22 10:14:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/22 11:40:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -159,31 +159,21 @@ void			Canvas::pushTemplate(lua_State *l)
 	luaL_dostring(l, "Canvas = {}; Canvas.__index = Canvas;");
 	ftlua::set(l, ftlua::make_keys("Canvas"), "drawRect", &Canvas::drawRectG);
 	ftlua::set(l, ftlua::make_keys("Canvas"), "drawText", &Canvas::drawTextG);
-	ftlua::set(l, ftlua::make_keys("Canvas"), "measureText", &Canvas::measureTextG);
+	ftlua::set(l, ftlua::make_keys("Canvas"), "measureText"
+			   , &Canvas::measureTextG);
 	ftlua::set(l, ftlua::make_keys("Canvas"), "setFont", &Canvas::setFontG);
 	return ;
 }
 
 void			Canvas::pushLua(lua_State *l)
 {
-	lua_pushglobaltable(l);				// _G
-	lua_newtable(l);					// [], _G
-
-	ftlua::pushLight(l, this);
-	lua_pushvalue(l, -2);				// [], this, [], _G
-	lua_settable(l, -4);				// [], _G
-
-	ftlua::push(l, ftlua::make_keys("Canvas"));
+	ftlua::multiPush(l, ftlua::newtab, ftlua::make_keys("Canvas"));
 	if (!lua_istable(l, -1))
 		throw std::runtime_error("Canvas template should be present in _G");
-	lua_setmetatable(l, -2);			// [], _G
-
-	ftlua::multiPush(l, 0, ftlua::light(this));
-	// ftlua::push(l, 0);
-	// ftlua::pushLight(l, this);
-	lua_settable(l, -3);				// [], _G
-
-	lua_pop(l, 2);						// empty
+	lua_setmetatable(l, -2);
+	ftlua::set(l, -1, 0, ftlua::light(this));
+	ftlua::set(l, ftlua::light(this), ftlua::dup(-3));
+	lua_pop(l, 1);
 	return ;
 }
 

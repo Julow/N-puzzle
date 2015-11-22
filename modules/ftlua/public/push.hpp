@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/22 10:09:51 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/22 11:33:24 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -90,7 +90,34 @@ int			push(lua_State *l, T const &v) {
 	else lua_pushlightuserdata(l, v); return 1; }
 
 
-// NUMBERS/STRING/NIL =============== //
+// LUA SPECIFIC  ==================== //
+template <bool USELUAERR = false>
+int			push(lua_State *l, nil_t const &)
+{ lua_pushnil(l); return 1; }
+template <bool USELUAERR = false>
+int			push(lua_State *l, newtab_t const &)
+{ lua_createtable(l, 0, 0); return 1; }
+template <bool USELUAERR = false>
+int			push(lua_State *l, dup_t const &i)
+{
+	if ((i.i < 0 ? -i.i : i.i) > lua_gettop(l))
+	{
+		if (USELUAERR)
+			luaL_error(
+				l, ft::f("ftlua::push<dup(%)> wrong index:\n%", i.i
+						 , ftlua::stacktostring(l)).c_str());
+		else
+			throw std::runtime_error(
+				ft::f("ftlua::push<dup(%)> wrong index:\n%", i.i
+					  , ftlua::stacktostring(l)).c_str());
+
+	}
+	lua_pushvalue(l, i.i);
+	return 1;
+}
+
+
+// NUMBERS/STRING =================== //
 template <bool USELUAERR = false>
 int			push(lua_State *l, int8_t const &v)
 { lua_pushinteger(l, v); return 1; }
@@ -124,9 +151,6 @@ int			push(lua_State *l, double const &v)
 template <bool USELUAERR = false>
 int			push(lua_State *l, std::string const &v)
 { lua_pushstring(l, v.c_str()); return 1; }
-template <bool USELUAERR = false>
-int			push(lua_State *l, nil_t const &)
-{ lua_pushnil(l); return 1; }
 
 
 // BOOL/NUMBERS/STRING/CFUN - POINTER //
@@ -371,15 +395,16 @@ inline int					pushLightKey(lua_State *l, void *ptr)
 	return ftlua::push(l, make_keys(ptr));
 }
 
+// Restores stack as it was before call
 template <bool USELUAERR = false
 		  , class ...ARGS, class TK, class TV>
 void        set(
 	lua_State *l
-	, KeysWrapper<ARGS...> const &tabKeys
+	, KeysWrapper<ARGS...> const &tabGlobalKeys
 	, TK const &key
 	, TV const &val)
 {
-	ftlua::multiPush<USELUAERR>(l, tabKeys, key, val);
+	ftlua::multiPush<USELUAERR>(l, tabGlobalKeys, key, val);
 	if (!lua_istable(l, -3))
 	{
 		if (USELUAERR)
@@ -390,6 +415,46 @@ void        set(
 	}
 	lua_settable(l, -3);
 	lua_pop(l, 1);
+	return ;
+}
+
+// Restores stack as it was before call
+template <bool USELUAERR = false
+		  , class TK, class TV>
+void        set(
+	lua_State *l
+	, TK const &key
+	, TV const &val)
+{
+	lua_pushglobaltable(l);
+	ftlua::multiPush<USELUAERR>(l, key, val);
+	lua_settable(l, -3);
+	lua_pop(l, 1);
+	return ;
+}
+
+// Restores stack as it was before call
+template <bool USELUAERR = false
+		  , class TK, class TV>
+void        set(
+	lua_State *l
+	, int tabIndex
+	, TK const &key
+	, TV const &val)
+{
+	if (!lua_istable(l, tabIndex))
+	{
+		if (USELUAERR)
+			luaL_error(l, "ftlua::set table missing");
+		else
+			throw std::runtime_error(
+				ft::f("ftlua::set table missing"));
+	}
+	ftlua::multiPush<USELUAERR>(l, key, val);
+	if (tabIndex < 0)
+		lua_settable(l, tabIndex - 2);
+	else
+		lua_settable(l, tabIndex);
 	return ;
 }
 
