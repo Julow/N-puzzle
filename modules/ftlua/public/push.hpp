@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/22 11:33:24 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/22 12:13:54 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -30,28 +30,27 @@ namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 # define DELPTR(T) typename std::remove_pointer<T>::type
 # define DELCONST(T) typename std::remove_const<T>::type
-# define ISCONV(A, B) std::is_convertible<A, B>::value
-# define ISPTR(A) std::is_pointer<A>::value
-# define ISCONST(A) std::is_const<A>::value
 # define OK_IFNODEF(PRED) typename std::enable_if<PRED>::type*
 # define OK_IF(PRED) typename std::enable_if<PRED>::type* = nullptr
+# define ISPTR(A) std::is_pointer<A>::value
+# define ISCONST(A) std::is_const<A>::value
+# define ISCONV(A, B) std::is_convertible<A, B>::value
 # define ISSAME(A, B) std::is_same<A, B>::value
 
 // Some prototypes ========================================================== //
 
-// TODO: Split hpp/cpp (ps: No default parameters in hpp)
+// TODO: Split hpp/cpp (ps: No default parameters in prototype)
 
 
 template <bool FIRSTISTOP, bool USELUAERR
 		  , typename... ARGS>
-	int			push(lua_State *l, KeysWrapper<ARGS...> const &wrap);
+int			push(lua_State *l, KeysWrapper<ARGS...> const &wrap);
 
 
 // Push (T to Converter<T>) || (const-T to Converter<const-T>)
 template <bool USELUAERR, typename T
 		  , OK_IFNODEF(ISCONV(T, Converter<T>)) >
 int			push(lua_State *l, T &v);
-
 
 // Push (const-T to Converter<T>)
 // Overload allowing const cast in User's cast-operator
@@ -71,8 +70,6 @@ template <bool USELUAERR, typename T
 int			push(lua_State *l, T v);
 
 
-
-
 // ========================================================================== //
 // ========================================================================== //
 // STRAIGHTFORWARD PUSH-OVERLOADS
@@ -90,7 +87,7 @@ int			push(lua_State *l, T const &v) {
 	else lua_pushlightuserdata(l, v); return 1; }
 
 
-// LUA SPECIFIC  ==================== //
+// LUA SPECIFIC ===================== //
 template <bool USELUAERR = false>
 int			push(lua_State *l, nil_t const &)
 { lua_pushnil(l); return 1; }
@@ -110,11 +107,14 @@ int			push(lua_State *l, dup_t const &i)
 			throw std::runtime_error(
 				ft::f("ftlua::push<dup(%)> wrong index:\n%", i.i
 					  , ftlua::stacktostring(l)).c_str());
-
 	}
 	lua_pushvalue(l, i.i);
 	return 1;
 }
+template <bool USELUAERR = false>
+int			push(lua_State *l, lua_CFunction const &v) {
+	if (v == NULL) lua_pushnil(l);
+	else lua_pushcfunction(l, v); return 1; }
 
 
 // NUMBERS/STRING =================== //
@@ -153,7 +153,7 @@ int			push(lua_State *l, std::string const &v)
 { lua_pushstring(l, v.c_str()); return 1; }
 
 
-// BOOL/NUMBERS/STRING/CFUN - POINTER //
+// BOOL/NUMBERS/STRING/ ----- POINTER //
 template <bool USELUAERR = false>
 int			push(lua_State *l, bool const *const &v) {
 	if (v == nullptr) lua_pushnil(l);
@@ -206,10 +206,6 @@ template <bool USELUAERR = false>
 int			push(lua_State *l, char const *v) {
 	if (v == NULL) lua_pushnil(l);
 	else lua_pushstring(l, v); return 1; }
-template <bool USELUAERR = false>
-int			push(lua_State *l, lua_CFunction const &v) {
-	if (v == NULL) lua_pushnil(l);
-	else lua_pushcfunction(l, v); return 1; }
 
 
 // 'ft::' COMPOUND TYPES ============ //
@@ -231,7 +227,7 @@ inline int	push(lua_State *l, ft::Rect<T> const &v) {
 // ========================================================================== //
 // ========================================================================== //
 // CONVERTER<T> PUSH-OVERLOADS
-// ==
+//
 // 'OK_IF((sizeof(T) > 0u))'		Checks if T is a complete type
 //
 
@@ -341,7 +337,7 @@ int			push(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 
 // ========================================================================== //
 // ========================================================================== //
-// MULTI-PUSH / PUSHLIGHT
+// MULTI-PUSH
 //
 
 
@@ -370,92 +366,6 @@ template <bool USELUAERR = false, typename ...ARGS>
 int			multiPush(lua_State *l, ARGS const & ...args)
 {
 	return internal::_pushLoop<USELUAERR>(l, args...);
-}
-
-
-// TODO: move light* elsewhere
-inline void					*light(void *ptr)
-{
-	return ptr;
-}
-
-inline int					pushLight(lua_State *l, void *ptr)
-{
-	lua_pushlightuserdata(l, ptr);
-	return 1;
-}
-
-inline KeysWrapper<void*>	lightKey(void *ptr)
-{
-	return make_keys(ptr);
-}
-
-inline int					pushLightKey(lua_State *l, void *ptr)
-{
-	return ftlua::push(l, make_keys(ptr));
-}
-
-// Restores stack as it was before call
-template <bool USELUAERR = false
-		  , class ...ARGS, class TK, class TV>
-void        set(
-	lua_State *l
-	, KeysWrapper<ARGS...> const &tabGlobalKeys
-	, TK const &key
-	, TV const &val)
-{
-	ftlua::multiPush<USELUAERR>(l, tabGlobalKeys, key, val);
-	if (!lua_istable(l, -3))
-	{
-		if (USELUAERR)
-			luaL_error(l, "ftlua::set table missing");
-		else
-			throw std::runtime_error(
-				ft::f("ftlua::set table missing"));
-	}
-	lua_settable(l, -3);
-	lua_pop(l, 1);
-	return ;
-}
-
-// Restores stack as it was before call
-template <bool USELUAERR = false
-		  , class TK, class TV>
-void        set(
-	lua_State *l
-	, TK const &key
-	, TV const &val)
-{
-	lua_pushglobaltable(l);
-	ftlua::multiPush<USELUAERR>(l, key, val);
-	lua_settable(l, -3);
-	lua_pop(l, 1);
-	return ;
-}
-
-// Restores stack as it was before call
-template <bool USELUAERR = false
-		  , class TK, class TV>
-void        set(
-	lua_State *l
-	, int tabIndex
-	, TK const &key
-	, TV const &val)
-{
-	if (!lua_istable(l, tabIndex))
-	{
-		if (USELUAERR)
-			luaL_error(l, "ftlua::set table missing");
-		else
-			throw std::runtime_error(
-				ft::f("ftlua::set table missing"));
-	}
-	ftlua::multiPush<USELUAERR>(l, key, val);
-	if (tabIndex < 0)
-		lua_settable(l, tabIndex - 2);
-	else
-		lua_settable(l, tabIndex);
-	return ;
 }
 
 

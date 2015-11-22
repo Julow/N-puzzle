@@ -16,8 +16,10 @@ o/srcs/GlCanvasHolder.o: srcs/GlCanvasHolder.cpp include/GlCanvasHolder.hpp \
 	modules/_objs/ftui/_public/ftlua/KeysWrapper.hpp \
 	modules/_objs/ftui/_public/ftlua/call.hpp \
 	modules/_objs/ftui/_public/ftlua/ftlua.hpp \
+	modules/_objs/ftui/_public/ftlua/light.hpp \
 	modules/_objs/ftui/_public/ftlua/pop.hpp \
 	modules/_objs/ftui/_public/ftlua/push.hpp \
+	modules/_objs/ftui/_public/ftlua/set.hpp \
 	modules/_objs/ftui/_public/ftlua/templates/ftlua_caller.tpp \
 	modules/_objs/ftui/_public/ftlua/templates/ftlua_handler.tpp \
 	modules/_objs/ftui/_public/ftlua/types.hpp \
@@ -72,8 +74,10 @@ o/srcs/Main.o: srcs/Main.cpp modules/_objs/tiles/_public/ft/Rect.hpp \
 	modules/_objs/ftui/_public/ftlua/KeysWrapper.hpp \
 	modules/_objs/ftui/_public/ftlua/call.hpp \
 	modules/_objs/ftui/_public/ftlua/ftlua.hpp \
+	modules/_objs/ftui/_public/ftlua/light.hpp \
 	modules/_objs/ftui/_public/ftlua/pop.hpp \
 	modules/_objs/ftui/_public/ftlua/push.hpp \
+	modules/_objs/ftui/_public/ftlua/set.hpp \
 	modules/_objs/ftui/_public/ftlua/templates/ftlua_caller.tpp \
 	modules/_objs/ftui/_public/ftlua/templates/ftlua_handler.tpp \
 	modules/_objs/ftui/_public/ftlua/types.hpp \
@@ -125,8 +129,10 @@ o/srcs/PickState.o: srcs/PickState.cpp include/GlCanvasHolder.hpp \
 	modules/_objs/ftui/_public/ftlua/KeysWrapper.hpp \
 	modules/_objs/ftui/_public/ftlua/call.hpp \
 	modules/_objs/ftui/_public/ftlua/ftlua.hpp \
+	modules/_objs/ftui/_public/ftlua/light.hpp \
 	modules/_objs/ftui/_public/ftlua/pop.hpp \
 	modules/_objs/ftui/_public/ftlua/push.hpp \
+	modules/_objs/ftui/_public/ftlua/set.hpp \
 	modules/_objs/ftui/_public/ftlua/templates/ftlua_caller.tpp \
 	modules/_objs/ftui/_public/ftlua/templates/ftlua_handler.tpp \
 	modules/_objs/ftui/_public/ftlua/types.hpp \
@@ -176,8 +182,10 @@ o/srcs/libftui_extend/Bookmark.o: srcs/libftui_extend/Bookmark.cpp \
 	modules/_objs/ftui/_public/ftlua/KeysWrapper.hpp \
 	modules/_objs/ftui/_public/ftlua/call.hpp \
 	modules/_objs/ftui/_public/ftlua/ftlua.hpp \
+	modules/_objs/ftui/_public/ftlua/light.hpp \
 	modules/_objs/ftui/_public/ftlua/pop.hpp \
 	modules/_objs/ftui/_public/ftlua/push.hpp \
+	modules/_objs/ftui/_public/ftlua/set.hpp \
 	modules/_objs/ftui/_public/ftlua/templates/ftlua_caller.tpp \
 	modules/_objs/ftui/_public/ftlua/templates/ftlua_handler.tpp \
 	modules/_objs/ftui/_public/ftlua/types.hpp \
