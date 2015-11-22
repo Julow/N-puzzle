@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/13 07:39:43 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 08:42:12 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/22 10:17:39 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -23,8 +23,9 @@
 # include "ftlua/utils.hpp"
 # include "ftlua/call.hpp"
 
-namespace ftlua
-{
+namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
 
 /*
 ** ========================================================================== **
@@ -80,7 +81,10 @@ int			handle(lua_State *l, Ret (C::*f)(Args...) const);
 template <typename T>
 T					*retrieveSelf(lua_State *l, int index, bool pop = true);
 
-};
+
+}; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
 
 # include "ftlua/templates/ftlua_handler.tpp"
 # include "ftlua/templates/ftlua_caller.tpp"

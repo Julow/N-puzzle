@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/21 17:59:42 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/22 10:14:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -157,10 +157,10 @@ int				Canvas::measureTextG(lua_State *l)
 void			Canvas::pushTemplate(lua_State *l)
 {
 	luaL_dostring(l, "Canvas = {}; Canvas.__index = Canvas;");
-	ftlua::registerLuaCFunTable(l, "Canvas", "drawRect", &Canvas::drawRectG);
-	ftlua::registerLuaCFunTable(l, "Canvas", "drawText", &Canvas::drawTextG);
-	ftlua::registerLuaCFunTable(l, "Canvas", "measureText", &Canvas::measureTextG);
-	ftlua::registerLuaCFunTable(l, "Canvas", "setFont", &Canvas::setFontG);
+	ftlua::set(l, ftlua::make_keys("Canvas"), "drawRect", &Canvas::drawRectG);
+	ftlua::set(l, ftlua::make_keys("Canvas"), "drawText", &Canvas::drawTextG);
+	ftlua::set(l, ftlua::make_keys("Canvas"), "measureText", &Canvas::measureTextG);
+	ftlua::set(l, ftlua::make_keys("Canvas"), "setFont", &Canvas::setFontG);
 	return ;
 }
 

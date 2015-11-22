@@ -223,8 +223,8 @@ $(O_DIR)/ftui/AView_luaHandler.o: ftui/AView_luaHandler.cpp \
 	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/pop.hpp \
 	ftlua/public/push.hpp ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
-	ftlua/public/utils.hpp ftui/public/ASolidView.hpp ftui/public/AView.hpp \
-	ftui/public/Canvas.hpp ftui/public/IViewHolder.hpp \
+	ftlua/public/utils.hpp ftui/public/ALayout.hpp ftui/public/ASolidView.hpp \
+	ftui/public/AView.hpp ftui/public/Canvas.hpp ftui/public/IViewHolder.hpp \
 	ftui/public/TextView.hpp ftui/public/ftlua_extend.hpp \
 	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
 	liblua/lua-5.3.1/src/lauxlib.h liblua/lua-5.3.1/src/lua.h \

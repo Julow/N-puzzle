@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 14:08:42 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/19 15:45:47 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/22 10:11:20 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -17,18 +17,16 @@
 
 # include "liblua/lua.hpp"
 
-namespace ftlua
-{
+namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
 
 void			pushUtils(lua_State *l);
 void			stackdump(lua_State *l);
 std::string		stacktostring(lua_State *l);
-void			registerLuaCFunTable(
-	lua_State *l
-	, std::string const &tabName
-	, std::string const &funName
-	, lua_CFunction f);
 
-};
+
+}; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 #endif

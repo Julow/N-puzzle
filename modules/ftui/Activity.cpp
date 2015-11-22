@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/21 18:00:15 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/22 10:15:14 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -56,7 +56,7 @@ static lua_State	*new_lua_env()
 	luaL_openlibs(l);
 	err = luaL_dofile(l, (RES_PATH "/utils.lua"));
 	FTASSERT(err == LUA_OK);
-	ftlua::registerLuaCFunTable(l, "_G", "createView", &Activity::createViewG);
+	ftlua::set(l, ftlua::make_keys("_G"), "createView", &Activity::createViewG);
 	ftlua::pushUtils(l);
 	Canvas::pushTemplate(l);
 	AView::pushViewTemplates(l);
@@ -277,7 +277,7 @@ void			Activity::registerLuaCFun_table(
 	, std::string const &funName
 	, lua_CFunction f)
 {
-	ftlua::registerLuaCFunTable(_l, tabName, funName, f);
+	ftlua::set(_l, ftlua::make_keys(tabName), funName, f);
 	return ;
 }
 

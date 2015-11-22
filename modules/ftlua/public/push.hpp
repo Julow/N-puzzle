@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 18:26:16 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/22 10:09:51 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -25,8 +25,8 @@
 # include "ftlua/types.hpp"
 # include "ftlua/utils.hpp"
 
-namespace ftlua // ========================================================== //
-{
+namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 # define DELPTR(T) typename std::remove_pointer<T>::type
 # define DELCONST(T) typename std::remove_const<T>::type
@@ -42,9 +42,9 @@ namespace ftlua // ========================================================== //
 // TODO: Split hpp/cpp (ps: No default parameters in hpp)
 
 
-template<bool FIRSTISTOP, bool USELUAERR
-		 , typename... ARGS>
-int			push(lua_State *l, KeysWrapper<ARGS...> const &wrap);
+template <bool FIRSTISTOP, bool USELUAERR
+		  , typename... ARGS>
+	int			push(lua_State *l, KeysWrapper<ARGS...> const &wrap);
 
 
 // Push (T to Converter<T>) || (const-T to Converter<const-T>)
@@ -71,97 +71,124 @@ template <bool USELUAERR, typename T
 int			push(lua_State *l, T v);
 
 
+
+
 // ========================================================================== //
 // ========================================================================== //
 // STRAIGHTFORWARD PUSH-OVERLOADS
 //
 
-template<bool USELUAERR = false, typename T, OK_IF(ISSAME(T, bool))>
+
+// IMPLICIT CASTS DISABLED ========== //
+template <bool USELUAERR = false, typename T, OK_IF(ISSAME(T, bool))>
 int			push(lua_State *l, T const &v)
-{ lua_pushboolean(l, v); return 1;}
-template<bool USELUAERR = false>
+{ lua_pushboolean(l, v); return 1; }
+// ftlua::push<void*>	No const accepted here, const_cast yourself before call.
+template <bool USELUAERR = false, typename T, OK_IF(ISSAME(T, void*))>
+int			push(lua_State *l, T const &v) {
+	if (v == nullptr) lua_pushnil(l);
+	else lua_pushlightuserdata(l, v); return 1; }
+
+
+// NUMBERS/STRING/NIL =============== //
+template <bool USELUAERR = false>
 int			push(lua_State *l, int8_t const &v)
-{ lua_pushinteger(l, v); return 1;}
-template<bool USELUAERR = false>
+{ lua_pushinteger(l, v); return 1; }
+template <bool USELUAERR = false>
 int			push(lua_State *l, int16_t const &v)
-{ lua_pushinteger(l, v); return 1;}
-template<bool USELUAERR = false>
+{ lua_pushinteger(l, v); return 1; }
+template <bool USELUAERR = false>
 int			push(lua_State *l, int32_t const &v)
-{ lua_pushinteger(l, v); return 1;}
-template<bool USELUAERR = false>
+{ lua_pushinteger(l, v); return 1; }
+template <bool USELUAERR = false>
 int			push(lua_State *l, int64_t const &v)
-{ lua_pushinteger(l, v); return 1;}
-template<bool USELUAERR = false>
+{ lua_pushinteger(l, v); return 1; }
+template <bool USELUAERR = false>
 int			push(lua_State *l, uint8_t const &v)
-{ lua_pushinteger(l, v); return 1;}
-template<bool USELUAERR = false>
+{ lua_pushinteger(l, v); return 1; }
+template <bool USELUAERR = false>
 int			push(lua_State *l, uint16_t const &v)
-{ lua_pushinteger(l, v); return 1;}
-template<bool USELUAERR = false>
+{ lua_pushinteger(l, v); return 1; }
+template <bool USELUAERR = false>
 int			push(lua_State *l, uint32_t const &v)
-{ lua_pushinteger(l, v); return 1;}
-template<bool USELUAERR = false>
+{ lua_pushinteger(l, v); return 1; }
+template <bool USELUAERR = false>
 int			push(lua_State *l, uint64_t const &v)
-{ lua_pushinteger(l, v); return 1;}
-template<bool USELUAERR = false>
+{ lua_pushinteger(l, v); return 1; }
+template <bool USELUAERR = false>
 int			push(lua_State *l, float const &v)
-{ lua_pushnumber(l, v); return 1;}
-template<bool USELUAERR = false>
+{ lua_pushnumber(l, v); return 1; }
+template <bool USELUAERR = false>
 int			push(lua_State *l, double const &v)
-{ lua_pushnumber(l, v); return 1;}
-template<bool USELUAERR = false>
+{ lua_pushnumber(l, v); return 1; }
+template <bool USELUAERR = false>
 int			push(lua_State *l, std::string const &v)
-{ lua_pushstring(l, v.c_str()); return 1;}
-
-template<bool USELUAERR = false>
-int			push(lua_State *l, bool const *const &v)
-{ if (v == nullptr) lua_pushnil(l); else lua_pushboolean(l, *v); return 1;}
-template<bool USELUAERR = false>
-int			push(lua_State *l, int8_t const *const &v)
-{ if (v == nullptr) lua_pushnil(l); else lua_pushinteger(l, *v); return 1;}
-template<bool USELUAERR = false>
-int			push(lua_State *l, int16_t const *const &v)
-{ if (v == nullptr) lua_pushnil(l); else lua_pushinteger(l, *v); return 1;}
-template<bool USELUAERR = false>
-int			push(lua_State *l, int32_t const *const &v)
-{ if (v == nullptr) lua_pushnil(l); else lua_pushinteger(l, *v); return 1;}
-template<bool USELUAERR = false>
-int			push(lua_State *l, int64_t const *const &v)
-{ if (v == nullptr) lua_pushnil(l); else lua_pushinteger(l, *v); return 1;}
-template<bool USELUAERR = false>
-int			push(lua_State *l, uint8_t const *const &v)
-{ if (v == nullptr) lua_pushnil(l); else lua_pushinteger(l, *v); return 1;}
-template<bool USELUAERR = false>
-int			push(lua_State *l, uint16_t const *const &v)
-{ if (v == nullptr) lua_pushnil(l); else lua_pushinteger(l, *v); return 1;}
-template<bool USELUAERR = false>
-int			push(lua_State *l, uint32_t const *const &v)
-{ if (v == nullptr) lua_pushnil(l); else lua_pushinteger(l, *v); return 1;}
-template<bool USELUAERR = false>
-int			push(lua_State *l, uint64_t const *const &v)
-{ if (v == nullptr) lua_pushnil(l); else lua_pushinteger(l, *v); return 1;}
-template<bool USELUAERR = false>
-int			push(lua_State *l, float const *const &v)
-{ if (v == nullptr) lua_pushnil(l); else lua_pushnumber(l, *v); return 1;}
-template<bool USELUAERR = false>
-int			push(lua_State *l, double const *const &v)
-{ if (v == nullptr) lua_pushnil(l); else lua_pushnumber(l, *v); return 1;}
-template<bool USELUAERR = false>
-int			push(lua_State *l, std::string const *const &v)
-{ if (v == nullptr) lua_pushnil(l); else lua_pushstring(l, v->c_str()); return 1;}
-
-
-template<bool USELUAERR = false>
-int			push(lua_State *l, char const *v)
-{ if (v == NULL) lua_pushnil(l); else lua_pushstring(l, v); return 1; }
-template<bool USELUAERR = false, typename T, OK_IF(ISSAME(T, void*))>
-int			push(lua_State *l, T const &v)
-{
-	if (v == nullptr) lua_pushnil(l); else lua_pushlightuserdata(l, v); return 1; }
-template<bool USELUAERR = false>
+{ lua_pushstring(l, v.c_str()); return 1; }
+template <bool USELUAERR = false>
 int			push(lua_State *l, nil_t const &)
 { lua_pushnil(l); return 1; }
 
+
+// BOOL/NUMBERS/STRING/CFUN - POINTER //
+template <bool USELUAERR = false>
+int			push(lua_State *l, bool const *const &v) {
+	if (v == nullptr) lua_pushnil(l);
+	else lua_pushboolean(l, *v); return 1; }
+template <bool USELUAERR = false>
+int			push(lua_State *l, int8_t const *const &v) {
+	if (v == nullptr) lua_pushnil(l);
+	else lua_pushinteger(l, *v); return 1; }
+template <bool USELUAERR = false>
+int			push(lua_State *l, int16_t const *const &v) {
+	if (v == nullptr) lua_pushnil(l);
+	else lua_pushinteger(l, *v); return 1; }
+template <bool USELUAERR = false>
+int			push(lua_State *l, int32_t const *const &v) {
+	if (v == nullptr) lua_pushnil(l);
+	else lua_pushinteger(l, *v); return 1; }
+template <bool USELUAERR = false>
+int			push(lua_State *l, int64_t const *const &v) {
+	if (v == nullptr) lua_pushnil(l);
+	else lua_pushinteger(l, *v); return 1; }
+template <bool USELUAERR = false>
+int			push(lua_State *l, uint8_t const *const &v){
+	if (v == nullptr) lua_pushnil(l);
+	else lua_pushinteger(l, *v); return 1; }
+template <bool USELUAERR = false>
+int			push(lua_State *l, uint16_t const *const &v){
+	if (v == nullptr) lua_pushnil(l);
+	else lua_pushinteger(l, *v); return 1; }
+template <bool USELUAERR = false>
+int			push(lua_State *l, uint32_t const *const &v){
+	if (v == nullptr) lua_pushnil(l);
+	else lua_pushinteger(l, *v); return 1; }
+template <bool USELUAERR = false>
+int			push(lua_State *l, uint64_t const *const &v){
+	if (v == nullptr) lua_pushnil(l);
+	else lua_pushinteger(l, *v); return 1; }
+template <bool USELUAERR = false>
+int			push(lua_State *l, float const *const &v){
+	if (v == nullptr) lua_pushnil(l);
+	else lua_pushnumber(l, *v); return 1; }
+template <bool USELUAERR = false>
+int			push(lua_State *l, double const *const &v){
+	if (v == nullptr) lua_pushnil(l);
+	else lua_pushnumber(l, *v); return 1; }
+template <bool USELUAERR = false>
+int			push(lua_State *l, std::string const *const &v) {
+	if (v == nullptr) lua_pushnil(l);
+	else lua_pushstring(l, v->c_str()); return 1; }
+template <bool USELUAERR = false>
+int			push(lua_State *l, char const *v) {
+	if (v == NULL) lua_pushnil(l);
+	else lua_pushstring(l, v); return 1; }
+template <bool USELUAERR = false>
+int			push(lua_State *l, lua_CFunction const &v) {
+	if (v == NULL) lua_pushnil(l);
+	else lua_pushcfunction(l, v); return 1; }
+
+
+// 'ft::' COMPOUND TYPES ============ //
 template <bool USELUAERR = false, typename T>
 inline int	push(lua_State *l, ft::Vec2<T> const &v)
 { push(l, v.x); push(l, v.y); return 2; }
@@ -172,50 +199,50 @@ template <bool USELUAERR = false, typename T>
 inline int	push(lua_State *l, ft::Vec4<T> const &v)
 { push(l, v.x); push(l, v.y); push(l, v.z); push(l, v.w); return 4; }
 template <bool USELUAERR = false, typename T>
-inline int	push(lua_State *l, ft::Rect<T> const &v)
-{ push(l, v.left); push(l, v.top); push(l, v.right); push(l, v.bottom); return 4; }
+inline int	push(lua_State *l, ft::Rect<T> const &v) {
+	push(l, v.left); push(l, v.top); push(l, v.right); push(l, v.bottom);
+	return 4; }
 
 
 // ========================================================================== //
 // ========================================================================== //
 // CONVERTER<T> PUSH-OVERLOADS
+// ==
+// 'OK_IF((sizeof(T) > 0u))'		Checks if T is a complete type
 //
 
+
 template <bool USELUAERR = false, typename T
-		  , OK_IF((sizeof(T) > 0u)) // Checks if T is a complete type
-		  , OK_IF(ISCONV(T, Converter<T>)) >
+		  , OK_IF((sizeof(T) > 0u))
+	, OK_IF(ISCONV(T, Converter<T>)) >
 int			push(lua_State *l, T &v)
 {
-	// FTASSERT(false, "pushconverter nn / cc");
 	return Converter<T>{v}.callPush(l);
 }
 
 template <bool USELUAERR = false, typename T
-		  , OK_IF((sizeof(T) > 0u)) // Checks if T is a complete type
-		  , OK_IF(ISCONST(T))
-		  , typename NOCONST = DELCONST(T)
-		  , OK_IF(ISCONV(T, Converter<NOCONST>)) >
+		  , OK_IF((sizeof(T) > 0u))
+	, OK_IF(ISCONST(T))
+	, typename NOCONST = DELCONST(T)
+	, OK_IF(ISCONV(T, Converter<NOCONST>)) >
 int			push(lua_State *l, T &v)
 {
-	// FTASSERT(false, "pushconverter nc");
 	return Converter<NOCONST>{v}.callPush(l);
 }
 
 template <bool USELUAERR = false, typename T
 		  , OK_IF(ISPTR(T))
 		  , typename NOPTR = DELPTR(T)
-		  , OK_IF((sizeof(NOPTR) > 0u)) // Checks if T is a complete type
-		  , typename NOPTRCONST = DELCONST(NOPTR)
-		  , OK_IF(ISCONV(NOPTRCONST, Converter<NOPTRCONST>))
-		  >
+		  , OK_IF((sizeof(NOPTR) > 0u))
+	, typename NOPTRCONST = DELCONST(NOPTR)
+	, OK_IF(ISCONV(NOPTRCONST, Converter<NOPTRCONST>))
+	>
 int			push(lua_State *l, T v)
 {
-	// FTASSERT(false, "pushconverter p/p");
 	if (v == nullptr)
 		return push<USELUAERR>(l, nil);
 	else
 		return push<USELUAERR>(l, *v);
-	// TODO: check nullptr
 }
 
 
@@ -224,12 +251,14 @@ int			push(lua_State *l, T v)
 // KeysWrapper<...> PUSH-OVERLOADS
 //
 
-namespace internal // ======================================================= //
-{
 
-template<size_t I, bool USELUAERR
-		 , typename... ARGS, class T = KeysWrapper<ARGS...>
-		 >
+namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
+
+template <size_t I, bool USELUAERR
+		  , typename... ARGS, class T = KeysWrapper<ARGS...>
+		  >
 void		_dereference(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 {
 	ftlua::push<USELUAERR>(l, std::get<I>(wrap.tup));
@@ -249,20 +278,20 @@ void		_dereference(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 	return ;
 }
 
-template<size_t I, bool USELUAERR
-		 , typename... ARGS, class T = KeysWrapper<ARGS...>
-		 , typename std::enable_if<(sizeof...(ARGS) - I == 1)>::type* = nullptr
-		 >
+template <size_t I, bool USELUAERR
+		  , typename... ARGS, class T = KeysWrapper<ARGS...>
+		  , OK_IF((sizeof...(ARGS) - I == 1))
+		  >
 void		_loopKey(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 {
 	_dereference<I, USELUAERR>(l, wrap);
 	return ;
 }
 
-template<size_t I, bool USELUAERR
-		 , typename... ARGS, class T = KeysWrapper<ARGS...>
-		 , typename std::enable_if<(sizeof...(ARGS) - I != 1)>::type* = nullptr
-		 >
+template <size_t I, bool USELUAERR
+		  , typename... ARGS, class T = KeysWrapper<ARGS...>
+		  , OK_IF((sizeof...(ARGS) - I != 1))
+		  >
 void		_loopKey(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 {
 	_dereference<I, USELUAERR>(l, wrap);
@@ -270,10 +299,13 @@ void		_loopKey(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 	return ;
 }
 
-}; // ============================================= END OF NAMESPACE INTERNAL //
 
-template<bool FIRSTISTOP = false, bool USELUAERR = false
-		 , typename ...ARGS, class T = KeysWrapper<ARGS...> >
+}; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE INTERNAL //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
+
+template <bool FIRSTISTOP = false, bool USELUAERR = false
+		  , typename ...ARGS, class T = KeysWrapper<ARGS...> >
 int			push(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 {
 	if (!FIRSTISTOP)
@@ -288,30 +320,36 @@ int			push(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 // MULTI-PUSH / PUSHLIGHT
 //
 
-namespace internal // ======================================================= //
-{
+
+namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
 
 template <bool USELUAERR>
-unsigned int		_pushLoop(lua_State *)
+int			_pushLoop(lua_State *)
 {
 	return 0;
 }
 
 template <bool USELUAERR, typename HEAD, typename ...TAIL>
-unsigned int		_pushLoop(lua_State *l, HEAD const &h, TAIL const &...t)
+int			_pushLoop(lua_State *l, HEAD const &h, TAIL const &...t)
 {
 	return push<USELUAERR>(l, h) + _pushLoop<USELUAERR>(l, t...);
 }
 
-}; // ============================================= END OF NAMESPACE INTERNAL //
+
+}; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE INTERNAL //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 
-template<bool USELUAERR = false, typename ...ARGS>
+template <bool USELUAERR = false, typename ...ARGS>
 int			multiPush(lua_State *l, ARGS const & ...args)
 {
 	return internal::_pushLoop<USELUAERR>(l, args...);
 }
 
+
+// TODO: move light* elsewhere
 inline void					*light(void *ptr)
 {
 	return ptr;
@@ -333,8 +371,31 @@ inline int					pushLightKey(lua_State *l, void *ptr)
 	return ftlua::push(l, make_keys(ptr));
 }
 
+template <bool USELUAERR = false
+		  , class ...ARGS, class TK, class TV>
+void        set(
+	lua_State *l
+	, KeysWrapper<ARGS...> const &tabKeys
+	, TK const &key
+	, TV const &val)
+{
+	ftlua::multiPush<USELUAERR>(l, tabKeys, key, val);
+	if (!lua_istable(l, -3))
+	{
+		if (USELUAERR)
+			luaL_error(l, "ftlua::set table missing");
+		else
+			throw std::runtime_error(
+				ft::f("ftlua::set table missing"));
+	}
+	lua_settable(l, -3);
+	lua_pop(l, 1);
+	return ;
+}
 
-}; // ================================================ END OF NAMESPACE FTLUA //
+
+}; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 # undef DELPTR
 # undef DELCONST

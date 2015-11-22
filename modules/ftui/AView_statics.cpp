@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 16:29:11 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/22 10:12:19 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -142,8 +142,10 @@ static void     push_luacfun_methods(
 		, std::vector<AView::view_info_s::luamethod_t> const &methods)
 {
 	for (auto itm : methods)
-		ftlua::registerLuaCFunTable(
-			l, view_name, std::get<0>(itm), std::get<1>(itm));
+		ftlua::set(l, ftlua::make_keys(view_name)
+				   , std::get<0>(itm), std::get<1>(itm));
+		// ftlua::registerLuaCFunTable(
+			// l, view_name, std::get<0>(itm), std::get<1>(itm));
 	return ;
 }
 
