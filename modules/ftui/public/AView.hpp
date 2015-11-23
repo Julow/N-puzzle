@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 09:43:07 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 17:40:11 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -280,15 +280,15 @@ public:
 		, std::string const &tableInit = {});
 	static void						pushViewTemplates(lua_State *l);
 
-protected:
-	typedef std::unordered_map<std::string, uint32_t>	callback_map_t;
-	static callback_map_t			callback_map;
-
 	/*
 	** Register a lua callback
 	*/
 	static void						registerLuaCallback(std::string const &name,
 										uint32_t id);
+
+protected:
+	typedef std::unordered_map<std::string, uint32_t>	callback_map_t;
+	static callback_map_t			callback_map;
 
 public:
 	static int				getIdG(lua_State *l);

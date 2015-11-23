@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/22 15:18:07 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 17:41:39 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -115,7 +115,7 @@ void				AView::defineView(
 
 void			AView::registerLuaCallback(std::string const &name, uint32_t id)
 {
-	if (callback_map.insert(std::make_pair(name, id)).second)
+	if (!callback_map.insert(std::make_pair(name, id)).second)
 		throw std::domain_error(ft::f("lua callback registered twice (%)",
 			name));
 }
