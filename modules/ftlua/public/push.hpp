@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 13:42:30 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 16:13:00 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -102,19 +102,13 @@ int			push(lua_State *l, newtab_t const &)
 template <bool USELUAERR = false>
 int			push(lua_State *l, dup_t const &i)
 {
-	if ((i.i < 0 ? -i.i : i.i) > lua_gettop(l))
-	{
-		//from push<dup(i)>
-		//FTLUA_STACKASSERT(PRED,
-		if (USELUAERR)
-			luaL_error(
-				l, ft::f("ftlua::push<dup(%)> wrong index:\n%", i.i
-						 , ftlua::stacktostring(l)).c_str());
-		else
-			throw std::runtime_error(
-				ft::f("ftlua::push<dup(%)> wrong index:\n%", i.i
-					  , ftlua::stacktostring(l)).c_str());
-	}
+	int const index = i.i < 0 ? -i.i : i.i;
+
+	FTLUA_STACKASSERT(
+		l, index <= lua_gettop(l), USELUAERR
+		, ft::f("ftlua::push(dup(%)) at param %/%.", i.i)
+		, ft::f("Stack index does not exist.")
+		);
 	lua_pushvalue(l, i.i);
 	return 1;
 }
@@ -290,25 +284,11 @@ void		_dereference(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 {
 	ftlua::push<USELUAERR>(l, std::get<I>(wrap.tup));
 	FTLUA_STACKASSERT(
-		l, !lua_istable(l, -2), USELUAERR
-		, ft::f("ftlua::push(%) at param %/%."
-				, wrap.toString(), I + 1, sizeof...(ARGS))
+		l, lua_istable(l, -2), USELUAERR
+		, ft::f("ftlua::push(KeysWrapper<%>) at param %/%."
+				, ft::tupleToString(wrap.tup), I + 1, sizeof...(ARGS))
 		, ft::f("Stack[-2] should have been a table.")
 		);
-	// if (!lua_istable(l, -2))
-	// {
-	// 	//from multiPush
-	// 	//KeysWrapper to string
-	// 	//FTLUA_STACKASSERT(PRED,
-	// 	if (USELUAERR)
-	// 		luaL_error(
-	// 			l, ft::f("Stack(-2) should have been a table\n%"
-	// 					 , ftlua::stacktostring(l)).c_str());
-	// 	else
-	// 		throw std::runtime_error(
-	// 			ft::f("Stack(-2) should have been a table\n%"
-	// 				  , ftlua::stacktostring(l)));
-	// }
 	lua_gettable(l, -2);
 	lua_remove(l, -2);
 	return ;

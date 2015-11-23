@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:23:28 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 16:04:17 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 16:07:58 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -40,19 +40,6 @@ struct KeysWrapper
 	/* ATTRIBUTES ******************* */
 	typedef std::tuple<ARGS const &...>		tuple_t;
 	tuple_t const			tup;
-
-	/* DEBUG ************************ */
-	std::string				toString(void) const
-		{
-			std::string	ret("");
-
-			ret += "KeysWrapper<";
-			// ret += "TODO";
-			ret += ft::tupleToString(this->tup);
-			ret += ">";
-			return ret;
-		}
-
 
 };
 
