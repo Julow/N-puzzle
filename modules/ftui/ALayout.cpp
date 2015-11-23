@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/19 12:31:13 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/23 17:24:01 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -121,10 +121,10 @@ void				ALayout::spreadTargetMouseMove(bool state)
 		{
 			for (int i = 0; i < size(); i++)
 				if (at(i)->isMouseMoveTargeted())
-				{
-					FTPADE();
+				// {
+					// FTPADE();
 					return ;
-				}
+				// }
 			this->_layoutFlags &= ~AView::MOUSE_MOVE_TARGET;
 		}
 		p = this->getParent();
@@ -210,7 +210,7 @@ void				ALayout::spreadQueryRedraw(void)
 
 void				ALayout::inflate(Activity &a, ft::XmlParser &xml)
 {
-	AView				*v;
+	AView					*v;
 	ft::XmlParser::State	state;
 
 	for (auto const &p : xml.getParams())
@@ -233,14 +233,19 @@ void				ALayout::inflate(Activity &a, ft::XmlParser &xml)
 
 bool				ALayout::onMouseScroll(int x, int y, float delta)
 {
-	AView		*v;
+	AView			*v;
+	IViewHolder		*holder;
+	ft::Vec2<int>	pos;
 
 	for (int i = 0; i < size(); i++)
 	{
 		v = at(i);
+		holder = v->getViewHolder();
+		pos = holder->getPos();
 		FTASSERT(v != nullptr);
-		if (v->isMouseScrollTargeted() && v->isMouseOver()
-			&& v->onMouseScroll(x, y, delta))
+		if (v->isMouseScrollTargeted() && (ft::make_rect(pos, holder->getSize())
+				.contains(ft::make_vec(x, y)) || v->isMouseCaptureTargeted())
+			&& v->onMouseScroll(x - pos.x, y - pos.y, delta))
 			return (true);
 	}
 	if (AView::isMouseScrollTargeted())
@@ -250,15 +255,19 @@ bool				ALayout::onMouseScroll(int x, int y, float delta)
 
 bool				ALayout::onMouseDown(int x, int y, int button, int mods)
 {
-	AView		*v;
+	AView			*v;
+	IViewHolder		*holder;
+	ft::Vec2<int>	pos;
 
 	for (int i = 0; i < size(); i++)
 	{
 		v = at(i);
+		holder = v->getViewHolder();
+		pos = holder->getPos();
 		FTASSERT(v != nullptr);
-		if (v->isMouseClickTargeted()
-			&& (v->isMouseOver() || v->isMouseCaptureTargeted())
-			&& v->onMouseDown(x, y, button, mods))
+		if (v->isMouseClickTargeted() && (ft::make_rect(pos, holder->getSize())
+				.contains(ft::make_vec(x, y)) || v->isMouseCaptureTargeted())
+			&& v->onMouseDown(x - pos.x, y - pos.y, button, mods))
 			return (true);
 	}
 	if (AView::isMouseClickTargeted())
@@ -268,15 +277,19 @@ bool				ALayout::onMouseDown(int x, int y, int button, int mods)
 
 bool				ALayout::onMouseUp(int x, int y, int button, int mods)
 {
-	AView		*v;
+	AView			*v;
+	IViewHolder		*holder;
+	ft::Vec2<int>	pos;
 
 	for (int i = 0; i < size(); i++)
 	{
 		v = at(i);
+		holder = v->getViewHolder();
+		pos = holder->getPos();
 		FTASSERT(v != nullptr);
-		if (v->isMouseClickTargeted()
-			&& (v->isMouseOver() || v->isMouseCaptureTargeted())
-			&& v->onMouseUp(x, y, button, mods))
+		if (v->isMouseClickTargeted() && (ft::make_rect(pos, holder->getSize())
+				.contains(ft::make_vec(x, y)) || v->isMouseCaptureTargeted())
+			&& v->onMouseUp(x - pos.x, y - pos.y, button, mods))
 			return (true);
 	}
 	if (AView::isMouseClickTargeted())

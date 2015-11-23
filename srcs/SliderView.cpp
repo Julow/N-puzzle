@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 13:27:49 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 16:07:50 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/23 17:24:48 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -111,6 +111,7 @@ bool				SliderView::onMouseDown(int x, int y, int button, int mods)
 		return (true);
 	setValueWidth(x);
 	hookMouseMove(true);
+	hookMouseCapture(true);
 	return (true);
 }
 
@@ -119,6 +120,7 @@ bool				SliderView::onMouseUp(int x, int y, int button, int mods)
 	if (ftui::ASolidView::onMouseUp(x, y, button, mods))
 		return (true);
 	hookMouseMove(false);
+	hookMouseCapture(false);
 	return (true);
 }
 
