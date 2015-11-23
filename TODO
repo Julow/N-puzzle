@@ -1,0 +1,18 @@
+TODO LIST
+
+	States
+		...
+		-> SliderView
+		-> debug/continue ocaml
+		-> debug layouts
+	onEvent
+	ftlua::handle rewrite
+	ftlua error handling
+	ocaml bindings
+	ACanvas
+		-> GlCanvas
+			-> multithread canvas
+		-> hardware canvas
+	AbsoluteLayout, ScrollableLayout, RelativeLayout
+	Gen big databases
+	merge liblua and ftlua

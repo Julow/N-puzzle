@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/18 17:14:03 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/18 18:11:01 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/23 10:46:02 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,6 +14,7 @@
 #include "ft/utils.hpp"
 #include "ft/assert.hpp"
 #include <stdexcept>
+#include <limits>
 
 Tokenizer::token_def_s const	GridParser::gridTokens[] = {
 	{{.str="#"}, Tokenizer::TOKEN_CHR1, GridParser::TOKEN_COMMENT},
