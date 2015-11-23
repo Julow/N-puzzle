@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 13:27:49 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 16:07:50 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/23 17:49:20 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -54,7 +54,11 @@ void				SliderView::setValue(float val)
 	else if (val > _bounds.y)
 		val = _bounds.y;
 	if (val != _value && !_inCallback)
+	{
+		_inCallback = true;
 		onValueChange(val);
+		_inCallback = false;
+	}
 	_value = val;
 }
 
@@ -96,10 +100,9 @@ void				SliderView::onDetach(void)
 void				SliderView::onDraw(ftui::Canvas &canvas)
 {
 	ft::Rect<float>			rect(canvas.getClip());
-	float const				middle = rect.getWidth() / 2.f;
 
 	ASolidView::onDraw(canvas);
-	rect.setWidth(middle);
+	rect.setWidth(rect.getWidth() * _value / (_bounds.y - _bounds.x));
 	if (ft::Color::a(_bgParams.strokeColor) > 0 && _bgParams.lineWidth > 0)
 		rect.expand(-_bgParams.lineWidth);
 	canvas.drawRect(rect, ftui::Canvas::Params{0xFFFF0000, 0xFFFFFF00, 1, 0});
@@ -111,6 +114,7 @@ bool				SliderView::onMouseDown(int x, int y, int button, int mods)
 		return (true);
 	setValueWidth(x);
 	hookMouseMove(true);
+	hookMouseCapture(true);
 	return (true);
 }
 
@@ -119,15 +123,23 @@ bool				SliderView::onMouseUp(int x, int y, int button, int mods)
 	if (ftui::ASolidView::onMouseUp(x, y, button, mods))
 		return (true);
 	hookMouseMove(false);
+	hookMouseCapture(false);
 	return (true);
 }
 
 bool				SliderView::onMouseMove(int x, int y)
 {
-	std::cout << "lol\n";
 	if (ftui::ASolidView::onMouseMove(x, y))
 		return (true);
 	setValueWidth(x);
+	return (true);
+}
+
+bool				SliderView::onMouseScroll(int x, int y, float delta)
+{
+	if (ftui::ASolidView::onMouseScroll(x, y, delta))
+		return (true);
+	setValue(_value + delta);
 	return (true);
 }
 
@@ -137,5 +149,4 @@ void				SliderView::setValueWidth(int x)
 	float const			pos = static_cast<float>(x);
 
 	setValue(pos * (_bounds.y - _bounds.x) / width + _bounds.x);
-	std::cout << "value: " << _value << std::endl;
 }

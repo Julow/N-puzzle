@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 13:27:39 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 15:32:14 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/23 17:47:51 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -22,6 +22,9 @@
 ** SliderView
 ** ---
 ** Represent a slider that the user can scroll to change it's value
+** -
+** TODO: better design
+** TODO: lua c functions
 */
 class	SliderView : ftui::ASolidView
 {
@@ -65,6 +68,7 @@ public:
 	virtual bool		onMouseDown(int x, int y, int button, int mods);
 	virtual bool		onMouseUp(int x, int y, int button, int mods);
 	virtual bool		onMouseMove(int x, int y);
+	virtual bool		onMouseScroll(int x, int y, float delta);
 
 	virtual void		onAttach(void);
 	virtual void		onDetach(void);
