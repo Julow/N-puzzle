@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 13:41:55 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 13:42:30 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -290,7 +290,7 @@ void		_dereference(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 {
 	ftlua::push<USELUAERR>(l, std::get<I>(wrap.tup));
 	FTLUA_STACKASSERT(
-		l, lua_istable(l, -2), USELUAERR
+		l, !lua_istable(l, -2), USELUAERR
 		, ft::f("ftlua::push(%) at param %/%."
 				, wrap.toString(), I + 1, sizeof...(ARGS))
 		, ft::f("Stack[-2] should have been a table.")

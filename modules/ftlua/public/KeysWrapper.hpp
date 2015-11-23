@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:23:28 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 13:32:05 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 16:04:17 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,6 +14,8 @@
 # define FTLUA_KEYSWRAPPER_HPP
 
 # include <tuple>
+
+# include "ft/utils.hpp"
 
 # include "liblua/lua.hpp"
 
@@ -45,8 +47,8 @@ struct KeysWrapper
 			std::string	ret("");
 
 			ret += "KeysWrapper<";
-			ret += "TODO";
-			// ft::tupletostring(this->tup);
+			// ret += "TODO";
+			ret += ft::tupleToString(this->tup);
 			ret += ">";
 			return ret;
 		}

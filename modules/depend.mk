@@ -26,11 +26,13 @@ $(O_DIR)/ft/assert.o $(O_DIR)/ft/padformat.o: | $(O_DIR)/ft/_public/ft
 $(O_DIR)/ft/assert.o: ft/assert.cpp ft/public/Rect.hpp ft/public/Vec.hpp \
 	ft/public/assert.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
-	ft/public/templates/Vec4.tpp ft/public/utils.hpp | $(O_DIR)/ft/
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
+	| $(O_DIR)/ft/
 $(O_DIR)/ft/padformat.o: ft/padformat.cpp ft/public/Rect.hpp ft/public/Vec.hpp \
 	ft/public/assert.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
-	ft/public/templates/Vec4.tpp ft/public/utils.hpp | $(O_DIR)/ft/
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
+	| $(O_DIR)/ft/
 
 # module ft_xml
 $(O_DIR)/ft_xml/_public/ft $(O_DIR)/ft_xml/_public/ft_xml: \
@@ -48,13 +50,13 @@ $(O_DIR)/ft_xml/srcs/XmlParser.o $(O_DIR)/ft_xml/srcs/XmlTokenizer.o: | \
 $(O_DIR)/ft_xml/srcs/XmlParser.o: ft_xml/srcs/XmlParser.cpp ft/public/Rect.hpp \
 	ft/public/Vec.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
-	ft/public/templates/Vec4.tpp ft/public/utils.hpp \
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
 	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
 	| $(O_DIR)/ft_xml/srcs/
 $(O_DIR)/ft_xml/srcs/XmlTokenizer.o: ft_xml/srcs/XmlTokenizer.cpp \
 	ft/public/Rect.hpp ft/public/Vec.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
-	ft/public/templates/Vec4.tpp ft/public/utils.hpp \
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
 	ft_xml/public/XmlTokenizer.hpp | $(O_DIR)/ft_xml/srcs/
 
 # module ftlua
@@ -153,7 +155,7 @@ $(O_DIR)/ftui/ALayout.o: ftui/ALayout.cpp ft/public/Color.hpp \
 	ft/public/Rect.hpp ft/public/Vec.hpp ft/public/assert.hpp \
 	ft/public/templates/Rect.tpp ft/public/templates/Vec2.tpp \
 	ft/public/templates/Vec3.tpp ft/public/templates/Vec4.tpp \
-	ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
+	ft/public/type_traits.hpp ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
 	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
 	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
 	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
@@ -171,7 +173,7 @@ $(O_DIR)/ftui/ALayout_luaHandler.o: ftui/ALayout_luaHandler.cpp \
 	ft/public/Color.hpp ft/public/Rect.hpp ft/public/Vec.hpp \
 	ft/public/assert.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
-	ft/public/templates/Vec4.tpp ft/public/utils.hpp \
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
 	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
 	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
 	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
@@ -188,7 +190,7 @@ $(O_DIR)/ftui/ASolidView.o: ftui/ASolidView.cpp ft/public/Color.hpp \
 	ft/public/Rect.hpp ft/public/Vec.hpp ft/public/assert.hpp \
 	ft/public/templates/Rect.tpp ft/public/templates/Vec2.tpp \
 	ft/public/templates/Vec3.tpp ft/public/templates/Vec4.tpp \
-	ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
+	ft/public/type_traits.hpp ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
 	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
 	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
 	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
@@ -205,7 +207,7 @@ $(O_DIR)/ftui/ASolidView.o: ftui/ASolidView.cpp ft/public/Color.hpp \
 $(O_DIR)/ftui/AView.o: ftui/AView.cpp ft/public/Color.hpp ft/public/Rect.hpp \
 	ft/public/Vec.hpp ft/public/assert.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
-	ft/public/templates/Vec4.tpp ft/public/utils.hpp \
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
 	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
 	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
 	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
@@ -229,7 +231,7 @@ $(O_DIR)/ftui/AView_luaHandler.o: ftui/AView_luaHandler.cpp \
 	ft/public/Color.hpp ft/public/Rect.hpp ft/public/Vec.hpp \
 	ft/public/assert.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
-	ft/public/templates/Vec4.tpp ft/public/utils.hpp \
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
 	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
 	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
 	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
@@ -247,7 +249,7 @@ $(O_DIR)/ftui/AView_statics.o: ftui/AView_statics.cpp ft/public/Color.hpp \
 	ft/public/Rect.hpp ft/public/Vec.hpp ft/public/assert.hpp \
 	ft/public/templates/Rect.tpp ft/public/templates/Vec2.tpp \
 	ft/public/templates/Vec3.tpp ft/public/templates/Vec4.tpp \
-	ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
+	ft/public/type_traits.hpp ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
 	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
 	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
 	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
@@ -267,7 +269,7 @@ $(O_DIR)/ftui/Activity.o: ftui/Activity.cpp ft/public/Color.hpp \
 	ft/public/Rect.hpp ft/public/Vec.hpp ft/public/assert.hpp \
 	ft/public/templates/Rect.tpp ft/public/templates/Vec2.tpp \
 	ft/public/templates/Vec3.tpp ft/public/templates/Vec4.tpp \
-	ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
+	ft/public/type_traits.hpp ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
 	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
 	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
 	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
@@ -311,7 +313,7 @@ $(O_DIR)/ftui/Activity_RootViewHolder.o: ftui/Activity_RootViewHolder.cpp \
 $(O_DIR)/ftui/Button.o: ftui/Button.cpp ft/public/Color.hpp ft/public/Rect.hpp \
 	ft/public/Vec.hpp ft/public/assert.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
-	ft/public/templates/Vec4.tpp ft/public/utils.hpp \
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
 	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
 	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
 	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
@@ -334,7 +336,7 @@ $(O_DIR)/ftui/Button.o: ftui/Button.cpp ft/public/Color.hpp ft/public/Rect.hpp \
 $(O_DIR)/ftui/Canvas.o: ftui/Canvas.cpp ft/public/Color.hpp ft/public/Rect.hpp \
 	ft/public/Vec.hpp ft/public/assert.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
-	ft/public/templates/Vec4.tpp ft/public/utils.hpp \
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
 	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
 	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
 	ftlua/public/pop.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
@@ -349,7 +351,7 @@ $(O_DIR)/ftui/HorizontalLayout.o: ftui/HorizontalLayout.cpp \
 	ft/public/Color.hpp ft/public/Rect.hpp ft/public/Vec.hpp \
 	ft/public/assert.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
-	ft/public/templates/Vec4.tpp ft/public/utils.hpp \
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
 	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
 	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
 	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
@@ -369,7 +371,7 @@ $(O_DIR)/ftui/HorizontalLayout_ViewHolder.o: \
 	ft/public/Rect.hpp ft/public/Vec.hpp ft/public/assert.hpp \
 	ft/public/templates/Rect.tpp ft/public/templates/Vec2.tpp \
 	ft/public/templates/Vec3.tpp ft/public/templates/Vec4.tpp \
-	ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
+	ft/public/type_traits.hpp ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
 	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
 	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
 	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
@@ -393,7 +395,7 @@ $(O_DIR)/ftui/SolidView.o: ftui/SolidView.cpp ft/public/Color.hpp \
 	ft/public/Rect.hpp ft/public/Vec.hpp ft/public/assert.hpp \
 	ft/public/templates/Rect.tpp ft/public/templates/Vec2.tpp \
 	ft/public/templates/Vec3.tpp ft/public/templates/Vec4.tpp \
-	ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
+	ft/public/type_traits.hpp ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
 	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
 	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
 	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
@@ -411,7 +413,7 @@ $(O_DIR)/ftui/TextView.o: ftui/TextView.cpp ft/public/Color.hpp \
 	ft/public/Rect.hpp ft/public/Vec.hpp ft/public/assert.hpp \
 	ft/public/templates/Rect.tpp ft/public/templates/Vec2.tpp \
 	ft/public/templates/Vec3.tpp ft/public/templates/Vec4.tpp \
-	ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
+	ft/public/type_traits.hpp ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
 	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
 	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
 	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
@@ -429,7 +431,7 @@ $(O_DIR)/ftui/VerticalLayout.o: ftui/VerticalLayout.cpp ft/public/Color.hpp \
 	ft/public/Rect.hpp ft/public/Vec.hpp ft/public/assert.hpp \
 	ft/public/templates/Rect.tpp ft/public/templates/Vec2.tpp \
 	ft/public/templates/Vec3.tpp ft/public/templates/Vec4.tpp \
-	ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
+	ft/public/type_traits.hpp ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
 	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
 	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
 	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
@@ -447,7 +449,7 @@ $(O_DIR)/ftui/VerticalLayout_ViewHolder.o: ftui/VerticalLayout_ViewHolder.cpp \
 	ft/public/Color.hpp ft/public/Rect.hpp ft/public/Vec.hpp \
 	ft/public/assert.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
-	ft/public/templates/Vec4.tpp ft/public/utils.hpp \
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
 	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
 	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
 	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \

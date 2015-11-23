@@ -20,6 +20,7 @@ o/srcs/GlCanvasHolder.o: srcs/GlCanvasHolder.cpp include/GlCanvasHolder.hpp \
 	modules/_objs/ftui/_public/ftlua/pop.hpp \
 	modules/_objs/ftui/_public/ftlua/push.hpp \
 	modules/_objs/ftui/_public/ftlua/set.hpp \
+	modules/_objs/ftui/_public/ftlua/stackassert.hpp \
 	modules/_objs/ftui/_public/ftlua/templates/ftlua_caller.tpp \
 	modules/_objs/ftui/_public/ftlua/templates/ftlua_handler.tpp \
 	modules/_objs/ftui/_public/ftlua/types.hpp \
@@ -36,6 +37,7 @@ o/srcs/GlCanvasHolder.o: srcs/GlCanvasHolder.cpp include/GlCanvasHolder.hpp \
 	modules/_objs/tiles/_public/ft/templates/Vec2.tpp \
 	modules/_objs/tiles/_public/ft/templates/Vec3.tpp \
 	modules/_objs/tiles/_public/ft/templates/Vec4.tpp \
+	modules/_objs/tiles/_public/ft/type_traits.hpp \
 	modules/_objs/tiles/_public/ft/utils.hpp \
 	modules/liblua/lua-5.3.1/src/lauxlib.h modules/liblua/lua-5.3.1/src/lua.h \
 	modules/liblua/lua-5.3.1/src/luaconf.h \
@@ -49,6 +51,7 @@ o/srcs/Grid.o: srcs/Grid.cpp include/Grid.hpp include/GridParser.hpp \
 	modules/_objs/tiles/_public/ft/templates/Vec2.tpp \
 	modules/_objs/tiles/_public/ft/templates/Vec3.tpp \
 	modules/_objs/tiles/_public/ft/templates/Vec4.tpp \
+	modules/_objs/tiles/_public/ft/type_traits.hpp \
 	modules/_objs/tiles/_public/ft/utils.hpp | o/srcs/
 o/srcs/GridParser.o: srcs/GridParser.cpp include/GridParser.hpp \
 	include/Tokenizer.hpp modules/_objs/tiles/_public/ft/Rect.hpp \
@@ -57,6 +60,7 @@ o/srcs/GridParser.o: srcs/GridParser.cpp include/GridParser.hpp \
 	modules/_objs/tiles/_public/ft/templates/Vec2.tpp \
 	modules/_objs/tiles/_public/ft/templates/Vec3.tpp \
 	modules/_objs/tiles/_public/ft/templates/Vec4.tpp \
+	modules/_objs/tiles/_public/ft/type_traits.hpp \
 	modules/_objs/tiles/_public/ft/utils.hpp \
 	modules/_objs/tiles/_public/ft/assert.hpp | o/srcs/
 o/srcs/Main.o: srcs/Main.cpp modules/_objs/tiles/_public/ft/Rect.hpp \
@@ -65,6 +69,7 @@ o/srcs/Main.o: srcs/Main.cpp modules/_objs/tiles/_public/ft/Rect.hpp \
 	modules/_objs/tiles/_public/ft/templates/Vec2.tpp \
 	modules/_objs/tiles/_public/ft/templates/Vec3.tpp \
 	modules/_objs/tiles/_public/ft/templates/Vec4.tpp \
+	modules/_objs/tiles/_public/ft/type_traits.hpp \
 	modules/_objs/tiles/_public/ft/utils.hpp include/GlCanvasHolder.hpp \
 	include/Grid.hpp include/IBundle.hpp include/ISolverListener.hpp \
 	include/IState.hpp include/Main.hpp include/OCamlBinding.hpp \
@@ -78,6 +83,7 @@ o/srcs/Main.o: srcs/Main.cpp modules/_objs/tiles/_public/ft/Rect.hpp \
 	modules/_objs/ftui/_public/ftlua/pop.hpp \
 	modules/_objs/ftui/_public/ftlua/push.hpp \
 	modules/_objs/ftui/_public/ftlua/set.hpp \
+	modules/_objs/ftui/_public/ftlua/stackassert.hpp \
 	modules/_objs/ftui/_public/ftlua/templates/ftlua_caller.tpp \
 	modules/_objs/ftui/_public/ftlua/templates/ftlua_handler.tpp \
 	modules/_objs/ftui/_public/ftlua/types.hpp \
@@ -118,6 +124,7 @@ o/srcs/OCamlBinding.o: srcs/OCamlBinding.cpp include/Grid.hpp \
 	modules/_objs/tiles/_public/ft/templates/Vec2.tpp \
 	modules/_objs/tiles/_public/ft/templates/Vec3.tpp \
 	modules/_objs/tiles/_public/ft/templates/Vec4.tpp \
+	modules/_objs/tiles/_public/ft/type_traits.hpp \
 	modules/_objs/tiles/_public/ft/utils.hpp | o/srcs/
 o/srcs/PickState.o: srcs/PickState.cpp include/GlCanvasHolder.hpp \
 	include/Grid.hpp include/IBundle.hpp include/ISolverListener.hpp \
@@ -133,6 +140,7 @@ o/srcs/PickState.o: srcs/PickState.cpp include/GlCanvasHolder.hpp \
 	modules/_objs/ftui/_public/ftlua/pop.hpp \
 	modules/_objs/ftui/_public/ftlua/push.hpp \
 	modules/_objs/ftui/_public/ftlua/set.hpp \
+	modules/_objs/ftui/_public/ftlua/stackassert.hpp \
 	modules/_objs/ftui/_public/ftlua/templates/ftlua_caller.tpp \
 	modules/_objs/ftui/_public/ftlua/templates/ftlua_handler.tpp \
 	modules/_objs/ftui/_public/ftlua/types.hpp \
@@ -159,6 +167,7 @@ o/srcs/PickState.o: srcs/PickState.cpp include/GlCanvasHolder.hpp \
 	modules/_objs/tiles/_public/ft/templates/Vec2.tpp \
 	modules/_objs/tiles/_public/ft/templates/Vec3.tpp \
 	modules/_objs/tiles/_public/ft/templates/Vec4.tpp \
+	modules/_objs/tiles/_public/ft/type_traits.hpp \
 	modules/_objs/tiles/_public/ft/utils.hpp \
 	modules/_objs/tiles/_public/gl/gl.hpp \
 	modules/_objs/tiles/_public/tiles/Tiles.hpp \
@@ -173,6 +182,7 @@ o/srcs/Tokenizer.o: srcs/Tokenizer.cpp include/Tokenizer.hpp \
 	modules/_objs/tiles/_public/ft/templates/Vec2.tpp \
 	modules/_objs/tiles/_public/ft/templates/Vec3.tpp \
 	modules/_objs/tiles/_public/ft/templates/Vec4.tpp \
+	modules/_objs/tiles/_public/ft/type_traits.hpp \
 	modules/_objs/tiles/_public/ft/utils.hpp | o/srcs/
 o/srcs/libftui_extend/Bookmark.o: srcs/libftui_extend/Bookmark.cpp \
 	include/libftui_extend/Bookmark.hpp \
@@ -186,6 +196,7 @@ o/srcs/libftui_extend/Bookmark.o: srcs/libftui_extend/Bookmark.cpp \
 	modules/_objs/ftui/_public/ftlua/pop.hpp \
 	modules/_objs/ftui/_public/ftlua/push.hpp \
 	modules/_objs/ftui/_public/ftlua/set.hpp \
+	modules/_objs/ftui/_public/ftlua/stackassert.hpp \
 	modules/_objs/ftui/_public/ftlua/templates/ftlua_caller.tpp \
 	modules/_objs/ftui/_public/ftlua/templates/ftlua_handler.tpp \
 	modules/_objs/ftui/_public/ftlua/types.hpp \
@@ -216,6 +227,7 @@ o/srcs/libftui_extend/Bookmark.o: srcs/libftui_extend/Bookmark.cpp \
 	modules/_objs/tiles/_public/ft/templates/Vec2.tpp \
 	modules/_objs/tiles/_public/ft/templates/Vec3.tpp \
 	modules/_objs/tiles/_public/ft/templates/Vec4.tpp \
+	modules/_objs/tiles/_public/ft/type_traits.hpp \
 	modules/_objs/tiles/_public/ft/utils.hpp \
 	modules/liblua/lua-5.3.1/src/lauxlib.h modules/liblua/lua-5.3.1/src/lua.h \
 	modules/liblua/lua-5.3.1/src/luaconf.h \
