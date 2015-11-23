@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/22 11:52:23 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/22 11:58:54 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 11:56:55 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -32,6 +32,9 @@ void        set(
 	ftlua::multiPush<USELUAERR>(l, tabGlobalKeys, key, val);
 	if (!lua_istable(l, -3))
 	{
+		//from set
+		//KeysWrapper to string
+		//FTLUA_STACKASSERT(PRED,
 		if (USELUAERR)
 			luaL_error(l, "ftlua::set table missing");
 		else
@@ -72,6 +75,9 @@ void        set(
 {
 	if (!lua_istable(l, tabIndex))
 	{
+		//from set
+		//KeysWrapper to string
+		//FTLUA_STACKASSERT(PRED,
 		if (USELUAERR)
 			luaL_error(l, "ftlua::set table missing");
 		else

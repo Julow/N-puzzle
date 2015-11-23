@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 14:55:50 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/23 16:05:14 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -283,7 +283,6 @@ int				Main::getCostG(lua_State *l)
 }
 int				Main::getCost(void) const
 { return this->cost; }
-
 
 
 int				main(void)

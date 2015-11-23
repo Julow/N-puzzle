@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:23:28 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 09:55:00 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 16:07:58 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,6 +14,8 @@
 # define FTLUA_KEYSWRAPPER_HPP
 
 # include <tuple>
+
+# include "ft/utils.hpp"
 
 # include "liblua/lua.hpp"
 
@@ -23,6 +25,7 @@ namespace ftlua
 template<typename... ARGS>
 struct KeysWrapper
 {
+	static_assert(sizeof...(ARGS) > 0, "This should hold at least one key");
 
 	/* CONSTRUCTION ***************** */
 	KeysWrapper(ARGS const &...args)	: tup{args...} { }
@@ -37,8 +40,6 @@ struct KeysWrapper
 	/* ATTRIBUTES ******************* */
 	typedef std::tuple<ARGS const &...>		tuple_t;
 	tuple_t const			tup;
-
-	static_assert(sizeof...(ARGS) > 0, "This should hold at least one key");
 
 };
 

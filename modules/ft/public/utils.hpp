@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 13:42:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/12 13:30:28 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/23 16:06:12 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,10 +14,11 @@
 # define UTILS_H
 
 # include <iostream>
-
 # include <ostream>
 # include <sstream>
 # include <string>
+
+# include "ft/type_traits.hpp"
 # include "ft/Vec.hpp"
 # include "ft/Rect.hpp"
 
@@ -185,6 +186,89 @@ void		padformat_single(
 # define FTPADB(...) ft::padformat_begin(FTPADARGS(__VA_ARGS__))
 # define FTPADE() ft::padformat_end()
 # define FTPAD(...) ft::padformat_single(FTPADARGS(__VA_ARGS__))
+
+
+/*
+** valtostring
+*/
+namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+template <bool, class T>
+struct Stringify {};
+
+template <class T>
+struct Stringify<true, T>
+{
+	static std::string	toString(T const&v) { return ft::f("%", v); }
+};
+
+template <class T>
+struct Stringify<false, T>
+{
+	static char const	*toString(T const&) { return typeid(T).name(); }
+};
+}; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE INTERNAL //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
+template <class T>
+std::string				valToString(T const &v)
+{
+	return internal::Stringify<ft::is_printable<T>::value, T>::toString(v);
+}
+
+
+// tupletostring ============================================================ //
+//
+namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+inline char const		*_variadictostring(void)
+{
+	return "lol";
+}
+
+template <class Head, class ...Tail>
+std::string				_variadictostring(Head const &v, Tail const &...tail)
+{
+	return valToString(v) + _variadictostring(tail...);
+}
+
+# define OK_IF(PRED) typename std::enable_if<PRED>::type* = nullptr
+template <size_t I
+		  , typename... ARGS
+		  , OK_IF((sizeof...(ARGS) - I == 1))
+		  >
+std::string				_tupletostring(std::tuple<ARGS...> const &wrap)
+{
+	return valToString(std::get<I>(wrap));
+}
+
+template <size_t I
+		  , typename... ARGS
+		  , OK_IF((sizeof...(ARGS) - I != 1))
+		  >
+std::string				_tupletostring(std::tuple<ARGS...> const &wrap)
+{
+
+	return valToString(std::get<I>(wrap)) + ", "
+		+ _tupletostring<I + 1>(wrap);
+}
+# undef OK_IF
+
+}; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE INTERNAL //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
+template <class ...Args>
+std::string				variadicToString(Args const &...args)
+{
+	return internal::_variadictostring(args...);
+}
+
+template <class ...Args>
+std::string				tupleToString(std::tuple<Args...> const &tup)
+{
+	return internal::_tupletostring<0>(tup);
+}
+
 
 };
 

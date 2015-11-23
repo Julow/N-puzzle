@@ -27,10 +27,23 @@ $(O_DIR)/tiles/Tiles.o: INCLUDE_FLAGS += -I$(O_DIR)/tiles/_public
 $(O_DIR)/tiles/Tiles.o: | $(O_DIR)/tiles/_public/gl $(O_DIR)/tiles/_public/ft \
 	$(O_DIR)/tiles/_public/tiles
 
+<<<<<<< HEAD
 $(O_DIR)/tiles/Tiles.o: tiles/Tiles.cpp ft/public/Vec.hpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
 	ft/public/templates/Vec4.tpp gl/gl.h gl/gl.hpp tiles/include/Tiles.hpp \
 	| $(O_DIR)/tiles/
+=======
+$(O_DIR)/ft/assert.o: ft/assert.cpp ft/public/Rect.hpp ft/public/Vec.hpp \
+	ft/public/assert.hpp ft/public/templates/Rect.tpp \
+	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
+	| $(O_DIR)/ft/
+$(O_DIR)/ft/padformat.o: ft/padformat.cpp ft/public/Rect.hpp ft/public/Vec.hpp \
+	ft/public/assert.hpp ft/public/templates/Rect.tpp \
+	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
+	| $(O_DIR)/ft/
+>>>>>>> a98643af94d5af780fd1c98c1dfd7cfbe57468cc
 
 # module ft_xml
 $(O_DIR)/ft_xml/_public/ft $(O_DIR)/ft_xml/_public/ft_xml: | \
@@ -70,13 +83,11 @@ $(O_DIR)/ft/assert.o $(O_DIR)/ft/padformat.o: | $(O_DIR)/ft/_public/ft
 $(O_DIR)/ft/assert.o: ft/assert.cpp ft/public/Rect.hpp ft/public/Vec.hpp \
 	ft/public/assert.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
-	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
-	| $(O_DIR)/ft/
+	ft/public/templates/Vec4.tpp ft/public/utils.hpp | $(O_DIR)/ft/
 $(O_DIR)/ft/padformat.o: ft/padformat.cpp ft/public/Rect.hpp ft/public/Vec.hpp \
 	ft/public/assert.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
-	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
-	| $(O_DIR)/ft/
+	ft/public/templates/Vec4.tpp ft/public/utils.hpp | $(O_DIR)/ft/
 
 # module liblua
 LIBLUA_DIR		:= liblua/lua-5.3.1
