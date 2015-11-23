@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 16:30:40 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 17:45:51 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -102,7 +102,7 @@ int			push(lua_State *l, newtab_t const &)
 template <bool USELUAERR = false>
 int			push(lua_State *l, dup_t const &i)
 {
-	int const index = i.i < 0 ? -i.i : i.i;
+	int const	index = i.i < 0 ? -i.i : i.i;
 
 	FTLUA_STACKASSERT(
 		l, index <= lua_gettop(l), USELUAERR

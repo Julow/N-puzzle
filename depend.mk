@@ -91,17 +91,10 @@ o/srcs/Main.o: srcs/Main.cpp modules/_objs/tiles/_public/ft/Rect.hpp \
 	modules/_objs/ftui/_public/ftlua/utils.hpp \
 	modules/_objs/ftui/_public/ftui/Activity.hpp \
 	modules/_objs/ftui/_public/ftui/Canvas.hpp \
-	modules/_objs/ftui/_public/ftui/DefaultEventBox.hpp \
-	modules/_objs/ftui/_public/ftui/EventBox.hpp \
-	modules/_objs/ftui/_public/ftui/EventParams.hpp \
-	modules/_objs/ftui/_public/ftui/IEventBox.hpp \
-	modules/_objs/ftui/_public/ftui/IEventParams.hpp \
 	modules/_objs/ftui/_public/ftui/IViewHolder.hpp \
 	modules/_objs/ftui/_public/ftui/ftlua_extend.hpp \
 	modules/_objs/ftui/_public/ftui/libftui.hpp \
 	modules/_objs/ftui/_public/ftui/templates/Activity.tpp \
-	modules/_objs/ftui/_public/ftui/templates/DefaultEventBox.tpp \
-	modules/_objs/ftui/_public/ftui/templates/EventBox.tpp \
 	modules/_objs/ftui/_public/liblua/lua.hpp \
 	modules/_objs/tiles/_public/ft/Color.hpp \
 	modules/_objs/tiles/_public/ft/assert.hpp \
@@ -147,17 +140,10 @@ o/srcs/PickState.o: srcs/PickState.cpp include/GlCanvasHolder.hpp \
 	modules/_objs/ftui/_public/ftlua/utils.hpp \
 	modules/_objs/ftui/_public/ftui/Activity.hpp \
 	modules/_objs/ftui/_public/ftui/Canvas.hpp \
-	modules/_objs/ftui/_public/ftui/DefaultEventBox.hpp \
-	modules/_objs/ftui/_public/ftui/EventBox.hpp \
-	modules/_objs/ftui/_public/ftui/EventParams.hpp \
-	modules/_objs/ftui/_public/ftui/IEventBox.hpp \
-	modules/_objs/ftui/_public/ftui/IEventParams.hpp \
 	modules/_objs/ftui/_public/ftui/IViewHolder.hpp \
 	modules/_objs/ftui/_public/ftui/ftlua_extend.hpp \
 	modules/_objs/ftui/_public/ftui/libftui.hpp \
 	modules/_objs/ftui/_public/ftui/templates/Activity.tpp \
-	modules/_objs/ftui/_public/ftui/templates/DefaultEventBox.tpp \
-	modules/_objs/ftui/_public/ftui/templates/EventBox.tpp \
 	modules/_objs/ftui/_public/liblua/lua.hpp \
 	modules/_objs/tiles/_public/ft/Color.hpp \
 	modules/_objs/tiles/_public/ft/Rect.hpp \
@@ -195,18 +181,11 @@ o/srcs/SliderView.o: srcs/SliderView.cpp include/SliderView.hpp \
 	modules/_objs/ftui/_public/ftui/AView.hpp \
 	modules/_objs/ftui/_public/ftui/Activity.hpp \
 	modules/_objs/ftui/_public/ftui/Canvas.hpp \
-	modules/_objs/ftui/_public/ftui/DefaultEventBox.hpp \
-	modules/_objs/ftui/_public/ftui/EventBox.hpp \
-	modules/_objs/ftui/_public/ftui/EventParams.hpp \
-	modules/_objs/ftui/_public/ftui/IEventBox.hpp \
-	modules/_objs/ftui/_public/ftui/IEventParams.hpp \
 	modules/_objs/ftui/_public/ftui/IViewHolder.hpp \
 	modules/_objs/ftui/_public/ftui/ftlua_extend.hpp \
 	modules/_objs/ftui/_public/ftui/libftui.hpp \
 	modules/_objs/ftui/_public/ftui/templates/AView_callLuaCallback.tpp \
 	modules/_objs/ftui/_public/ftui/templates/Activity.tpp \
-	modules/_objs/ftui/_public/ftui/templates/DefaultEventBox.tpp \
-	modules/_objs/ftui/_public/ftui/templates/EventBox.tpp \
 	modules/_objs/ftui/_public/liblua/lua.hpp \
 	modules/_objs/tiles/_public/ft/Color.hpp \
 	modules/_objs/tiles/_public/ft/Rect.hpp \
@@ -252,18 +231,11 @@ o/srcs/libftui_extend/Bookmark.o: srcs/libftui_extend/Bookmark.cpp \
 	modules/_objs/ftui/_public/ftui/AView.hpp \
 	modules/_objs/ftui/_public/ftui/Activity.hpp \
 	modules/_objs/ftui/_public/ftui/Canvas.hpp \
-	modules/_objs/ftui/_public/ftui/DefaultEventBox.hpp \
-	modules/_objs/ftui/_public/ftui/EventBox.hpp \
-	modules/_objs/ftui/_public/ftui/EventParams.hpp \
-	modules/_objs/ftui/_public/ftui/IEventBox.hpp \
-	modules/_objs/ftui/_public/ftui/IEventParams.hpp \
 	modules/_objs/ftui/_public/ftui/IViewHolder.hpp \
 	modules/_objs/ftui/_public/ftui/ftlua_extend.hpp \
 	modules/_objs/ftui/_public/ftui/libftui.hpp \
 	modules/_objs/ftui/_public/ftui/templates/AView_callLuaCallback.tpp \
 	modules/_objs/ftui/_public/ftui/templates/Activity.tpp \
-	modules/_objs/ftui/_public/ftui/templates/DefaultEventBox.tpp \
-	modules/_objs/ftui/_public/ftui/templates/EventBox.tpp \
 	modules/_objs/ftui/_public/liblua/lua.hpp \
 	modules/_objs/tiles/_public/ft/Color.hpp \
 	modules/_objs/tiles/_public/ft/Rect.hpp \

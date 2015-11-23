@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/22 11:56:43 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 18:26:25 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -20,8 +20,6 @@
 #include "ftui/AView.hpp"
 #include "ftui/Activity.hpp"
 #include "ftui/ALayout.hpp"
-#include "ftui/IViewHolder.hpp"
-#include "ftui/EventParams.hpp"
 #include "ftui/VerticalLayout.hpp"
 
 using std::string;

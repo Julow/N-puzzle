@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 09:43:59 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 18:33:03 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -237,19 +237,19 @@ void			Activity::queryUpdateAll(void)
 
 void			Activity::unregisterEvent(std::string const &event, AView *v)
 {
-	auto			it = this->_eventMap.find(event);
-	auto const		ite = this->_eventMap.cend();
+	// auto			it = this->_eventMap.find(event);
+	// auto const		ite = this->_eventMap.cend();
 
-	while (it != ite)
-	{
-		if (it->second->getView() == v)
-		{
-			delete it->second;
-			it = this->_eventMap.erase(it);
-		}
-		else
-			it++;
-	}
+	// while (it != ite)
+	// {
+	// 	if (it->second->getView() == v)
+	// 	{
+	// 		delete it->second;
+	// 		it = this->_eventMap.erase(it);
+	// 	}
+	// 	else
+	// 		it++;
+	// }
 	return ;
 }
 
