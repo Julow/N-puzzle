@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 17:43:21 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/23 18:06:07 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -287,7 +287,12 @@ int				Main::getCost(void) const
 
 int				main(void)
 {
-	ftui::AView::defineView("SliderView", "ASolidView", &SliderView::createView);
+	ftui::AView::defineView("SliderView", "ASolidView", &SliderView::createView, {
+		{"getValue", SliderView::getValueG},
+		{"setValue", SliderView::setValueG},
+		{"getBounds", SliderView::getBoundsG},
+		{"setBounds", SliderView::setBoundsG}
+	});
 	ftui::AView::registerLuaCallback("onValueChange",
 		static_cast<uint32_t>(SliderView::LuaCallback::VALUE_CHANGE));
 	try

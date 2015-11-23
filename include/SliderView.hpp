@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 13:27:39 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 17:47:51 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/23 18:05:24 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -72,6 +72,14 @@ public:
 
 	virtual void		onAttach(void);
 	virtual void		onDetach(void);
+
+	/*
+	** TODO: protected
+	*/
+	static int				getValueG(lua_State *l);
+	static int				setValueG(lua_State *l);
+	static int				getBoundsG(lua_State *l);
+	static int				setBoundsG(lua_State *l);
 
 protected:
 
