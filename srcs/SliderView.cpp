@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 13:27:49 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 18:20:54 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/23 19:28:57 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -26,6 +26,7 @@ SliderView::SliderView(ftui::Activity &act, std::string const *id,
 	ftui::ASolidView(act, id, viewName),
 	_bounds(0.f, 1.f),
 	_value(0.f),
+	_steps(-1),
 	_inCallback(false)
 {
 }
@@ -34,6 +35,7 @@ SliderView::SliderView(ftui::Activity &act, ft::XmlParser const &xml) :
 	ftui::ASolidView(act, xml),
 	_bounds(0.f, 1.f),
 	_value(0.f),
+	_steps(-1),
 	_inCallback(false)
 {
 }
@@ -53,13 +55,36 @@ void				SliderView::setValue(float val)
 		val = _bounds.x;
 	else if (val > _bounds.y)
 		val = _bounds.y;
-	if (val != _value && !_inCallback)
+	if (_steps > 0)
+		val = std::round((val - _bounds.x) / ((_bounds.y - _bounds.x) / _steps))
+			* ((_bounds.y - _bounds.x) / _steps) + _bounds.x;
+	if (val != _value)
 	{
-		_inCallback = true;
-		onValueChange(val);
-		_inCallback = false;
+		_value = val;
+		if (!_inCallback)
+		{
+			_inCallback = true;
+			onValueChange(val);
+			_inCallback = false;
+		}
 	}
-	_value = val;
+}
+
+int					SliderView::getSteps(void) const
+{
+	return (_steps);
+}
+
+void				SliderView::setSteps(int step)
+{
+	_steps = step;
+	setValue(_value);
+}
+
+int					SliderView::getStepValue(void) const
+{
+	return (std::round((_value - _bounds.x)
+		/ ((_bounds.y - _bounds.x) / _steps)));
 }
 
 ft::Vec2<float>		SliderView::getBounds(void) const
@@ -167,6 +192,13 @@ int					SliderView::setValueG(lua_State *l)
 	return (0);
 }
 
+int					SliderView::getStepValueG(lua_State *l)
+{
+	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
+
+	return (ftlua::push(l, self->getStepValue()));
+}
+
 int					SliderView::getBoundsG(lua_State *l)
 {
 	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
@@ -179,10 +211,25 @@ int					SliderView::setBoundsG(lua_State *l)
 	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
 	ft::Vec2<float>		bounds;
 
-	bounds.x = luaL_checkinteger(l, 1);
-	bounds.y = luaL_checkinteger(l, 2);
+	bounds.x = luaL_checknumber(l, 1);
+	bounds.y = luaL_checknumber(l, 2);
 	lua_pop(l, 2);
 	self->setBounds(bounds);
 	return (0);
 }
 
+int					SliderView::getStepsG(lua_State *l)
+{
+	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
+
+	return (ftlua::push(l, self->getSteps()));
+}
+
+int					SliderView::setStepsG(lua_State *l)
+{
+	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
+
+	self->setSteps(luaL_checkinteger(l, 1));
+	lua_pop(l, 1);
+	return (0);
+}
