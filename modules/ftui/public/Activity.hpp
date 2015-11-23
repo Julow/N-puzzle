@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 18:32:32 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 19:49:55 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -99,8 +99,8 @@ public:
 	 *		If the given Args... types do no match those from registerEvent, a
 	 *	dynamic_cast may rise an exception.
 	 */
-	// template<typename... Args>
-	// bool				fireEvent(std::string const &event, Args... args);
+	template<typename... Args>
+	bool				fireEvent(std::string const &event, Args... args);
 
 	/*
 	 *	registerGFun() 		Registers a cfun to lua _G

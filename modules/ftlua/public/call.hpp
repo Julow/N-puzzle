@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 17:09:57 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/22 10:15:43 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 19:33:35 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,7 +19,7 @@
 namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-
+// Consumes the function
 template <typename ...ARGS>
 int					pcall(
 	lua_State *l, unsigned int nRet, unsigned int nArgsStack
@@ -29,6 +29,7 @@ int					pcall(
 		l, multiPush(l, args...) + nArgsStack, nRet, 0);
 }
 
+// Consumes the table
 template <typename ...ARGS, typename ...FKEYS>
 int					pcallMethod(
 	lua_State *l, unsigned int nRet
