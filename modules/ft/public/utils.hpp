@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 13:42:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 16:06:12 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 17:40:10 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -210,12 +210,28 @@ struct Stringify<false, T>
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE INTERNAL //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-template <class T>
+
+# define OK_IF(PRED) typename std::enable_if<PRED>::type* = nullptr
+# define ISPTR(A) std::is_pointer<A>::value
+
+template <class T
+		  // , OK_IF(!ISPTR(T))
+		  >
 std::string				valToString(T const &v)
 {
 	return internal::Stringify<ft::is_printable<T>::value, T>::toString(v);
 }
 
+// template <class T, class ...ARGS
+// 		  // , OK_IF(ISPTR(T))
+// 		  >
+// std::string				valToString(T (*v)(ARGS...))
+// {
+// 	return internal::Stringify<ft::is_printable<T>::value, T>::toString(v);
+// }
+
+# undef OK_IF
+# undef ISPTR
 
 // tupletostring ============================================================ //
 //
@@ -223,7 +239,7 @@ namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 inline char const		*_variadictostring(void)
 {
-	return "lol";
+	return "";
 }
 
 template <class Head, class ...Tail>

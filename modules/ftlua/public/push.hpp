@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 16:13:00 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 16:30:40 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -106,7 +106,7 @@ int			push(lua_State *l, dup_t const &i)
 
 	FTLUA_STACKASSERT(
 		l, index <= lua_gettop(l), USELUAERR
-		, ft::f("ftlua::push(dup(%)) at param %/%.", i.i)
+		, ft::f("ftlua::push(dup(%)).", i.i)
 		, ft::f("Stack index does not exist.")
 		);
 	lua_pushvalue(l, i.i);

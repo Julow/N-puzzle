@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/22 11:52:23 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 11:56:55 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 17:28:19 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,6 +14,7 @@
 # define FTLUA_SET_HPP
 
 # include "ftlua/push.hpp"
+# include "ftlua/stackassert.hpp"
 
 namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -30,17 +31,14 @@ void        set(
 	, TV const &val)
 {
 	ftlua::multiPush<USELUAERR>(l, tabGlobalKeys, key, val);
-	if (!lua_istable(l, -3))
-	{
-		//from set
-		//KeysWrapper to string
-		//FTLUA_STACKASSERT(PRED,
-		if (USELUAERR)
-			luaL_error(l, "ftlua::set table missing");
-		else
-			throw std::runtime_error(
-				ft::f("ftlua::set table missing"));
-	}
+	FTLUA_STACKASSERT(
+		l, lua_istable(l, -3), USELUAERR
+		, ft::f("ftlua::set(KeysWrapper<%>, %, %)."
+				, ft::tupleToString(tabGlobalKeys.tup)
+				, ft::valToString(key)
+				, ft::valToString(val))
+		, ft::f("Table was expected after as set target.")
+		);
 	lua_settable(l, -3);
 	lua_pop(l, 1);
 	return ;
@@ -73,17 +71,14 @@ void        set(
 	, TK const &key
 	, TV const &val)
 {
-	if (!lua_istable(l, tabIndex))
-	{
-		//from set
-		//KeysWrapper to string
-		//FTLUA_STACKASSERT(PRED,
-		if (USELUAERR)
-			luaL_error(l, "ftlua::set table missing");
-		else
-			throw std::runtime_error(
-				ft::f("ftlua::set table missing"));
-	}
+	FTLUA_STACKASSERT(
+		l, lua_istable(l, tabIndex), USELUAERR
+		, ft::f("ftlua::set(%, %, %)."
+				, tabIndex
+				, ft::valToString(key)
+				, ft::valToString(val))
+		, ft::f("Table was expected after as set target.")
+		);
 	ftlua::multiPush<USELUAERR>(l, key, val);
 	if (tabIndex < 0)
 		lua_settable(l, tabIndex - 2);

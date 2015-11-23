@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 11:59:00 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 17:40:55 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -78,8 +78,13 @@ void	helperCall(lua_State *l, Ret (*f)(Params...), Params ...p)
 {
 	int const	npushed = ftlua::push<true>(l, f(p...));
 
-	if (npushed != NumOut)
-		luaL_error(l, ft::f("%/% arguments returned", npushed, NumOut).c_str());
+	FTLUA_STACKASSERT(
+		l, npushed == NumOut, true
+		, ft::f("ftlua::handle(% (*)(%))."
+				, typeid(Ret).name()
+				, ft::variadicToString(p...))
+		, ft::f("Pushed % out of %", npushed, NumOut)
+		);
 	return ;
 }
 template <int NumOut, typename... Params>
@@ -97,8 +102,14 @@ void	helperCall(lua_State *l, C *i, Ret (C::*f)(Params...), Params ...p)
 {
 	int const	npushed = ftlua::push<true>(l, (i->*f)(p...));
 
-	if (npushed != NumOut)
-		luaL_error(l, ft::f("%/% arguments returned", npushed, NumOut).c_str());
+	FTLUA_STACKASSERT(
+		l, npushed == NumOut, true
+		, ft::f("ftlua::handle(% (%::*)(%))."
+				, typeid(Ret).name()
+				, typeid(C).name()
+				, ft::variadicToString(p...))
+		, ft::f("Pushed % out of %", npushed, NumOut)
+		);
 	return ;
 }
 template <int NumOut, class C, typename... Params>
