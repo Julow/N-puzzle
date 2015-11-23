@@ -1,47 +1,41 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   light.hpp                                          :+:      :+:    :+:   //
+//   stackError.cpp                                     :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/11/22 11:58:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 13:20:56 by ngoguey          ###   ########.fr       //
+//   Created: 2015/11/23 13:16:14 by ngoguey           #+#    #+#             //
+//   Updated: 2015/11/23 13:39:37 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#ifndef FTLUA_LIGHT_HPP
-# define FTLUA_LIGHT_HPP
+# include "ft/utils.hpp"
 
-# include "ftlua/push.hpp"
+# include "ftlua/stackassert.hpp"
+# include "ftlua/utils.hpp"
+
 
 namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 
-inline void					*light(void *ptr)
+std::string		stackError(lua_State *l, char const *pred
+						   , std::string const &where, std::string const &why)
 {
-	return ptr;
-}
+	std::string		ret("");
 
-inline int					pushLight(lua_State *l, void *ptr)
-{
-	lua_pushlightuserdata(l, ptr);
-	return 1;
-}
-
-inline KeysWrapper<void*>	lightKey(void *ptr)
-{
-	return ftlua::make_keys(ptr);
-}
-
-inline int					pushLightKey(lua_State *l, void *ptr)
-{
-	return ftlua::push(l, ftlua::make_keys(ptr));
+	ret += "\"";
+	ret += pred;
+	ret += "\" failed in ";
+	ret += where;
+	ret += "\n";
+	ret += ftlua::stacktostring(l);
+	ret += why;
+	ret += "\n";
+	return ret;
 }
 
 
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-
-#endif

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:23:28 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 09:55:00 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 13:32:05 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -23,6 +23,7 @@ namespace ftlua
 template<typename... ARGS>
 struct KeysWrapper
 {
+	static_assert(sizeof...(ARGS) > 0, "This should hold at least one key");
 
 	/* CONSTRUCTION ***************** */
 	KeysWrapper(ARGS const &...args)	: tup{args...} { }
@@ -38,7 +39,18 @@ struct KeysWrapper
 	typedef std::tuple<ARGS const &...>		tuple_t;
 	tuple_t const			tup;
 
-	static_assert(sizeof...(ARGS) > 0, "This should hold at least one key");
+	/* DEBUG ************************ */
+	std::string				toString(void) const
+		{
+			std::string	ret("");
+
+			ret += "KeysWrapper<";
+			ret += "TODO";
+			// ft::tupletostring(this->tup);
+			ret += ">";
+			return ret;
+		}
+
 
 };
 
