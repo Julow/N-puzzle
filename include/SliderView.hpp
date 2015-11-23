@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 13:27:39 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 18:05:24 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/23 19:37:10 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,7 +24,7 @@
 ** Represent a slider that the user can scroll to change it's value
 ** -
 ** TODO: better design
-** TODO: lua c functions
+** TODO: setParams
 */
 class	SliderView : ftui::ASolidView
 {
@@ -41,8 +41,25 @@ public:
 	static ftui::AView	*createView(ftui::Activity &act,
 							ft::XmlParser const *xml, std::string const *id);
 
+	/*
+	** Value is between bounds.x and bounds.y
+	*/
 	float				getValue(void) const;
 	void				setValue(float val);
+
+	/*
+	** Return the value rounded by step
+	** Return 0 if _steps <= 0
+	*/
+	int					getStepValue(void) const;
+
+	/*
+	** Number of possible value in the bounds
+	** If steps is <= 0 there is an unlimited number of step
+	** Warning: setSteps may change the value
+	*/
+	int					getSteps(void) const;
+	void				setSteps(int step);
 
 	/*
 	** Bounds
@@ -59,7 +76,6 @@ public:
 	** -
 	** During this callback:
 	** 	It's safe to call setValue(float) (it will not call onValueChange again)
-	** 	getValue() return the old value
 	*/
 	virtual void		onValueChange(float val);
 
@@ -73,18 +89,25 @@ public:
 	virtual void		onAttach(void);
 	virtual void		onDetach(void);
 
+	virtual void		setParam(std::string const &k,
+							std::string const &v);
+
 	/*
 	** TODO: protected
 	*/
-	static int				getValueG(lua_State *l);
-	static int				setValueG(lua_State *l);
-	static int				getBoundsG(lua_State *l);
-	static int				setBoundsG(lua_State *l);
+	static int			getValueG(lua_State *l);
+	static int			setValueG(lua_State *l);
+	static int			getStepValueG(lua_State *l);
+	static int			getBoundsG(lua_State *l);
+	static int			setBoundsG(lua_State *l);
+	static int			getStepsG(lua_State *l);
+	static int			setStepsG(lua_State *l);
 
 protected:
 
 	ft::Vec2<float>		_bounds;
 	float				_value;
+	int					_steps;
 
 	bool				_inCallback;
 

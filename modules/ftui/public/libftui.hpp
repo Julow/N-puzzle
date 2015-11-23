@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:55:01 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 14:45:16 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/23 19:34:21 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -119,9 +119,6 @@ namespace ftui
 ** 	SliderView
 ** 		onValueChange		float value
 ** 				Called when the value change (by user interation or setValue())
-** 				It's safe to call setValue(float)
-** 					(it will not call onValueChange again)
-** 				getValue() return the old value
 */
 
 /*
@@ -162,6 +159,7 @@ namespace ftui
 ** 		textSize			(int)
 ** SliderView
 ** 		value				(float)	Initial value
+** 		steps				(int)	Number of step
 ** 		maxValue			(float)	Max value
 ** 		minValue			(float)	Min value
 */
