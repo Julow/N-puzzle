@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 18:26:42 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 18:19:16 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -127,8 +127,8 @@ int			AView::setRequestedSizeG(lua_State *l)
 	IViewHolder *const	h = ftlua::retrieveSelf<AView>(l, -3)->getViewHolder();
 	ft::Vec2<int>		s;
 
-	s.x = luaL_checkinteger(l, -1);
-	s.y = luaL_checkinteger(l, -2);
+	s.x = luaL_checkinteger(l, -2);
+	s.y = luaL_checkinteger(l, -1);
 	lua_pop(l, 2);
 	if (h == nullptr)
 		h->setRequestedSize(s);

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 13:27:49 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 17:49:20 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/23 18:20:54 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -102,7 +102,7 @@ void				SliderView::onDraw(ftui::Canvas &canvas)
 	ft::Rect<float>			rect(canvas.getClip());
 
 	ASolidView::onDraw(canvas);
-	rect.setWidth(rect.getWidth() * _value / (_bounds.y - _bounds.x));
+	rect.setWidth(rect.getWidth() * (_value - _bounds.x) / (_bounds.y - _bounds.x));
 	if (ft::Color::a(_bgParams.strokeColor) > 0 && _bgParams.lineWidth > 0)
 		rect.expand(-_bgParams.lineWidth);
 	canvas.drawRect(rect, ftui::Canvas::Params{0xFFFF0000, 0xFFFFFF00, 1, 0});
@@ -150,3 +150,39 @@ void				SliderView::setValueWidth(int x)
 
 	setValue(pos * (_bounds.y - _bounds.x) / width + _bounds.x);
 }
+
+int					SliderView::getValueG(lua_State *l)
+{
+	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
+
+	return (ftlua::push(l, self->getValue()));
+}
+
+int					SliderView::setValueG(lua_State *l)
+{
+	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
+
+	self->setValue(luaL_checknumber(l, 1));
+	lua_pop(l, 1);
+	return (0);
+}
+
+int					SliderView::getBoundsG(lua_State *l)
+{
+	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
+
+	return (ftlua::push(l, self->getBounds()));
+}
+
+int					SliderView::setBoundsG(lua_State *l)
+{
+	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
+	ft::Vec2<float>		bounds;
+
+	bounds.x = luaL_checkinteger(l, 1);
+	bounds.y = luaL_checkinteger(l, 2);
+	lua_pop(l, 2);
+	self->setBounds(bounds);
+	return (0);
+}
+
