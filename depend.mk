@@ -1,6 +1,7 @@
 O_FILES :=	o/srcs/GlCanvasHolder.o o/srcs/Grid.o o/srcs/GridParser.o \
 			o/srcs/Main.o o/srcs/OCamlBinding.o o/srcs/PickState.o \
-			o/srcs/Tokenizer.o o/srcs/libftui_extend/Bookmark.o
+			o/srcs/SliderView.o o/srcs/Tokenizer.o \
+			o/srcs/libftui_extend/Bookmark.o
 
 LIBS_DEPEND := modules/libmodules.a
 
@@ -166,6 +167,7 @@ o/srcs/PickState.o: srcs/PickState.cpp include/GlCanvasHolder.hpp \
 	modules/liblua/lua-5.3.1/src/luaconf.h \
 	modules/liblua/lua-5.3.1/src/lualib.h include/config_window.hpp \
 	include/ftce/math.hpp | o/srcs/
+o/srcs/SliderView.o: srcs/SliderView.cpp include/SliderView.hpp | o/srcs/
 o/srcs/Tokenizer.o: srcs/Tokenizer.cpp include/Tokenizer.hpp \
 	modules/_objs/tiles/_public/ft/Rect.hpp \
 	modules/_objs/tiles/_public/ft/Vec.hpp \

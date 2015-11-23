@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:32:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/19 12:50:25 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/23 14:51:08 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -71,6 +71,7 @@ void		Button::onAttach(void)
 {
 	this->hookMouseMove(true);
 	this->hookMouseClick(true);
+	AView::onAttach();
 	return ;
 }
 
@@ -78,6 +79,7 @@ void		Button::onDetach(void)
 {
 	this->hookMouseMove(false);
 	this->hookMouseClick(false);
+	AView::onDetach();
 	return ;
 }
 

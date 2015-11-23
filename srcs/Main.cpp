@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 16:18:02 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 14:55:50 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,6 +18,8 @@
 #include "Main.hpp"
 #include "config_window.hpp"
 #include "PickState.hpp"
+#include "SliderView.hpp"
+#include "ftui/AView.hpp"
 #include "libftui_extend/Bookmark.hpp"
 
 /*
@@ -286,6 +288,7 @@ int				Main::getCost(void) const
 
 int				main(void)
 {
+	ftui::AView::defineView("SliderView", "ASolidView", &SliderView::createView);
 	try
 	{
 		Main *const	main = Main::instance();

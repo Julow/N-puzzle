@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/05 14:06:16 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/19 13:29:19 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/23 16:10:46 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -55,18 +55,6 @@ Rect<T>::~Rect(void)
 }
 
 template<typename T>
-T			Rect<T>::getWidth(void) const
-{
-	return (right - left);
-}
-
-template<typename T>
-T			Rect<T>::getHeight(void) const
-{
-	return (bottom - top);
-}
-
-template<typename T>
 void		Rect<T>::setPos(Vec2<T> pos)
 {
 	right = pos.x + getWidth();
@@ -82,6 +70,20 @@ Vec2<T>		Rect<T>::getPos(void) const
 }
 
 template<typename T>
+void		Rect<T>::setX(T x)
+{
+	right = x + getWidth();
+	left = x;
+}
+
+template<typename T>
+void		Rect<T>::setY(T y)
+{
+	bottom = y + getHeight();
+	top = y;
+}
+
+template<typename T>
 void		Rect<T>::setSize(Vec2<T> size)
 {
 	right = left + size.x;
@@ -92,6 +94,30 @@ template<typename T>
 Vec2<T>		Rect<T>::getSize(void) const
 {
 	return (Vec2<T>(getWidth(), getHeight()));
+}
+
+template<typename T>
+T			Rect<T>::getWidth(void) const
+{
+	return (right - left);
+}
+
+template<typename T>
+void		Rect<T>::setWidth(T w)
+{
+	right = left + w;
+}
+
+template<typename T>
+T			Rect<T>::getHeight(void) const
+{
+	return (bottom - top);
+}
+
+template<typename T>
+void		Rect<T>::setHeight(T h)
+{
+	bottom = top + h;
 }
 
 template<typename T>
@@ -166,6 +192,12 @@ void		Rect<T>::merge(Vec2<T> pt)
 		top = pt.y;
 	else if (pt.y > bottom)
 		bottom = pt.y;
+}
+
+template<typename T>
+Rect<T>		Rect<T>::with(T x, T y, T w, T h) const
+{
+	return (ft::Rect<T>(x, y, x + w, y + h));
 }
 
 template<typename T>

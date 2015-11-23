@@ -79,6 +79,13 @@
 		  width="230" height="25"
 		  backgroundColor="0xFFBB0000" alpha="0.75"
 		  />
+	  <SliderView
+	  	id="lol_slider"
+	  	width="150"
+	  	height="50"
+	  	backgroundColor="0xFF0000FF"
+	  	borderColor="0xFFFFFFFF"
+	  />
 	  <VerticalLayout
 		  activity_scripts="res/start_activity/bookmark_holder.lua"
 		  id="bookmark-holder"

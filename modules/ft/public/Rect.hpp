@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/02 18:43:04 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 18:32:57 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/23 16:10:12 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -41,17 +41,22 @@ public:
 /*
 ** Bounds
 */
-	T			getWidth(void) const;
-	T			getHeight(void) const;
 
 	/*
 	** Move the rect and keep it's size
 	*/
 	void		setPos(Vec2<T> pos);
 	Vec2<T>		getPos(void) const;
+	void		setX(T x);
+	void		setY(T y);
 
 	void		setSize(Vec2<T> size);
 	Vec2<T>		getSize(void) const;
+
+	T			getWidth(void) const;
+	void		setWidth(T w);
+	T			getHeight(void) const;
+	void		setHeight(T h);
 
 	/*
 	** Expand the rect in all directions
@@ -95,6 +100,13 @@ public:
 	** Enlarge the rect to contains 'pt'
 	*/
 	void		merge(Vec2<T> pt);
+
+/*
+** With
+** -
+** Return a new rectangle changing a property
+*/
+	Rect<T>		with(T x, T y, T w, T h) const;
 
 /*
 ** Operators
