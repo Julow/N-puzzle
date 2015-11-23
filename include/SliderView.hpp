@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 13:27:39 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 19:26:22 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/23 19:37:10 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -88,6 +88,9 @@ public:
 
 	virtual void		onAttach(void);
 	virtual void		onDetach(void);
+
+	virtual void		setParam(std::string const &k,
+							std::string const &v);
 
 	/*
 	** TODO: protected

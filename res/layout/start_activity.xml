@@ -85,6 +85,10 @@
 	  	height="50"
 	  	backgroundColor="0xFF0000FF"
 	  	borderColor="0xFFFFFFFF"
+	  	minValue="-5"
+	  	maxValue="5"
+	  	steps="5"
+	  	value="3.5"
 	  />
 	  <VerticalLayout
 		  activity_scripts="res/start_activity/bookmark_holder.lua"

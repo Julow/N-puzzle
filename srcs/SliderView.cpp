@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 13:27:49 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 19:28:57 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/23 19:39:41 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -166,6 +166,39 @@ bool				SliderView::onMouseScroll(int x, int y, float delta)
 		return (true);
 	setValue(_value + delta);
 	return (true);
+}
+
+void				SliderView::setParam(std::string const &k, std::string const &v)
+{
+	static std::unordered_map<std::string, void (*)(SliderView*,
+		std::string const &)> const		param_map
+	{
+		{"value", [](SliderView *view, std::string const &p)
+		{
+			view->setValue(std::atof(p.c_str()));
+		}},
+		{"steps", [](SliderView *view, std::string const &p)
+		{
+			view->setSteps(std::atoi(p.c_str()));
+		}},
+		{"minValue", [](SliderView *view, std::string const &p)
+		{
+			view->setBounds(ft::make_vec(
+				static_cast<float>(std::atof(p.c_str())),
+				view->getBounds().y));
+		}},
+		{"maxValue", [](SliderView *view, std::string const &p)
+		{
+			view->setBounds(ft::make_vec(view->getBounds().x,
+				static_cast<float>(std::atof(p.c_str()))));
+		}}
+	};
+	auto const		&it = param_map.find(k);
+
+	if (it != param_map.end())
+		it->second(this, v);
+	else
+		ASolidView::setParam(k, v);
 }
 
 void				SliderView::setValueWidth(int x)
