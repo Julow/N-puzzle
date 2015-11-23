@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:23:28 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/19 16:10:30 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 09:55:00 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,7 +15,7 @@
 
 # include <tuple>
 
-# include <liblua/lua.hpp>
+# include "liblua/lua.hpp"
 
 namespace ftlua
 {

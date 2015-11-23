@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/22 13:25:35 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 09:42:46 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -25,6 +25,7 @@
 # include "ftlua/types.hpp"
 # include "ftlua/utils.hpp"
 
+
 namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
@@ -39,34 +40,36 @@ namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 // Some prototypes ========================================================== //
 
-// TODO: Split hpp/cpp (ps: No default parameters in prototype)
+// TODO: Split hpp/cpp (ps: NO DEFAULT PARAMETERS IN PROTOTYPE)
 
 
 template <bool FIRSTISTOP, bool USELUAERR
 		  , typename... ARGS>
 int			push(lua_State *l, KeysWrapper<ARGS...> const &wrap);
 
-
 // Push (T to Converter<T>) || (const-T to Converter<const-T>)
 template <bool USELUAERR, typename T
+		  , OK_IFNODEF((sizeof(T) > 0u))
 		  , OK_IFNODEF(ISCONV(T, Converter<T>)) >
 int			push(lua_State *l, T &v);
 
 // Push (const-T to Converter<T>)
 // Overload allowing const cast in User's cast-operator
 template <bool USELUAERR, typename T
-		  , OK_IFNODEF(ISCONST(T))
-		  , typename NOCONST
-		  , OK_IFNODEF(ISCONV(T, Converter<NOCONST>)) >
+		  , OK_IFNODEF((sizeof(T) > 0u))
+	, OK_IFNODEF(ISCONST(T))
+	, typename NOCONST
+	, OK_IFNODEF(ISCONV(T, Converter<NOCONST>)) >
 int			push(lua_State *l, T &v);
 
 // Push (T* to push<T>) || (T-const * to push<T-const>)
 template <bool USELUAERR, typename T
 		  , OK_IFNODEF(ISPTR(T))
 		  , typename NOPTR
-		  , typename NOPTRCONST
-		  , OK_IFNODEF(ISCONV(NOPTRCONST, Converter<NOPTRCONST>))
-		  >
+		  , OK_IFNODEF((sizeof(NOPTR) > 0u))
+	, typename NOPTRCONST
+	, OK_IFNODEF(ISCONV(NOPTRCONST, Converter<NOPTRCONST>))
+	>
 int			push(lua_State *l, T v);
 
 
@@ -234,10 +237,10 @@ int	push(lua_State *l, ft::Rect<T> const &v) {
 
 template <bool USELUAERR = false, typename T
 		  , OK_IF((sizeof(T) > 0u))
-	, OK_IF(ISCONV(T, Converter<T>)) >
+		  , OK_IF(ISCONV(T, Converter<T>)) >
 int			push(lua_State *l, T &v)
 {
-	return Converter<T>{v}.callPush(l);
+	return static_cast<Converter<T>>(v).callPush(l);
 }
 
 template <bool USELUAERR = false, typename T
@@ -247,7 +250,7 @@ template <bool USELUAERR = false, typename T
 	, OK_IF(ISCONV(T, Converter<NOCONST>)) >
 int			push(lua_State *l, T &v)
 {
-	return Converter<NOCONST>{v}.callPush(l);
+	return static_cast<Converter<T>>(v).callPush(l);
 }
 
 template <bool USELUAERR = false, typename T
@@ -277,7 +280,7 @@ namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 
 template <size_t I, bool USELUAERR
-		  , typename... ARGS, class T = KeysWrapper<ARGS...>
+		  , typename... ARGS
 		  >
 void		_dereference(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 {
@@ -299,7 +302,7 @@ void		_dereference(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 }
 
 template <size_t I, bool USELUAERR
-		  , typename... ARGS, class T = KeysWrapper<ARGS...>
+		  , typename... ARGS
 		  , OK_IF((sizeof...(ARGS) - I == 1))
 		  >
 void		_loopKey(lua_State *l, KeysWrapper<ARGS...> const &wrap)
@@ -309,7 +312,7 @@ void		_loopKey(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 }
 
 template <size_t I, bool USELUAERR
-		  , typename... ARGS, class T = KeysWrapper<ARGS...>
+		  , typename... ARGS
 		  , OK_IF((sizeof...(ARGS) - I != 1))
 		  >
 void		_loopKey(lua_State *l, KeysWrapper<ARGS...> const &wrap)
@@ -325,7 +328,7 @@ void		_loopKey(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 
 
 template <bool FIRSTISTOP = false, bool USELUAERR = false
-		  , typename ...ARGS, class T = KeysWrapper<ARGS...> >
+		  , typename ...ARGS>
 int			push(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 {
 	if (!FIRSTISTOP)
@@ -378,6 +381,7 @@ int			multiPush(lua_State *l, ARGS const & ...args)
 # undef ISPTR
 # undef ISCONST
 # undef OK_IF
+# undef OK_IFNODEF
 # undef ISSAME
 
 #endif

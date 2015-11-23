@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 18:06:00 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/23 09:43:07 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -81,18 +81,10 @@ public:
 	AView(Activity &act, std::string const *id, std::string const &viewName);
 	virtual ~AView(void);
 
-	operator ftlua::Converter<AView>()
+	operator ftlua::Converter<AView>() //TODO, move to cpp
 		{
 			return ftlua::Converter<AView>(
 				*this, [](lua_State *l, AView &v)
-				{
-					return ftlua::pushLightKey(l, &v);
-				});
-		}
-	operator ftlua::Converter<AView>() const
-		{
-			return ftlua::Converter<AView>(
-				*const_cast<AView*>(this), [](lua_State *l, AView &v)
 				{
 					return ftlua::pushLightKey(l, &v);
 				});
