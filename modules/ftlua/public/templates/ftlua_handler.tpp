@@ -6,11 +6,12 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 17:40:55 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 18:12:51 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include <type_traits>
+#include <typeinfo>
 
 #include "ft/Vec.hpp"
 #include "ft/utils.hpp"

@@ -6,11 +6,12 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/24 10:07:06 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 11:36:17 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 18:48:00 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "gl_canvas/GlCanvas.hpp"
+#include <cstring>
 
 namespace gl
 {
@@ -37,7 +38,7 @@ void			GlCanvas::setBitmap(ft::Color::t *bitmap)
 
 void			GlCanvas::clear(void)
 {
-	memset(_bitmap, 0, _width * _height * sizeof(ft::Color::t));
+	std::memset(_bitmap, 0, _width * _height * sizeof(ft::Color::t));
 }
 
 void			GlCanvas::clear(ft::Rect<int> const &rect)
@@ -50,7 +51,7 @@ void			GlCanvas::clear(ft::Rect<int> const &rect)
 	end = rect.getHeight() * _width + offset;
 	while (offset < end)
 	{
-		memset(_bitmap + offset, 0, width);
+		std::memset(_bitmap + offset, 0, width);
 		offset += _width;
 	}
 }

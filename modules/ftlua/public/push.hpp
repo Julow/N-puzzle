@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 17:45:51 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 18:44:26 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,6 +15,7 @@
 
 # include <cstdint>
 # include <string>
+# include <tuple>
 
 # include "liblua/lua.hpp"
 # include "ft/Vec.hpp"

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:16:24 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/22 15:29:47 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 18:46:39 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -148,15 +148,15 @@ int				testpush(lua_State *l, T const &v)
 // }
 
 
-inline void	test(void)
-{
-	lua_State *l = nullptr;
+// inline void	test(void)
+// {
+// 	lua_State *l = nullptr;
 
-	testpush(l, int8_t{});
-	testpush(l, int{});
-	testpush(l, (unsigned long long int){});
+// 	testpush(l, int8_t{});
+// 	testpush(l, int{});
+// 	testpush(l, (unsigned long long int){});
 
-}
+// }
 
 
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //
