@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 17:41:39 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 10:56:32 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -109,14 +109,16 @@ void				AView::defineView(
 {
 	if (!AView::viewsInfo.insert(std::make_pair(name,
 			AView::view_info_s{parent, factory, luaMethods, tableInit})).second)
-		throw std::domain_error(ft::f("View % already defined", name));
+		throw std::domain_error(ft::f("AView::defineView: "
+									  "View % already defined", name));
 	return ;
 }
 
 void			AView::registerLuaCallback(std::string const &name, uint32_t id)
 {
 	if (!callback_map.insert(std::make_pair(name, id)).second)
-		throw std::domain_error(ft::f("lua callback registered twice (%)",
+		throw std::domain_error(ft::f("AView::registerLuaCallback: "
+									  "Lua callback registered twice (%)",
 			name));
 }
 
@@ -126,7 +128,8 @@ static void     init_template_table(
 		, std::string const &tableinit_luacode)
 {
 	if (luaL_dostring(l, tableinit_luacode.c_str()) != LUA_OK)
-		throw std::runtime_error(ft::f("Cannot init table '%'", view_name));
+		throw std::runtime_error(ft::f("Activity::inflate: "
+									   "Cannot init lua table '%'", view_name));
 	if (lua_getglobal(l, view_name.c_str()) != LUA_TTABLE)
 		ftlua::set(l, view_name, ftlua::newtab);
 	lua_pop(l, 1);

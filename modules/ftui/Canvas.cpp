@@ -6,28 +6,27 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/22 11:40:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:25:27 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#include "ftui/Canvas.hpp"
-#include "ft/utils.hpp"
-
 extern "C"
 {
-
 #include <ft2build.h>
 #include FT_FREETYPE_H
-
 }
 
 #include <iostream> //d
 #include <vector>
 #include <unordered_map>
 #include <algorithm>
-
 #include <cmath>
 #include <cfenv>
+
+#include "ft/utils.hpp"
+#include "ftlua/stackassert.hpp"
+
+#include "ftui/Canvas.hpp"
 
 namespace ftui
 {
@@ -106,10 +105,10 @@ int				Canvas::drawRectG(lua_State *l)
 		p.lineWidth = luaL_checkinteger(l, 7);
 	else
 		p.lineWidth = 0x0;
-	if (top > 7)
-		luaL_error(l, "Too many parameters to drawRect");
+	FTLUA_STACKASSERT(l, top <= 7, true
+					  , "Canvas::drawRectG"
+					  , "Too many arguments");
 	self->drawRect(r, p);
-	// ftlua::stackdump(l);
 	return (0);
 }
 
@@ -127,8 +126,9 @@ int				Canvas::drawTextG(lua_State *l)
 	params.fillColor = luaL_checkinteger(l, 4);
 	params.lineWidth = luaL_checkinteger(l, 5);
 	params.font = self->_luaFont;
-	if (top > 5)
-		luaL_error(l, "Too many parameters to drawRect");
+	FTLUA_STACKASSERT(l, top <= 5, true
+					  , "Canvas::drawTextG"
+					  , "Too many arguments");
 	self->drawText(pos, text, params);
 	return (0);
 }
@@ -168,8 +168,8 @@ void			Canvas::pushTemplate(lua_State *l)
 void			Canvas::pushLua(lua_State *l)
 {
 	ftlua::multiPush(l, ftlua::newtab, ftlua::make_keys("Canvas"));
-	if (!lua_istable(l, -1))
-		throw std::runtime_error("Canvas template should be present in _G");
+	FTLUA_STACKASSERT(l, lua_istable(l, -1), false
+					  , "Canvas::pushLua", "Could not retreive _G['Canvas']");
 	lua_setmetatable(l, -2);
 	ftlua::set(l, -1, 0, ftlua::light(this));
 	ftlua::set(l, ftlua::light(this), ftlua::dup(-3));
@@ -409,7 +409,8 @@ void			Canvas::drawText(ft::Vec2<float> pos, std::string const &text,
 	applyChangedRect(int_vec);
 	face = g_faces[opt.font];
 	if (FT_Set_Pixel_Sizes(face, 0, opt.lineWidth))
-		throw std::runtime_error("Cannot resize font (drawText)");
+		throw std::runtime_error("Canvas::drawText: "
+								 "Cannot resize font (drawText)");
 	if (int_vec.y >= _clip.bottom)
 		return ;
 	int_vec.y += opt.lineWidth;
@@ -453,7 +454,8 @@ ft::Vec2<int>	Canvas::measureText(std::string const &text, Params const &opt)
 		return (size);
 	face = g_faces[opt.font];
 	if (FT_Set_Pixel_Sizes(face, 0, opt.lineWidth))
-		throw std::runtime_error("Cannot resize font (measureText)");
+		throw std::runtime_error("Canvas::measureText: "
+								 "Cannot resize font (measureText)");
 	for (uint32_t i = 0; i < text.size(); i++)
 	{
 		glyph_index = FT_Get_Char_Index(face, text[i]);
@@ -478,7 +480,8 @@ Canvas::font_t	Canvas::getFont(std::string const &file)
 	if (!g_freetype_init)
 	{
 		if (FT_Init_FreeType(&g_freetype))
-			throw std::runtime_error("Cannot load FreeType library");
+			throw std::runtime_error("Canvas::getFont: "
+									 "Cannot load FreeType library");
 		g_freetype_init = true;
 	}
 	if (it != g_faces_cache.end())
@@ -491,7 +494,8 @@ Canvas::font_t	Canvas::loadFont(std::string const &file)
 	FT_Face				face;
 
 	if (FT_New_Face(g_freetype, file.c_str(), 0, &face))
-		throw std::runtime_error(ft::f("Cannot load %", file));
+		throw std::runtime_error(ft::f("Canvas::loadFont: "
+									   "Cannot load %", file));
 	g_faces.push_back(face);
 	return (g_faces.size() - 1);
 }

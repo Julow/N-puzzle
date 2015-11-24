@@ -6,9 +6,11 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/11 17:10:07 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 08:47:37 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:21:45 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
+
+#include "ftlua/stackassert.hpp"
 
 #include "ftui/ALayout.hpp"
 
@@ -34,8 +36,9 @@ int			ALayout::addViewG(lua_State *l)
 	ALayout			*self = ftlua::retrieveSelf<ALayout>(l, 1);
 	AView			*v = ftlua::retrieveSelf<AView>(l, 1);
 
-	if (lua_gettop(l) != 0)
-		luaL_error(l, "Too many arguments");
+	FTLUA_STACKASSERT(l, lua_gettop(l) == 0, true
+					  , "ALayout::addViewG"
+					  , "Too many arguments");
 	self->addView(v);
 	return 0;
 }

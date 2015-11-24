@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 18:33:03 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:30:59 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -52,7 +52,8 @@ static lua_State	*new_lua_env()
 	int					err{0};
 
 	if (l == nullptr)
-		throw std::runtime_error("Error while creating lua state");
+		throw std::runtime_error("Activity::inflate: "
+								 "Error while creating lua state");
 	luaL_openlibs(l);
 	err = luaL_dofile(l, (RES_PATH "/utils.lua"));
 	FTASSERT(err == LUA_OK);
@@ -70,7 +71,7 @@ static void			load_views_scripts(
 	{
 		if (luaL_dofile(l, fname.c_str()))
 			throw std::runtime_error(
-				ft::f("error loading '%': '%'"
+				ft::f("Activity::inflate: Error loading '%': '%'"
 					  , fname, luaL_checkstring(l, -1)));
 	}
 	scripts_paths.clear();
@@ -88,7 +89,8 @@ void			Activity::inflate(std::istream &stream)
 	_l = new_lua_env();
 	ftlua::set(_l, ftlua::make_keys("ftui"), "activity", ftlua::light(this));
 	if (!xml.next(state))
-		throw std::runtime_error("Activity should own at least 1 view");
+		throw std::runtime_error("Activity::inflate: "
+								 "Activity should own at least 1 view");
 	FTASSERT(state == ft::XmlParser::State::START, "Cannot fail");
 	v = AView::getFactory(xml.getMarkupName())(*this, &xml, nullptr);
 	this->_rootView = new Activity::RootViewHolder(*this, xml, v, this->_size);
@@ -96,7 +98,8 @@ void			Activity::inflate(std::istream &stream)
 	v->setAttached(true);
 	v->inflate(*this, xml);
 	if (xml.next(state))
-		throw std::runtime_error("Activity should not own more than 1 view");
+		throw std::runtime_error("Activity::inflate: "
+								 "Activity should not own more than 1 view");
 	load_views_scripts(_l, _scriptsPaths);
 	FTASSERT(lua_gettop(_l) == 0, "Something went wrong...");
 	return ;
@@ -280,14 +283,16 @@ int				Activity::createViewG(lua_State *l)
 	std::string	const *const		id = top == 2
 		? (std::string[]){std::string(luaL_checkstring(l, 2))} : nullptr;
 
-	if (top > 2)
-		luaL_error(l, "Too many arguments");
+	FTLUA_STACKASSERT(l, top <= 2, true, "Activity::createViewG"
+					  , "Too many arguments");
 	try {
 		fact = AView::getFactory(type); }
 	catch (...) {
-		luaL_error(l, ft::f("Cannot find '%'", type).c_str()); }
+		luaL_error(l, ft::f("Activity::createViewG: "
+							"Cannot find type '%'", type).c_str()); }
 	if (fact == nullptr)
-		luaL_error(l, ft::f("Cannot instanciate '%'", type).c_str());
+		luaL_error(l, ft::f("Activity::createViewG: "
+							"Cannot instanciate type '%'", type).c_str());
 	lua_pop(l, top);
 	v = fact(*Activity::retrieveActivity(l), nullptr, id);
 	ftlua::push(l, v);
@@ -300,8 +305,9 @@ Activity		*Activity::retrieveActivity(lua_State *l)
 	Activity	*act;
 
 	ftlua::push(l, ftlua::make_keys("ftui", "activity"));
-	if (!lua_islightuserdata(l, -1))
-		luaL_error(l, "Could not retrieve activity pointer");
+	FTLUA_STACKASSERT(l, lua_islightuserdata(l, -1), true
+					  , "Activity::retrieveActivity"
+					  , "Could not retrieve _G['ftui']['activity']");
 	act = reinterpret_cast<Activity*>(lua_touserdata(l, -1));
 	lua_pop(l, 1);
 	return act;

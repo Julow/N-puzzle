@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 13:42:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 17:40:10 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:12:15 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -237,15 +237,22 @@ std::string				valToString(T const &v)
 //
 namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-inline char const		*_variadictostring(void)
+
+inline std::string		_variadictostring(void)
 {
 	return "";
+}
+
+template <class Head>
+std::string				_variadictostring(Head const &v)
+{
+	return valToString(v);
 }
 
 template <class Head, class ...Tail>
 std::string				_variadictostring(Head const &v, Tail const &...tail)
 {
-	return valToString(v) + _variadictostring(tail...);
+	return valToString(v) + ", " + _variadictostring(tail...);
 }
 
 # define OK_IF(PRED) typename std::enable_if<PRED>::type* = nullptr

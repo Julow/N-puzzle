@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 10:11:27 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/11 12:56:41 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:14:28 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -110,8 +110,9 @@ void			VerticalLayout::ViewHolder::setParam(std::string const &k,
 			else if (v == "RIGHT")
 				holder->setHorizontalAlign(VerticalLayout::Align::RIGHT);
 			else
-				throw std::domain_error(ft::f("Invalid param: "
-					"verticalAlign=\"%\"", v));
+				throw std::domain_error(
+					ft::f("VerticalLayout::ViewHolder::setParam: "
+						  "Invalid param at horizontalAlign=\"%\"", v));
 		}},
 		{"width", [](VerticalLayout::ViewHolder *holder,
 			std::string const &v)

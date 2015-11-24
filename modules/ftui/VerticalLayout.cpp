@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/17 18:27:50 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:13:57 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -227,8 +227,9 @@ void			VerticalLayout::addView(AView *view)
 	ViewHolder		*holder;
 
 	if (view->getViewHolder() != NULL)
-		throw std::invalid_argument(ft::f("View (#%) already has a parent",
-			view->getViewHolder()->getParent()));
+		throw std::invalid_argument(
+			ft::f("VerticalLayout::addView: View (#%) already has a parent",
+				  view->getViewHolder()->getParent()));
 	holder = new ViewHolder(this, view);
 	view->setViewHolder(holder);
 	_childs.push_back(holder);
@@ -246,7 +247,7 @@ AView			*VerticalLayout::popView(AView *view)
 	if (holder == nullptr
 		|| (it = std::find(_childs.begin(), _childs.end(), holder))
 			== _childs.end())
-		throw std::domain_error(ft::f("Invalid pop view"));
+		throw std::domain_error(ft::f("HorizontalLayout::popView: Invalid"));
 	this->_childs.erase(it);
 	delete holder;
 	view->setViewHolder(nullptr);
