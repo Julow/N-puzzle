@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/30 09:01:50 by ngoguey           #+#    #+#             */
-//   Updated: 2015/11/24 18:04:45 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 19:25:10 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ bool		Activity::fireEvent(std::string const &event, Args... args)
 	auto			it = this->_eventMap.find(event);
 	auto const		ite = this->_eventMap.cend();
 	int				err;
+	bool			ret(false);
 
 	for (; it != ite; it++)
 	{
@@ -65,19 +66,19 @@ bool		Activity::fireEvent(std::string const &event, Args... args)
 			err = ftlua::pcall(_l, 0, 0, ftlua::dup(-2), args...);
 			if (err != LUA_OK)
 				throw std::runtime_error(
-					ft::f("% error ffs", ftlua::stacktostring(_l))
-					);
+					ft::f("% error ffs", ftlua::stacktostring(_l)));
 			lua_pop(_l, 1);
 		}
 		else
 		{
-			it->second->cppCall(
-				(ft::ITupleRef[]){ft::make_tupleref(args...)}
+			ret |= it->second->cppCall(
+// (ft::ITupleRef[]){ft::make_tupleref(args...)}
+// This line fucks the pointer, TODO: talk about it
+				(ft::TupleRef<Args...>[]){ft::make_tupleref(args...)}
 				);
 		}
 	}
-	// FTPADE();
-	return (true); //test
+	return ret; //test
 }
 
 };

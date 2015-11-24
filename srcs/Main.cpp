@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 17:47:22 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 19:20:46 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -184,8 +184,30 @@ void			Main::onKeyUp(int key, int scancode, int mods)
 
 void			Main::onKeyDown(int key, int scancode, int mods)
 {
-	_state->getActivity().fireEvent("Bordel", 42, "salut");
+	ftui::Activity &act = _state->getActivity();
+	lua_State		*l = _state->getActivity().getLuaState();
 
+
+	std::cout << key << std::endl;
+	if (key == 75)
+	{
+		std::cout << "fire event" << std::endl;
+		_state->getActivity().fireEvent(
+			// "Bordel", 42);
+		"Bordel", 42, std::string("bordel"));
+			// "Bordel", 42, ft::Vec3<double>(1., -42., 8.));
+	}
+	if (key == 32)
+	{
+		std::cout << "set cpp callback" << std::endl;
+
+		ftlua::push(l, ftlua::make_keys("Bookmark2"));
+		Bookmark	*k = ftlua::retrieveSelf<Bookmark>(l, -1);
+
+		act.registerEvent("Bordel", k, &Bookmark::onBordel);
+
+
+	}
 	_state->getActivity().onKeyDown(key, mods);
 	(void)scancode;
 }

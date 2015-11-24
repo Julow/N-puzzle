@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/24 13:20:39 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 15:40:49 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 19:21:39 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -41,8 +41,7 @@ public:
 		{ return false; }
 	bool				cppCall(ft::ITupleRef *tup)
 		{
-			FtTuple		*tup2 = reinterpret_cast<FtTuple*>(tup);
-			// FtTuple		*tup2 = dynamic_cast<FtTuple*>(tup);
+			FtTuple		*tup2 = dynamic_cast<FtTuple*>(tup);
 
 			if (tup2 == nullptr)
 				throw std::runtime_error(

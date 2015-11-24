@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:14:49 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 11:21:13 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 19:25:42 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -54,6 +54,15 @@ public:
 
 	bool					onMouseDown(int x, int y, int button, int mods);
 	bool					onMouseUp(int x, int y, int button, int mods);
+
+	inline bool				onBordel(int i, std::string const &str)
+		{
+			std::cout << "onBordel !! -> (";
+			ft::variadicToString(i, str);
+			std::cout << ")" << std::endl;
+			return true;
+		}
+
 
 	/* HOLDER *********************** */
 	class ViewHolder;
