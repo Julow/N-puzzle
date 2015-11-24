@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 12:58:38 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 08:56:44 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:37:39 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,7 +18,7 @@
 # include "gl/gl.hpp"
 
 # include "ftlua_extend.hpp"
-# include "GlCanvasHolder.hpp"
+# include "gl_canvas/GlCanvasHolder.hpp"
 # include "OCamlBinding.hpp"
 # include "IState.hpp"
 # include "IBundle.hpp"
@@ -77,7 +77,7 @@ public:
 
 private:
 	GLFWwindow									*_window;
-	GlCanvasHolder								_canvasHolder;
+	gl::GlCanvasHolder							_canvasHolder;
 	std::unique_ptr<IState>						_state;
 	OCamlBinding								_ocaml;
 	std::unordered_map<std::string, IBundle*>	_bundles;

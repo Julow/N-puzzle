@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/24 10:06:54 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 11:25:16 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 11:34:38 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,6 +15,9 @@
 
 # include "ftui/ACanvas.hpp"
 # include "ft/Color.hpp"
+
+namespace gl
+{
 
 class	GlCanvas : public ftui::ACanvas
 {
@@ -68,6 +71,8 @@ private:
 	GlCanvas(void) = delete;
 	GlCanvas(GlCanvas const &src) = delete;
 	GlCanvas			&operator=(GlCanvas const &rhs) = delete;
+};
+
 };
 
 #endif

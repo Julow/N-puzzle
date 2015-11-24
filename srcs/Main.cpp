@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 14:00:04 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 12:27:46 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,7 +18,6 @@
 #include "Main.hpp"
 #include "config_window.hpp"
 #include "PickState.hpp"
-#include "SliderView.hpp"
 #include "ftui/AView.hpp"
 #include "libftui_extend/Bookmark.hpp"
 
@@ -287,18 +286,6 @@ int				Main::getCost(void) const
 
 int				main(void)
 {
-	ftui::AView::defineView("SliderView", "ASolidView", &SliderView::createView, {
-		{"getValue", SliderView::getValueG},
-		{"setValue", SliderView::setValueG},
-		{"getStepValue", SliderView::getStepValueG},
-		{"setStepValue", SliderView::setStepValueG},
-		{"getBounds", SliderView::getBoundsG},
-		{"setBounds", SliderView::setBoundsG},
-		{"getSteps", SliderView::getStepsG},
-		{"setSteps", SliderView::setStepsG},
-	});
-	ftui::AView::registerLuaCallback("onValueChange",
-		static_cast<uint32_t>(SliderView::LuaCallback::VALUE_CHANGE));
 	try
 	{
 		Main *const	main = Main::instance();

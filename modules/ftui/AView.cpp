@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 14:05:22 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 12:20:02 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -31,6 +31,15 @@ namespace ftui
 ** ========================================================================== **
 ** CONSTRUCTION
 */
+
+AView::operator ftlua::Converter<AView>()
+{
+	return ftlua::Converter<AView>(
+		*this, [](lua_State *l, AView &v)
+		{
+			return ftlua::pushLightKey(l, &v);
+		});
+}
 
 static std::string const	*retrieve_id(ft::XmlParser const &xml)
 {

@@ -6,16 +6,19 @@
 //   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/07 21:38:50 by juloo             #+#    #+#             //
-//   Updated: 2015/11/24 11:25:51 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 11:36:00 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#include "GlCanvasHolder.hpp"
+#include "gl_canvas/GlCanvasHolder.hpp"
 #include "gl/gl.hpp"
 #include "ft/Color.hpp"
 #include "ft/utils.hpp"
 
 #include <stdexcept>
+
+namespace gl
+{
 
 GlCanvasHolder::GlCanvasHolder(int width, int height) :
 	_canvas(NULL, width, height),
@@ -178,3 +181,5 @@ void			GlCanvasHolder::init_shaders(void)
 		throw std::domain_error("Error while linking shaders");
 	}
 }
+
+};

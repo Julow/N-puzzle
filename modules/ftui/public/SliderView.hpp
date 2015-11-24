@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 13:27:39 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 11:18:57 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 13:27:08 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -17,14 +17,28 @@
 # include "ftui/ASolidView.hpp"
 # include "ftui/AView.hpp"
 
+namespace ftui
+{
+
 /*
 ** ========================================================================== **
 ** SliderView
-** ---
+** -
 ** Represent a slider that the user can scroll to change it's value
 ** -
-** TODO: better design
-** TODO: setParams
+** Params:
+** 	value				(float)	Initial value
+** 	steps				(int)	Number of step
+** 	maxValue			(float)	Max value
+** 	minValue			(float)	Min value
+** 	barColor			(color)
+** 	barBorderColor		(color)
+** 	barBorderWidth		(int)
+** 	disabled			(bool)	Set if the user can change the value
+** -
+** Callback:
+** 	onValueChange		float value
+** 				Called when the value change (by user interation or setValue())
 */
 class	SliderView : ftui::ASolidView
 {
@@ -109,7 +123,7 @@ public:
 							std::string const &v);
 
 	/*
-	** TODO: protected
+	** Lua C functions
 	*/
 	static int			getValueG(lua_State *l);
 	static int			setValueG(lua_State *l);
@@ -145,6 +159,8 @@ private:
 	SliderView(void);
 	SliderView(SliderView const &src);
 	SliderView			&operator=(SliderView const &rhs);
+};
+
 };
 
 #endif

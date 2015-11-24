@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/12 08:49:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 11:15:03 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 13:26:21 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,13 +19,20 @@ namespace ftui
 {
 
 /*
+** ========================================================================== **
+** TextView
+** -
+** Params:
+** 	text			(str)	Text to be render
+** 	textFont		(str)	Font
+** 	textColor		(color)
+** 	textSize		(int)
+** -
 ** TODO: \n
 */
 class	TextView : public ASolidView
 {
 public:
-
-	// CONSTRUCTION ***************** //
 	static AView		*createView(
 		ftui::Activity &act, ft::XmlParser const *xml, std::string const *id);
 

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 10:56:32 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 12:26:22 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,6 +18,7 @@
 #include "ftui/VerticalLayout.hpp"
 #include "ftui/HorizontalLayout.hpp"
 #include "ftui/SolidView.hpp"
+#include "ftui/SliderView.hpp"
 #include "ftui/ASolidView.hpp"
 #include "ftui/TextView.hpp"
 #include "ftui/Button.hpp"
@@ -53,6 +54,12 @@ AView::views_info_t				AView::viewsInfo
 		INSG(TextView, getFont), INSG(TextView, setFont),
 		INSG(TextView, getTextColor), INSG(TextView, setTextColor),
 		INSG(TextView, getTextSize), INSG(TextView, setTextSize),
+	}, {}}},
+	{"SliderView", {"ASolidView", &SliderView::createView, {
+		INSG(SliderView, getValue), INSG(SliderView, setValue),
+		INSG(SliderView, getStepValue), INSG(SliderView, setStepValue),
+		INSG(SliderView, getBounds), INSG(SliderView, setBounds),
+		INSG(SliderView, getSteps), INSG(SliderView, setSteps),
 	}, {}}},
 	{"Button", {"ASolidView", &Button::createView, {
 	}, {}}},
@@ -90,6 +97,8 @@ AView::callback_map_t	AView::callback_map
 
 	{"onClick", static_cast<uint32_t>(Button::LuaCallback::CLICK)},
 	{"onDoubleClick", static_cast<uint32_t>(Button::LuaCallback::DOUBLE_CLICK)},
+
+	{"onValueChange", static_cast<uint32_t>(SliderView::LuaCallback::VALUE_CHANGE)},
 };
 
 AView::view_info_s::factory_t	AView::getFactory(std::string const &name)
