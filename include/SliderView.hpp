@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 13:27:39 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 19:37:10 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 09:16:23 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -52,6 +52,7 @@ public:
 	** Return 0 if _steps <= 0
 	*/
 	int					getStepValue(void) const;
+	void				setStepValue(int step);
 
 	/*
 	** Number of possible value in the bounds
@@ -69,6 +70,18 @@ public:
 	void				setBounds(ft::Vec2<float> bounds);
 
 	/*
+	** Canvas params used to draw the slider bar
+	*/
+	ftui::Canvas::Params	&getBarParams(void);
+	ftui::Canvas::Params const	&getBarParams(void) const;
+
+	/*
+	** Set if the user can change the value
+	*/
+	void				setDisabled(bool b);
+	bool				isDisabled(void) const;
+
+	/*
 	** onValueChange (lua: "view:onValueChange(value)")
 	** -
 	** Called everythime the value change
@@ -79,6 +92,9 @@ public:
 	*/
 	virtual void		onValueChange(float val);
 
+	/*
+	** -
+	*/
 	virtual void		onDraw(ftui::Canvas &canvas);
 
 	virtual bool		onMouseDown(int x, int y, int button, int mods);
@@ -98,6 +114,7 @@ public:
 	static int			getValueG(lua_State *l);
 	static int			setValueG(lua_State *l);
 	static int			getStepValueG(lua_State *l);
+	static int			setStepValueG(lua_State *l);
 	static int			getBoundsG(lua_State *l);
 	static int			setBoundsG(lua_State *l);
 	static int			getStepsG(lua_State *l);
@@ -105,11 +122,19 @@ public:
 
 protected:
 
+	enum	Flags
+	{
+		FLAG_DISABLED = (1 << 1),
+		FLAG_IN_CALLBACK = (1 << 2)
+	};
+
 	ft::Vec2<float>		_bounds;
 	float				_value;
 	int					_steps;
 
-	bool				_inCallback;
+	ftui::Canvas::Params	_barParams;
+
+	uint32_t			_flags;
 
 	void				setValueWidth(int x);
 

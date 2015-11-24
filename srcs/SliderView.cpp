@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 13:27:49 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 19:39:41 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 09:17:56 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -27,7 +27,8 @@ SliderView::SliderView(ftui::Activity &act, std::string const *id,
 	_bounds(0.f, 1.f),
 	_value(0.f),
 	_steps(-1),
-	_inCallback(false)
+	_barParams({0x0, 0xDD0EE1EC, 1, 0}),
+	_flags(0)
 {
 }
 
@@ -36,7 +37,8 @@ SliderView::SliderView(ftui::Activity &act, ft::XmlParser const &xml) :
 	_bounds(0.f, 1.f),
 	_value(0.f),
 	_steps(-1),
-	_inCallback(false)
+	_barParams({0x0, 0xDD0EE1EC, 1, 0}),
+	_flags(0)
 {
 }
 
@@ -61,11 +63,11 @@ void				SliderView::setValue(float val)
 	if (val != _value)
 	{
 		_value = val;
-		if (!_inCallback)
+		if (!(_flags & FLAG_IN_CALLBACK))
 		{
-			_inCallback = true;
+			_flags |= FLAG_IN_CALLBACK;
 			onValueChange(val);
-			_inCallback = false;
+			_flags &= ~FLAG_IN_CALLBACK;
 		}
 	}
 }
@@ -87,6 +89,11 @@ int					SliderView::getStepValue(void) const
 		/ ((_bounds.y - _bounds.x) / _steps)));
 }
 
+void				SliderView::setStepValue(int step)
+{
+	setValue(step * (_bounds.y - _bounds.x) / _steps + _bounds.x);
+}
+
 ft::Vec2<float>		SliderView::getBounds(void) const
 {
 	return (_bounds);
@@ -101,6 +108,39 @@ void				SliderView::setBounds(ft::Vec2<float> bounds)
 		_value = bounds.y;
 }
 
+ftui::Canvas::Params	&SliderView::getBarParams(void)
+{
+	return (_barParams);
+}
+
+ftui::Canvas::Params const	&SliderView::getBarParams(void) const
+{
+	return (_barParams);
+}
+
+void				SliderView::setDisabled(bool b)
+{
+	if (b)
+	{
+		hookMouseClick(false);
+		hookMouseScroll(false);
+		hookMouseMove(false);
+		hookMouseCapture(false);
+		_flags |= FLAG_DISABLED;
+	}
+	else
+	{
+		hookMouseClick(true);
+		hookMouseScroll(true);
+		_flags &= ~FLAG_DISABLED;
+	}
+}
+
+bool				SliderView::isDisabled(void) const
+{
+	return (static_cast<bool>(_flags & FLAG_DISABLED));
+}
+
 void				SliderView::onValueChange(float val)
 {
 	queryRedraw();
@@ -110,15 +150,21 @@ void				SliderView::onValueChange(float val)
 
 void				SliderView::onAttach(void)
 {
-	hookMouseClick(true);
-	hookMouseScroll(true);
+	if (!(_flags & FLAG_DISABLED))
+	{
+		hookMouseClick(true);
+		hookMouseScroll(true);
+	}
 	AView::onAttach();
 }
 
 void				SliderView::onDetach(void)
 {
-	hookMouseClick(false);
-	hookMouseScroll(false);
+	if (!(_flags & FLAG_DISABLED))
+	{
+		hookMouseClick(false);
+		hookMouseScroll(false);
+	}
 	AView::onDetach();
 }
 
@@ -127,16 +173,19 @@ void				SliderView::onDraw(ftui::Canvas &canvas)
 	ft::Rect<float>			rect(canvas.getClip());
 
 	ASolidView::onDraw(canvas);
-	rect.setWidth(rect.getWidth() * (_value - _bounds.x) / (_bounds.y - _bounds.x));
+	rect.setWidth(rect.getWidth() * (_value - _bounds.x)
+		/ (_bounds.y - _bounds.x));
 	if (ft::Color::a(_bgParams.strokeColor) > 0 && _bgParams.lineWidth > 0)
 		rect.expand(-_bgParams.lineWidth);
-	canvas.drawRect(rect, ftui::Canvas::Params{0xFFFF0000, 0xFFFFFF00, 1, 0});
+	canvas.drawRect(rect, _barParams);
 }
 
 bool				SliderView::onMouseDown(int x, int y, int button, int mods)
 {
 	if (ftui::ASolidView::onMouseDown(x, y, button, mods))
 		return (true);
+	if (_flags & FLAG_DISABLED)
+		return (false);
 	setValueWidth(x);
 	hookMouseMove(true);
 	hookMouseCapture(true);
@@ -147,6 +196,8 @@ bool				SliderView::onMouseUp(int x, int y, int button, int mods)
 {
 	if (ftui::ASolidView::onMouseUp(x, y, button, mods))
 		return (true);
+	if (_flags & FLAG_DISABLED)
+		return (false);
 	hookMouseMove(false);
 	hookMouseCapture(false);
 	return (true);
@@ -164,6 +215,8 @@ bool				SliderView::onMouseScroll(int x, int y, float delta)
 {
 	if (ftui::ASolidView::onMouseScroll(x, y, delta))
 		return (true);
+	if (_flags & FLAG_DISABLED)
+		return (false);
 	setValue(_value + delta);
 	return (true);
 }
@@ -191,7 +244,23 @@ void				SliderView::setParam(std::string const &k, std::string const &v)
 		{
 			view->setBounds(ft::make_vec(view->getBounds().x,
 				static_cast<float>(std::atof(p.c_str()))));
-		}}
+		}},
+		{"barColor", [](SliderView *view, std::string const &p)
+		{
+			view->getBarParams().fillColor = std::stoul(p, NULL, 16);
+		}},
+		{"barBorderColor", [](SliderView *view, std::string const &p)
+		{
+			view->getBarParams().strokeColor = std::stoul(p, NULL, 16);
+		}},
+		{"barBorderWidth", [](SliderView *view, std::string const &p)
+		{
+			view->getBarParams().lineWidth = std::stoul(p, NULL, 16);
+		}},
+		{"disabled", [](SliderView *view, std::string const &p)
+		{
+			view->setDisabled(p == "true");
+		}},
 	};
 	auto const		&it = param_map.find(k);
 
@@ -230,6 +299,15 @@ int					SliderView::getStepValueG(lua_State *l)
 	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
 
 	return (ftlua::push(l, self->getStepValue()));
+}
+
+int					SliderView::setStepValueG(lua_State *l)
+{
+	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
+
+	self->setStepValue(luaL_checkinteger(l, 1));
+	lua_pop(l, 1);
+	return (0);
 }
 
 int					SliderView::getBoundsG(lua_State *l)

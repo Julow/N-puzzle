@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:55:01 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 19:34:21 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 08:33:40 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -162,6 +162,10 @@ namespace ftui
 ** 		steps				(int)	Number of step
 ** 		maxValue			(float)	Max value
 ** 		minValue			(float)	Min value
+** 		barColor			(color)
+** 		barBorderColor		(color)
+** 		barBorderWidth		(int)
+** 		disabled			(bool)	Set if the user can change the value
 */
 
 /*

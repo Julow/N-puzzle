@@ -79,17 +79,33 @@
 		  width="230" height="25"
 		  backgroundColor="0xFFBB0000" alpha="0.75"
 		  />
-	  <SliderView
-	  	id="lol_slider"
-	  	width="150"
-	  	height="50"
-	  	backgroundColor="0xFF0000FF"
-	  	borderColor="0xFFFFFFFF"
-	  	minValue="-5"
-	  	maxValue="5"
-	  	steps="5"
-	  	value="3.5"
-	  />
+	<HorizontalLayout>
+		<TextView
+			text="<"
+			id="lol_slider_right"
+			textFont="/Library/Fonts/Arial Black.ttf"
+			textColor="0xFFFFFFFF"
+			mouse_click_target="true"
+		/>
+		<SliderView
+			id="lol_slider"
+			width="150"
+			height="30"
+			backgroundColor="0xFF555555"
+			minValue="-5"
+			maxValue="5"
+			steps="5"
+			value="3.5"
+			disabled="true"
+		/>
+		<TextView
+			text=">"
+			id="lol_slider_left"
+			textFont="/Library/Fonts/Arial Black.ttf"
+			textColor="0xFFFFFFFF"
+			mouse_click_target="true"
+		/>
+	</HorizontalLayout>
 	  <VerticalLayout
 		  activity_scripts="res/start_activity/bookmark_holder.lua"
 		  id="bookmark-holder"

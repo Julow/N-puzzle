@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 19:01:27 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 09:17:00 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -291,6 +291,7 @@ int				main(void)
 		{"getValue", SliderView::getValueG},
 		{"setValue", SliderView::setValueG},
 		{"getStepValue", SliderView::getStepValueG},
+		{"setStepValue", SliderView::setStepValueG},
 		{"getBounds", SliderView::getBoundsG},
 		{"setBounds", SliderView::setBoundsG},
 		{"getSteps", SliderView::getStepsG},
