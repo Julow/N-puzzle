@@ -6,7 +6,7 @@
 //   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/07 20:31:56 by juloo             #+#    #+#             //
-//   Updated: 2015/11/24 11:34:44 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 12:17:04 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,7 +21,6 @@ namespace gl
 
 /*
 ** Hold and render a 2d canvas (ftui::Canvas)
-** TODO: merge GlCanvasHolder and GlCanvas
 */
 class	GlCanvasHolder
 {

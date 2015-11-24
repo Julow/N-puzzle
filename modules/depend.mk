@@ -9,10 +9,11 @@ O_FILES += $(O_DIR)/ft/assert.o $(O_DIR)/ft/padformat.o \
 	$(O_DIR)/ftui/AView_luaHandler.o $(O_DIR)/ftui/AView_statics.o \
 	$(O_DIR)/ftui/Activity.o $(O_DIR)/ftui/Activity_RootViewHolder.o \
 	$(O_DIR)/ftui/Button.o $(O_DIR)/ftui/HorizontalLayout.o \
-	$(O_DIR)/ftui/HorizontalLayout_ViewHolder.o $(O_DIR)/ftui/SolidView.o \
-	$(O_DIR)/ftui/TextView.o $(O_DIR)/ftui/VerticalLayout.o \
-	$(O_DIR)/ftui/VerticalLayout_ViewHolder.o $(O_DIR)/gl_canvas/GlCanvas.o \
-	$(O_DIR)/gl_canvas/GlCanvasHolder.o $(O_DIR)/tiles/Tiles.o
+	$(O_DIR)/ftui/HorizontalLayout_ViewHolder.o $(O_DIR)/ftui/SliderView.o \
+	$(O_DIR)/ftui/SolidView.o $(O_DIR)/ftui/TextView.o \
+	$(O_DIR)/ftui/VerticalLayout.o $(O_DIR)/ftui/VerticalLayout_ViewHolder.o \
+	$(O_DIR)/gl_canvas/GlCanvas.o $(O_DIR)/gl_canvas/GlCanvasHolder.o \
+	$(O_DIR)/tiles/Tiles.o
 
 # module tiles
 $(O_DIR)/tiles/_public/gl $(O_DIR)/tiles/_public/ft \
@@ -259,7 +260,7 @@ $(O_DIR)/ftui/AView.o $(O_DIR)/ftui/AView_luaHandler.o \
 $(O_DIR)/ftui/AView_statics.o $(O_DIR)/ftui/Activity.o \
 $(O_DIR)/ftui/Activity_RootViewHolder.o $(O_DIR)/ftui/Button.o \
 $(O_DIR)/ftui/HorizontalLayout.o $(O_DIR)/ftui/HorizontalLayout_ViewHolder.o \
-$(O_DIR)/ftui/SolidView.o $(O_DIR)/ftui/TextView.o \
+$(O_DIR)/ftui/SliderView.o $(O_DIR)/ftui/SolidView.o $(O_DIR)/ftui/TextView.o \
 $(O_DIR)/ftui/VerticalLayout.o $(O_DIR)/ftui/VerticalLayout_ViewHolder.o: \
 	INCLUDE_FLAGS += -I$(O_DIR)/ftui/_public
 $(O_DIR)/ftui/ACanvas.o $(O_DIR)/ftui/ALayout.o \
@@ -268,7 +269,7 @@ $(O_DIR)/ftui/AView.o $(O_DIR)/ftui/AView_luaHandler.o \
 $(O_DIR)/ftui/AView_statics.o $(O_DIR)/ftui/Activity.o \
 $(O_DIR)/ftui/Activity_RootViewHolder.o $(O_DIR)/ftui/Button.o \
 $(O_DIR)/ftui/HorizontalLayout.o $(O_DIR)/ftui/HorizontalLayout_ViewHolder.o \
-$(O_DIR)/ftui/SolidView.o $(O_DIR)/ftui/TextView.o \
+$(O_DIR)/ftui/SliderView.o $(O_DIR)/ftui/SolidView.o $(O_DIR)/ftui/TextView.o \
 $(O_DIR)/ftui/VerticalLayout.o $(O_DIR)/ftui/VerticalLayout_ViewHolder.o: | \
 	$(O_DIR)/ftui/_public/ft $(O_DIR)/ftui/_public/ft_xml \
 	$(O_DIR)/ftui/_public/ftlua $(O_DIR)/ftui/_public/liblua \
@@ -280,7 +281,7 @@ $(O_DIR)/ftui/AView.o $(O_DIR)/ftui/AView_luaHandler.o \
 $(O_DIR)/ftui/AView_statics.o $(O_DIR)/ftui/Activity.o \
 $(O_DIR)/ftui/Activity_RootViewHolder.o $(O_DIR)/ftui/Button.o \
 $(O_DIR)/ftui/HorizontalLayout.o $(O_DIR)/ftui/HorizontalLayout_ViewHolder.o \
-$(O_DIR)/ftui/SolidView.o $(O_DIR)/ftui/TextView.o \
+$(O_DIR)/ftui/SliderView.o $(O_DIR)/ftui/SolidView.o $(O_DIR)/ftui/TextView.o \
 $(O_DIR)/ftui/VerticalLayout.o $(O_DIR)/ftui/VerticalLayout_ViewHolder.o: BASE_FLAGS += -DRES_PATH='"$(abspath ftui/res/)"'
 $(O_DIR)/ftui/ACanvas.o: ftui/ACanvas.cpp ft/public/Color.hpp \
 	ft/public/Rect.hpp ft/public/Vec.hpp ft/public/assert.hpp \
@@ -401,14 +402,16 @@ $(O_DIR)/ftui/AView_statics.o: ftui/AView_statics.cpp ft/public/Color.hpp \
 	ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ALayout.hpp \
-	ftui/public/ASolidView.hpp ftui/public/AView.hpp ftui/public/Button.hpp \
-	ftui/public/HorizontalLayout.hpp ftui/public/IViewHolder.hpp \
+	ftui/public/ASolidView.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
+	ftui/public/Button.hpp ftui/public/HorizontalLayout.hpp \
+	ftui/public/IViewHolder.hpp ftui/public/SliderView.hpp \
 	ftui/public/SolidView.hpp ftui/public/TextView.hpp \
 	ftui/public/VerticalLayout.hpp ftui/public/ftlua_extend.hpp \
 	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
-	liblua/lua-5.3.1/src/lauxlib.h liblua/lua-5.3.1/src/lua.h \
-	liblua/lua-5.3.1/src/lua.hpp liblua/lua-5.3.1/src/luaconf.h \
-	liblua/lua-5.3.1/src/lualib.h | $(O_DIR)/ftui/
+	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
+	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
+	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h \
+	| $(O_DIR)/ftui/
 $(O_DIR)/ftui/Activity.o: ftui/Activity.cpp ft/public/Color.hpp \
 	ft/public/Rect.hpp ft/public/Vec.hpp ft/public/assert.hpp \
 	ft/public/templates/Rect.tpp ft/public/templates/Vec2.tpp \
@@ -499,6 +502,24 @@ $(O_DIR)/ftui/HorizontalLayout_ViewHolder.o: \
 	ftui/public/HorizontalLayout.hpp ftui/public/IViewHolder.hpp \
 	ftui/public/ftlua_extend.hpp ftui/public/libftui.hpp \
 	ftui/public/templates/AView_callLuaCallback.tpp \
+	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
+	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
+	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h \
+	| $(O_DIR)/ftui/
+$(O_DIR)/ftui/SliderView.o: ftui/SliderView.cpp ft/public/Color.hpp \
+	ft/public/Rect.hpp ft/public/Vec.hpp ft/public/assert.hpp \
+	ft/public/templates/Rect.tpp ft/public/templates/Vec2.tpp \
+	ft/public/templates/Vec3.tpp ft/public/templates/Vec4.tpp \
+	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
+	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
+	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
+	ftlua/public/pop.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
+	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
+	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ASolidView.hpp \
+	ftui/public/AView.hpp ftui/public/Activity.hpp ftui/public/IViewHolder.hpp \
+	ftui/public/SliderView.hpp ftui/public/ftlua_extend.hpp \
+	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h \

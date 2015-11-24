@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 11:15:04 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 12:21:15 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -81,14 +81,7 @@ public:
 	AView(Activity &act, std::string const *id, std::string const &viewName);
 	virtual ~AView(void);
 
-	operator ftlua::Converter<AView>() //TODO, move to cpp
-		{
-			return ftlua::Converter<AView>(
-				*this, [](lua_State *l, AView &v)
-				{
-					return ftlua::pushLightKey(l, &v);
-				});
-		}
+	operator ftlua::Converter<AView>();
 
 	/*
 	** Extract the view tree from a xml file

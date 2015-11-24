@@ -6,11 +6,14 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 13:27:49 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 11:18:56 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 12:27:34 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#include "SliderView.hpp"
+#include "ftui/SliderView.hpp"
+
+namespace ftui
+{
 
 ftui::AView			*SliderView::createView(ftui::Activity &act,
 						ft::XmlParser const *xml, std::string const *id)
@@ -344,3 +347,5 @@ int					SliderView::setStepsG(lua_State *l)
 	lua_pop(l, 1);
 	return (0);
 }
+
+};
