@@ -1,6 +1,6 @@
 <VerticalLayout
 	id="UIParent"
-	activity_scripts="res/global.lua;res/utils.lua;res/start_activity/global.lua"
+	activity_scripts="res/lua_utils/"
 	>
 
   <HorizontalLayout

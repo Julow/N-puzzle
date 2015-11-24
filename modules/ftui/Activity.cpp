@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 11:15:04 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 13:06:20 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,9 +19,19 @@
 #include "ftui/ACanvas.hpp"
 #include "ft_xml/XmlParser.hpp"
 
+extern "C"
+{
+
+#include <sys/stat.h>
+#include <dirent.h>
+#include <string.h>
+
+};
+
 namespace ftui
 {
 
+#define WALK_DIR_MAX_DEPTH		16
 
 // ========================================================================== //
 // CONSTRUCTION
@@ -79,6 +89,44 @@ static void			load_views_scripts(
 	return ;
 }
 
+static bool		is_dir(char const *str)
+{
+	struct stat		s;
+
+	if (stat(str, &s) == 0 && S_ISDIR(s.st_mode))
+		return (true);
+	return (false);
+}
+
+static void		walk_lua_dir(std::string const &dir_name,
+					std::vector<std::string> &dst,
+					int max_depth = WALK_DIR_MAX_DEPTH)
+{
+	DIR				*dir;
+	struct dirent	*ent;
+	std::string		ent_name;
+
+	if ((dir = opendir(dir_name.c_str())) == NULL)
+		return ;
+	while ((ent = readdir(dir)) != NULL)
+	{
+		if (strcmp(ent->d_name, ".") == 0
+			|| strcmp(ent->d_name, "..") == 0)
+			continue ;
+		ent_name = dir_name + "/" + ent->d_name;
+		if (is_dir(ent_name.c_str()))
+		{
+			if (max_depth > 0)
+				walk_lua_dir(ent_name, dst, max_depth - 1);
+			continue ;
+		}
+		char const	*tmp = strrchr(ent->d_name, '.');
+		if (tmp != NULL && strcmp(tmp, ".lua") == 0)
+			dst.emplace_back(ent_name);
+	}
+	closedir(dir);
+}
+
 void			Activity::inflate(std::istream &stream)
 {
 	ft::XmlParser			xml(stream);
@@ -110,9 +158,13 @@ void			Activity::saveScriptPath(std::string const &str)
 	std::stringstream	ss(str);
 	char				buf[64];
 
-	// TODO accept folder as parameter
 	while (ss.getline(buf, sizeof(buf), ';'))
-		_scriptsPaths.push_back(buf);
+	{
+		if (is_dir(buf))
+			walk_lua_dir(buf, _scriptsPaths);
+		else
+			_scriptsPaths.push_back(buf);
+	}
 	return ;
 }
 
