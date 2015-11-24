@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 13:27:39 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 12:29:06 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 13:27:08 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -23,8 +23,22 @@ namespace ftui
 /*
 ** ========================================================================== **
 ** SliderView
-** ---
+** -
 ** Represent a slider that the user can scroll to change it's value
+** -
+** Params:
+** 	value				(float)	Initial value
+** 	steps				(int)	Number of step
+** 	maxValue			(float)	Max value
+** 	minValue			(float)	Min value
+** 	barColor			(color)
+** 	barBorderColor		(color)
+** 	barBorderWidth		(int)
+** 	disabled			(bool)	Set if the user can change the value
+** -
+** Callback:
+** 	onValueChange		float value
+** 				Called when the value change (by user interation or setValue())
 */
 class	SliderView : ftui::ASolidView
 {

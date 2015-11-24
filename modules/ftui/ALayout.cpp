@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 17:24:01 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 13:24:05 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -37,6 +37,15 @@ ALayout::ALayout(
 
 ALayout::~ALayout(void)
 {
+}
+
+ALayout::operator ftlua::Converter<ALayout>()
+{
+	return ftlua::Converter<ALayout>(
+		*this, [](lua_State *l, ALayout &v)
+		{
+			return ftlua::pushLightKey(l, &v);
+		});
 }
 
 void				ALayout::queryUpdate(void)

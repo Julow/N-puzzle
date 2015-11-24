@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:12:43 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 11:14:59 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 13:25:31 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -22,6 +22,7 @@ namespace ftui
 {
 
 /*
+** ========================================================================== **
 ** VerticalLayout
 ** -
 ** Childs:
@@ -33,6 +34,12 @@ namespace ftui
 ** * Are not shrinked if height go outside layout's height
 **    but are partially hidden
 ** -
+** Childs params:
+** 	marginTop		(int)	Extra margin with the previous view
+** 	marginBottom	(int)	Extra margin with the next view
+** 	verticalAlign	(enum)	LEFT, CENTER or RIGHT
+** 	width			(uint)	Requested width
+** 	height			(uint)	Requested height
 */
 class	VerticalLayout : public ALayout
 {

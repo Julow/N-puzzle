@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 12:21:15 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 13:22:54 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -27,9 +27,70 @@ namespace ftui
 {
 
 /*
-** Represents an UI component
+** ========================================================================== **
+** AView
 ** -
+** Represents an UI component
 ** This is the base class for any UI component
+** -
+** Params:
+**	id					(str)	View id (XML exclusive)
+** 	alpha				(float)	View transparency
+** 	visibility			(bool)
+** 	mouse_scroll_target	(bool)
+** 	mouse_click_target	(bool)
+** 	mouse_move_target	(bool)
+** 	keyboard_target		(bool)
+** 	activity_scripts	(str)	Script files (separated by ';')
+** -
+** Callbacks:
+** 	onUpdate			-
+**	 			Called from it's parent when registered "queryUpdate()"
+** 	onMeasure			-
+**	 			Called from it's parent when registered "queryMeasure()"
+**	 			Have to measure and set the view requested size by using:
+**	 				getViewHolder()->setMeasuredSize()
+** 	onDraw				ACanvas &canvas
+**	 			Called from it's parent when registered "queryRedraw()"
+**	 			Have to draw the view into the canvas
+** 	onMouseScroll		int x, int y, float delta
+**	 			Called after the user scroll on the view
+**	 			Require the view to be registered to hookMouseScroll
+** 	onMouseDown			int x, int y, int button, int mods
+**	 			Called after the user press a mouse button on the view
+**	 			Require the view to be registered to hookMouseClick
+** 	onMouseUp			int x, int y, int button, int mods
+**	 			Called after the user release a mouse button on the view
+**	 			Require the view to be registered to hookMouseClick
+** 	onMouseMove			int x, int y
+**	 			Called after the user move the mouse on the view
+**	 			Require the view to be registered to hookMouseMove
+** 	onKeyDown			int key_code, int mods
+**	 			Called after the user press a key
+**	 			Require the view to be registered to hookKeyboard
+** 	onKeyUp				int key_code, int mods
+**	 			Called after the user release a key
+**	 			Require the view to be registered to hookKeyboard
+** 	onMouseEnter		int x, int y
+**	 			Called after the cursor enter the view's bounds
+**	 			Require the view to be registered to hookMouseMove
+** 	onMouseLeave		int x, int y
+**	 			Called after the cursor leave the view's bounds
+**	 			Require the view to be registered to hookMouseMove
+** 	onAttach			-
+**	 			Called after a view has been attached to a parent view
+** 	onDetach			-
+**	 			Called before a view is dettached from it's parent
+** 	onEvent				std::string const &event, IEventParams *p
+**	 			Called when an event is fired
+**	 			Require the view to be registered to this event using:
+**	 				registerEvent("<event_name>")
+** 	onPositionChange	-
+**	 			Called from the parent when the view position change
+** 	onSizeChange		-
+**	 			Called from the parent when the view size change
+** 	onCaptureChange		bool status
+** 	onVisibilityChange	bool hidden
 */
 class	AView
 {

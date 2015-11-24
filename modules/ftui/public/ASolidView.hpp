@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:37 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 11:15:03 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 13:23:29 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,9 +21,15 @@ namespace ftui
 {
 
 /*
+** ========================================================================== **
 ** ASolidView
 ** -
 ** Base class for views with a solid background
+** -
+** Params
+** 	backgroundColor		(color)	Background color
+** 	borderColor			(color)	Border color
+** 	borderWidth			(int)	Border width
 */
 class	ASolidView : public AView
 {
