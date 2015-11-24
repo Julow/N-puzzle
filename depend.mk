@@ -64,13 +64,12 @@ o/srcs/Main.o: srcs/Main.cpp modules/_objs/gl_canvas/_public/ft/Rect.hpp \
 	modules/_objs/gl_canvas/_public/ftui/ftlua_extend.hpp \
 	modules/_objs/gl_canvas/_public/ftui/libftui.hpp \
 	modules/_objs/gl_canvas/_public/ftui/templates/Activity.tpp \
-	modules/_objs/gl_canvas/_public/gl/gl.hpp \
 	modules/_objs/gl_canvas/_public/gl_canvas/GlCanvasHolder.hpp \
-	modules/_objs/gl_canvas/_public/liblua/lua.hpp \
+	modules/_objs/gl_canvas/_public/liblua/lua.hpp modules/gl/gl.hpp \
 	modules/liblua/lua-5.3.1/src/lauxlib.h modules/liblua/lua-5.3.1/src/lua.h \
 	modules/liblua/lua-5.3.1/src/luaconf.h \
 	modules/liblua/lua-5.3.1/src/lualib.h include/config_window.hpp \
-	include/ftce/math.hpp include/PickState.hpp \
+	modules/ftce/math.hpp include/PickState.hpp \
 	modules/_objs/tiles/_public/tiles/Tiles.hpp \
 	modules/_objs/gl_canvas/_public/ftui/AView.hpp \
 	modules/_objs/gl_canvas/_public/ftui/templates/AView_callLuaCallback.tpp \
@@ -121,14 +120,13 @@ o/srcs/PickState.o: srcs/PickState.cpp include/Grid.hpp include/IBundle.hpp \
 	modules/_objs/gl_canvas/_public/ftui/ftlua_extend.hpp \
 	modules/_objs/gl_canvas/_public/ftui/libftui.hpp \
 	modules/_objs/gl_canvas/_public/ftui/templates/Activity.tpp \
-	modules/_objs/gl_canvas/_public/gl/gl.hpp \
 	modules/_objs/gl_canvas/_public/gl_canvas/GlCanvasHolder.hpp \
 	modules/_objs/gl_canvas/_public/liblua/lua.hpp \
-	modules/_objs/tiles/_public/tiles/Tiles.hpp \
+	modules/_objs/tiles/_public/tiles/Tiles.hpp modules/gl/gl.hpp \
 	modules/liblua/lua-5.3.1/src/lauxlib.h modules/liblua/lua-5.3.1/src/lua.h \
 	modules/liblua/lua-5.3.1/src/luaconf.h \
 	modules/liblua/lua-5.3.1/src/lualib.h include/config_window.hpp \
-	include/ftce/math.hpp | o/srcs/
+	modules/ftce/math.hpp | o/srcs/
 o/srcs/Tokenizer.o: srcs/Tokenizer.cpp include/Tokenizer.hpp \
 	modules/_objs/gl_canvas/_public/ft/Rect.hpp \
 	modules/_objs/gl_canvas/_public/ft/Vec.hpp \

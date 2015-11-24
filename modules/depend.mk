@@ -224,6 +224,16 @@ $(O_DIR)/ftlua/stackError.o: ftlua/stackError.cpp ftlua/public/stackassert.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h \
 	| $(O_DIR)/ftlua/
 
+# module ftce
+$(O_DIR)/ftce/_public/ftce: | $(O_DIR)/ftce/_public/
+$(O_DIR)/ftce/_public/ftce: ftce
+
+PUBLIC_LINKS += $(O_DIR)/ftce/_public/ftce
+
+:INCLUDE_FLAGS += -I$(O_DIR)/ftce/_public
+:|$(O_DIR)/ftce/_public/ftce
+
+
 # module gl
 ifeq ($(shell uname),Darwin)
   BASE_FLAGS += -DMAC_OS_MODE=1

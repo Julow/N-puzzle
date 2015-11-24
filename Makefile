@@ -5,7 +5,7 @@ NAME			:= npuzzle
 
 # Project directories
 DIRS			:= srcs
-INCLUDE_DIRS	:= include modules/_objs/ft/_public modules/_objs/ft_xml/_public modules/_objs/ftui/_public modules/_objs/tiles/_public modules/liblua/lua-5.3.1/src modules/_objs/gl_canvas/_public
+INCLUDE_DIRS	:= include modules/_objs/ft/_public modules/_objs/ft_xml/_public modules/_objs/ftui/_public modules/_objs/tiles/_public modules/liblua/lua-5.3.1/src modules/_objs/gl_canvas/_public modules/_objs/ftce/_public modules
 
 # Git submodule to init
 MODULES			:=
