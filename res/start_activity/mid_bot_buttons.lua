@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 16:41:33 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/24 15:32:48 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/24 18:03:09 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -40,9 +40,18 @@ fileButton:setCallback('onClick', fileButton.onClick);
 local defaultButton = defaultPuzzleButton
 assert(defaultButton ~= nil);
 
+function defaultButton:Bordel(...)
+  print('defaultButton:Bordel', ...);
+end
+
+-- function defaultButton:onEvent(...)
+--   print('defaultButton:onEvent', ...);
+-- end
+
 function defaultButton:onClick(_, _)
   PickState:useDefaultGrid();
   puzzleFrame:reloadGrid();
+  self:registerEvent("Bordel");
 end
 
 defaultButton:setCallback('onClick', defaultButton.onClick);

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 13:22:54 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 17:10:11 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -230,6 +230,7 @@ public:
 	** Used to set/unset a lua callback (from lua)
 	*/
 	void						setLuaCallback(lua_State *l);
+	void						registerEvent(std::string const &str);
 
 /*
 ** Layout system
@@ -360,6 +361,7 @@ public:
 
 	static int				setParamG(lua_State *l);
 	static int				setCallbackG(lua_State *l);
+	static int				registerEventG(lua_State *l);
 
 	static int				hookMouseScrollG(lua_State *l);
 	static int				hookMouseClickG(lua_State *l);
