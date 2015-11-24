@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/30 09:01:50 by ngoguey           #+#    #+#             */
-//   Updated: 2015/11/24 16:33:10 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 18:04:45 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,27 +43,31 @@ bool		Activity::fireEvent(std::string const &event, Args... args)
 	{
 		if (it->second->isLuaCall())
 		{
-			ftlua::multiPush(_l, it->second->getView(), event);		// "", []
+			ftlua::multiPush(_l, it->second->getView(), event);	// "", []
 			FTLUA_STACKASSERT(
 				_l, lua_istable(_l, -2), false
-				, ft::f("Activity::fireEvent(%, %)"
+				, ft::f("Activity::fireEvent(event=%, %)"
 						, event, ft::variadicToString(args...))
 				, ft::f("Could not retreive _G[%]",
 						reinterpret_cast<void*>(it->second->getView())));
-			lua_gettable(_l, -2);									// f, []
+			lua_gettable(_l, -2);								// f, []
 			if (lua_isnil(_l, -1))
 			{
-				lua_pop(_l, 1);										// []
-				err = ftlua::pcallMethod(
-					_l, 0, ftlua::make_keys("onEvent"), event, args...);
+				lua_pop(_l, 1);									// []
+				lua_pushliteral(_l, "onEvent");					// "", []
+				lua_gettable(_l, -2);							// f, []
 			}
-			else
-			{
-				err = ftlua::pcall(_l, 0, 0, ftlua::dup(-2), args...);
-				lua_pop(_l, 1);
-			}
+			FTLUA_STACKASSERT(
+				_l, lua_isfunction(_l, -1), false
+				, ft::f("Activity::fireEvent(event=%, %)"
+						, event, ft::variadicToString(args...))
+				, ft::f("Could not find a suitable function in table"));
+			err = ftlua::pcall(_l, 0, 0, ftlua::dup(-2), args...);
 			if (err != LUA_OK)
-				throw std::runtime_error("TODO2");
+				throw std::runtime_error(
+					ft::f("% error ffs", ftlua::stacktostring(_l))
+					);
+			lua_pop(_l, 1);
 		}
 		else
 		{

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 13:06:20 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 17:44:02 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -290,21 +290,26 @@ void			Activity::queryUpdateAll(void)
 		_rootView->getView()->queryUpdate();
 }
 
+void			Activity::registerEvent(std::string const &event, AView *v)
+{
+	this->_eventMap.insert(std::make_pair(event, new EventTarget(v)));
+	return ;
+}
 void			Activity::unregisterEvent(std::string const &event, AView *v)
 {
-	// auto			it = this->_eventMap.find(event);
-	// auto const		ite = this->_eventMap.cend();
+	auto			it = this->_eventMap.find(event);
+	auto const		ite = this->_eventMap.cend();
 
-	// while (it != ite)
-	// {
-	// 	if (it->second->getView() == v)
-	// 	{
-	// 		delete it->second;
-	// 		it = this->_eventMap.erase(it);
-	// 	}
-	// 	else
-	// 		it++;
-	// }
+	while (it != ite)
+	{
+		if (it->second->getView() == v)
+		{
+			delete it->second;
+			it = this->_eventMap.erase(it);
+		}
+		else
+			it++;
+	}
 	return ;
 }
 

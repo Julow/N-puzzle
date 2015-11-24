@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 12:27:46 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 17:47:22 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -184,6 +184,8 @@ void			Main::onKeyUp(int key, int scancode, int mods)
 
 void			Main::onKeyDown(int key, int scancode, int mods)
 {
+	_state->getActivity().fireEvent("Bordel", 42, "salut");
+
 	_state->getActivity().onKeyDown(key, mods);
 	(void)scancode;
 }

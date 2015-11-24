@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 12:20:02 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 17:10:59 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -431,6 +431,13 @@ void				AView::setLuaCallback(lua_State *l)
 		_luaCallbacks &= ~(1 << callbackId);
 	lua_pop(l, 3);
 }
+
+void				AView::registerEvent(std::string const &name)
+{
+	_act.registerEvent(name, this);
+	return ;
+}
+
 
 /*
 ** ========================================================================== **
