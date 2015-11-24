@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 18:05:46 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 14:17:06 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:20:43 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -42,7 +42,7 @@ public:
 	/* ISTATE LEGACY **************** */
 	void					loop(
 		std::unique_ptr<IState> &ptr
-		, ftui::Canvas &can) override;
+		, ftui::ACanvas &can) override;
 	ftui::Activity			&getActivity(void) override;
 
 	/* LIBFTUI INTERACTIONS ********* */

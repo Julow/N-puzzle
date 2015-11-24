@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/11 11:47:52 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 09:03:38 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:14:58 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -61,7 +61,7 @@ public:
 
 	virtual void			onUpdate(void);
 	virtual void			onMeasure(void);
-	virtual void			onDraw(Canvas &canvas);
+	virtual void			onDraw(ACanvas &canvas);
 
 	virtual void			onSizeChange(void);
 

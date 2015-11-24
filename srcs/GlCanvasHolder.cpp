@@ -6,7 +6,7 @@
 //   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/07 21:38:50 by juloo             #+#    #+#             //
-//   Updated: 2015/11/19 12:43:36 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 11:25:51 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -34,14 +34,13 @@ void			GlCanvasHolder::init(void)
 {
 	if (_canvas.getBitmap() != NULL)
 		throw std::domain_error("init() called twice");
-	_canvas = ftui::Canvas(new ft::Color::t[_width * _height],
-		_width, _height);
+	_canvas.setBitmap(new ft::Color::t[_width * _height]);
 	init_shaders();
 	init_quad();
 	init_texture();
 }
 
-ftui::Canvas	&GlCanvasHolder::getCanvas(void)
+ftui::ACanvas	&GlCanvasHolder::getCanvas(void)
 {
 	if (_canvas.getBitmap() == NULL)
 		throw std::domain_error("getCanvas() call before init()");

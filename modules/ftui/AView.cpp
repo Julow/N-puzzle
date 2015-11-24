@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 18:26:25 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:15:05 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -299,7 +299,7 @@ void				AView::onMeasure(void)
 	this->callLuaCallback(_act.getLuaState(), LuaCallback::MEASURE);
 }
 
-void				AView::onDraw(Canvas &canvas)
+void				AView::onDraw(ACanvas &canvas)
 {
 	this->_flags &= ~AView::REDRAW_QUERY;
 	this->callLuaCallback(_act.getLuaState(), LuaCallback::DRAW

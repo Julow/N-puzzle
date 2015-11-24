@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:14:49 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 15:09:51 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:21:13 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -40,7 +40,7 @@ public:
 	/* DRAW ************************* */
 	void					onUpdate(void);
 	void					onMeasure(void);
-	void					onDraw(ftui::Canvas &can);
+	void					onDraw(ftui::ACanvas &can);
 
 	/* ALAYOUT LEGACY *************** */
 	void					addView(AView *v);

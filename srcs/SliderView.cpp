@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 13:27:49 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 09:17:56 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 11:18:56 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -108,12 +108,12 @@ void				SliderView::setBounds(ft::Vec2<float> bounds)
 		_value = bounds.y;
 }
 
-ftui::Canvas::Params	&SliderView::getBarParams(void)
+ftui::ACanvas::Params	&SliderView::getBarParams(void)
 {
 	return (_barParams);
 }
 
-ftui::Canvas::Params const	&SliderView::getBarParams(void) const
+ftui::ACanvas::Params const	&SliderView::getBarParams(void) const
 {
 	return (_barParams);
 }
@@ -168,7 +168,7 @@ void				SliderView::onDetach(void)
 	AView::onDetach();
 }
 
-void				SliderView::onDraw(ftui::Canvas &canvas)
+void				SliderView::onDraw(ftui::ACanvas &canvas)
 {
 	ft::Rect<float>			rect(canvas.getClip());
 

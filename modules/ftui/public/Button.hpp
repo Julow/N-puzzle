@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:26:40 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 15:39:13 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:15:03 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,7 +14,7 @@
 # define BUTTON_HPP
 
 # include "ftui/AView.hpp"
-# include "ftui/Canvas.hpp"
+# include "ftui/ACanvas.hpp"
 
 //# include <string>
 # include <iostream>
@@ -51,7 +51,7 @@ public:
 	// virtual void setParam(std::string const &k, std::string const &v); //TODO: this
 
 	// DRAW ************************* //
-	virtual void		onDraw(Canvas &canvas);
+	virtual void		onDraw(ACanvas &canvas);
 
 	// MOUSE EVENTS ***************** //
 	virtual bool		onMouseDown(int x, int y, int button, int mods);
@@ -70,24 +70,24 @@ public:
 	virtual void		setState(bool status);
 	virtual bool		getState(void);
 
-	Canvas::Params const	&getNormalParams(void) const;
-	void					setNormalParams(Canvas::Params const &p);
+	ACanvas::Params const	&getNormalParams(void) const;
+	void					setNormalParams(ACanvas::Params const &p);
 
-	Canvas::Params const	&getDisabledParams(void) const;
-	void					setDisabledParams(Canvas::Params const &p);
+	ACanvas::Params const	&getDisabledParams(void) const;
+	void					setDisabledParams(ACanvas::Params const &p);
 
-	Canvas::Params const	&getPushedParams(void) const;
-	void					setPushedParams(Canvas::Params const &p);
+	ACanvas::Params const	&getPushedParams(void) const;
+	void					setPushedParams(ACanvas::Params const &p);
 
-	Canvas::Params const	&getHighlightParams(void) const;
-	void					setHighlightParams(Canvas::Params const &p);
+	ACanvas::Params const	&getHighlightParams(void) const;
+	void					setHighlightParams(ACanvas::Params const &p);
 
 protected:
 	bool				_state;
-	Canvas::Params		_normal;
-	Canvas::Params		_disabled;
-	Canvas::Params		_pushed;
-	Canvas::Params		_highlight;
+	ACanvas::Params		_normal;
+	ACanvas::Params		_disabled;
+	ACanvas::Params		_pushed;
+	ACanvas::Params		_highlight;
 
 private:
 	using time_point = std::chrono::system_clock::time_point;

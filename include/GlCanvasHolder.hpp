@@ -6,17 +6,19 @@
 //   By: juloo <juloo@student.42.fr>                +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/07 20:31:56 by juloo             #+#    #+#             //
-//   Updated: 2015/11/12 11:17:22 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 11:18:20 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef GLCANVASHOLDER_HPP
 # define GLCANVASHOLDER_HPP
 
-# include "ftui/Canvas.hpp"
+# include "ftui/ACanvas.hpp"
+# include "GlCanvas.hpp"
 
 /*
 ** Hold and render a 2d canvas (ftui::Canvas)
+** TODO: merge GlCanvasHolder and GlCanvas
 */
 class	GlCanvasHolder
 {
@@ -34,7 +36,7 @@ public:
 	/*
 	** Return a canvas that can be used to draw in
 	*/
-	ftui::Canvas		&getCanvas(void);
+	ftui::ACanvas		&getCanvas(void);
 
 	/*
 	** Render the current canvas
@@ -42,13 +44,13 @@ public:
 	void				render(void);
 
 protected:
-	ftui::Canvas			_canvas;
-	int						_width;
-	int						_height;
+	GlCanvas			_canvas;
+	int					_width;
+	int					_height;
 
-	unsigned int			_shaders;
-	unsigned int			_quad;
-	unsigned int			_texture;
+	unsigned int		_shaders;
+	unsigned int		_quad;
+	unsigned int		_texture;
 
 	void				init_shaders(void);
 	void				init_quad(void);

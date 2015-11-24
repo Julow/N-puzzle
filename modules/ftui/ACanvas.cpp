@@ -1,17 +1,17 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   Canvas.cpp                                         :+:      :+:    :+:   //
+//   ACanvas.cpp                                        :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/22 11:40:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:16:17 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#include "ftui/Canvas.hpp"
-#include "ft/utils.hpp"
+#include "ftui/ACanvas.hpp"
+// #include "ft/utils.hpp"
 
 extern "C"
 {
@@ -21,13 +21,12 @@ extern "C"
 
 }
 
-#include <iostream> //d
 #include <vector>
 #include <unordered_map>
 #include <algorithm>
 
 #include <cmath>
-#include <cfenv>
+// #include <cfenv>
 
 namespace ftui
 {
@@ -37,15 +36,14 @@ namespace ftui
 */
 static FT_Library			g_freetype;
 static bool					g_freetype_init = false;
-static std::unordered_map<std::string, Canvas::font_t> g_faces_cache;
+static std::unordered_map<std::string, ACanvas::font_t> g_faces_cache;
 static std::vector<FT_Face>	g_faces;
 
 /*
 ** Construction
 */
 
-Canvas::Canvas(ft::Color::t *bitmap, int width, int height) :
-	_bitmap(bitmap),
+ACanvas::ACanvas(int width, int height) :
 	_width(width),
 	_height(height),
 	_clip(0, 0, width, height),
@@ -57,7 +55,7 @@ Canvas::Canvas(ft::Color::t *bitmap, int width, int height) :
 	return ;
 }
 
-// Canvas::Canvas(Canvas const &src) :
+// ACanvas::ACanvas(ACanvas const &src) :
 // 	_bitmap(src._bitmap),
 // 	_width(src._width),
 // 	_height(src._height),
@@ -65,31 +63,40 @@ Canvas::Canvas(ft::Color::t *bitmap, int width, int height) :
 // {
 // }
 
-Canvas::~Canvas(void)
+ACanvas::~ACanvas(void)
 {
 	// not removed from any lua
 	return ;
 }
 
-Canvas			&Canvas::operator=(Canvas &&rhs)
-{
-	_bitmap = rhs._bitmap;
-	_width = rhs._width;
-	_height = rhs._height;
-	_alpha = rhs._alpha;
-	rhs._bitmap = nullptr;
-	return (*this);
-}
+// ACanvas			&ACanvas::operator=(ACanvas &&rhs)
+// {
+// 	_bitmap = rhs._bitmap;
+// 	_width = rhs._width;
+// 	_height = rhs._height;
+// 	_alpha = rhs._alpha;
+// 	rhs._bitmap = nullptr;
+// 	return (*this);
+// }
 
 /*
 ** ========================================================================== **
 ** LUA Interations
 */
 
-int				Canvas::drawRectG(lua_State *l)
+ACanvas::operator ftlua::Converter<ACanvas>()
 {
-	Canvas *const		self = ftlua::retrieveSelf<Canvas>(l, 1);
-	Canvas::Params		p;
+	return ftlua::Converter<ACanvas>(
+		*this, [](lua_State *l, ACanvas &v)
+		{
+			return ftlua::pushLightKey(l, &v);
+		});
+}
+
+int				ACanvas::drawRectG(lua_State *l)
+{
+	ACanvas *const		self = ftlua::retrieveSelf<ACanvas>(l, 1);
+	ACanvas::Params		p;
 	ft::Rect<float>		r;
 	int const			top = lua_gettop(l);
 
@@ -113,10 +120,10 @@ int				Canvas::drawRectG(lua_State *l)
 	return (0);
 }
 
-int				Canvas::drawTextG(lua_State *l)
+int				ACanvas::drawTextG(lua_State *l)
 {
-	Canvas *const		self = ftlua::retrieveSelf<Canvas>(l, 1);
-	Canvas::Params		params;
+	ACanvas *const		self = ftlua::retrieveSelf<ACanvas>(l, 1);
+	ACanvas::Params		params;
 	ft::Vec2<float>		pos;
 	std::string			text;
 	int const			top = lua_gettop(l);
@@ -133,19 +140,19 @@ int				Canvas::drawTextG(lua_State *l)
 	return (0);
 }
 
-int				Canvas::setFontG(lua_State *l)
+int				ACanvas::setFontG(lua_State *l)
 {
-	Canvas *const		self = ftlua::retrieveSelf<Canvas>(l, 1);
+	ACanvas *const		self = ftlua::retrieveSelf<ACanvas>(l, 1);
 
-	self->_luaFont = Canvas::getFont(luaL_checkstring(l, 1));
+	self->_luaFont = ACanvas::getFont(luaL_checkstring(l, 1));
 	return (0);
 }
 
-int				Canvas::measureTextG(lua_State *l)
+int				ACanvas::measureTextG(lua_State *l)
 {
-	Canvas *const		self = ftlua::retrieveSelf<Canvas>(l, 1);
+	ACanvas *const		self = ftlua::retrieveSelf<ACanvas>(l, 1);
 	std::string			text;
-	Canvas::Params		params;
+	ACanvas::Params		params;
 
 	text = luaL_checkstring(l, 1);
 	params.lineWidth = luaL_checkinteger(l, 2);
@@ -154,22 +161,22 @@ int				Canvas::measureTextG(lua_State *l)
 	return ftlua::push(l, self->measureText(text, params));
 }
 
-void			Canvas::pushTemplate(lua_State *l)
+void			ACanvas::pushTemplate(lua_State *l)
 {
-	luaL_dostring(l, "Canvas = {}; Canvas.__index = Canvas;");
-	ftlua::set(l, ftlua::make_keys("Canvas"), "drawRect", &Canvas::drawRectG);
-	ftlua::set(l, ftlua::make_keys("Canvas"), "drawText", &Canvas::drawTextG);
-	ftlua::set(l, ftlua::make_keys("Canvas"), "measureText"
-			   , &Canvas::measureTextG);
-	ftlua::set(l, ftlua::make_keys("Canvas"), "setFont", &Canvas::setFontG);
+	luaL_dostring(l, "ACanvas = {}; ACanvas.__index = ACanvas;");
+	ftlua::set(l, ftlua::make_keys("ACanvas"), "drawRect", &ACanvas::drawRectG);
+	ftlua::set(l, ftlua::make_keys("ACanvas"), "drawText", &ACanvas::drawTextG);
+	ftlua::set(l, ftlua::make_keys("ACanvas"), "measureText"
+			   , &ACanvas::measureTextG);
+	ftlua::set(l, ftlua::make_keys("ACanvas"), "setFont", &ACanvas::setFontG);
 	return ;
 }
 
-void			Canvas::pushLua(lua_State *l)
+void			ACanvas::pushLua(lua_State *l)
 {
-	ftlua::multiPush(l, ftlua::newtab, ftlua::make_keys("Canvas"));
+	ftlua::multiPush(l, ftlua::newtab, ftlua::make_keys("ACanvas"));
 	if (!lua_istable(l, -1))
-		throw std::runtime_error("Canvas template should be present in _G");
+		throw std::runtime_error("ACanvas template should be present in _G");
 	lua_setmetatable(l, -2);
 	ftlua::set(l, -1, 0, ftlua::light(this));
 	ftlua::set(l, ftlua::light(this), ftlua::dup(-3));
@@ -177,7 +184,7 @@ void			Canvas::pushLua(lua_State *l)
 	return ;
 }
 
-bool			Canvas::isInLua(lua_State *l)
+bool			ACanvas::isInLua(lua_State *l)
 {
 	ftlua::push(l, this);
 	if (!lua_istable(l, -1))
@@ -191,84 +198,20 @@ bool			Canvas::isInLua(lua_State *l)
 
 /*
 ** ========================================================================== **
-** Bitmap
-*/
-
-ft::Color::t const	*Canvas::getBitmap(void) const
-{
-	return (_bitmap);
-}
-
-int				Canvas::getBitmapWidth(void) const
-{
-	return (_width);
-}
-
-int				Canvas::getBitmapHeight(void) const
-{
-	return (_height);
-}
-
-void			Canvas::putAlphaBitmap(ft::Vec2<int> pos, uint8_t const *bitmap,
-					ft::Rect<int> const &rect, int pitch, ft::Color::t color)
-{
-	int const		max_x = std::min(rect.right, _clip.right - pos.x);
-	int const		max_y = std::min(rect.bottom, _clip.bottom - pos.y);
-	int				x;
-	int				y;
-
-	y = std::max(rect.top, _clip.top - pos.y);
-	while (y < max_y)
-	{
-		x = std::max(rect.left, _clip.left - pos.x);
-		while (x < max_x)
-		{
-			if (bitmap[x] > 0)
-				putPixel(x + pos.x, y + pos.y,
-					ft::Color::alpha(color, bitmap[x]));
-			x++;
-		}
-		y++;
-		bitmap += pitch;
-	}
-}
-
-void			Canvas::clear(void)
-{
-	memset(_bitmap, 0, _width * _height * sizeof(ft::Color::t));
-}
-
-void			Canvas::clear(ft::Rect<int> const &rect)
-{
-	int const	width = rect.getWidth() * sizeof(ft::Color::t);
-	int			end;
-	int			offset;
-
-	offset = rect.top * _width + rect.left;
-	end = rect.getHeight() * _width + offset;
-	while (offset < end)
-	{
-		memset(_bitmap + offset, 0, width);
-		offset += _width;
-	}
-}
-
-/*
-** ========================================================================== **
 ** Origin
 */
 
-void			Canvas::setOrigin(ft::Vec2<int> origin)
+void			ACanvas::setOrigin(ft::Vec2<int> origin)
 {
 	_origin = origin;
 }
 
-void			Canvas::applyOrigin(ft::Vec2<int> apply)
+void			ACanvas::applyOrigin(ft::Vec2<int> apply)
 {
 	_origin += apply;
 }
 
-ft::Vec2<int>	Canvas::getOrigin(void) const
+ft::Vec2<int>	ACanvas::getOrigin(void) const
 {
 	return (_origin);
 }
@@ -277,12 +220,12 @@ ft::Vec2<int>	Canvas::getOrigin(void) const
 ** ========================================================================== **
 ** Scale
 */
-void			Canvas::setScale(float scale)
+void			ACanvas::setScale(float scale)
 {
 	_scale = scale;
 }
 
-float			Canvas::getScale(void) const
+float			ACanvas::getScale(void) const
 {
 	return (_scale);
 }
@@ -291,22 +234,22 @@ float			Canvas::getScale(void) const
 ** ========================================================================== **
 ** Clip
 */
-ft::Rect<int>	Canvas::getClip(void) const
+ft::Rect<int>	ACanvas::getClip(void) const
 {
 	return (_clip - _origin);
 }
 
-void			Canvas::setClip(ft::Rect<int> const &clip)
+void			ACanvas::setClip(ft::Rect<int> const &clip)
 {
 	_clip = clip + _origin;
 }
 
-void			Canvas::setClip(ft::Vec2<int> size)
+void			ACanvas::setClip(ft::Vec2<int> size)
 {
 	_clip = ft::make_rect(_origin, size);
 }
 
-void			Canvas::clearClip(void)
+void			ACanvas::clearClip(void)
 {
 	clear(_clip);
 }
@@ -315,17 +258,17 @@ void			Canvas::clearClip(void)
 ** ========================================================================== **
 ** Alpha
 */
-float			Canvas::getAlpha(void) const
+float			ACanvas::getAlpha(void) const
 {
 	return (_alpha);
 }
 
-void			Canvas::applyAlpha(float alpha)
+void			ACanvas::applyAlpha(float alpha)
 {
 	_alpha *= alpha;
 }
 
-void			Canvas::setAlpha(float alpha)
+void			ACanvas::setAlpha(float alpha)
 {
 	_alpha = alpha;
 }
@@ -334,7 +277,7 @@ void			Canvas::setAlpha(float alpha)
 ** ========================================================================== **
 ** Render rect
 */
-void			Canvas::drawRect(ft::Rect<float> const &rect, Params const &opt)
+void			ACanvas::drawRect(ft::Rect<float> const &rect, Params const &opt)
 {
 	ft::Rect<int>	int_rect = static_cast<ft::Rect<int>>(rect * _scale);
 
@@ -357,39 +300,11 @@ void			Canvas::drawRect(ft::Rect<float> const &rect, Params const &opt)
 	}
 }
 
-void			Canvas::_strokeRect(ft::Rect<int> const &rect,
-					ft::Color::t color, int lineWidth)
-{
-	if (!rect)
-		return ;
-	_fillRect(ft::make_rect(rect.left, rect.top,
-			rect.right, rect.top + lineWidth), color);
-	_fillRect(ft::make_rect(rect.right - lineWidth, rect.top + lineWidth,
-			rect.right, rect.bottom - lineWidth), color);
-	_fillRect(ft::make_rect(rect.left, rect.bottom - lineWidth,
-			rect.right, rect.bottom), color);
-	_fillRect(ft::make_rect(rect.left, rect.top + lineWidth,
-			rect.left + lineWidth, rect.bottom - lineWidth), color);
-}
-
-void			Canvas::_fillRect(ft::Rect<int> const &rect, ft::Color::t color)
-{
-	int const	left = std::max(rect.left, _clip.left);
-	int const	top = std::max(rect.top, _clip.top);
-	int const	width = std::min(rect.right, _clip.right) - left;
-	int			y;
-
-	y = std::min(rect.bottom, _clip.bottom);
-	if (width > 0)
-		while (--y >= top)
-			putPixel(left, y, color, width);
-}
-
 /*
 ** ========================================================================== **
 ** Render text
 */
-void			Canvas::drawText(ft::Vec2<float> pos, std::string const &text,
+void			ACanvas::drawText(ft::Vec2<float> pos, std::string const &text,
 					Params const &opt)
 {
 	ft::Vec2<int>	int_vec;
@@ -430,7 +345,7 @@ void			Canvas::drawText(ft::Vec2<float> pos, std::string const &text,
 				continue ;
 			glyph_rect.right = face->glyph->bitmap.width;
 			glyph_rect.bottom = face->glyph->bitmap.rows;
-			putAlphaBitmap(int_vec
+			_putAlphaBitmap(int_vec
 				+ ft::make_vec(face->glyph->bitmap_left, -face->glyph->bitmap_top),
 				face->glyph->bitmap.buffer, glyph_rect, face->glyph->bitmap.pitch,
 						   opt.fillColor);
@@ -441,7 +356,7 @@ void			Canvas::drawText(ft::Vec2<float> pos, std::string const &text,
 	return ;
 }
 
-ft::Vec2<int>	Canvas::measureText(std::string const &text, Params const &opt)
+ft::Vec2<int>	ACanvas::measureText(std::string const &text, Params const &opt)
 {
 	ft::Vec2<FT_Fixed>	size(0, 0);
 	FT_Face				face;
@@ -471,7 +386,7 @@ ft::Vec2<int>	Canvas::measureText(std::string const &text, Params const &opt)
 ** ========================================================================== **
 ** Font management
 */
-Canvas::font_t	Canvas::getFont(std::string const &file)
+ACanvas::font_t	ACanvas::getFont(std::string const &file)
 {
 	auto const			&it = g_faces_cache.find(file);
 
@@ -486,7 +401,7 @@ Canvas::font_t	Canvas::getFont(std::string const &file)
 	return (loadFont(file));
 }
 
-Canvas::font_t	Canvas::loadFont(std::string const &file)
+ACanvas::font_t	ACanvas::loadFont(std::string const &file)
 {
 	FT_Face				face;
 
@@ -499,17 +414,17 @@ Canvas::font_t	Canvas::loadFont(std::string const &file)
 /*
 ** Changed Rect
 */
-ft::Rect<int> const	&Canvas::getChangedRect(void) const
+ft::Rect<int> const	&ACanvas::getChangedRect(void) const
 {
 	return (_changedRect);
 }
 
-void				Canvas::resetChangedRect(void)
+void				ACanvas::resetChangedRect(void)
 {
 	_changedRect = ft::make_rect(0, 0, 0, 0);
 }
 
-void				Canvas::applyChangedRect(ft::Vec2<int> vec)
+void				ACanvas::applyChangedRect(ft::Vec2<int> vec)
 {
 	if (_changedRect.left == _changedRect.right
 		|| _changedRect.top == _changedRect.bottom)
@@ -520,7 +435,7 @@ void				Canvas::applyChangedRect(ft::Vec2<int> vec)
 		_changedRect.merge(vec);
 }
 
-void				Canvas::applyChangedRect(ft::Rect<int> const &rect)
+void				ACanvas::applyChangedRect(ft::Rect<int> const &rect)
 {
 	if (_changedRect.left == _changedRect.right
 		|| _changedRect.top == _changedRect.bottom)

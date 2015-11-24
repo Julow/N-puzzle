@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 13:27:39 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 09:16:23 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 11:18:57 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -70,10 +70,10 @@ public:
 	void				setBounds(ft::Vec2<float> bounds);
 
 	/*
-	** Canvas params used to draw the slider bar
+	** ACanvas params used to draw the slider bar
 	*/
-	ftui::Canvas::Params	&getBarParams(void);
-	ftui::Canvas::Params const	&getBarParams(void) const;
+	ftui::ACanvas::Params	&getBarParams(void);
+	ftui::ACanvas::Params const	&getBarParams(void) const;
 
 	/*
 	** Set if the user can change the value
@@ -95,7 +95,7 @@ public:
 	/*
 	** -
 	*/
-	virtual void		onDraw(ftui::Canvas &canvas);
+	virtual void		onDraw(ftui::ACanvas &canvas);
 
 	virtual bool		onMouseDown(int x, int y, int button, int mods);
 	virtual bool		onMouseUp(int x, int y, int button, int mods);
@@ -132,7 +132,7 @@ protected:
 	float				_value;
 	int					_steps;
 
-	ftui::Canvas::Params	_barParams;
+	ftui::ACanvas::Params	_barParams;
 
 	uint32_t			_flags;
 

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 16:09:05 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:22:33 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -67,7 +67,7 @@ PS::~PickState()
 ** ISTATE LEGACY
 */
 
-void            PS::loop(std::unique_ptr<IState> &ptr, ftui::Canvas &can)
+void            PS::loop(std::unique_ptr<IState> &ptr, ftui::ACanvas &can)
 {
 	(void)ptr;
 	this->_b->tiles.render();

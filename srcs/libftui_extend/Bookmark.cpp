@@ -6,12 +6,12 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:15:02 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 16:03:53 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:20:56 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "libftui_extend/Bookmark.hpp"
-#include "ftui/Canvas.hpp"
+#include "ftui/ACanvas.hpp"
 #include "ftui/Button.hpp"
 
 using BM = Bookmark;
@@ -108,7 +108,7 @@ void			BM::onMeasure(void)
 	return ;
 }
 
-void			BM::onDraw(ftui::Canvas &can)
+void			BM::onDraw(ftui::ACanvas &can)
 {
 	FTASSERT(_selHolder != nullptr && _delHolder != nullptr);
 	ft::Vec2<int> const	size = this->_holder->getSize();

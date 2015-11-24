@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/12 08:49:42 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/17 15:36:55 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:13:39 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -48,10 +48,10 @@ TextView::~TextView(void)
 void				TextView::onMeasure(void)
 {
 	ASolidView::onMeasure();
-	_holder->setRequestedSize(Canvas::measureText(_text, _textParams));
+	_holder->setRequestedSize(ACanvas::measureText(_text, _textParams));
 }
 
-void				TextView::onDraw(Canvas &canvas)
+void				TextView::onDraw(ACanvas &canvas)
 {
 	ASolidView::onDraw(canvas);
 	canvas.drawText(ft::make_vec(0.f, 0.f), _text, _textParams);
@@ -67,12 +67,12 @@ void				TextView::setText(std::string const &text)
 	_text = text;
 }
 
-Canvas::font_t		TextView::getFont(void) const
+ACanvas::font_t		TextView::getFont(void) const
 {
 	return (_textParams.font);
 }
 
-void				TextView::setFont(Canvas::font_t font)
+void				TextView::setFont(ACanvas::font_t font)
 {
 	_textParams.font = font;
 }
@@ -109,7 +109,7 @@ void				TextView::setParam(std::string const &k,
 		}},
 		{"textFont", [](TextView *v, std::string const &str)
 		{
-			v->setFont(Canvas::getFont(str));
+			v->setFont(ACanvas::getFont(str));
 		}},
 		{"textColor", [](TextView *v, std::string const &str)
 		{

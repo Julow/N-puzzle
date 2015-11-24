@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/12 08:49:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/17 14:45:19 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:15:03 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -40,13 +40,13 @@ public:
 
 
 	virtual void		onMeasure(void);
-	virtual void		onDraw(Canvas &canvas);
+	virtual void		onDraw(ACanvas &canvas);
 
 	std::string const	&getText(void) const;
 	void				setText(std::string const &text);
 
-	Canvas::font_t		getFont(void) const;
-	void				setFont(Canvas::font_t font);
+	ACanvas::font_t		getFont(void) const;
+	void				setFont(ACanvas::font_t font);
 
 	ft::Color::t		getTextColor(void) const;
 	void				setTextColor(ft::Color::t color);
@@ -58,7 +58,7 @@ public:
 
 protected:
 	std::string			_text;
-	Canvas::Params		_textParams;
+	ACanvas::Params		_textParams;
 
 /*
 ** Static
