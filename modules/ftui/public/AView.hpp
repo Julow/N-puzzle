@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 11:15:04 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 13:39:13 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -165,8 +165,8 @@ public:
 	virtual void				onMouseLeave(int x, int y);
 	virtual void				onAttach(void);
 	virtual void				onDetach(void);
-	virtual void				onEvent(std::string const &event
-										, IEventParams *p);
+	// virtual void				onEvent(std::string const &event
+										// , IEventParams *p);
 	virtual void				onPositionChange(void);
 	// virtual void				onCaptureChange(bool status); //TODO ??
 	virtual void				onSizeChange(void);

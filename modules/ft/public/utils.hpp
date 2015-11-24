@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 13:42:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 11:12:15 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 14:32:32 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -275,6 +275,23 @@ std::string				_tupletostring(std::tuple<ARGS...> const &wrap)
 	return valToString(std::get<I>(wrap)) + ", "
 		+ _tupletostring<I + 1>(wrap);
 }
+
+inline std::string		_typestostring(void)
+{
+	return "";
+}
+template <class Head>
+std::string				_typestostring(void)
+{
+	return std::string(typeid(Head).name());
+}
+template <class Head, class Head2, class... Args>
+std::string				_typestostring(void)
+{
+	return std::string(typeid(Head).name()) + ", "
+		+ _typestostring<Head2, Args...>();
+}
+
 # undef OK_IF
 
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE INTERNAL //
@@ -292,6 +309,11 @@ std::string				tupleToString(std::tuple<Args...> const &tup)
 	return internal::_tupletostring<0>(tup);
 }
 
+template <class ...Args>
+std::string				typesToString(void)
+{
+	return internal::_typestostring<Args...>();
+}
 
 };
 

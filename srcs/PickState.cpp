@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 11:22:33 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 14:00:51 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -53,6 +53,10 @@ PS::PickState(Main &main, OCamlBinding &ocaml)
 	lua_settable(l, -3);
 
 	lua_pop(l, 1);
+
+	this->_b->act.fireEvent("Bordel", 42, std::string("caca"));
+
+
 	return ;
 }
 

@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 16:41:33 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/21 18:13:44 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/24 15:32:48 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -54,7 +54,8 @@ assert(solveButton ~= nil);
 function solveButton:onClick(_, _)
   local bmh = _G['bookmark-holder'];
 
-  local r = math.random(24) - 1;
+  local r = math.random(3) - 1;
+  -- local r = math.random(3) - 1;
   local v = bmh:at(r);
   v:setVisibility(1);
   -- bmh:addView(createView("Bookmark", "view_de_merde"));

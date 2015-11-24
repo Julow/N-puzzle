@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 11:15:02 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 16:30:25 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -86,11 +86,10 @@ public:
 	 *	onFire case3: (AView::onEvent notextended)
 	 *		AView::onEvent			->			self:fname() || self:onEvent()
 	 */
-	// template<typename... Args>
-	// void				registerEvent(std::string const &event, AView *v);
-	// template<class T, typename... Args>
-	// void				registerEvent(
-	// 	std::string const &event, AView *v, bool (T::*callback)(Args...));
+	void				registerEvent(std::string const &event, AView *v);
+	template<class T, typename... Args>
+	void				registerEvent(
+		std::string const &event, T *v, bool (T::*callback)(Args...));
 	void				unregisterEvent(std::string const &event, AView *v);
 
 	/*
@@ -134,7 +133,7 @@ public:
 
 protected:
 	class RootViewHolder;
-	typedef std::unordered_multimap<std::string, IEventBox*> event_map_t;
+	typedef std::unordered_multimap<std::string, EventTarget*> event_map_t;
 
 	RootViewHolder				*_rootView;
 	event_map_t					_eventMap;
