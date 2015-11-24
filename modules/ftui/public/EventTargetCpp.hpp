@@ -6,14 +6,17 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/24 13:20:39 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 19:21:39 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 18:44:00 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef EVENTTARGETCPP_HPP
 # define EVENTTARGETCPP_HPP
 
-#include "EventTarget.hpp"
+# include <typeinfo>
+# include <tuple>
+
+# include "EventTarget.hpp"
 
 namespace ftui // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 13:42:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 14:32:32 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 18:44:34 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -17,6 +17,8 @@
 # include <ostream>
 # include <sstream>
 # include <string>
+# include <typeinfo>
+# include <tuple>
 
 # include "ft/type_traits.hpp"
 # include "ft/Vec.hpp"

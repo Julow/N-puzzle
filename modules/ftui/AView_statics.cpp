@@ -6,11 +6,12 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 17:36:11 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 18:49:31 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include <iostream>
+#include <tuple>
 
 #include "ft/utils.hpp"
 #include "ftui/AView.hpp"

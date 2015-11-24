@@ -324,12 +324,12 @@ $(O_DIR)/ftui/Activity_RootViewHolder.o: ftui/Activity_RootViewHolder.cpp \
 	ft/public/Rect.hpp ft/public/TupleRef.hpp ft/public/Vec.hpp \
 	ft/public/assert.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
-	ft/public/templates/Vec4.tpp ft_xml/public/XmlParser.hpp \
-	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
-	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
-	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
-	ftlua/public/set.hpp ftlua/public/stackassert.hpp \
-	ftlua/public/templates/ftlua_caller.tpp \
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
+	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
+	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
+	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
+	ftlua/public/pop.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
+	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
 	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \
@@ -343,11 +343,12 @@ $(O_DIR)/ftui/Button.o: ftui/Button.cpp ft/public/Color.hpp ft/public/Rect.hpp \
 	ft/public/TupleRef.hpp ft/public/Vec.hpp ft/public/assert.hpp \
 	ft/public/templates/Rect.tpp ft/public/templates/Vec2.tpp \
 	ft/public/templates/Vec3.tpp ft/public/templates/Vec4.tpp \
-	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
-	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
-	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
-	ftlua/public/pop.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
-	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
+	ft/public/type_traits.hpp ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
+	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
+	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
+	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
+	ftlua/public/set.hpp ftlua/public/stackassert.hpp \
+	ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/AView.hpp \
 	ftui/public/Activity.hpp ftui/public/Button.hpp \
@@ -358,9 +359,12 @@ $(O_DIR)/ftui/Button.o: ftui/Button.cpp ft/public/Color.hpp ft/public/Rect.hpp \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h \
 	| $(O_DIR)/ftui/
-$(O_DIR)/ftui/EventTarget.o: ftui/EventTarget.cpp ft/public/TupleRef.hpp \
-	ft/public/assert.hpp ftui/public/EventTarget.hpp ftui/public/libftui.hpp \
-	| $(O_DIR)/ftui/
+$(O_DIR)/ftui/EventTarget.o: ftui/EventTarget.cpp ft/public/Rect.hpp \
+	ft/public/TupleRef.hpp ft/public/Vec.hpp ft/public/assert.hpp \
+	ft/public/templates/Rect.tpp ft/public/templates/Vec2.tpp \
+	ft/public/templates/Vec3.tpp ft/public/templates/Vec4.tpp \
+	ft/public/type_traits.hpp ft/public/utils.hpp ftui/public/EventTarget.hpp \
+	ftui/public/libftui.hpp | $(O_DIR)/ftui/
 $(O_DIR)/ftui/HorizontalLayout.o: ftui/HorizontalLayout.cpp \
 	ft/public/Color.hpp ft/public/Rect.hpp ft/public/Vec.hpp \
 	ft/public/assert.hpp ft/public/templates/Rect.tpp \
@@ -406,12 +410,12 @@ $(O_DIR)/ftui/SliderView.o: ftui/SliderView.cpp ft/public/Color.hpp \
 	ft/public/Rect.hpp ft/public/TupleRef.hpp ft/public/Vec.hpp \
 	ft/public/assert.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
-	ft/public/templates/Vec4.tpp ft_xml/public/XmlParser.hpp \
-	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
-	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
-	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
-	ftlua/public/set.hpp ftlua/public/stackassert.hpp \
-	ftlua/public/templates/ftlua_caller.tpp \
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
+	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
+	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
+	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
+	ftlua/public/pop.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
+	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ASolidView.hpp \
 	ftui/public/AView.hpp ftui/public/Activity.hpp ftui/public/EventTarget.hpp \

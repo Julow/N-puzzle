@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/24 13:08:54 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 19:46:29 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 20:05:09 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -39,9 +39,6 @@ public:
 	AView					*getView(void);
 	virtual bool			isLuaCall(void) const;
 	virtual bool			cppCall(ft::ITupleRef *tup);
-
-	template <Args...>
-	bool					isCompatible();
 
 protected:
 	AView					*_v;

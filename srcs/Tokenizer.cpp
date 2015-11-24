@@ -6,13 +6,14 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/17 17:07:25 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 10:45:02 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 18:48:29 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "Tokenizer.hpp"
 #include "ft/utils.hpp"
 #include <cstdlib>
+#include <cstring>
 
 Tokenizer::Tokenizer(token_def_s const *defs, int def_count) :
 	_defs(defs),
