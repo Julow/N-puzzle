@@ -6,12 +6,12 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:47 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 11:13:57 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:15:05 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "ftui/VerticalLayout.hpp"
-#include "ftui/Canvas.hpp"
+#include "ftui/ACanvas.hpp"
 #include "ft_xml/XmlParser.hpp"
 #include "ft/utils.hpp"
 
@@ -160,7 +160,7 @@ static ft::Rect<int>	calc_redraw_clip(
 	return clip;
 }
 
-void			VerticalLayout::onDraw(Canvas &canvas)
+void			VerticalLayout::onDraw(ACanvas &canvas)
 {
 	float const			oldAlpha = canvas.getAlpha();
 	ft::Vec2<int> const	oldOrigin = canvas.getOrigin();

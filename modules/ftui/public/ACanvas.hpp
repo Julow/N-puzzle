@@ -1,12 +1,12 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   Canvas.hpp                                         :+:      :+:    :+:   //
+//   ACanvas.hpp                                        :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 09:44:40 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:15:02 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,7 +18,6 @@
 # include "ft/Color.hpp"
 # include "ft/Rect.hpp"
 # include "ft/Vec.hpp"
-# include "ft/utils.hpp"
 
 # include "ftui/ftlua_extend.hpp"
 # include "ftui/libftui.hpp"
@@ -27,21 +26,20 @@ namespace ftui
 {
 
 /*
-** Canvas
+** ACanvas
 ** -
 ** Draw
 ** -
 ** TODO: default font
-** TODO: ACanvas
 */
-class	Canvas
+class	ACanvas
 {
 public:
 	typedef uint32_t	font_t;
 
 /*
 ** ========================================================================== **
-** Canvas::Params
+** ACanvas::Params
 ** -
 ** 						drawRect			drawText
 ** strokeColor			Border color		-
@@ -61,22 +59,11 @@ public:
 /*
 ** ========================================================================== **
 */
-	Canvas(ft::Color::t *bitmap, int width, int height);
-	Canvas				&operator=(Canvas &&rhs);
-	virtual ~Canvas(void);
+	ACanvas(int width, int height);
 
-	Canvas(Canvas const &src) = delete;
-	Canvas				&operator=(Canvas const &rhs) = delete;
+	virtual ~ACanvas(void);
 
-	operator ftlua::Converter<Canvas>()
-		{
-			return ftlua::Converter<Canvas>(
-				*this, [](lua_State *l, Canvas &v)
-				{
-					return ftlua::pushLightKey(l, &v);
-				});
-		}
-
+	// ACanvas				&operator=(ACanvas &&rhs);
 
 /*
 ** ========================================================================== **
@@ -148,7 +135,7 @@ public:
 	/*
 	** Draw a rect
 	*/
-	void				drawRect(ft::Rect<float> const &rect, Params const &p);
+	virtual void		drawRect(ft::Rect<float> const &rect, Params const &p);
 
 	/*
 	** Draw text
@@ -156,7 +143,7 @@ public:
 	** opt.fillColor is used as text color
 	** opt.lineWidth is used as font size
 	*/
-	void				drawText(ft::Vec2<float> pos, std::string const &text,
+	virtual void		drawText(ft::Vec2<float> pos, std::string const &text,
 							Params const &opt);
 
 /*
@@ -180,6 +167,8 @@ public:
 ** ========================================================================== **
 ** Lua interactions
 */
+	operator ftlua::Converter<ACanvas>();
+
 	static void			pushTemplate(lua_State *l);
 	static int			drawRectG(lua_State *l);
 	static int			drawTextG(lua_State *l);
@@ -193,16 +182,11 @@ public:
 ** ========================================================================== **
 ** Bitmap
 */
-	ft::Color::t const	*getBitmap(void) const;
-
-	int					getBitmapWidth(void) const;
-	int					getBitmapHeight(void) const;
-
 	/*
 	** Clear the whole canvas (or 'rect') with transparent (0x0) pixels
 	*/
-	void				clear(void);
-	void				clear(ft::Rect<int> const &rect);
+	virtual void		clear(void) = 0;
+	virtual void		clear(ft::Rect<int> const &rect) = 0;
 
 /*
 ** ========================================================================== **
@@ -215,7 +199,6 @@ public:
 
 protected:
 
-	ft::Color::t		*_bitmap;
 	int					_width;
 	int					_height;
 
@@ -229,40 +212,10 @@ protected:
 
 	font_t				_luaFont;
 
-	void				_strokeRect(ft::Rect<int> const &rect, ft::Color::t color,
-							int lineWidth);
-	void				_fillRect(ft::Rect<int> const &rect, ft::Color::t color);
-
-/*
-** Bitmap
-*/
-	inline void			putPixel(int x, int y, ft::Color::t color)
-	{
-		y = y * _width + x;
-		if (ft::Color::a(color) < 255)
-		{
-			_bitmap[y] = ft::Color::put(_bitmap[y], color);
-		}
-		else
-		{
-			_bitmap[y] = color;
-		}
-	}
-
-	inline void			putPixel(int x, int y, ft::Color::t color, int n)
-	{
-		x += y * _width;
-		n += x;
-		if (ft::Color::a(color) < 255)
-			while (x < n)
-			{
-				_bitmap[x] = ft::Color::put(_bitmap[x], color);
-				x++;
-			}
-		else
-			while (x < n)
-				_bitmap[x++] = color;
-	}
+	virtual void		_strokeRect(ft::Rect<int> const &rect,
+							ft::Color::t color, int lineWidth) = 0;
+	virtual void		_fillRect(ft::Rect<int> const &rect,
+							ft::Color::t color) = 0;
 
 	/*
 	** Put 'color' applying alpha in 'bitmap'
@@ -272,9 +225,9 @@ protected:
 	** 'pitch'	Size of a row (in bitmap)
 	** 'color'	The color to put after applying alpha
 	*/
-	void				putAlphaBitmap(ft::Vec2<int> pos, uint8_t const *bitmap,
-							ft::Rect<int> const &rect, int pitch,
-							ft::Color::t color);
+	virtual void		_putAlphaBitmap(ft::Vec2<int> pos,
+							uint8_t const *bitmap, ft::Rect<int> const &rect,
+							int pitch, ft::Color::t color) = 0;
 
 /*
 ** Changed Rect
@@ -288,7 +241,10 @@ protected:
 	static font_t		loadFont(std::string const &file);
 
 private:
-	Canvas(void);
+	ACanvas(void) = delete;
+	ACanvas(ACanvas const &src) = delete;
+	ACanvas				&operator=(ACanvas const &rhs) = delete;
+
 };
 
 };

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 11:30:59 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:15:04 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,7 +16,7 @@
 #include "ft/utils.hpp"
 #include "ftui/Activity.hpp"
 #include "ftui/AView.hpp"
-#include "ftui/Canvas.hpp"
+#include "ftui/ACanvas.hpp"
 #include "ft_xml/XmlParser.hpp"
 
 namespace ftui
@@ -59,7 +59,7 @@ static lua_State	*new_lua_env()
 	FTASSERT(err == LUA_OK);
 	ftlua::set(l, "createView", &Activity::createViewG);
 	ftlua::pushUtils(l);
-	Canvas::pushTemplate(l);
+	ACanvas::pushTemplate(l);
 	AView::pushViewTemplates(l);
 	return l;
 }
@@ -120,7 +120,7 @@ void			Activity::saveScriptPath(std::string const &str)
 // LOOP TIME
 //
 
-void			Activity::render(Canvas &canvas)
+void			Activity::render(ACanvas &canvas)
 {
 	AView		*rv;
 

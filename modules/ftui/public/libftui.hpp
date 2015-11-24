@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:55:01 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 08:33:40 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 11:14:54 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -72,7 +72,7 @@ namespace ftui
 ** 				Called from it's parent when registered "queryMeasure()"
 ** 				Have to measure and set the view requested size by using:
 ** 					getViewHolder()->setMeasuredSize()
-** 		onDraw				Canvas &canvas
+** 		onDraw				ACanvas &canvas
 ** 				Called from it's parent when registered "queryRedraw()"
 ** 				Have to draw the view into the canvas
 ** 		onMouseScroll		int x, int y, float delta
@@ -172,12 +172,12 @@ namespace ftui
 ** ========================================================================== **
 ** Lua methods
 ** -
-** -- Canvas
-** Canvas:drawRect(left:int, top:int, right:int, bottom:int, fillColor:int,
+** -- ACanvas
+** ACanvas:drawRect(left:int, top:int, right:int, bottom:int, fillColor:int,
 ** 				strokeColor:int = 0, lineWidth:int = 0)
-** Canvas:drawText(text:str, x:int, y:int, color:int, fontSize:int)
-** Canvas:measureText(text:str, fontSize:int)
-** Canvas:setFont(file_name:str)
+** ACanvas:drawText(text:str, x:int, y:int, color:int, fontSize:int)
+** ACanvas:measureText(text:str, fontSize:int)
+** ACanvas:setFont(file_name:str)
 */
 
 /*
@@ -191,7 +191,7 @@ class	IEventParams;
 template<typename... Args>			class EventParams;
 template<typename... Args>			class DefaultEventBox;
 
-class	Canvas;
+class	ACanvas;
 
 class	AView;
 class	SliderView;

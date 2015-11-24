@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:32:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 14:51:08 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 11:15:04 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -87,7 +87,7 @@ void		Button::onDetach(void)
 ** DRAW
 */
 
-void		Button::onDraw(Canvas &canvas)
+void		Button::onDraw(ACanvas &canvas)
 {
 	IViewHolder		*vh = this->getViewHolder();
 
@@ -211,31 +211,31 @@ bool		Button::getState(void)
 	return _state;
 }
 
-Canvas::Params const	&Button::getNormalParams(void) const
+ACanvas::Params const	&Button::getNormalParams(void) const
 { return this->_normal ; }
 
-void					Button::setNormalParams(Canvas::Params const &p)
+void					Button::setNormalParams(ACanvas::Params const &p)
 { this->_normal = p; }
 
 
-Canvas::Params const	&Button::getDisabledParams(void) const
+ACanvas::Params const	&Button::getDisabledParams(void) const
 { return this->_disabled ; }
 
-void					Button::setDisabledParams(Canvas::Params const &p)
+void					Button::setDisabledParams(ACanvas::Params const &p)
 { this->_disabled = p; }
 
 
-Canvas::Params const	&Button::getPushedParams(void) const
+ACanvas::Params const	&Button::getPushedParams(void) const
 { return this->_pushed ; }
 
-void					Button::setPushedParams(Canvas::Params const &p)
+void					Button::setPushedParams(ACanvas::Params const &p)
 { this->_pushed = p; }
 
 
-Canvas::Params const	&Button::getHighlightParams(void) const
+ACanvas::Params const	&Button::getHighlightParams(void) const
 { return this->_highlight ; }
 
-void					Button::setHighlightParams(Canvas::Params const &p)
+void					Button::setHighlightParams(ACanvas::Params const &p)
 { this->_highlight = p; }
 
 };

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:12:43 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/17 15:39:22 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:14:59 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -61,7 +61,7 @@ public:
 
 	virtual void			onUpdate(void);
 	virtual void			onMeasure(void);
-	virtual void			onDraw(Canvas &canvas);
+	virtual void			onDraw(ACanvas &canvas);
 
 	virtual void			onSizeChange(void);
 

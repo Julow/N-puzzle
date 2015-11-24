@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:37 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 20:06:30 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:15:03 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,7 +15,7 @@
 
 # include "ft/Color.hpp"
 # include "ftui/AView.hpp"
-# include "ftui/Canvas.hpp"
+# include "ftui/ACanvas.hpp"
 
 namespace ftui
 {
@@ -30,7 +30,7 @@ class	ASolidView : public AView
 public:
 	virtual ~ASolidView(void);
 
-	virtual void		onDraw(Canvas &canvas);
+	virtual void		onDraw(ACanvas &canvas);
 
 	virtual void		setParam(std::string const &p, std::string const &v);
 
@@ -47,7 +47,7 @@ protected:
 	ASolidView(Activity &act, ft::XmlParser const &xml);
 	ASolidView(Activity &act, std::string const *id, std::string const &viewName);
 
-	Canvas::Params		_bgParams;
+	ACanvas::Params		_bgParams;
 
 private:
 	ASolidView(void);

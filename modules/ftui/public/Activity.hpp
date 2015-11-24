@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 19:49:55 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/24 11:15:02 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -52,7 +52,7 @@ public:
 	Activity			&operator=(Activity const &rhs) = delete;
 
 	// LOOP TIME ==================== //
-	void				render(Canvas &canvas);
+	void				render(ACanvas &canvas);
 
 	bool				onKeyUp(int key_code, int mods);
 	bool				onKeyDown(int key_code, int mods);
