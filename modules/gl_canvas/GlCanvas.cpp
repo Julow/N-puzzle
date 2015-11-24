@@ -6,11 +6,14 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/24 10:07:06 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 11:25:30 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/24 11:36:17 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#include "GlCanvas.hpp"
+#include "gl_canvas/GlCanvas.hpp"
+
+namespace gl
+{
 
 GlCanvas::GlCanvas(ft::Color::t *bitmap, int width, int height) :
 	ACanvas(width, height),
@@ -103,3 +106,5 @@ void			GlCanvas::_fillRect(ft::Rect<int> const &rect, ft::Color::t color)
 		while (--y >= top)
 			putPixel(left, y, color, width);
 }
+
+};
