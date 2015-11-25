@@ -11,4 +11,9 @@ TODO LIST
 	multithread canvas
 	AbsoluteLayout, ScrollableLayout, RelativeLayout
 	Gen big databases
-	merge liblua and ftlua // LOL PA POSSIBL
+
+	merge VerticalLayout and HorizontalLayout
+
+	move AView::defineView to Activity::defineClass
+
+	LinearLayout direction REV_VERTICAL and REV_HORIZONTAL

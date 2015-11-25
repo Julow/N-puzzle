@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 18:49:31 by juloo            ###   ########.fr       //
+//   Updated: 2015/11/25 14:41:47 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -29,6 +29,10 @@ namespace ftui
 
 #define INSG(T, N) std::make_tuple(#N, &T::N##G)
 #define INSG_AV(N) INSG(AView, N)
+
+/*
+** TODO: enums and static functions
+*/
 
 AView::views_info_t				AView::viewsInfo
 {
@@ -67,8 +71,9 @@ AView::views_info_t				AView::viewsInfo
 	{"ALayout", {"ASolidView", nullptr, {
 		INSG(ALayout, size), INSG(ALayout, at), INSG(ALayout, addView)
 	}, "ALayout = ftui.ALayoutdef; ftui.ALayoutdef = nil;"}},
-	{"VerticalLayout", {"ALayout", &VerticalLayout::createView, {}, {}}},
-	{"HorizontalLayout", {"ALayout", &HorizontalLayout::createView, {}, {}}},
+	{"LinearLayout", {"ALayout", &LinearLayout::createView, {
+		INSG(LinearLayout, getDirection), INSG(LinearLayout, setDirection),
+	}, {}}},
 	{"SolidView", {"ASolidView", &SolidView::createView, {}, {}}},
 };
 

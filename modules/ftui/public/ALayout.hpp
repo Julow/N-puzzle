@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 13:24:46 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/25 14:06:45 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -90,7 +90,7 @@ public:
 
 	virtual int					size(void) const = 0;
 
-	virtual IViewHolder			*holderAt(int i) = 0; // TODO: check Moved to public
+	virtual IViewHolder			*holderAt(int i) = 0;
 
 public:
 /*

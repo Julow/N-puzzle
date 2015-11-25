@@ -1,20 +1,19 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   VerticalLayout.hpp                                 :+:      :+:    :+:   //
+//   LinearLayout.hpp                                   :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/09/22 13:12:43 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 13:25:31 by jaguillo         ###   ########.fr       //
+//   Created: 2015/11/25 13:24:07 by jaguillo          #+#    #+#             //
+//   Updated: 2015/11/25 15:18:48 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#ifndef VERTICALLAYOUT_HPP
-# define VERTICALLAYOUT_HPP
+#ifndef LINEARLAYOUT_HPP
+# define LINEARLAYOUT_HPP
 
-# include <vector>
-
+# include "ftui/Activity.hpp"
 # include "ftui/ALayout.hpp"
 # include "ftui/IViewHolder.hpp"
 
@@ -23,58 +22,68 @@ namespace ftui
 
 /*
 ** ========================================================================== **
-** VerticalLayout
+** LinearLayout
 ** -
-** Childs:
-** * Are ordered vertically
-** * Can be horizontally aligned
-** * Support marginTop and marginBottom
-** * Requested height is always used
-** * Requested width can be clamped to layout's width
-** * Are not shrinked if height go outside layout's height
-**    but are partially hidden
+** Params:
+** 	direction		(enum)	VERTICAL or HORIZONTAL
 ** -
 ** Childs params:
-** 	marginTop		(int)	Extra margin with the previous view
-** 	marginBottom	(int)	Extra margin with the next view
-** 	verticalAlign	(enum)	LEFT, CENTER or RIGHT
+** 	align			(enum)	LEFT, TOP, RIGHT, BOTTOM or CENTER
+** 								LEFT and RIGHT for VERTICAL layouts
+** 								TOP and BOTTOM for HORIZONTAL layouts
 ** 	width			(uint)	Requested width
 ** 	height			(uint)	Requested height
+** 	marginLeft		(int)	Extra margin at the left of the view
+** 	marginTop		(int)
+** 	marginRight		(int)
+** 	marginBottom	(int)
+** -
 */
-class	VerticalLayout : public ALayout
+class	LinearLayout : public ALayout
 {
 public:
+
 	class	ViewHolder;
-	typedef std::vector<ViewHolder*>	child_container_t;
 
 	enum class	Align
 	{
-		LEFT,
-		CENTER,
-		RIGHT
+		LEFT = 0,
+		TOP = LEFT,
+		RIGHT = 1,
+		BOTTOM = RIGHT,
+		CENTER = 2
 	};
 
-	static AView			*createView(
-		ftui::Activity &act, ft::XmlParser const *xml, std::string const *id);
+	enum class	Direction
+	{
+		VERTICAL = 0,
+		HORIZONTAL = 1
+	};
 
-	VerticalLayout(Activity &act, ft::XmlParser const &xml);
-	VerticalLayout(Activity &act, std::string const *id
-	 , std::string const &viewName = "VerticalLayout");
-	virtual ~VerticalLayout(void);
+	/*
+	** Constructs
+	*/
+	static AView			*createView(Activity &act, ft::XmlParser const *xml,
+								std::string const *id);
 
-	VerticalLayout(void) = delete;
-	VerticalLayout(VerticalLayout const &src) = delete;
-	VerticalLayout			&operator=(VerticalLayout const &rhs) = delete;
+	LinearLayout(Activity &act, ft::XmlParser const &xml);
+	LinearLayout(Activity &act, std::string const *id,
+		std::string const &viewName = "LinearLayout");
 
+	virtual ~LinearLayout(void);
+
+	/*
+	** Callbacks
+	*/
 	virtual void			onUpdate(void);
 	virtual void			onMeasure(void);
 	virtual void			onDraw(ACanvas &canvas);
 
 	virtual void			onSizeChange(void);
 
-/*
-** Childs
-*/
+	/*
+	** Childs
+	*/
 	virtual void			addView(AView *v);
 	virtual AView			*popView(AView *v);
 
@@ -83,30 +92,48 @@ public:
 
 	virtual int				size(void) const;
 
+	virtual IViewHolder		*holderAt(int i);
+
+	/*
+	** -
+	*/
+	Direction				getDirection(void) const;
+	void					setDirection(Direction o);
+
+	virtual void			setParam(std::string const &k,
+								std::string const &v);
+
+	/*
+	** Lua
+	*/
+	static int				getDirectionG(lua_State *l);
+	static int				setDirectionG(lua_State *l);
+
 protected:
 
-	std::vector<ViewHolder*>	_childs;
+	typedef std::vector<ViewHolder*>	child_container_t;
 
-	virtual IViewHolder		*holderAt(int i);
+	child_container_t		_childs;
 
 	virtual void			alignChilds(void);
 
-/*
-** Static
-*/
-public:
-
+private:
+	LinearLayout(void) = delete;
+	LinearLayout(LinearLayout const &src) = delete;
+	LinearLayout			&operator=(LinearLayout const &rhs) = delete;
 };
 
 /*
-** VerticalLayout::ViewHolder
+** LinearLayout::ViewHolder
 ** -
 */
-class	VerticalLayout::ViewHolder : public IViewHolder
+class	LinearLayout::ViewHolder : public IViewHolder
 {
 public:
+
+	ViewHolder(LinearLayout *p, AView *v);
+
 	virtual ~ViewHolder(void);
-	ViewHolder(VerticalLayout *p, AView *v);
 
 /*
 ** Impl
@@ -137,25 +164,23 @@ public:
 	*/
 	void					setSize(ft::Vec2<int> size);
 
-	ft::Vec2<int>			getVerticalMargin(void) const;
-	void					setVerticalMargin(ft::Vec2<int> margin);
-	ft::Vec2<int>			getHorizontalMargin(void) const;
-	void					setHorizontalMargin(ft::Vec2<int> margin);
-	Align					getHorizontalAlign(void) const;
-	void					setHorizontalAlign(Align align);
+	ft::Rect<int> const		&getMargin(void) const;
+	void					setMargin(ft::Rect<int> const &margin);
+
+	Align					getAlign(void) const;
+	void					setAlign(LinearLayout::Align align);
 
 protected:
 
 	AView					*_view;
-	VerticalLayout			*_parent;
+	LinearLayout			*_parent;
 
 	ft::Vec2<int>			_pos;
 	ft::Vec2<int>			_size;
 	ft::Vec2<int>			_requestedSize;
 
-	ft::Vec2<int>			_verticalMargin;
-	ft::Vec2<int>			_horizontalMargin;
-	Align					_horizontalAlign;
+	ft::Rect<int>			_margin;
+	LinearLayout::Align		_align;
 
 private:
 	ViewHolder(void) = delete;
