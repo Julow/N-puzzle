@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:58 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/09 18:58:12 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/25 18:47:31 by jaguillo         ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -292,7 +292,7 @@ let goal w =
 
 let generate w solvable =
 
-  let try_successor ((mat, piv) as gr) =
+  let try_successor ((mat, piv) (* as gr *)) =
 	let x0, y0 = pivxy piv in
 	let dirs = [|(1, 0); (0, 1); (-1, 0); (0, -1)|] in
 

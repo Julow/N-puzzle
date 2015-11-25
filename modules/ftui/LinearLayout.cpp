@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/25 13:23:56 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/25 16:09:15 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/25 18:40:45 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -304,23 +304,27 @@ void			LinearLayout::setDirection(Direction o)
 void			LinearLayout::setParam(std::string const &k,
 					std::string const &v)
 {
+	static std::unordered_map<std::string, Direction> const direction_map
+	{
+		{"vertical", Direction::VERTICAL},
+		{"horizontal", Direction::HORIZONTAL},
+	};
 	static std::unordered_map<std::string, bool (*)(LinearLayout*,
 		std::string const &)> const		param_map
 	{
 		{"direction", [](LinearLayout *holder, std::string const &v)
 		{
-			if (v == "vertical")
-				holder->setDirection(LinearLayout::Direction::VERTICAL);
-			else if (v == "horizontal")
-				holder->setDirection(LinearLayout::Direction::HORIZONTAL);
-			else
+			auto const		&it = direction_map.find(v);
+
+			if (it == direction_map.cend())
 				return (false);
+			holder->setDirection(it->second);
 			return (true);
-		}}
+		}},
 	};
 	auto const		&it = param_map.find(k);
 
-	if (it != param_map.end())
+	if (it != param_map.cend())
 	{
 		if (!it->second(this, v))
 			throw std::domain_error(ft::f("LinearLayout::setParam: "

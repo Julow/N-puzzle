@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/25 16:37:10 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/25 18:43:32 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -100,6 +100,52 @@ public:
 	 */
 	template<typename... Args>
 	bool				fireEvent(std::string const &event, Args... args);
+
+	// ====================================================================== //
+	// Lua init
+	// ====================================================================== //
+
+	typedef AView		*(*view_factory_t)(Activity &, ft::XmlParser const *,
+							std::string const *);
+
+	struct view_info_s
+	{
+		typedef std::tuple<std::string, lua_CFunction>	luamethod_t;
+
+		std::string					parent;
+		view_factory_t				factory;
+		std::vector<luamethod_t>	luaMethods;
+		std::string					tableInit;
+	};
+
+	typedef std::unordered_map<std::string, view_info_s>	views_info_t;
+	static views_info_t				viewsInfo;
+
+	typedef std::unordered_map<std::string, uint32_t>	callback_map_t;
+	static callback_map_t			callback_map;
+
+	/*
+	 *  defineClass()
+	 *  Define a view class so that can be created from a xml file
+	 *  ********************************************************************* **
+	 *  It should be done once for all custom views,
+	 *    and before any xml inflating.
+	 */
+	static void				defineClass(std::string const &name,
+						std::string const &parent,
+						view_factory_t factory,
+						std::vector<view_info_s::luamethod_t> luaMethods = {},
+						std::string const &tableInit = {});
+
+	static void						pushViewTemplates(lua_State *l);
+
+	static view_factory_t	getFactory(std::string const &name);
+
+	/*
+	** Register a lua callback
+	*/
+	static void						registerLuaCallback(std::string const &name,
+										uint32_t id);
 
 	/*
 	 *	registerGFun() 		Registers a cfun to lua _G

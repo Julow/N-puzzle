@@ -1,16 +1,15 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   AView_statics.cpp                                  :+:      :+:    :+:   //
+//   Activity_luaDef.cpp                                :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
-//   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
+//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/25 16:21:50 by jaguillo         ###   ########.fr       //
+//   Created: 2015/11/25 18:03:11 by jaguillo          #+#    #+#             //
+//   Updated: 2015/11/25 18:41:46 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#include <iostream>
 #include <tuple>
 
 #include "ft/utils.hpp"
@@ -29,7 +28,7 @@ namespace ftui
 #define INSG(T, N) std::make_tuple(#N, &T::N##G)
 #define INSG_AV(N) INSG(AView, N)
 
-AView::views_info_t				AView::viewsInfo
+Activity::views_info_t		Activity::viewsInfo
 {
 	{"AView", {"", nullptr, {
 		INSG_AV(setRequestedSize), INSG_AV(setAlpha), INSG_AV(setVisibility),
@@ -73,62 +72,62 @@ AView::views_info_t				AView::viewsInfo
 	{"SolidView", {"ASolidView", &SolidView::createView, {}, {}}},
 };
 
-#define LUA_CALLBACK_ID(NAME)	static_cast<uint32_t>(AView::LuaCallback::NAME)
+#define LUA_CALLBACK_ID(V,NAME)	static_cast<uint32_t>(V::LuaCallback::NAME)
 
-AView::callback_map_t	AView::callback_map
+Activity::callback_map_t	Activity::callback_map
 {
-	{"onMouseScroll",		LUA_CALLBACK_ID(MOUSE_SCROLL)},
-	{"onUpdate",			LUA_CALLBACK_ID(UPDATE)},
-	{"onMeasure",			LUA_CALLBACK_ID(MEASURE)},
-	{"onDraw",				LUA_CALLBACK_ID(DRAW)},
-	{"onMouseScroll",		LUA_CALLBACK_ID(MOUSE_SCROLL)},
-	{"onMouseDown",			LUA_CALLBACK_ID(MOUSE_DOWN)},
-	{"onMouseUp",			LUA_CALLBACK_ID(MOUSE_UP)},
-	{"onMouseMove",			LUA_CALLBACK_ID(MOUSE_MOVE)},
-	{"onKeyDown",			LUA_CALLBACK_ID(KEY_DOWN)},
-	{"onKeyUp",				LUA_CALLBACK_ID(KEY_UP)},
-	{"onMouseEnter",		LUA_CALLBACK_ID(MOUSE_ENTER)},
-	{"onMouseLeave",		LUA_CALLBACK_ID(MOUSE_LEAVE)},
-	{"onEvent",				LUA_CALLBACK_ID(EVENT)},
-	{"onPositionChange",	LUA_CALLBACK_ID(POSITION_CHANGE)},
-	{"onCaptureChange",		LUA_CALLBACK_ID(CAPTURE_CHANGE)},
-	{"onSizeChange",		LUA_CALLBACK_ID(SIZE_CHANGE)},
-	{"onVisibilityChange",	LUA_CALLBACK_ID(VISIBILITY_CHANGE)},
-	{"onAttach",			LUA_CALLBACK_ID(ATTACH)},
-	{"onDetach",			LUA_CALLBACK_ID(ATTACH)},
+	{"onMouseScroll",		LUA_CALLBACK_ID(AView, MOUSE_SCROLL)},
+	{"onUpdate",			LUA_CALLBACK_ID(AView, UPDATE)},
+	{"onMeasure",			LUA_CALLBACK_ID(AView, MEASURE)},
+	{"onDraw",				LUA_CALLBACK_ID(AView, DRAW)},
+	{"onMouseScroll",		LUA_CALLBACK_ID(AView, MOUSE_SCROLL)},
+	{"onMouseDown",			LUA_CALLBACK_ID(AView, MOUSE_DOWN)},
+	{"onMouseUp",			LUA_CALLBACK_ID(AView, MOUSE_UP)},
+	{"onMouseMove",			LUA_CALLBACK_ID(AView, MOUSE_MOVE)},
+	{"onKeyDown",			LUA_CALLBACK_ID(AView, KEY_DOWN)},
+	{"onKeyUp",				LUA_CALLBACK_ID(AView, KEY_UP)},
+	{"onMouseEnter",		LUA_CALLBACK_ID(AView, MOUSE_ENTER)},
+	{"onMouseLeave",		LUA_CALLBACK_ID(AView, MOUSE_LEAVE)},
+	{"onEvent",				LUA_CALLBACK_ID(AView, EVENT)},
+	{"onPositionChange",	LUA_CALLBACK_ID(AView, POSITION_CHANGE)},
+	{"onCaptureChange",		LUA_CALLBACK_ID(AView, CAPTURE_CHANGE)},
+	{"onSizeChange",		LUA_CALLBACK_ID(AView, SIZE_CHANGE)},
+	{"onVisibilityChange",	LUA_CALLBACK_ID(AView, VISIBILITY_CHANGE)},
+	{"onAttach",			LUA_CALLBACK_ID(AView, ATTACH)},
+	{"onDetach",			LUA_CALLBACK_ID(AView, ATTACH)},
 
-	{"onClick", static_cast<uint32_t>(Button::LuaCallback::CLICK)},
-	{"onDoubleClick", static_cast<uint32_t>(Button::LuaCallback::DOUBLE_CLICK)},
+	{"onClick",				LUA_CALLBACK_ID(Button, CLICK)},
+	{"onDoubleClick",		LUA_CALLBACK_ID(Button, DOUBLE_CLICK)},
 
-	{"onValueChange", static_cast<uint32_t>(SliderView::LuaCallback::VALUE_CHANGE)},
+	{"onValueChange",		LUA_CALLBACK_ID(SliderView, VALUE_CHANGE)},
 };
 
-AView::view_info_s::factory_t	AView::getFactory(std::string const &name)
+Activity::view_factory_t	Activity::getFactory(std::string const &name)
 {
-	AView::view_info_s		f;
+	view_info_s			f;
 
-	f = AView::viewsInfo.at(name);
+	f = Activity::viewsInfo.at(name);
 	return (f.factory);
 }
 
-void				AView::defineView(
+void				Activity::defineClass(
 	std::string const &name,
 	std::string const &parent,
-	view_info_s::factory_t factory,
+	Activity::view_factory_t factory,
 	std::vector<view_info_s::luamethod_t> luaMethods /* = ...*/,
 	std::string const &tableInit /* = ...*/)
 {
-	if (!AView::viewsInfo.insert(std::make_pair(name,
-			AView::view_info_s{parent, factory, luaMethods, tableInit})).second)
-		throw std::domain_error(ft::f("AView::defineView: "
+	if (!Activity::viewsInfo.insert(std::make_pair(name,
+			Activity::view_info_s{parent, factory, luaMethods, tableInit})).second)
+		throw std::domain_error(ft::f("Activity::defineClass: "
 									  "View % already defined", name));
 	return ;
 }
 
-void			AView::registerLuaCallback(std::string const &name, uint32_t id)
+void			Activity::registerLuaCallback(std::string const &name, uint32_t id)
 {
 	if (!callback_map.insert(std::make_pair(name, id)).second)
-		throw std::domain_error(ft::f("AView::registerLuaCallback: "
+		throw std::domain_error(ft::f("Activity::registerLuaCallback: "
 									  "Lua callback registered twice (%)",
 			name));
 }
@@ -150,7 +149,7 @@ static void     init_template_table(
 static void     push_luacfun_methods(
 	    lua_State *l
 		, std::string const &view_name
-		, std::vector<AView::view_info_s::luamethod_t> const &methods)
+		, std::vector<Activity::view_info_s::luamethod_t> const &methods)
 {
 	for (auto const &itm : methods)
 		ftlua::set(l, ftlua::make_keys(view_name)
@@ -159,7 +158,7 @@ static void     push_luacfun_methods(
 }
 
 static void     finalize_template(
-	lua_State *l, std::string const &name, AView::view_info_s const &i)
+	lua_State *l, std::string const &name, Activity::view_info_s const &i)
 {
 	int     err;
 
@@ -170,16 +169,15 @@ static void     finalize_template(
 	return ;
 }
 
-void			AView::pushViewTemplates(lua_State *l)
+void			Activity::pushViewTemplates(lua_State *l)
 {
-	for (auto const &it : AView::viewsInfo)
+	for (auto const &it : Activity::viewsInfo)
 		init_template_table(l, it.first, it.second.tableInit);
-	for (auto const &it : AView::viewsInfo)
+	for (auto const &it : Activity::viewsInfo)
 		push_luacfun_methods(l, it.first, it.second.luaMethods);
-	for (auto const &it : AView::viewsInfo)
+	for (auto const &it : Activity::viewsInfo)
 		finalize_template(l, it.first, it.second);
 	return ;
 }
-
 
 };

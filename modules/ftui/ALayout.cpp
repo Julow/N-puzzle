@@ -6,11 +6,12 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 13:24:05 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/25 18:21:23 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "ftui/ALayout.hpp"
+#include "ftui/Activity.hpp"
 #include "ft_xml/XmlParser.hpp"
 #include "ftui/IViewHolder.hpp"
 #include "ft/utils.hpp"
@@ -228,7 +229,7 @@ void				ALayout::inflate(Activity &a, ft::XmlParser &xml)
 	{
 		if (state == ft::XmlParser::State::START)
 		{
-			v = AView::getFactory(xml.getMarkupName())(a, &xml, nullptr);
+			v = Activity::getFactory(xml.getMarkupName())(a, &xml, nullptr);
 			this->addView(v);
 			v->inflate(a, xml);
 		}

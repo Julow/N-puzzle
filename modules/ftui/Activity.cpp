@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/25 16:37:49 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/25 18:44:34 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -70,7 +70,7 @@ static lua_State	*new_lua_env()
 	ftlua::set(l, "createView", &Activity::createViewG);
 	ftlua::pushUtils(l);
 	ACanvas::pushTemplate(l);
-	AView::pushViewTemplates(l);
+	Activity::pushViewTemplates(l);
 	return l;
 }
 
@@ -140,7 +140,7 @@ void			Activity::inflate(std::istream &stream)
 		throw std::runtime_error("Activity::inflate: "
 								 "Activity should own at least 1 view");
 	FTASSERT(state == ft::XmlParser::State::START, "Cannot fail");
-	v = AView::getFactory(xml.getMarkupName())(*this, &xml, nullptr);
+	v = Activity::getFactory(xml.getMarkupName())(*this, &xml, nullptr);
 	this->_rootView = new Activity::RootViewHolder(*this, xml, v, this->_size);
 	v->setViewHolder(this->_rootView);
 	v->setAttached(true);
@@ -349,17 +349,17 @@ void			Activity::registerLuaCFun_table(
 
 int				Activity::createViewG(lua_State *l)
 {
-	int const						top = lua_gettop(l);
-	AView							*v;
-	AView::view_info_s::factory_t	fact;
-	std::string const				type(luaL_checkstring(l, 1));
-	std::string	const *const		id = top == 2
+	int const					top = lua_gettop(l);
+	AView						*v;
+	Activity::view_factory_t	fact;
+	std::string const			type(luaL_checkstring(l, 1));
+	std::string	const *const	id = top == 2
 		? (std::string[]){std::string(luaL_checkstring(l, 2))} : nullptr;
 
 	FTLUA_STACKASSERT(l, top <= 2, true, "Activity::createViewG"
 					  , "Too many arguments");
 	try {
-		fact = AView::getFactory(type); }
+		fact = Activity::getFactory(type); }
 	catch (...) {
 		luaL_error(l, ft::f("Activity::createViewG: "
 							"Cannot find type '%'", type).c_str()); }
@@ -404,6 +404,5 @@ AView const		*Activity::getRoot(void) const
 		return (NULL);
 	return (_rootView->getView());
 }
-
 
 };
