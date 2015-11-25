@@ -6,11 +6,11 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/25 13:23:56 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/25 15:31:25 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/25 16:09:15 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#include "LinearLayout.hpp"
+#include "ftui/LinearLayout.hpp"
 
 namespace ftui
 {
@@ -87,19 +87,19 @@ void			LinearLayout::alignChilds(void)
 		}
 		else
 		{
-			if (childSize.y + margin.left + margin.right > layoutSize.x)
-				childSize.y = layoutSize.x - margin.left - margin.right;
+			if (childSize.y + margin.top + margin.bottom > layoutSize.y)
+				childSize.y = layoutSize.y - margin.top - margin.bottom;
 			switch (h->getAlign())
 			{
-			case Align::LEFT:
-				childPos.x = margin.left;
+			case Align::TOP:
+				childPos.y = margin.top;
 				break ;
 			case Align::CENTER:
-				childPos.x = (layoutSize.x - childSize.y + margin.left
-								- margin.right) / 2;
+				childPos.y = (layoutSize.y - childSize.y + margin.top
+								- margin.bottom) / 2;
 				break ;
-			case Align::RIGHT:
-				childPos.x = layoutSize.x - childSize.y - margin.right;
+			case Align::BOTTOM:
+				childPos.y = layoutSize.y - childSize.y - margin.bottom;
 				break ;
 			}
 		}
@@ -129,7 +129,7 @@ void			LinearLayout::onMeasure(void)
 
 		ft::Rect<int> const	&margin = h->getMargin();
 
-		requestedSize = h->getView()->getRequestedSize();
+		requestedSize = h->getRequestedSize();
 		if (_direction == Direction::VERTICAL)
 		{
 			tmp = requestedSize.x + margin.left + margin.right;
@@ -172,12 +172,11 @@ void			LinearLayout::onSizeChange(void)
 /*
 ** onDraw
 */
-static ft::Rect<int>	calc_redraw_clip(
-	LinearLayout::child_container_t &childs)
+ft::Rect<int>	LinearLayout::getRedrawClip(void) const
 {
 	ft::Rect<int>	clip(0, 0, 0, 0);
 
-	for (LinearLayout::ViewHolder *vh : childs)
+	for (LinearLayout::ViewHolder *vh : _childs)
 	{
 		if (vh->getView()->isRedrawQueried())
 		{
@@ -222,7 +221,7 @@ void			LinearLayout::onDraw(ACanvas &canvas)
 	}
 	else if (_layoutFlags & AView::REDRAW_QUERY)
 	{
-		redrawClip = calc_redraw_clip(_childs);
+		redrawClip = getRedrawClip();
 		for (ViewHolder *vh : _childs)
 		{
 			v = vh->getView();
@@ -292,7 +291,7 @@ IViewHolder		*LinearLayout::holderAt(int i)
 	return (_childs[i]);
 }
 
-Direction		LinearLayout::getDirection(void) const
+LinearLayout::Direction	LinearLayout::getDirection(void) const
 {
 	return (_direction);
 }
@@ -310,9 +309,9 @@ void			LinearLayout::setParam(std::string const &k,
 	{
 		{"direction", [](LinearLayout *holder, std::string const &v)
 		{
-			if (v == "VERTICAL")
+			if (v == "vertical")
 				holder->setDirection(LinearLayout::Direction::VERTICAL);
-			else if (v == "HORIZONTAL")
+			else if (v == "horizontal")
 				holder->setDirection(LinearLayout::Direction::HORIZONTAL);
 			else
 				return (false);
@@ -321,10 +320,31 @@ void			LinearLayout::setParam(std::string const &k,
 	};
 	auto const		&it = param_map.find(k);
 
-	if (it != param_map.end() && !it->second(this, v))
-		throw std::domain_error(ft::f("LinearLayout::setParam: "
-			"Invalid param: %=\"%\"", k, v));
+	if (it != param_map.end())
+	{
+		if (!it->second(this, v))
+			throw std::domain_error(ft::f("LinearLayout::setParam: "
+				"Invalid param: %=\"%\"", k, v));
+	}
+	else
+		ALayout::setParam(k, v);
 	return ;
+}
+
+int				LinearLayout::getDirectionG(lua_State *l)
+{
+	LinearLayout *const	self = ftlua::retrieveSelf<LinearLayout>(l, -1);
+
+	return (ftlua::push(l, static_cast<int>(self->getDirection())));
+}
+
+int				LinearLayout::setDirectionG(lua_State *l)
+{
+	LinearLayout *const	self = ftlua::retrieveSelf<LinearLayout>(l, -1);
+
+	self->setDirection(static_cast<Direction>(luaL_checkinteger(l, 1)));
+	lua_pop(l, 1);
+	return (0);
 }
 
 };

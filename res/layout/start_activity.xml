@@ -1,9 +1,11 @@
-<VerticalLayout
+<LinearLayout
+	direction="vertical"
 	id="UIParent"
 	activity_scripts="res/lua_utils/"
 	>
 
-  <HorizontalLayout
+  <LinearLayout
+  		direction="horizontal"
 	  id="panes-holder"
 	  horizontalAlign="CENTER"
 	  marginTop="50"
@@ -15,7 +17,8 @@
 		backgroundColor="0xFFBB0000" alpha="0.66"
 		/>
 
-	<VerticalLayout
+	<LinearLayout
+		direction="vertical"
 		id="mid-holder"
 		verticalAlign="TOP"
 		backgroundColor="0xFFFF0000" alpha="0.66"
@@ -28,7 +31,8 @@
 		  width="500" height="500"
 		  backgroundColor="0x30FFFFFF" alpha="0.66"
 		  />
-	  <HorizontalLayout
+	  <LinearLayout
+	  		direction="horizontal"
 		  id="mid-bot-holder"
 		  backgroundColor="0xFFFFFF00" alpha="0.66"
 		  activity_scripts="res/start_activity/mid_bot_buttons.lua"
@@ -65,10 +69,11 @@
 			height="60"
 			alpha="0.66"
 			/>
-	  </HorizontalLayout>
+	  </LinearLayout>
 
-	</VerticalLayout>
-	<VerticalLayout
+	</LinearLayout>
+	<LinearLayout
+		direction="vertical"
 		id="right-holder"
 		backgroundColor="0x20BB0000" alpha="0.75"
 		verticalAlign="TOP"
@@ -79,7 +84,9 @@
 		  width="230" height="25"
 		  backgroundColor="0xFFBB0000" alpha="0.75"
 		  />
-	<HorizontalLayout>
+	<LinearLayout
+		direction="horizontal"
+		>
 		<TextView
 			text="<"
 			id="lol_slider_right"
@@ -103,18 +110,19 @@
 			textColor="0xFFFFFFFF"
 			mouse_click_target="true"
 		/>
-	</HorizontalLayout>
-	  <VerticalLayout
+	</LinearLayout>
+	  <LinearLayout
+	  	direction="vertical"
 		  activity_scripts="res/start_activity/bookmark_holder.lua"
 		  id="bookmark-holder"
 	  	  marginTop="10" marginRight="10"
 		  verticalAlign="LEFT"
 		  >
 
-	  </VerticalLayout>
-	</VerticalLayout>
+	  </LinearLayout>
+	</LinearLayout>
 
 
 
-  </HorizontalLayout>
-</VerticalLayout>
+  </LinearLayout>
+</LinearLayout>

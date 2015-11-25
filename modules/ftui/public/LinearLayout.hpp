@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/25 13:24:07 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/25 15:18:48 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/25 16:00:13 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -45,7 +45,7 @@ public:
 
 	class	ViewHolder;
 
-	enum class	Align
+	enum class	Align : int
 	{
 		LEFT = 0,
 		TOP = LEFT,
@@ -54,7 +54,7 @@ public:
 		CENTER = 2
 	};
 
-	enum class	Direction
+	enum class	Direction : int
 	{
 		VERTICAL = 0,
 		HORIZONTAL = 1
@@ -115,7 +115,10 @@ protected:
 
 	child_container_t		_childs;
 
+	Direction				_direction;
+
 	virtual void			alignChilds(void);
+	virtual ft::Rect<int>	getRedrawClip(void) const;
 
 private:
 	LinearLayout(void) = delete;
@@ -158,6 +161,7 @@ public:
 */
 	void					setPosX(int x);
 	void					setPosY(int y);
+	void					setPos(ft::Vec2<int> pos);
 
 	/*
 	** Automatically call onSizeChange if size is different than actual
