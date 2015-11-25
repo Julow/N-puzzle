@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 17:35:29 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/25 15:25:18 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -90,6 +90,7 @@ DEF_LUACFUN_GSUFFIX(AView, isRedrawQueried,			1,	1)
 DEF_LUACFUN_GSUFFIX(AView, getParent,				1,	1)
 
 DEF_LUACFUN_GSUFFIX(AView, registerEvent,			2,	0)
+DEF_LUACFUN_GSUFFIX(AView, unregisterEvent,			2,	0)
 
 
 int			AView::setCallbackG(lua_State *l)

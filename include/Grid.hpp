@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/18 18:06:15 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/25 15:58:21 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,6 +14,8 @@
 # define GRID_HPP
 
 # include <string>
+
+# include "ftlua/push.hpp"
 
 # define MAX_GRID_SIZE		999
 # define MIN_GRID_SIZE		2
@@ -34,6 +36,7 @@ public:
 	Grid				&operator=(Grid &&rhs);
 
 	~Grid(void);
+    operator ftlua::Converter<Grid const>() const;
 
 	int					**getData(void);
 	int const* const*	getData(void) const;

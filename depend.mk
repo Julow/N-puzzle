@@ -11,8 +11,7 @@ libs:
 
 
 MAX_SOURCE_LEN := 32
-o/srcs/Grid.o: srcs/Grid.cpp include/Grid.hpp include/GridParser.hpp \
-	include/Tokenizer.hpp modules/_objs/gl_canvas/_public/ft/assert.hpp \
+o/srcs/Grid.o: srcs/Grid.cpp include/Grid.hpp \
 	modules/_objs/gl_canvas/_public/ft/Rect.hpp \
 	modules/_objs/gl_canvas/_public/ft/Vec.hpp \
 	modules/_objs/gl_canvas/_public/ft/templates/Rect.tpp \
@@ -20,7 +19,19 @@ o/srcs/Grid.o: srcs/Grid.cpp include/Grid.hpp include/GridParser.hpp \
 	modules/_objs/gl_canvas/_public/ft/templates/Vec3.tpp \
 	modules/_objs/gl_canvas/_public/ft/templates/Vec4.tpp \
 	modules/_objs/gl_canvas/_public/ft/type_traits.hpp \
-	modules/_objs/gl_canvas/_public/ft/utils.hpp | o/srcs/
+	modules/_objs/gl_canvas/_public/ft/utils.hpp \
+	modules/_objs/gl_canvas/_public/ftlua/Converter.hpp \
+	modules/_objs/gl_canvas/_public/ftlua/KeysWrapper.hpp \
+	modules/_objs/gl_canvas/_public/ftlua/push.hpp \
+	modules/_objs/gl_canvas/_public/ftlua/stackassert.hpp \
+	modules/_objs/gl_canvas/_public/ftlua/types.hpp \
+	modules/_objs/gl_canvas/_public/ftlua/utils.hpp \
+	modules/_objs/gl_canvas/_public/liblua/lua.hpp \
+	modules/liblua/lua-5.3.1/src/lauxlib.h modules/liblua/lua-5.3.1/src/lua.h \
+	modules/liblua/lua-5.3.1/src/luaconf.h \
+	modules/liblua/lua-5.3.1/src/lualib.h include/GridParser.hpp \
+	include/Tokenizer.hpp modules/_objs/gl_canvas/_public/ft/assert.hpp \
+	| o/srcs/
 o/srcs/GridParser.o: srcs/GridParser.cpp include/GridParser.hpp \
 	include/Tokenizer.hpp modules/_objs/gl_canvas/_public/ft/Rect.hpp \
 	modules/_objs/gl_canvas/_public/ft/Vec.hpp \
@@ -88,7 +99,17 @@ o/srcs/OCamlBinding.o: srcs/OCamlBinding.cpp include/Grid.hpp \
 	modules/_objs/gl_canvas/_public/ft/templates/Vec3.tpp \
 	modules/_objs/gl_canvas/_public/ft/templates/Vec4.tpp \
 	modules/_objs/gl_canvas/_public/ft/type_traits.hpp \
-	modules/_objs/gl_canvas/_public/ft/utils.hpp | o/srcs/
+	modules/_objs/gl_canvas/_public/ft/utils.hpp \
+	modules/_objs/gl_canvas/_public/ftlua/Converter.hpp \
+	modules/_objs/gl_canvas/_public/ftlua/KeysWrapper.hpp \
+	modules/_objs/gl_canvas/_public/ftlua/push.hpp \
+	modules/_objs/gl_canvas/_public/ftlua/stackassert.hpp \
+	modules/_objs/gl_canvas/_public/ftlua/types.hpp \
+	modules/_objs/gl_canvas/_public/ftlua/utils.hpp \
+	modules/_objs/gl_canvas/_public/liblua/lua.hpp \
+	modules/liblua/lua-5.3.1/src/lauxlib.h modules/liblua/lua-5.3.1/src/lua.h \
+	modules/liblua/lua-5.3.1/src/luaconf.h \
+	modules/liblua/lua-5.3.1/src/lualib.h | o/srcs/
 o/srcs/PickState.o: srcs/PickState.cpp include/Grid.hpp include/IBundle.hpp \
 	include/ISolverListener.hpp include/IState.hpp include/Main.hpp \
 	include/OCamlBinding.hpp include/PickState.hpp include/ftlua_extend.hpp \

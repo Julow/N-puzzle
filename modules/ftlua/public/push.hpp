@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 18:44:26 by juloo            ###   ########.fr       //
+//   Updated: 2015/11/25 16:20:29 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -247,9 +247,18 @@ template <bool USELUAERR = false, typename T
 	, OK_IF(ISCONST(T))
 	, typename NOCONST = DELCONST(T)
 	, OK_IF(ISCONV(T, Converter<NOCONST>)) >
-int			push(lua_State *l, T &v)
+int			push(lua_State *l, T &v) //TODO: finalize and prototype this new one
 {
 	return static_cast<Converter<T>>(v).callPush(l);
+}
+
+template <bool USELUAERR = false, typename T
+		  , OK_IF((sizeof(T) > 0u))
+	, OK_IF(!ISCONST(T))
+	, OK_IF(ISCONV(T const, Converter<T const>)) >
+int			push(lua_State *l, T &v)
+{
+	return static_cast<Converter<T const>>(v).callPush(l);
 }
 
 template <bool USELUAERR = false, typename T

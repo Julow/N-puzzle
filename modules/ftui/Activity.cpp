@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 17:44:02 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/25 16:37:49 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -295,14 +295,16 @@ void			Activity::registerEvent(std::string const &event, AView *v)
 	this->_eventMap.insert(std::make_pair(event, new EventTarget(v)));
 	return ;
 }
-void			Activity::unregisterEvent(std::string const &event, AView *v)
+
+void			Activity::removeFromEvents(
+	std::pair<std::string, AView*> const &p)
 {
-	auto			it = this->_eventMap.find(event);
+	auto			it = this->_eventMap.find(p.first);
 	auto const		ite = this->_eventMap.cend();
 
 	while (it != ite)
 	{
-		if (it->second->getView() == v)
+		if (it->second->getView() == p.second)
 		{
 			delete it->second;
 			it = this->_eventMap.erase(it);
@@ -311,6 +313,20 @@ void			Activity::unregisterEvent(std::string const &event, AView *v)
 			it++;
 	}
 	return ;
+}
+
+void			Activity::cleanEventMap(void)
+{
+	while (!this->_unregisterStack.empty())
+	{
+		removeFromEvents(this->_unregisterStack.top());
+		this->_unregisterStack.pop();
+	}
+	return ;
+}
+void			Activity::unregisterEvent(std::string const &event, AView *v)
+{
+	this->_unregisterStack.push({event, v});
 }
 
 void			Activity::registerLuaCFun_global(

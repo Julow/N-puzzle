@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/30 09:01:50 by ngoguey           #+#    #+#             */
-//   Updated: 2015/11/24 19:25:10 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/25 16:28:40 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void		Activity::registerEvent(std::string const &event, T *v
 }
 
 template<typename... Args>
-bool		Activity::fireEvent(std::string const &event, Args... args)
+bool		Activity::fireEventInternal(std::string const &event, Args... args)
 {
 	auto			it = this->_eventMap.find(event);
 	auto const		ite = this->_eventMap.cend();
@@ -72,13 +72,17 @@ bool		Activity::fireEvent(std::string const &event, Args... args)
 		else
 		{
 			ret |= it->second->cppCall(
-// (ft::ITupleRef[]){ft::make_tupleref(args...)}
-// This line fucks the pointer, TODO: talk about it
-				(ft::TupleRef<Args...>[]){ft::make_tupleref(args...)}
-				);
+				(ft::TupleRef<Args...>[]){ft::make_tupleref(args...)});
 		}
 	}
-	return ret; //test
+	return ret;
+}
+
+template<typename... Args>
+bool		Activity::fireEvent(std::string const &event, Args... args)
+{
+	this->cleanEventMap();
+	return this->fireEventInternal(event, args...);
 }
 
 };

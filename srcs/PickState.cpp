@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/25 14:38:58 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/25 16:38:21 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -174,6 +174,7 @@ PS::Bundle::Bundle(Main &main)
 	pushFun("tagForSolving", &tagForSolvingG);
 	for (auto const &fileName : main.files)
 		this->grids.emplace_back(fileName);
+	act.fireEvent("onPuzzlesLoaded", this->grids[0]);
 }
 
 PS::Bundle::~Bundle()

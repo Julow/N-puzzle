@@ -6,9 +6,23 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/17 18:42:10 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/25 14:26:11 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/25 16:46:27 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
-local pane = {frame = _G['bookmark-holder']}
-assert(pane.frame ~= nil);
+local pane = {};
+local frame = _G['bookmark-holder'];
+assert(frame ~= nil);
+
+function frame:onPuzzlesLoaded(puzzles)
+  local bm;
+
+  print('frame:onPuzzlesLoaded', puzzles);
+  ft.ptab(puzzles);
+  frame:unregisterEvent('onPuzzlesLoaded');
+  pane.puzzles = puzzles;
+  pane.count = #puzzles + (puzzles[0] == nil and 0 or 1);
+  pane.count = #puzzles + (puzzles[0] == nil and 0 or 1);
+  frame.refreshAllBookmarks(puzzles, pane.count);
+end
+frame:registerEvent("onPuzzlesLoaded");

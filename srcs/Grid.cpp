@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:12 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/18 18:04:29 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/25 16:01:47 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -167,6 +167,23 @@ Grid::~Grid(void)
 	return ;
 }
 
+Grid::operator ftlua::Converter<Grid const>() const
+{
+	return ftlua::Converter<Grid const>(
+		*this, [](lua_State *l, Grid const &gr)
+		{
+			int const   w = gr.getSize();
+
+			lua_createtable(l, w * w, 0);
+			for (int i = 0; i < w * w; i++)
+			{
+				lua_pushinteger(l, i);
+				lua_pushinteger(l, gr.get(i % w, i / w));
+				lua_settable(l, -3);
+			}
+			return 1;
+		});
+}
 
 int					**Grid::getData(void)
 {

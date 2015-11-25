@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/11 16:30:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/21 08:54:48 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/25 16:38:39 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,21 +19,7 @@
 
 namespace ftlua
 {
-
-template <bool USELUAERR = false>
-int			push(lua_State *l, Grid const &gr)
-{
-	int const   w = gr.getSize();
-
-	lua_createtable(l, w * w, 0);
-	for (int i = 0; i < w * w; i++)
-	{
-		lua_pushinteger(l, i);
-		lua_pushinteger(l, gr.get(i % w, i / w));
-		lua_settable(l, -3);
-	}
-	return 1;
-}
+// TODO: remove this file
 
 };
 

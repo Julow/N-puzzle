@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 16:30:25 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/25 16:37:10 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -134,14 +134,21 @@ public:
 protected:
 	class RootViewHolder;
 	typedef std::unordered_multimap<std::string, EventTarget*> event_map_t;
+	typedef std::stack<std::pair<std::string, AView*>> unregister_stack_t;
 
 	RootViewHolder				*_rootView;
 	event_map_t					_eventMap;
+	unregister_stack_t			_unregisterStack;
 	ft::Vec2<int>				_size;
 	lua_State					*_l;
 	std::vector<std::string>	_scriptsPaths;
 
 private:
+
+	void			cleanEventMap(void);
+	void			removeFromEvents(std::pair<std::string, AView*> const &p);
+	template<typename... Args>
+	bool			fireEventInternal(std::string const &event, Args... args);
 
 };
 

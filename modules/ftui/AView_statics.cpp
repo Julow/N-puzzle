@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 18:49:31 by juloo            ###   ########.fr       //
+//   Updated: 2015/11/25 15:22:24 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -44,6 +44,7 @@ AView::views_info_t				AView::viewsInfo
 		INSG_AV(isMouseCaptureTargeted), INSG_AV(isKeyboardTargeted),
 		INSG_AV(isUpdateQueried), INSG_AV(isMeasureQueried),
 		INSG_AV(isRedrawQueried), INSG_AV(setCallback), INSG_AV(registerEvent),
+		INSG_AV(unregisterEvent),
 	}, {}}},
 	{"ASolidView", {"AView", nullptr, {
 		INSG(ASolidView, getBackgroundColor), INSG(ASolidView, getBorderColor),
