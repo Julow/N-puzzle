@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/25 15:48:44 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/25 18:40:22 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -416,10 +416,10 @@ void				AView::onVisibilityChange(bool hidden)
 void				AView::setLuaCallback(lua_State *l)
 {
 	char const *const	callback = luaL_checkstring(l, -2);
-	auto const			&it = AView::callback_map.find(std::string(callback));
+	auto const			&it = Activity::callback_map.find(std::string(callback));
 	uint32_t			callbackId;
 
-	if (it == AView::callback_map.end())
+	if (it == Activity::callback_map.end())
 		luaL_error(l, "AView::setLuaCallback: "
 				   "Unknow lua callback: %", callback);
 	callbackId = it->second;

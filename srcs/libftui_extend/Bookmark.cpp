@@ -6,12 +6,13 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:15:02 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/25 18:29:00 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/25 19:19:07 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "libftui_extend/Bookmark.hpp"
 #include "ftui/ACanvas.hpp"
+#include "ftui/Activity.hpp"
 #include "ftui/Button.hpp"
 
 using BM = Bookmark;
@@ -32,7 +33,7 @@ using BMVH = Bookmark::ViewHolder;
 
 void			BM::declare_libftui(void)
 {
-	AView::defineView("Bookmark", "ALayout", &BM::createView);
+	ftui::Activity::defineClass("Bookmark", "ALayout", &BM::createView);
 	return ;
 }
 

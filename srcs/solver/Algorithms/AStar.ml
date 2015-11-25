@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/19 17:34:55 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/05 11:24:25 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/25 18:48:20 by jaguillo         ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -139,8 +139,9 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 		(* List.iteri (fun i gra -> Printf.eprintf "g(%2d) h(%2d)" i (he gra); *)
 		(* 						 Graph.print gra) sol; *)
 		()
+	  (* | Invalid_argument("find_min") -> *)
 	  with
-	  | Invalid_argument("find_min") ->
+	  | Invalid_argument(_) ->
 		 Printf.eprintf "AStar: NOT SOLVED\n%!";
 		 ()
   end

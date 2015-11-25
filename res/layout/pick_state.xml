@@ -7,7 +7,7 @@
   <LinearLayout
   		direction="horizontal"
 	  id="panes-holder"
-	  horizontalAlign="CENTER"
+	  align="CENTER"
 	  marginTop="50"
 	  >
 
@@ -20,13 +20,13 @@
 	<LinearLayout
 		direction="vertical"
 		id="mid-holder"
-		verticalAlign="TOP"
+		align="TOP"
 		backgroundColor="0xFFFF0000" alpha="0.66"
 		>
 	  <SolidView
 		  id="puzzleFrame"
 		  marginTop="35"
-		  horizontalAlign="CENTER"
+		  align="CENTER"
 		  width="500" height="500"
 		  backgroundColor="0x30FFFFFF" alpha="0.66"
 		  />
@@ -38,7 +38,7 @@
 		<Button
 			id="randomPuzzleButton"
 			marginTop="10" marginBottom="10" marginLeft="10" marginRight="10"
-			horizontalAlign="CENTER"
+			align="CENTER"
 			width="60"
 			height="60"
 			alpha="0.66"
@@ -46,7 +46,7 @@
 		<Button
 			id="filePuzzleButton"
 			marginTop="10" marginBottom="10" marginLeft="10" marginRight="10"
-			horizontalAlign="CENTER"
+			align="CENTER"
 			width="60"
 			height="60"
 			alpha="0.66"
@@ -54,7 +54,7 @@
 		<Button
 			id="defaultPuzzleButton"
 			marginTop="10" marginBottom="10" marginLeft="10" marginRight="10"
-			horizontalAlign="CENTER"
+			align="CENTER"
 			width="60"
 			height="60"
 			alpha="0.66"
@@ -62,7 +62,7 @@
 		<Button
 			id="solveLaunchButton"
 			marginTop="10" marginBottom="10" marginLeft="10" marginRight="10"
-			horizontalAlign="CENTER"
+			align="CENTER"
 			width="120"
 			height="60"
 			alpha="0.66"
@@ -74,7 +74,7 @@
 		direction="vertical"
 		id="right-holder"
 		backgroundColor="0x20BB0000" alpha="0.75"
-		verticalAlign="TOP"
+		align="TOP"
 		>
 	  <SolidView
 		  id="right-holder-dummy"
@@ -113,7 +113,7 @@
 	  	direction="vertical"
 		  id="bookmark-holder"
 	  	  marginTop="10" marginRight="10"
-		  verticalAlign="LEFT"
+		  align="LEFT"
 		  >
 
 	  </LinearLayout>

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/25 15:24:38 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/25 18:39:25 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -149,7 +149,7 @@ public:
 	** `v->inflate()` is always called after 'v' has been put in his parent
 	** -
 	** View creation:
-	** v = new ...View(...) // More often: AView::getFactory("...")(xml, act)
+	** v = new ...View(...) // More often: Activity::getFactory("...")(xml, act)
 	** v->setHolder(...)	// if any
 	** v->inflate(xml)
 	*/
@@ -299,52 +299,6 @@ protected:
 	template<typename ...ARGS>
 	bool						callLuaCallback(lua_State *l, uint32_t id,
 									ARGS const &...args);
-
-/*
-** Static
-*/
-public:
-	struct view_info_s
-	{
-		typedef AView	*(*factory_t)(Activity &, ft::XmlParser const *
-									  , std::string const *);
-		typedef std::tuple<std::string, lua_CFunction>	luamethod_t;
-
-		std::string					parent;
-		factory_t					factory;
-		std::vector<luamethod_t>	luaMethods;
-		std::string					tableInit;
-	};
-
-	typedef std::unordered_map<std::string, view_info_s>	views_info_t;
-	static views_info_t				viewsInfo;
-
-	static view_info_s::factory_t	getFactory(std::string const &name);
-
-	/*
-	 *  defineView()
-	 *  Define a view class so that can be created from a xml file
-	 *  ********************************************************************* **
-	 *  It should be done once for all custom views,
-	 *    and before any xml inflating.
-	 */
-	static void						defineView(
-		std::string const &name
-		, std::string const &parent
-		, view_info_s::factory_t factory
-		, std::vector<view_info_s::luamethod_t> luaMethods = {}
-		, std::string const &tableInit = {});
-	static void						pushViewTemplates(lua_State *l);
-
-	/*
-	** Register a lua callback
-	*/
-	static void						registerLuaCallback(std::string const &name,
-										uint32_t id);
-
-protected:
-	typedef std::unordered_map<std::string, uint32_t>	callback_map_t;
-	static callback_map_t			callback_map;
 
 public:
 	static int				getIdG(lua_State *l);
