@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/25 16:38:21 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/25 19:10:33 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -89,6 +89,18 @@ ftui::Activity  &PS::getActivity(void)
 ** LIBFTUI INTERACTIONS
 */
 
+int				PS::selectGridG(lua_State *l) /*static*/
+{
+	return ftlua::handle<2, 0>(l, &PS::selectGrid);
+}
+void			PS::selectGrid(int i)
+{
+	_main.grid = this->_b->grids[i]; //todo error check
+	this->_b->act.fireEvent("onDisplayedGridChanged");
+
+}
+
+
 int				PS::useDefaultGridG(lua_State *l) /*static*/
 {
 	return ftlua::handle<1, 0>(l, &PS::useDefaultGrid);
@@ -167,6 +179,7 @@ PS::Bundle::Bundle(Main &main)
 	main.loadSharedScripts(act);
 	luaL_dostring(act.getLuaState(), "PickState = {}");
 	pushFun("useDefaultGrid", &useDefaultGridG);
+	pushFun("selectGrid", &selectGridG);
 	pushFun("useRandomGrid", &useRandomGridG);
 	pushFun("setAlgorithmId", &setAlgorithmIdG);
 	pushFun("setHeuristicId", &setHeuristicIdG);
@@ -174,7 +187,10 @@ PS::Bundle::Bundle(Main &main)
 	pushFun("tagForSolving", &tagForSolvingG);
 	for (auto const &fileName : main.files)
 		this->grids.emplace_back(fileName);
-	act.fireEvent("onPuzzlesLoaded", this->grids[0]);
+
+	act.fireEvent("onPuzzlesLoaded", this->grids);
+	ftlua::stackdump(act.getLuaState());
+	// act.fireEvent("onPuzzlesLoaded", this->grids[0]);
 }
 
 PS::Bundle::~Bundle()

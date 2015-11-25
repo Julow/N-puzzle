@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 18:05:46 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 11:20:43 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/25 18:38:07 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -46,6 +46,9 @@ public:
 	ftui::Activity			&getActivity(void) override;
 
 	/* LIBFTUI INTERACTIONS ********* */
+	static int				selectGridG(lua_State *l);
+	void					selectGrid(int i);
+
 	static int				useDefaultGridG(lua_State *l);
 	void					useDefaultGrid(void);
 

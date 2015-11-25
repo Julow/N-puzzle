@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:15:02 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 15:36:48 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/25 18:29:00 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -32,7 +32,7 @@ using BMVH = Bookmark::ViewHolder;
 
 void			BM::declare_libftui(void)
 {
-	AView::defineView("Bookmark", "AView", &BM::createView);
+	AView::defineView("Bookmark", "ALayout", &BM::createView);
 	return ;
 }
 

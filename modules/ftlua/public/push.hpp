@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/25 16:20:29 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/25 18:21:03 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -55,6 +55,17 @@ template <bool USELUAERR, typename T
 		  , OK_IFNODEF((sizeof(T) > 0u))
 		  , OK_IFNODEF(ISCONV(T, Converter<T>)) >
 int			push(lua_State *l, T &v);
+
+
+// Push (T to Converter<T const>)
+//TODO: validate this overload
+template <bool USELUAERR, typename T
+		  , OK_IFNODEF((sizeof(T) > 0u))
+	, OK_IFNODEF(ISCONST(T))
+	, typename NOCONST
+	, OK_IFNODEF(ISCONV(T, Converter<NOCONST>)) >
+int			push(lua_State *l, T &v);
+
 
 // Push (const-T to Converter<T>)
 // Overload allowing const cast in User's cast-operator
@@ -247,7 +258,7 @@ template <bool USELUAERR = false, typename T
 	, OK_IF(ISCONST(T))
 	, typename NOCONST = DELCONST(T)
 	, OK_IF(ISCONV(T, Converter<NOCONST>)) >
-int			push(lua_State *l, T &v) //TODO: finalize and prototype this new one
+int			push(lua_State *l, T &v) //TODO: validate this overload
 {
 	return static_cast<Converter<T>>(v).callPush(l);
 }
@@ -337,6 +348,85 @@ int			push(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 	if (!FIRSTISTOP)
 		lua_pushglobaltable(l);
 	internal::_loopKey<0, USELUAERR>(l, wrap);
+	return 1;
+}
+
+
+// ========================================================================== //
+// ========================================================================== //
+// CONTAINERS<...> PUSH-OVERLOADS
+//
+
+template<typename T>
+struct has_const_iterator
+{
+private:
+	typedef char						yes;
+	typedef struct { char array[2]; }	no;
+
+	template<typename C>
+	static yes							test(typename C::const_iterator*);
+	template<typename C>
+	static no							test(...);
+public:
+	static const bool					value = sizeof(test<T>(0)) == sizeof(yes);
+	typedef T							type;
+};
+
+template <typename T>
+struct has_begin_end //TODO understand and rewrite
+{
+
+#define CONSTIT typename C::const_iterator (C::*)() const
+#define VOID_IF(PRED) typename std::enable_if<PRED, void>::type*
+
+	template<typename C>
+	static char		(&f(
+						VOID_IF(ISSAME(decltype(static_cast<CONSTIT>(&C::begin)), CONSTIT)))
+		)[1];
+
+	template<typename C>
+	static char		(&f(...))[2];
+
+	template<typename C>
+	static char		(&g(
+						VOID_IF(ISSAME(decltype(static_cast<CONSTIT>(&C::end)), CONSTIT)))
+		)[1];
+	template<typename C>
+	static char		(&g(...))[2];
+
+	static bool const beg_value = sizeof(f<T>(0)) == 1;
+	static bool const end_value = sizeof(g<T>(0)) == 1;
+};
+
+template<typename T>
+struct is_container : std::integral_constant<bool, has_const_iterator<T>::value && has_begin_end<T>::beg_value && has_begin_end<T>::end_value>
+{ };
+
+template <bool USELUAERR = false
+		  , class T
+		  , OK_IF(is_container<T>::value)
+		  >
+int			push(lua_State *l, T &cont)
+{
+	int			i(0);
+	int			inc;
+	int const	tabI = lua_gettop(l) + 1;
+	int const	eltI = tabI + 1;
+
+	push(l, newtab);				// []
+	for (auto it : cont)
+	{
+		inc = push(l, it);			// vn, v1, []
+		while (inc-- > 0)
+		{
+			push(l, i);				// 1, vn, v1, []
+			push(l, dup(eltI));		// v1, 1, vn, v1, []
+			lua_settable(l, tabI);	// vn, v1, []
+			lua_remove(l, eltI);	// vn, []
+			i++;
+		}
+	}
 	return 1;
 }
 

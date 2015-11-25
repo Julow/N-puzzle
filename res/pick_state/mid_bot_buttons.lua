@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 16:41:33 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/24 18:03:09 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/25 19:09:36 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -44,10 +44,6 @@ function defaultButton:Bordel(...)
   print('defaultButton:Bordel', ...);
 end
 
--- function defaultButton:onEvent(...)
---   print('defaultButton:onEvent', ...);
--- end
-
 function defaultButton:onClick(_, _)
   PickState:useDefaultGrid();
   puzzleFrame:reloadGrid();
@@ -61,13 +57,6 @@ local solveButton = solveLaunchButton
 assert(solveButton ~= nil);
 
 function solveButton:onClick(_, _)
-  local bmh = _G['bookmark-holder'];
-
-  local r = math.random(3) - 1;
-  -- local r = math.random(3) - 1;
-  local v = bmh:at(r);
-  v:setVisibility(1);
-  -- bmh:addView(createView("Bookmark", "view_de_merde"));
   PickState:tagForSolving();
 end
 

@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 13:01:05 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/25 10:53:46 by jaguillo         ###   ########.fr       --
+--   Updated: 2015/11/25 19:10:44 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -74,9 +74,16 @@ function puzzleFrame:onSizeChange(x, _)
   puzzleFrame:queryRedraw();
 end
 
+function puzzleFrame:onEvent(e, ...)
+  if (e == "onDisplayedGridChanged") then
+	self:reloadGrid();
+  end
+end
+
 puzzleFrame:setCallback('onDraw', puzzleFrame.onDraw);
 puzzleFrame:setCallback('onSizeChange', puzzleFrame.onSizeChange);
 
+puzzleFrame:registerEvent("onDisplayedGridChanged");
 -- ft.ptab(puzzleFrame);
 -- ft.ptab(AView);
 -- ft.ptab(Canvas);

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/25 10:58:54 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/25 19:14:50 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -27,7 +27,7 @@ extern "C"
 
 #include "ftui/ACanvas.hpp"
 
-#define DEFAULT_FONT		RES_PATH "/fonts/Arial Black.ttf"
+#define DEFAULT_FONT		RES_PATH "/fonts/Arial_Black.ttf"
 
 namespace ftui
 {

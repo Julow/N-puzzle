@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/16 15:14:38 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/25 16:46:22 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/25 19:10:16 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -32,17 +32,29 @@ function frame.refreshAllBookmarks(puzzles, count)
   end
 end
 
+function bookmarkOnClick1(self)
+  local p = self:getParent();
+
+  PickState:selectGrid(p.i);
+end
+
 function frame:at(i)
   local sz = frame:size();
   local v;
+  local b1;
+  local b2;
 
   if i < sz then
 	return frame:rawat(i);
   end
   while (sz < i + 1) do
 	v = createView('Bookmark', 'Bookmark' .. tostring(sz));
+	b1 = v:at(0);
+	b2 = v:at(1);
 	frame:addView(v);
 	v:setVisibility(0);
+	b1:setCallback("onClick", bookmarkOnClick1);
+	v.i = sz;
 	sz = sz + 1;
   end
   return v;

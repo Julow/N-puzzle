@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/30 09:01:50 by ngoguey           #+#    #+#             */
-//   Updated: 2015/11/25 16:28:40 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/25 19:10:01 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,12 @@ void		Activity::registerEvent(std::string const &event, T *v
 template<typename... Args>
 bool		Activity::fireEventInternal(std::string const &event, Args... args)
 {
-	auto			it = this->_eventMap.find(event);
-	auto const		ite = this->_eventMap.cend();
+	auto			itpair = this->_eventMap.equal_range(event);
+	auto			it = itpair.first;
+	auto const		ite = itpair.second;
 	int				err;
 	bool			ret(false);
+	bool			pushName;
 
 	for (; it != ite; it++)
 	{
@@ -57,13 +59,19 @@ bool		Activity::fireEventInternal(std::string const &event, Args... args)
 				lua_pop(_l, 1);									// []
 				lua_pushliteral(_l, "onEvent");					// "", []
 				lua_gettable(_l, -2);							// f, []
+				pushName = true;
 			}
+			else
+				pushName = false;
 			FTLUA_STACKASSERT(
 				_l, lua_isfunction(_l, -1), false
 				, ft::f("Activity::fireEvent(event=%, %)"
 						, event, ft::variadicToString(args...))
 				, ft::f("Could not find a suitable function in table"));
-			err = ftlua::pcall(_l, 0, 0, ftlua::dup(-2), args...);
+			if (pushName)
+				err = ftlua::pcall(_l, 0, 0, ftlua::dup(-2), event, args...);
+			else
+				err = ftlua::pcall(_l, 0, 0, ftlua::dup(-2), args...);
 			if (err != LUA_OK)
 				throw std::runtime_error(
 					ft::f("% error ffs", ftlua::stacktostring(_l)));
