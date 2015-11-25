@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:15 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/25 15:22:24 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/25 16:21:50 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,8 +16,7 @@
 #include "ft/utils.hpp"
 #include "ftui/AView.hpp"
 #include "ftui/ALayout.hpp"
-#include "ftui/VerticalLayout.hpp"
-#include "ftui/HorizontalLayout.hpp"
+#include "ftui/LinearLayout.hpp"
 #include "ftui/SolidView.hpp"
 #include "ftui/SliderView.hpp"
 #include "ftui/ASolidView.hpp"
@@ -68,8 +67,9 @@ AView::views_info_t				AView::viewsInfo
 	{"ALayout", {"ASolidView", nullptr, {
 		INSG(ALayout, size), INSG(ALayout, at), INSG(ALayout, addView)
 	}, "ALayout = ftui.ALayoutdef; ftui.ALayoutdef = nil;"}},
-	{"VerticalLayout", {"ALayout", &VerticalLayout::createView, {}, {}}},
-	{"HorizontalLayout", {"ALayout", &HorizontalLayout::createView, {}, {}}},
+	{"LinearLayout", {"ALayout", &LinearLayout::createView, {
+		INSG(LinearLayout, getDirection), INSG(LinearLayout, setDirection),
+	}, {}}},
 	{"SolidView", {"ASolidView", &SolidView::createView, {}, {}}},
 };
 

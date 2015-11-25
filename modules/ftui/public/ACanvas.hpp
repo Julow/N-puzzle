@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 11:15:02 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/25 10:59:42 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -29,8 +29,6 @@ namespace ftui
 ** ACanvas
 ** -
 ** Draw
-** -
-** TODO: default font
 */
 class	ACanvas
 {
@@ -62,8 +60,6 @@ public:
 	ACanvas(int width, int height);
 
 	virtual ~ACanvas(void);
-
-	// ACanvas				&operator=(ACanvas &&rhs);
 
 /*
 ** ========================================================================== **
@@ -238,6 +234,7 @@ protected:
 /*
 ** Font
 */
+	static void			initFonts(void);
 	static font_t		loadFont(std::string const &file);
 
 private:

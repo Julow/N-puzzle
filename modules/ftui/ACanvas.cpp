@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 11:38:43 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/25 10:58:54 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -26,6 +26,8 @@ extern "C"
 #include "ftlua/stackassert.hpp"
 
 #include "ftui/ACanvas.hpp"
+
+#define DEFAULT_FONT		RES_PATH "/fonts/Arial Black.ttf"
 
 namespace ftui
 {
@@ -51,32 +53,14 @@ ACanvas::ACanvas(int width, int height) :
 	_luaFont(0)
 {
 	resetChangedRect();
+	initFonts();
 	return ;
 }
-
-// ACanvas::ACanvas(ACanvas const &src) :
-// 	_bitmap(src._bitmap),
-// 	_width(src._width),
-// 	_height(src._height),
-// 	_alpha(src._alpha)
-// {
-// }
 
 ACanvas::~ACanvas(void)
 {
-	// not removed from any lua
 	return ;
 }
-
-// ACanvas			&ACanvas::operator=(ACanvas &&rhs)
-// {
-// 	_bitmap = rhs._bitmap;
-// 	_width = rhs._width;
-// 	_height = rhs._height;
-// 	_alpha = rhs._alpha;
-// 	rhs._bitmap = nullptr;
-// 	return (*this);
-// }
 
 /*
 ** ========================================================================== **
@@ -388,17 +372,24 @@ ft::Vec2<int>	ACanvas::measureText(std::string const &text, Params const &opt)
 ** ========================================================================== **
 ** Font management
 */
+void			ACanvas::initFonts(void)
+{
+	if (g_freetype_init)
+		return ;
+	if (FT_Init_FreeType(&g_freetype))
+		throw std::runtime_error("ACanvas::getFont: "
+								 "Cannot load FreeType library");
+	g_freetype_init = true;
+	loadFont(DEFAULT_FONT);
+	FTASSERT(g_faces.size() == 1);
+}
+
 ACanvas::font_t	ACanvas::getFont(std::string const &file)
 {
 	auto const			&it = g_faces_cache.find(file);
 
 	if (!g_freetype_init)
-	{
-		if (FT_Init_FreeType(&g_freetype))
-			throw std::runtime_error("ACanvas::getFont: "
-									 "Cannot load FreeType library");
-		g_freetype_init = true;
-	}
+		initFonts();
 	if (it != g_faces_cache.end())
 		return (it->second);
 	return (loadFont(file));

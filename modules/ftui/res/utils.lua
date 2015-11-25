@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/12 20:48:21 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/12 20:56:21 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/25 15:19:04 by jaguillo         ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -48,3 +48,17 @@ ftui.ALayoutdef = {
 	  end
    end
 }
+
+LinearLayout = {
+	Align = {
+		LEFT = 0,
+		TOP = 0,
+		RIGHT = 1,
+		BOTTOM = 1,
+		CENTER = 2
+	},
+	Direction = {
+		VERTICAL = 0,
+		HORIZONTAL = 1
+	}
+};
