@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:12 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/25 16:01:47 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/25 19:29:30 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -28,27 +28,33 @@
 
 Grid const		Grid::def = DEFGRID; /*static*/
 
-Grid::Grid()
-	: _data(nullptr), _size(0)
+Grid::Grid() :
+	_name(),
+	_data(nullptr),
+	_size(0)
 {
 	return ;
 }
 
-Grid::Grid(int size)
+Grid::Grid(int size) :
+	_name()
 {
 	alloc(size);
 	return ;
 }
 
-Grid::Grid(int const* const* data, int size)
-	: Grid(size)
+Grid::Grid(int const* const* data, int size) :
+	Grid(size)
 {
 	for (int i = 0; i < size; i++)
 		std::memcpy(_data[i], data[i], size * sizeof(int));
 	return ;
 }
 
-Grid::Grid(std::string const &fileName)
+Grid::Grid(std::string const &fileName) :
+	_name(fileName),
+	_data(nullptr),
+	_size(0)
 {
 	GridParser			parser(fileName);
 	int					grid_size;
@@ -94,16 +100,16 @@ Grid::Grid(std::string const &fileName)
 			if (!(y == grid_size || (y == (grid_size - 1) && x == grid_size)))
 				parser.error("Incomplete grid");
 			// debug
-			std::cout << "Grid " << fileName << ':' << std::endl;
-			for (y = 0; y < grid_size; y++)
-			{
-				for (x = 0; x < grid_size; x++)
-				{
-					std::cout.width(2);
-					std::cout << _data[y][x] << ' ';
-				}
-				std::cout << std::endl;
-			}
+			// std::cout << "Grid " << fileName << ':' << std::endl;
+			// for (y = 0; y < grid_size; y++)
+			// {
+			// 	for (x = 0; x < grid_size; x++)
+			// 	{
+			// 		std::cout.width(2);
+			// 		std::cout << _data[y][x] << ' ';
+			// 	}
+			// 	std::cout << std::endl;
+			// }
 			// -
 			return ;
 		}
@@ -112,11 +118,12 @@ Grid::Grid(std::string const &fileName)
 Grid::Grid(Grid const &src) :
 	Grid(src._data, src._size)
 {
+	_name = src._name;
 	return ;
 }
 
 Grid::Grid(Grid &&src) :
-	_data(src._data), _size(src._size)
+	_name(std::move(src._name)), _data(src._data), _size(src._size)
 {
 	src._data = nullptr;
 	src._size = 0;
@@ -131,6 +138,7 @@ Grid			&Grid::operator=(Grid const &rhs)
 			delete [] _data[i];
 		delete [] _data;
 	}
+	_name = rhs._name;
 	this->_size = rhs._size;
 	_data = new int*[_size];
 	for (int i = 0; i < _size; i++)
@@ -148,6 +156,7 @@ Grid			&Grid::operator=(Grid &&rhs)
 			delete [] _data[i];
 		delete [] _data;
 	}
+	_name = std::move(rhs._name);
 	_size = rhs._size;
 	_data = rhs._data;
 	rhs._size = 0;
@@ -183,6 +192,16 @@ Grid::operator ftlua::Converter<Grid const>() const
 			}
 			return 1;
 		});
+}
+
+std::string const	&Grid::getName(void) const
+{
+	return (_name);
+}
+
+void				Grid::setName(std::string const &name)
+{
+	_name = name;
 }
 
 int					**Grid::getData(void)

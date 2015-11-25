@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/25 15:58:21 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/25 19:25:23 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -38,6 +38,9 @@ public:
 	~Grid(void);
     operator ftlua::Converter<Grid const>() const;
 
+	std::string const	&getName(void) const;
+	void				setName(std::string const &name);
+
 	int					**getData(void);
 	int const* const*	getData(void) const;
 
@@ -49,6 +52,8 @@ public:
 	void				set(int x, int y, int v);
 
 protected:
+
+	std::string			_name;
 
 	int					**_data;
 	int					_size;

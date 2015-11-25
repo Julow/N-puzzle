@@ -9,7 +9,10 @@ TODO LIST
 	ftlua error handling
 	ocaml bindings
 	multithread canvas
-	AbsoluteLayout, ScrollableLayout, RelativeLayout
+	AbsoluteLayout, RelativeLayout
 	Gen big databases
 
+	ScrollableLayout
 	LinearLayout direction REV_VERTICAL and REV_HORIZONTAL
+
+	Override onDraw in lua
