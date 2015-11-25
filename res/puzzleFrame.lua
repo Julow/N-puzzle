@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 13:01:05 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/15 19:24:28 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/25 10:53:46 by jaguillo         ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -38,7 +38,7 @@ function puzzleFrame:onDraw(canvas)
   assert(self.w ~= nil and self.w > 0);
   assert(self.wpx ~= nil and self.wpx > 0);
 
-  canvas:setFont("/Library/Fonts/Arial Black.ttf");
+  -- canvas:setFont("/Library/Fonts/Arial Black.ttf");
 
   local insets = 5.; -- INSET BORDER OF THE VIEW
   local spacing = 1.; -- SPACING BETWEEN TILES

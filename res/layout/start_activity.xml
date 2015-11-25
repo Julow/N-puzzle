@@ -83,7 +83,6 @@
 		<TextView
 			text="<"
 			id="lol_slider_right"
-			textFont="/Library/Fonts/Arial Black.ttf"
 			textColor="0xFFFFFFFF"
 			mouse_click_target="true"
 		/>
@@ -101,7 +100,6 @@
 		<TextView
 			text=">"
 			id="lol_slider_left"
-			textFont="/Library/Fonts/Arial Black.ttf"
 			textColor="0xFFFFFFFF"
 			mouse_click_target="true"
 		/>
