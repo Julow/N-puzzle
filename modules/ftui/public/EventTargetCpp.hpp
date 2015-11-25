@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/24 13:20:39 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 18:44:00 by juloo            ###   ########.fr       //
+//   Updated: 2015/11/25 14:19:36 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -44,7 +44,9 @@ public:
 		{ return false; }
 	bool				cppCall(ft::ITupleRef *tup)
 		{
-			FtTuple		*tup2 = dynamic_cast<FtTuple*>(tup);
+			FtTuple		*tup2 = reinterpret_cast<FtTuple*>(tup);
+			// FtTuple		*tup2 = dynamic_cast<FtTuple*>(tup);
+			// TODO: custom type checking module. Fun params VS Params
 
 			if (tup2 == nullptr)
 				throw std::runtime_error(

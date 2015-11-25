@@ -1,6 +1,6 @@
 <VerticalLayout
 	id="UIParent"
-	activity_scripts="res/lua_utils/"
+	activity_scripts="res/lua_utils;res/global;res/pick_state"
 	>
 
   <HorizontalLayout
@@ -22,7 +22,6 @@
 		>
 	  <SolidView
 		  id="puzzleFrame"
-		  activity_scripts="res/puzzleFrame.lua"
 		  marginTop="35"
 		  horizontalAlign="CENTER"
 		  width="500" height="500"
@@ -31,7 +30,6 @@
 	  <HorizontalLayout
 		  id="mid-bot-holder"
 		  backgroundColor="0xFFFFFF00" alpha="0.66"
-		  activity_scripts="res/start_activity/mid_bot_buttons.lua"
 		  >
 		<Button
 			id="randomPuzzleButton"
@@ -107,7 +105,6 @@
 		/>
 	</HorizontalLayout>
 	  <VerticalLayout
-		  activity_scripts="res/start_activity/bookmark_holder.lua"
 		  id="bookmark-holder"
 	  	  marginTop="10" marginRight="10"
 		  verticalAlign="LEFT"

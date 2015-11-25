@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 14:00:51 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/25 14:38:58 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -161,7 +161,7 @@ PS::Bundle::Bundle(Main &main)
 	auto				pushFun =
 		[&](std::string const &fname, lua_CFunction f)
 		{ act.registerLuaCFun_table("PickState", fname, f); };
-	std::ifstream		is("res/layout/start_activity.xml");
+	std::ifstream		is("res/layout/pick_state.xml");
 
 	act.inflate(is);
 	main.loadSharedScripts(act);
