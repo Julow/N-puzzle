@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/11 11:58:44 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/17 13:17:06 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 17:39:12 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -229,7 +229,7 @@ void				Tiles::_initGlMesh(Tmp const &tmp)
 	GLuint		vbo[1];
 
 	this->_vbo.reserve(tmp.mesh.size() * 3);
-	for (auto const it : tmp.mesh)
+	for (auto const &it : tmp.mesh)
 		for (int i = 0; i < 3; i++)
 			this->_vbo.push_back(
 				point_vbo_t{{it[i].first.x, it[i].first.y

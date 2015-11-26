@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/26 14:42:10 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 17:41:31 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -435,9 +435,9 @@ int			push(lua_State *l, T &cont)
 	int const	eltI = tabI + 1;
 
 	push(l, newtab);				// []
-	for (auto it : cont)
+	for (auto &elt : cont)
 	{
-		inc = push(l, it);			// vn, v1, []
+		inc = push(l, elt);			// vn, v1, []
 		while (inc-- > 0)
 		{
 			push(l, i);				// 1, vn, v1, []
@@ -462,9 +462,9 @@ int			push(lua_State *l, T const &cont)
 	int const	eltI = tabI + 1;
 
 	push(l, newtab);				// []
-	for (auto it : cont)
+	for (auto const &elt : cont)
 	{
-		inc = push(l, it);			// vn, v1, []
+		inc = push(l, elt);			// vn, v1, []
 		while (inc-- > 0)
 		{
 			push(l, i);				// 1, vn, v1, []

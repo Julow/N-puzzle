@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:12 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/26 14:47:28 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 16:19:34 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -33,7 +33,7 @@
 Grid const		Grid::def = DEFGRID; /*static*/
 
 Grid::Grid() :
-	_name(),
+	_name(""),
 	_data(nullptr),
 	_size(0)
 {
@@ -41,14 +41,13 @@ Grid::Grid() :
 }
 
 Grid::Grid(int size) :
-	_name()
+	_name("")
 {
 	alloc(size);
 	return ;
 }
 
 Grid::Grid(int const* const data[], int size) :
-// Grid::Grid(int const* const* data, int size) :
 	Grid(size)
 {
 	for (int i = 0; i < size; i++)

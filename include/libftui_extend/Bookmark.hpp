@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:14:49 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 19:25:42 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 17:10:54 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -54,6 +54,11 @@ public:
 
 	bool					onMouseDown(int x, int y, int button, int mods);
 	bool					onMouseUp(int x, int y, int button, int mods);
+
+	/* FUNCTIONALITIES ************** */
+	static int				setTextG(lua_State *l);
+	void					setText(std::string const &str);
+
 
 	inline bool				onBordel(int i, std::string const &str)
 		{

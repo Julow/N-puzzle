@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/26 15:09:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 15:52:50 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -280,7 +280,6 @@ void			Main::handleMouseButtonEvents(
 
 int				Main::getTableToRealG(lua_State *l) /*static*/
 {
-	std::cout << "salutici" << std::endl;
 	return ftlua::handle<2, 1>(l, &Main::getTableToReal);
 }
 std::vector<int>        Main::getTableToReal(int i)
@@ -293,13 +292,6 @@ int				Main::getGridG(lua_State *l) /*static*/
 }
 Grid const		&Main::getGrid(void) const
 { return this->grid; }
-Grid			Main::getGridToReal(void)
-{
-	Grid	gr(this->grid);
-
-	gr.convert(this->_ocaml.transposition_toreal(gr.getSize()));
-	return gr;
-}
 
 int				Main::getAlgorithmIdG(lua_State *l) /*static*/
 {

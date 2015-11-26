@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/26 13:41:50 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 17:39:31 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -190,15 +190,22 @@ PS::Bundle::Bundle(Main &main, OCamlBinding &ocaml)
 	{
 		this->grids.emplace_back(fileName);
 		gr = &this->grids[this->grids.size() - 1];
-		std::cout << "salut" << std::endl;
 		gr->convert(ocaml.transposition_toabstract(gr->getSize()));
-		std::cout << "salut" << std::endl;
 	}
-	act.fireEvent("onPuzzlesLoaded", this->grids);
-	ftlua::stackdump(act.getLuaState());
-	// act.fireEvent("onPuzzlesLoaded", this->grids[0]);
+	act.fireEvent("onPuzzlesLoaded", this->extractGridNames());
+	return ;
 }
 
 PS::Bundle::~Bundle()
 {
+}
+
+// std::vector<std::string>	PS::Bundle::extractGridNames(void)
+std::vector<std::string const*>	PS::Bundle::extractGridNames(void)
+{
+	std::vector<std::string const*>		ret;
+
+	for (auto const &it : this->grids)
+		ret.push_back(&it.getName());
+	return ret;
 }

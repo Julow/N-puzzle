@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/12 21:02:12 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/12 21:05:25 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/26 15:15:55 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -32,8 +32,8 @@ ft.ptab = function(t, p1, p2, p3, p4)
 		, [coroutine] = true, [utf8] = true};
 	local curTab = p4 or '';
 	local header = string.format('%1.1d*%s', curDepth, curTab);
-	local curCol = '033[4'..tostring(1 + (curDepth) % 5)..'m'
-	local nextTab = curTab..curCol..'**'..'033[0m';
+	local curCol = '\27[4'..tostring(1 + (curDepth) % 5)..'m'
+	local nextTab = curTab..curCol..'**'..'\27[0m';
 	local empty = true
 
 	excludedK[t] = true;
@@ -55,7 +55,7 @@ ft.ptab = function(t, p1, p2, p3, p4)
 		end
 		if expand then
 			lcol = curCol
-			rcol = '033[0m'
+			rcol = '\27[0m'
 		end
 		kstr = string.format('[%s]', kstr);
 		kstr = string.format('%32s', kstr);

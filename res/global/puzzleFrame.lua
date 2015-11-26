@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 13:01:05 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/26 15:10:58 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/26 17:21:07 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -101,6 +101,3 @@ transpTables = {
 	return ttab;
 end}
 setmetatable(transpTables, transpTables);
--- ft.ptab(puzzleFrame);
--- ft.ptab(AView);
--- ft.ptab(Canvas);

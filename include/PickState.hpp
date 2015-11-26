@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 18:05:46 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/26 13:20:14 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 17:40:19 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -87,6 +87,9 @@ public:
 	Tiles const				tiles;
 	ftui::Activity			act;
 	std::vector<Grid>		grids;
+
+	/* FUNCTIONALITIES ************** */
+	std::vector<std::string const*>		extractGridNames(void);
 
 };
 
