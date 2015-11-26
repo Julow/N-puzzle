@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/26 14:05:16 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 15:09:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -47,9 +47,11 @@ void			Main::loadSharedScripts(ftui::Activity &act)
 
 	luaL_dostring(l, "Main = {}");
 	pushFun("getGrid", &Main::getGridG);
+	pushFun("getTableToReal", &Main::getGridG);
 	pushFun("getAlgorithmId", &Main::getAlgorithmIdG);
 	pushFun("getHeuristicId", &Main::getHeuristicIdG);
 	pushFun("getCost", &Main::getCostG);
+	pushFun("getTableToReal", &Main::getTableToRealG);
 
 	ret = lua_getglobal(l, "Main"); // TTAG push0
 	FTASSERT(ret == LUA_TTABLE);
@@ -276,14 +278,18 @@ void			Main::handleMouseButtonEvents(
 ** LIBFTUI INTERACTIONS
 */
 
+int				Main::getTableToRealG(lua_State *l) /*static*/
+{
+	std::cout << "salutici" << std::endl;
+	return ftlua::handle<2, 1>(l, &Main::getTableToReal);
+}
+std::vector<int>        Main::getTableToReal(int i)
+{ return {this->_ocaml.transposition_toreal(i)}; }
+
+
 int				Main::getGridG(lua_State *l) /*static*/
 {
-	// Main *const		main = ftlua::retrieveSelf<Main>(l, 1);
-
-	// FTASSERT(lua_gettop(l) == 0); //TODO: FTLUAAASERT
-	// ftlua::push(l, main->grid);
-	// return 1;
-	return ftlua::handle<1, 1>(l, &Main::getGridToReal);
+	return ftlua::handle<1, 1>(l, &Main::getGrid);
 }
 Grid const		&Main::getGrid(void) const
 { return this->grid; }

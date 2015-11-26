@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 12:58:38 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/26 13:49:45 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 14:36:29 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -61,6 +61,10 @@ public:
 	// static int				getAlgorithms(lua_State *l);
 	// static int				getHeuristics(lua_State *l);
 	// static int				getTranspToReal(lua_State *l);
+
+	static int				getTableToRealG(lua_State *l);
+	std::vector<int>		getTableToReal(int i);
+
 
 	static int				getGridG(lua_State *l);
 	Grid const				&getGrid(void) const;

@@ -11,7 +11,7 @@ libs:
 
 
 MAX_SOURCE_LEN := 32
-o/srcs/Grid.o: srcs/Grid.cpp include/Grid.hpp \
+o/srcs/Grid.o: srcs/Grid.cpp modules/_objs/gl_canvas/_public/ft/assert.hpp \
 	modules/_objs/gl_canvas/_public/ft/Rect.hpp \
 	modules/_objs/gl_canvas/_public/ft/Vec.hpp \
 	modules/_objs/gl_canvas/_public/ft/templates/Rect.tpp \
@@ -19,7 +19,7 @@ o/srcs/Grid.o: srcs/Grid.cpp include/Grid.hpp \
 	modules/_objs/gl_canvas/_public/ft/templates/Vec3.tpp \
 	modules/_objs/gl_canvas/_public/ft/templates/Vec4.tpp \
 	modules/_objs/gl_canvas/_public/ft/type_traits.hpp \
-	modules/_objs/gl_canvas/_public/ft/utils.hpp \
+	modules/_objs/gl_canvas/_public/ft/utils.hpp include/Grid.hpp \
 	modules/_objs/gl_canvas/_public/ftlua/Converter.hpp \
 	modules/_objs/gl_canvas/_public/ftlua/KeysWrapper.hpp \
 	modules/_objs/gl_canvas/_public/ftlua/push.hpp \
@@ -30,8 +30,7 @@ o/srcs/Grid.o: srcs/Grid.cpp include/Grid.hpp \
 	modules/liblua/lua-5.3.1/src/lauxlib.h modules/liblua/lua-5.3.1/src/lua.h \
 	modules/liblua/lua-5.3.1/src/luaconf.h \
 	modules/liblua/lua-5.3.1/src/lualib.h include/GridParser.hpp \
-	include/Tokenizer.hpp modules/_objs/gl_canvas/_public/ft/assert.hpp \
-	| o/srcs/
+	include/Tokenizer.hpp | o/srcs/
 o/srcs/GridParser.o: srcs/GridParser.cpp include/GridParser.hpp \
 	include/Tokenizer.hpp modules/_objs/gl_canvas/_public/ft/Rect.hpp \
 	modules/_objs/gl_canvas/_public/ft/Vec.hpp \
