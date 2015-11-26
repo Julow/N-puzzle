@@ -5,7 +5,7 @@ NAME			:= npuzzle
 
 # Project directories
 DIRS			:= srcs
-INCLUDE_DIRS	:= include modules/_objs/ft/_public modules/_objs/ft_xml/_public modules/_objs/ftui/_public modules/_objs/tiles/_public modules/liblua/lua-5.3.1/src modules/_objs/gl_canvas/_public modules/_objs/ftce/_public modules
+INCLUDE_DIRS	:= include modules/_objs/_public
 
 # Git submodule to init
 MODULES			:=
@@ -20,7 +20,7 @@ HEAD_FLAGS		= $(addprefix -I,$(DIRS) $(INCLUDE_DIRS))
 C_FLAGS			= $(HEAD_FLAGS) $(BASE_FLAGS)
 CPP_FLAGS		= $(HEAD_FLAGS) $(BASE_FLAGS) -std=c++14
 
-LINK_FLAGS		= $(BASE_FLAGS) -Lmodules -lmodules -Lmodules/liblua -llua -lfreetype
+LINK_FLAGS		= $(BASE_FLAGS) -Lmodules -lmodules -Lmodules/liblua/lua-5.3.1/src -llua -lfreetype
 
 ifeq ($(DEBUG_MODE),1)
 	# Extra flags used in debug mode

@@ -1,4 +1,4 @@
-module liblua:
+module liblua::liblua:
 	public include lua-5.3.1/src/
 
 	disable auto

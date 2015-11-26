@@ -1,4 +1,5 @@
-module tiles:
+module tiles::tiles:
 	public include include/
-	public require ft
-	private require gl
+
+	public require ft::ft
+	private require gl::gl

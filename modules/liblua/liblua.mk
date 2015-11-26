@@ -14,13 +14,12 @@ else
   endif
 endif
 
-liblua: $(LIBLUA)
+liblua: $(LIBLUA_LIB)
 .PHONY: liblua
 
-$(LIBLUA):
+$(LIBLUA_LIB):
 	echo Extract lua
 	tar -x -C ?path? -f $(LIBLUA_ARCHIVE)
 	echo "Make lua ($(LIBLUA_PLATFORM))"
 	make -C $(LIBLUA_DIR) $(LIBLUA_PLATFORM)
-	cp $(LIBLUA_LIB) $(LIBLUA)
 	echo Done
