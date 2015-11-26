@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 13:01:05 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/26 17:21:07 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/26 18:17:01 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -73,13 +73,13 @@ function puzzleFrame:onDraw(canvas)
 end
 
 function puzzleFrame:onSizeChange(x, _)
-  print("puzzleFrame:onSizeChange: ", x, y, a);
   self.wpx, _ = x;
   puzzleFrame:queryRedraw();
 end
 
 function puzzleFrame:onEvent(e, ...)
   if (e == "onDisplayedGridChanged") then
+	print('puzzleFrame:onEvent('..e..', ', ..., ')');
 	self:reloadGrid();
   end
 end

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/26 15:06:03 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 18:02:11 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -26,9 +26,9 @@ class	Grid
 public:
 	static Grid const	def; // TODO: c pa ici ke sa doi etr
 
-	Grid(void);
-	Grid(int size);
-	Grid(int const* const data[], int size);
+	Grid();
+	Grid(int size, std::string const &name = "noname");
+	Grid(int const* const data[], int size, std::string const &name = "noname");
 	Grid(std::string const &fileName);
 
 	Grid(Grid const &src);

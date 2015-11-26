@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:26:40 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 11:15:03 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/26 18:38:25 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -70,6 +70,9 @@ public:
 	virtual void		setState(bool status);
 	virtual bool		getState(void);
 
+	static int			lockHighlightG(lua_State *l);
+	virtual void		lockHighlight(bool status);
+
 	ACanvas::Params const	&getNormalParams(void) const;
 	void					setNormalParams(ACanvas::Params const &p);
 
@@ -84,6 +87,7 @@ public:
 
 protected:
 	bool				_state;
+	bool				_highlightLocked; //TODO: move to flags?
 	ACanvas::Params		_normal;
 	ACanvas::Params		_disabled;
 	ACanvas::Params		_pushed;

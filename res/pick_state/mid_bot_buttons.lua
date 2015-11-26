@@ -6,21 +6,24 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 16:41:33 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/25 19:09:36 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/26 18:12:13 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
 local puzzleFrame = puzzleFrame
+local bookmark_holder = _G['bookmark-holder']
 
 -- ************************************************************************** --
 local randomizeButton = randomPuzzleButton
 assert(randomizeButton ~= nil);
 
 function randomizeButton:onClick(_, _)
-  PickState:useRandomGrid(4, 1);
+  PickState:pushRandomGrid(4, 1);
+  -- puzzleFrame:reloadGrid();
+  -- bookmark_holder:queryRedraw();
   -- TODO: ACCEPT BOOLEAN IN ftlua::handle
   -- TODO: RETREIVE WIDTH AND SOLVABLE FROM SLIDER/CHECKBOXES
-  puzzleFrame:reloadGrid();
+  -- TODO: CHECK SIZE FOR SEGFAULT
 end
 
 randomizeButton:setCallback('onClick', randomizeButton.onClick);

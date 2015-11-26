@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/26 17:39:31 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 18:26:48 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -96,9 +96,10 @@ int				PS::selectGridG(lua_State *l) /*static*/
 void			PS::selectGrid(int i)
 {
 	_main.grid = this->_b->grids[i]; //todo error check
-	this->_b->act.fireEvent("onDisplayedGridChanged");
-
+	this->_b->act.fireEvent("onDisplayedGridChanged", i);
 }
+
+
 
 
 int				PS::useDefaultGridG(lua_State *l) /*static*/
@@ -109,13 +110,19 @@ void			PS::useDefaultGrid(void)
 { _main.grid = Grid::def; }
 
 
-int				PS::useRandomGridG(lua_State *l) /*static*/
+int				PS::pushRandomGridG(lua_State *l) /*static*/
 {
-	return ftlua::handle<3, 0>(l, &PS::useRandomGrid);
+	return ftlua::handle<3, 0>(l, &PS::pushRandomGrid);
 }
-void			PS::useRandomGrid(int w, bool solvable)
+void			PS::pushRandomGrid(int w, bool solvable)
 {
-	_main.grid = _ocaml.generate_grid(w, solvable);
+	static int	count = 0;
+	int const	newIndex = this->_b->grids.size();
+
+	this->_b->grids.push_back(_ocaml.generate_grid(w, solvable));
+	this->_b->grids[newIndex].setName(ft::f("Generated #%", count++));
+	this->_b->act.fireEvent("onPuzzlesLoaded", this->_b->extractGridNames());
+	this->selectGrid(newIndex);
 	return ;
 }
 
@@ -167,7 +174,7 @@ static Tiles	make_tiles(void)
 PS::Bundle::Bundle(Main &main, OCamlBinding &ocaml)
 	: tiles(make_tiles())
 	, act(WIN_SIZEVI)
-	, grids()
+	, grids({Grid::def})
 {
 	ftui::Activity			&act = this->act;
 	auto					pushFun =
@@ -181,7 +188,7 @@ PS::Bundle::Bundle(Main &main, OCamlBinding &ocaml)
 	luaL_dostring(act.getLuaState(), "PickState = {}");
 	pushFun("useDefaultGrid", &useDefaultGridG);
 	pushFun("selectGrid", &selectGridG);
-	pushFun("useRandomGrid", &useRandomGridG);
+	pushFun("pushRandomGrid", &pushRandomGridG);
 	pushFun("setAlgorithmId", &setAlgorithmIdG);
 	pushFun("setHeuristicId", &setHeuristicIdG);
 	pushFun("setCost", &setCostG);
