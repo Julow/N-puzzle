@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/16 15:14:38 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/26 18:41:58 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/26 19:08:55 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -34,19 +34,29 @@ function frame.refreshAllBookmarks(names, count)
   local nbm = frame:size();
 
   while (i < count) do
+	print('refreshing OK', i);
 	frame.refreshOneBookmark(names[i], i);
 	i = i + 1;
   end
   while (i < nbm) do
-	frame.rawat(i):setVisibility(0);
+	print('refreshing NOOK', i);
+	local v = frame.rawat(i);
+	v:setVisibility(0);
 	i = i + 1;
   end
 end
 
 function bookmarkOnClick1(self)
   local p = self:getParent();
+  print('bookmarkOnClick1');
 
   PickState:selectGrid(p.i);
+end
+function bookmarkOnClick2(self)
+  local p = self:getParent();
+  print('bookmarkOnClick2');
+
+  PickState:deleteGrid(p.i);
 end
 
 function frame:at(i)
@@ -63,6 +73,7 @@ function frame:at(i)
 	frame:addView(v);
 	v:setVisibility(0);
 	b1:setCallback("onClick", bookmarkOnClick1);
+	b2:setCallback("onClick", bookmarkOnClick2);
 	v.i = sz;
 	sz = sz + 1;
   end
@@ -70,3 +81,4 @@ function frame:at(i)
 end
 
 frame.rawat = getmetatable(frame).at;
+frame.curHighlight = 0;

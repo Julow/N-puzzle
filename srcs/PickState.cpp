@@ -6,12 +6,13 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/26 18:26:48 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 19:12:13 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 
 #include "PickState.hpp"
 #include "config_window.hpp"
@@ -97,6 +98,25 @@ void			PS::selectGrid(int i)
 {
 	_main.grid = this->_b->grids[i]; //todo error check
 	this->_b->act.fireEvent("onDisplayedGridChanged", i);
+	return ;
+}
+
+int				PS::deleteGridG(lua_State *l) /*static*/
+{
+	return ftlua::handle<2, 0>(l, &PS::deleteGrid);
+}
+void			PS::deleteGrid(int i)
+{
+	auto				&grids = this->_b->grids;
+
+	FTASSERT(i >= 0 && i < (int)grids.size());
+	if (grids.size() > 1)
+	{
+		grids.erase(grids.begin() + i);
+		this->_b->act.fireEvent("onPuzzlesLoaded", this->_b->extractGridNames());
+		// this->selectGrid(std::min(i, (int)grids.size() - 1));
+	}
+	return ;
 }
 
 
@@ -188,6 +208,7 @@ PS::Bundle::Bundle(Main &main, OCamlBinding &ocaml)
 	luaL_dostring(act.getLuaState(), "PickState = {}");
 	pushFun("useDefaultGrid", &useDefaultGridG);
 	pushFun("selectGrid", &selectGridG);
+	pushFun("deleteGrid", &deleteGridG);
 	pushFun("pushRandomGrid", &pushRandomGridG);
 	pushFun("setAlgorithmId", &setAlgorithmIdG);
 	pushFun("setHeuristicId", &setHeuristicIdG);

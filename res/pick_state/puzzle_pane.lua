@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/17 18:42:10 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/26 18:23:15 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/26 18:46:39 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -18,7 +18,6 @@ function frame:onPuzzlesLoaded(names)
   local bm;
 
   print('frame:onPuzzlesLoaded(names)', names);
-  -- frame:unregisterEvent('onPuzzlesLoaded');
   pane.names = names;
   pane.count = #names + (names[0] == nil and 0 or 1);
   frame.refreshAllBookmarks(names, pane.count);
