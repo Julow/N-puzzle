@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 19:20:46 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 15:09:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -47,9 +47,11 @@ void			Main::loadSharedScripts(ftui::Activity &act)
 
 	luaL_dostring(l, "Main = {}");
 	pushFun("getGrid", &Main::getGridG);
+	pushFun("getTableToReal", &Main::getGridG);
 	pushFun("getAlgorithmId", &Main::getAlgorithmIdG);
 	pushFun("getHeuristicId", &Main::getHeuristicIdG);
 	pushFun("getCost", &Main::getCostG);
+	pushFun("getTableToReal", &Main::getTableToRealG);
 
 	ret = lua_getglobal(l, "Main"); // TTAG push0
 	FTASSERT(ret == LUA_TTABLE);
@@ -197,6 +199,10 @@ void			Main::onKeyDown(int key, int scancode, int mods)
 		"Bordel", 42, std::string("bordel"));
 			// "Bordel", 42, ft::Vec3<double>(1., -42., 8.));
 	}
+	if (key == 84)
+	{
+		this->_ocaml.transposition_toabstract(3);
+	}
 	if (key == 32)
 	{
 		std::cout << "set cpp callback" << std::endl;
@@ -272,19 +278,30 @@ void			Main::handleMouseButtonEvents(
 ** LIBFTUI INTERACTIONS
 */
 
-int				Main::getGridG(lua_State *l)
+int				Main::getTableToRealG(lua_State *l) /*static*/
 {
-	Main *const		main = ftlua::retrieveSelf<Main>(l, 1);
-// TTAG: push pop
-	FTASSERT(lua_gettop(l) == 0); //TODO: FTLUAAASERT
-	ftlua::push(l, main->grid);
-	// ftlua::pushgrid(l, main->grid);
-	return 1;
+	std::cout << "salutici" << std::endl;
+	return ftlua::handle<2, 1>(l, &Main::getTableToReal);
+}
+std::vector<int>        Main::getTableToReal(int i)
+{ return {this->_ocaml.transposition_toreal(i)}; }
+
+
+int				Main::getGridG(lua_State *l) /*static*/
+{
+	return ftlua::handle<1, 1>(l, &Main::getGrid);
 }
 Grid const		&Main::getGrid(void) const
 { return this->grid; }
+Grid			Main::getGridToReal(void)
+{
+	Grid	gr(this->grid);
 
-int				Main::getAlgorithmIdG(lua_State *l)
+	gr.convert(this->_ocaml.transposition_toreal(gr.getSize()));
+	return gr;
+}
+
+int				Main::getAlgorithmIdG(lua_State *l) /*static*/
 {
 	return ftlua::handle<1, 1>(l, &Main::getAlgorithmId);
 }
@@ -292,7 +309,7 @@ int				Main::getAlgorithmId(void) const
 { return this->algorithmId; }
 
 
-int				Main::getHeuristicIdG(lua_State *l)
+int				Main::getHeuristicIdG(lua_State *l) /*static*/
 {
 	return ftlua::handle<1, 1>(l, &Main::getHeuristicId);
 }
@@ -300,7 +317,7 @@ int				Main::getHeuristicId(void) const
 { return this->heuristicId; }
 
 
-int				Main::getCostG(lua_State *l)
+int				Main::getCostG(lua_State *l) /*static*/
 {
 	return ftlua::handle<1, 1>(l, &Main::getCost);
 }

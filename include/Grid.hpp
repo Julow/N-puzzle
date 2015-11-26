@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/25 19:25:23 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/26 15:06:03 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,11 +14,12 @@
 # define GRID_HPP
 
 # include <string>
+# include <vector>
 
 # include "ftlua/push.hpp"
 
 # define MAX_GRID_SIZE		999
-# define MIN_GRID_SIZE		2
+# define MIN_GRID_SIZE		3
 
 class	Grid
 {
@@ -27,7 +28,7 @@ public:
 
 	Grid(void);
 	Grid(int size);
-	Grid(int const* const* data, int size);
+	Grid(int const* const data[], int size);
 	Grid(std::string const &fileName);
 
 	Grid(Grid const &src);
@@ -50,6 +51,8 @@ public:
 	int					&get(int x, int y);
 
 	void				set(int x, int y, int v);
+
+	void				convert(std::vector<int> const &table);
 
 protected:
 

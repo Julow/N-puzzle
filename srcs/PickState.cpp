@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/25 19:10:33 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 13:41:50 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -23,7 +23,7 @@ using PS = PickState;
 ** CONSTRUCTION
 */
 
-PS::Bundle		*PS::loadBundle(Main &main) /*static*/
+PS::Bundle		*PS::loadBundle(Main &main, OCamlBinding &ocaml) /*static*/
 {
 	IBundle *const		ib = main.popBundle("PickState");
 	PS::Bundle *const	b = dynamic_cast<PS::Bundle*>(ib);
@@ -31,7 +31,7 @@ PS::Bundle		*PS::loadBundle(Main &main) /*static*/
 	if (b == nullptr)
 	{
 		FTASSERT(ib == nullptr, "Dynamic cast failed");
-		return new PS::Bundle(main);
+		return new PS::Bundle(main, ocaml);
 	}
 	return b;
 }
@@ -39,7 +39,7 @@ PS::Bundle		*PS::loadBundle(Main &main) /*static*/
 PS::PickState(Main &main, OCamlBinding &ocaml)
 	: _main(main)
 	, _ocaml(ocaml)
-	, _b(loadBundle(main))
+	, _b(loadBundle(main, ocaml))
 	, _launchSolvingState(false)
 {
 	lua_State	*l = this->_b->act.getLuaState();
@@ -164,16 +164,17 @@ static Tiles	make_tiles(void)
 	return t;
 }
 
-PS::Bundle::Bundle(Main &main)
+PS::Bundle::Bundle(Main &main, OCamlBinding &ocaml)
 	: tiles(make_tiles())
 	, act(WIN_SIZEVI)
 	, grids()
 {
-	ftui::Activity		&act = this->act;
-	auto				pushFun =
+	ftui::Activity			&act = this->act;
+	auto					pushFun =
 		[&](std::string const &fname, lua_CFunction f)
 		{ act.registerLuaCFun_table("PickState", fname, f); };
-	std::ifstream		is("res/layout/pick_state.xml");
+	std::ifstream			is("res/layout/pick_state.xml");
+	Grid					*gr;
 
 	act.inflate(is);
 	main.loadSharedScripts(act);
@@ -186,8 +187,13 @@ PS::Bundle::Bundle(Main &main)
 	pushFun("setCost", &setCostG);
 	pushFun("tagForSolving", &tagForSolvingG);
 	for (auto const &fileName : main.files)
+	{
 		this->grids.emplace_back(fileName);
-
+		gr = &this->grids[this->grids.size() - 1];
+		std::cout << "salut" << std::endl;
+		gr->convert(ocaml.transposition_toabstract(gr->getSize()));
+		std::cout << "salut" << std::endl;
+	}
 	act.fireEvent("onPuzzlesLoaded", this->grids);
 	ftlua::stackdump(act.getLuaState());
 	// act.fireEvent("onPuzzlesLoaded", this->grids[0]);

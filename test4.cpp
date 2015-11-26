@@ -1,49 +1,22 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   type_traits.hpp                                    :+:      :+:    :+:   //
+//   test4.cpp                                          :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/11/23 14:36:46 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/26 12:46:24 by ngoguey          ###   ########.fr       //
+//   Created: 2015/11/26 12:08:05 by ngoguey           #+#    #+#             //
+//   Updated: 2015/11/26 12:17:02 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#ifndef FT_TYPE_TRAITS_HPP
-# define FT_TYPE_TRAITS_HPP
-
-# include <type_traits>
-# include <ostream>
+#include <iostream>
+#include <type_traits>
+#include <vector>
+#include <list>
 
 #define ISSAME(A, B) std::is_same<A, B>::value
 #define OK_IF(PRED) typename std::enable_if<PRED>::type* = nullptr
-
-namespace ft // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-
-namespace dont_drool // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-
-template <class _CharT, class _Traits, class T>
-int		&operator<<(std::basic_ostream<_CharT, _Traits>&, const T&);
-
-template<typename T>
-struct is_printable
-{
-	using Ret = decltype((*(std::ostream*)(0x0)) << (*(T*)(0x0)));
-
-	static constexpr bool	value = std::is_same<Ret, std::ostream&>::value
-													|| std::is_convertible<T, std::string>::value;
-};
-}; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE DONT_DROOL //
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-
-template<typename T>
-struct is_printable
-{
-	static constexpr bool	value = dont_drool::is_printable<T>::value;
-};
 
 template<typename T>
 struct has_iterator
@@ -115,11 +88,28 @@ struct is_container : std::integral_constant<
 	&& has_begin<T>::value && has_end<T>::value>
 {};
 
+int							main(void)
+{
 
-}; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FT //
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-
-# undef OK_IF
-# undef ISSAME
-
-#endif /* ************************************************ FT_TYPE_TRAITS_HPP */
+	std::cout
+		<< "beg"
+		<< has_begin< std::vector<int> >::value
+		<< " end"
+		<< has_end< std::vector<int> >::value
+		<< " it"
+		<< has_iterator< std::vector<int> >::value
+		<< " container"
+		<< is_container< std::vector<int> >::value
+		<<	std::endl;
+	std::cout
+		<< "beg"
+		<< has_begin< int >::value
+		<< " end"
+		<< has_end< int >::value
+		<< " it"
+		<< has_iterator< int >::value
+		<< " container"
+		<< is_container< int >::value
+		<<	std::endl;
+	return (0);
+}

@@ -6,11 +6,15 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 13:01:05 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/25 19:10:44 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/26 15:10:58 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
+local INSETS = 5.; -- INSET BORDER OF THE VIEW
+local SPACING = 1.; -- SPACING BETWEEN TILES
+
 local puzzleFrame = puzzleFrame;
+local transpTables;
 assert(puzzleFrame ~= nil)
 
 PUZZLEFRAME_TEXT_SIZE = 16;
@@ -40,25 +44,25 @@ function puzzleFrame:onDraw(canvas)
 
   -- canvas:setFont("/Library/Fonts/Arial Black.ttf");
 
-  local insets = 5.; -- INSET BORDER OF THE VIEW
-  local spacing = 1.; -- SPACING BETWEEN TILES
-
   local last = self.w - 1;
-  local tile_w = (self.wpx - insets * 2 - spacing * last) / self.w;
+  local tile_w = (self.wpx - INSETS * 2 - SPACING * last) / self.w;
+  local transpTable = transpTables[self.w];
+  local realNbr;
 
-  local dt = tile_w + spacing;
-  local ypx = insets;
+  local dt = tile_w + SPACING;
+  local ypx = INSETS;
   local xpx = 0.;
   local i = 0;
 
   for y = 0, last do
-	xpx = insets;
+	xpx = INSETS;
 	for x = 0, last do
 	  i = y * self.w + x;
-	  if self.curPuzzle[i] ~= 0 then
+	  realNbr = transpTable[self.curPuzzle[i]];
+	  if realNbr ~= 0 then
 		canvas:drawRect(xpx, ypx, xpx + tile_w, ypx + tile_w
 						, 0xB0FF0000, 0xA5FF0000, 8);
-		drawTextCenter(canvas, tostring(self.curPuzzle[i])
+		drawTextCenter(canvas, tostring(realNbr)
 					   , xpx + (tile_w / 2), ypx + (tile_w / 2));
 	  end
 	  xpx = xpx + dt;
@@ -84,6 +88,19 @@ puzzleFrame:setCallback('onDraw', puzzleFrame.onDraw);
 puzzleFrame:setCallback('onSizeChange', puzzleFrame.onSizeChange);
 
 puzzleFrame:registerEvent("onDisplayedGridChanged");
+
+transpTables = {
+  __index = function(t, key)
+	local ttab = rawget(t, key);
+
+	if ttab ~= nil then
+	  return ttab;
+	end
+	ttab = Main:getTableToReal(key);
+	rawset(t, key, ttab);
+	return ttab;
+end}
+setmetatable(transpTables, transpTables);
 -- ft.ptab(puzzleFrame);
 -- ft.ptab(AView);
 -- ft.ptab(Canvas);
