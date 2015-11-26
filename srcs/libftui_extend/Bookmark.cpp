@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:15:02 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/25 19:19:07 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 18:39:47 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -33,7 +33,12 @@ using BMVH = Bookmark::ViewHolder;
 
 void			BM::declare_libftui(void)
 {
-	ftui::Activity::defineClass("Bookmark", "ALayout", &BM::createView);
+	using met_t = ftui::Activity::view_info_s::luamethod_t;
+
+	ftui::Activity::defineClass(
+		"Bookmark", "ALayout", &BM::createView
+		, { met_t{"setText", &BM::setTextG} }
+		);
 	return ;
 }
 
@@ -219,6 +224,21 @@ bool				BM::onMouseUp(int x, int y, int button, int mods)
 	else if (del->isMouseOver())
 		return del->onMouseUp(x, y, button, mods);
 	return sel->onMouseUp(x, y, button, mods);
+}
+
+// ========================================================================== //
+// FUNCTIONALITIES
+//
+
+int					BM::setTextG(lua_State *l) /*static*/
+{
+	return ftlua::handle<2, 0>(l, &BM::setText);
+}
+void				BM::setText(std::string const &str)
+{
+	this->_text = str;
+	this->queryRedraw();
+	return ;
 }
 
 // ========================================================================== //

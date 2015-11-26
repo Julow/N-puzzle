@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/25 18:03:11 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/26 17:23:57 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/26 18:41:13 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -63,6 +63,7 @@ Activity::views_info_t		Activity::viewsInfo
 		INSG(SliderView, getSteps), INSG(SliderView, setSteps),
 	}, {}}},
 	{"Button", {"ASolidView", &Button::createView, {
+		INSG(Button, lockHighlight),
 	}, {}}},
 	{"ALayout", {"ASolidView", nullptr, {
 		INSG(ALayout, size), INSG(ALayout, at), INSG(ALayout, addView)

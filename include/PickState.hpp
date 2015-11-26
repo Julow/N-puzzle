@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 18:05:46 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/26 13:20:14 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 18:55:55 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -48,12 +48,16 @@ public:
 	/* LIBFTUI INTERACTIONS ********* */
 	static int				selectGridG(lua_State *l);
 	void					selectGrid(int i);
+	static int				deleteGridG(lua_State *l);
+	void					deleteGrid(int i);
+
+	static int				pushRandomGridG(lua_State *l);
+	void					pushRandomGrid(int w, bool solvable);
+
 
 	static int				useDefaultGridG(lua_State *l);
 	void					useDefaultGrid(void);
 
-	static int				useRandomGridG(lua_State *l);
-	void					useRandomGrid(int w, bool solvable);
 
 	static int				setAlgorithmIdG(lua_State *l);
 	void					setAlgorithmId(int id);
@@ -87,6 +91,9 @@ public:
 	Tiles const				tiles;
 	ftui::Activity			act;
 	std::vector<Grid>		grids;
+
+	/* FUNCTIONALITIES ************** */
+	std::vector<std::string const*>		extractGridNames(void);
 
 };
 

@@ -6,43 +6,62 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/16 15:14:38 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/25 19:10:16 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/26 19:08:55 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
 local frame = _G['bookmark-holder']
 assert(frame ~= nil)
 
-function frame.refreshOneBookmark(puzzles, count, i)
+function frame.refreshOneBookmark(name, i)
   local bm = frame:at(i);
+  local b1;
 
-  if (i < count) then
-	bm:setVisibility(1);
-  else
-	bm:setVisibility(0);
+  bm:setText(name);
+  bm:setVisibility(1);
+  if frame.curHighlight ~= nil then
+	b1 = bm:at(0);
+	if frame.curHighlight == i then
+	  b1:lockHighlight(1);
+	else
+	  b1:lockHighlight(0);
+	end
   end
 end
 
-function frame.refreshAllBookmarks(puzzles, count)
+function frame.refreshAllBookmarks(names, count)
   local i = 0;
+  local nbm = frame:size();
 
   while (i < count) do
-	frame.refreshOneBookmark(puzzles, count, i);
+	print('refreshing OK', i);
+	frame.refreshOneBookmark(names[i], i);
+	i = i + 1;
+  end
+  while (i < nbm) do
+	print('refreshing NOOK', i);
+	local v = frame.rawat(i);
+	v:setVisibility(0);
 	i = i + 1;
   end
 end
 
 function bookmarkOnClick1(self)
   local p = self:getParent();
+  print('bookmarkOnClick1');
 
   PickState:selectGrid(p.i);
+end
+function bookmarkOnClick2(self)
+  local p = self:getParent();
+  print('bookmarkOnClick2');
+
+  PickState:deleteGrid(p.i);
 end
 
 function frame:at(i)
   local sz = frame:size();
-  local v;
-  local b1;
-  local b2;
+  local v, b1, b2;
 
   if i < sz then
 	return frame:rawat(i);
@@ -54,6 +73,7 @@ function frame:at(i)
 	frame:addView(v);
 	v:setVisibility(0);
 	b1:setCallback("onClick", bookmarkOnClick1);
+	b2:setCallback("onClick", bookmarkOnClick2);
 	v.i = sz;
 	sz = sz + 1;
   end
@@ -61,3 +81,4 @@ function frame:at(i)
 end
 
 frame.rawat = getmetatable(frame).at;
+frame.curHighlight = 0;

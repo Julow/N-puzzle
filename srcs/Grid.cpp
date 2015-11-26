@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:12 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/26 14:47:28 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 18:02:30 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -28,28 +28,29 @@
 
 #define MATRIX33I(...) std::array<int*, 3>{{__VA_ARGS__}}.data()
 #define LINE3I(...) std::array<int, 3>{{__VA_ARGS__}}.data()
-#define DEFGRID Grid(MATRIX33I(LINE3I(0,1,2), LINE3I(3,4,5), LINE3I(6,7,8)), 3)
+#define CONTENT MATRIX33I(LINE3I(0,1,2), LINE3I(3,4,5), LINE3I(6,7,8))
+#define DEFGRID Grid(CONTENT, 3, "Default")
 
 Grid const		Grid::def = DEFGRID; /*static*/
 
 Grid::Grid() :
-	_name(),
+	_name("noname"),
 	_data(nullptr),
 	_size(0)
 {
 	return ;
 }
 
-Grid::Grid(int size) :
-	_name()
+Grid::Grid(int size, std::string const &name /* = "noname" */) :
+	_name(name)
 {
 	alloc(size);
 	return ;
 }
 
-Grid::Grid(int const* const data[], int size) :
-// Grid::Grid(int const* const* data, int size) :
-	Grid(size)
+Grid::Grid(int const* const data[], int size
+		   , std::string const &name /* = "noname" */) :
+	Grid(size, name)
 {
 	for (int i = 0; i < size; i++)
 		std::memcpy(_data[i], data[i], size * sizeof(int));

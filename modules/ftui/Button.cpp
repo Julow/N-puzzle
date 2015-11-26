@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:32:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 11:15:04 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/26 18:39:33 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -40,6 +40,7 @@ AView		*Button::createView(
 Button::Button(Activity &act, ft::XmlParser const &xml)
 	: AView(act, xml)
 	, _state(true)
+	, _highlightLocked(false)
 	, _normal{		0xFF00AA00, 0xFFFF0000, 5, 0}
 	, _disabled{	0, 0, 0, 0}
 	, _pushed{		0xFF00AA00, 0xFFAA0000, 2, 0}
@@ -53,6 +54,7 @@ Button::Button(Activity &act, std::string const *id
 			   , std::string const &viewName /* = "Button" */)
 	: AView(act, id, viewName)
 	, _state(true)
+	, _highlightLocked(false)
 	, _normal{		0xFF00AA00, 0xFFFF0000, 5, 0}
 	, _disabled{	0, 0, 0, 0}
 	, _pushed{		0xFF00AA00, 0xFFAA0000, 2, 0}
@@ -102,7 +104,7 @@ void		Button::onDraw(ACanvas &canvas)
 	else
 		canvas.drawRect(ft::make_rect(ft::make_vec(0, 0), _holder->getSize()),
 						_disabled);
-	if (this->isMouseOver())
+	if (this->_highlightLocked || this->isMouseOver())
 	{
 		auto tmp = ft::make_vec(_highlight.lineWidth, _highlight.lineWidth);
 		canvas.drawRect(ft::make_rect<float>(tmp, _holder->getSize() - tmp * 2.)
@@ -210,6 +212,20 @@ bool		Button::getState(void)
 {
 	return _state;
 }
+
+int			Button::lockHighlightG(lua_State *l) /*static*/
+{
+	return ftlua::handle<2, 0>(l, &Button::lockHighlight);
+}
+void				Button::lockHighlight(bool status)
+{
+	if (this->_highlightLocked != status)
+	{
+		this->_highlightLocked = status;
+		this->queryRedraw();
+	}
+}
+
 
 ACanvas::Params const	&Button::getNormalParams(void) const
 { return this->_normal ; }

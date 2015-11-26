@@ -180,6 +180,8 @@ $(O_DIR)/ftui/LinearLayout_ViewHolder.o $(O_DIR)/ftui/ScrollableLayout.o \
 $(O_DIR)/ftui/SliderView.o $(O_DIR)/ftui/SolidView.o $(O_DIR)/ftui/TextView.o: BASE_FLAGS += -DRES_PATH='"$(abspath ftui/res/)"'
 
 # obj dirs
+$(O_DIR)/ftlua/push_utils.o $(O_DIR)/ftlua/stackError.o \
+$(O_DIR)/ftlua/cpp_utils.o: | $(O_DIR)/ftlua/
 $(O_DIR)/gl_canvas/GlCanvas.o $(O_DIR)/gl_canvas/GlCanvasHolder.o: | \
 	$(O_DIR)/gl_canvas/
 $(O_DIR)/ftui/SolidView.o $(O_DIR)/ftui/ALayout.o $(O_DIR)/ftui/ASolidView.o \
@@ -195,8 +197,6 @@ $(O_DIR)/ft_xml/srcs/XmlTokenizer.o $(O_DIR)/ft_xml/srcs/XmlParser.o: | \
 	$(O_DIR)/ft_xml/srcs/
 $(O_DIR)/tiles/Tiles.o: | $(O_DIR)/tiles/
 $(O_DIR)/ft/padformat.o $(O_DIR)/ft/assert.o: | $(O_DIR)/ft/
-$(O_DIR)/ftlua/push_utils.o $(O_DIR)/ftlua/stackError.o \
-$(O_DIR)/ftlua/cpp_utils.o: | $(O_DIR)/ftlua/
 
 # public links
 $(O_DIR)/_public/tiles/Tiles.hpp: tiles/include/Tiles.hpp
@@ -322,6 +322,34 @@ $(O_DIR)/_public/ftui/templates/AView_callLuaCallback.tpp: \
 ftui/public/templates/AView_callLuaCallback.tpp
 
 # dependencies
+$(O_DIR)/ftlua/push_utils.o: ft/public/Rect.hpp ft/public/Vec.hpp \
+	ft/public/assert.hpp ft/public/templates/Rect.tpp \
+	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
+	ft/public/templates/Vec4.tpp ftlua/public/Converter.hpp \
+	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
+	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
+	ftlua/public/set.hpp ftlua/public/stackassert.hpp \
+	ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
+	ftlua/public/utils.hpp liblua/lua-5.3.1/src/lauxlib.h \
+	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
+	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
+$(O_DIR)/ftlua/stackError.o: ftlua/public/stackassert.hpp \
+	ftlua/public/utils.hpp liblua/lua-5.3.1/src/lauxlib.h \
+	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
+	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
+$(O_DIR)/ftlua/cpp_utils.o: ft/public/Rect.hpp ft/public/Vec.hpp \
+	ft/public/assert.hpp ft/public/templates/Rect.tpp \
+	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
+	ft/public/templates/Vec4.tpp ftlua/public/Converter.hpp \
+	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
+	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
+	ftlua/public/set.hpp ftlua/public/stackassert.hpp \
+	ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
+	ftlua/public/utils.hpp liblua/lua-5.3.1/src/lauxlib.h \
+	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
+	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
 $(O_DIR)/gl_canvas/GlCanvas.o: ft/public/Color.hpp ft/public/Rect.hpp \
 	ft/public/Vec.hpp ft/public/assert.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
@@ -672,31 +700,3 @@ $(O_DIR)/ft/assert.o: ft/public/Rect.hpp ft/public/Vec.hpp \
 	ft/public/assert.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
 	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp
-$(O_DIR)/ftlua/push_utils.o: ft/public/Rect.hpp ft/public/Vec.hpp \
-	ft/public/assert.hpp ft/public/templates/Rect.tpp \
-	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
-	ft/public/templates/Vec4.tpp ftlua/public/Converter.hpp \
-	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
-	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
-	ftlua/public/set.hpp ftlua/public/stackassert.hpp \
-	ftlua/public/templates/ftlua_caller.tpp \
-	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
-	ftlua/public/utils.hpp liblua/lua-5.3.1/src/lauxlib.h \
-	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
-	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
-$(O_DIR)/ftlua/stackError.o: ftlua/public/stackassert.hpp \
-	ftlua/public/utils.hpp liblua/lua-5.3.1/src/lauxlib.h \
-	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
-	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
-$(O_DIR)/ftlua/cpp_utils.o: ft/public/Rect.hpp ft/public/Vec.hpp \
-	ft/public/assert.hpp ft/public/templates/Rect.tpp \
-	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
-	ft/public/templates/Vec4.tpp ftlua/public/Converter.hpp \
-	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
-	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
-	ftlua/public/set.hpp ftlua/public/stackassert.hpp \
-	ftlua/public/templates/ftlua_caller.tpp \
-	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
-	ftlua/public/utils.hpp liblua/lua-5.3.1/src/lauxlib.h \
-	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
-	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h

@@ -6,12 +6,13 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/26 13:41:50 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 19:12:13 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 
 #include "PickState.hpp"
 #include "config_window.hpp"
@@ -96,9 +97,29 @@ int				PS::selectGridG(lua_State *l) /*static*/
 void			PS::selectGrid(int i)
 {
 	_main.grid = this->_b->grids[i]; //todo error check
-	this->_b->act.fireEvent("onDisplayedGridChanged");
-
+	this->_b->act.fireEvent("onDisplayedGridChanged", i);
+	return ;
 }
+
+int				PS::deleteGridG(lua_State *l) /*static*/
+{
+	return ftlua::handle<2, 0>(l, &PS::deleteGrid);
+}
+void			PS::deleteGrid(int i)
+{
+	auto				&grids = this->_b->grids;
+
+	FTASSERT(i >= 0 && i < (int)grids.size());
+	if (grids.size() > 1)
+	{
+		grids.erase(grids.begin() + i);
+		this->_b->act.fireEvent("onPuzzlesLoaded", this->_b->extractGridNames());
+		// this->selectGrid(std::min(i, (int)grids.size() - 1));
+	}
+	return ;
+}
+
+
 
 
 int				PS::useDefaultGridG(lua_State *l) /*static*/
@@ -109,13 +130,19 @@ void			PS::useDefaultGrid(void)
 { _main.grid = Grid::def; }
 
 
-int				PS::useRandomGridG(lua_State *l) /*static*/
+int				PS::pushRandomGridG(lua_State *l) /*static*/
 {
-	return ftlua::handle<3, 0>(l, &PS::useRandomGrid);
+	return ftlua::handle<3, 0>(l, &PS::pushRandomGrid);
 }
-void			PS::useRandomGrid(int w, bool solvable)
+void			PS::pushRandomGrid(int w, bool solvable)
 {
-	_main.grid = _ocaml.generate_grid(w, solvable);
+	static int	count = 0;
+	int const	newIndex = this->_b->grids.size();
+
+	this->_b->grids.push_back(_ocaml.generate_grid(w, solvable));
+	this->_b->grids[newIndex].setName(ft::f("Generated #%", count++));
+	this->_b->act.fireEvent("onPuzzlesLoaded", this->_b->extractGridNames());
+	this->selectGrid(newIndex);
 	return ;
 }
 
@@ -167,7 +194,7 @@ static Tiles	make_tiles(void)
 PS::Bundle::Bundle(Main &main, OCamlBinding &ocaml)
 	: tiles(make_tiles())
 	, act(WIN_SIZEVI)
-	, grids()
+	, grids({Grid::def})
 {
 	ftui::Activity			&act = this->act;
 	auto					pushFun =
@@ -181,7 +208,8 @@ PS::Bundle::Bundle(Main &main, OCamlBinding &ocaml)
 	luaL_dostring(act.getLuaState(), "PickState = {}");
 	pushFun("useDefaultGrid", &useDefaultGridG);
 	pushFun("selectGrid", &selectGridG);
-	pushFun("useRandomGrid", &useRandomGridG);
+	pushFun("deleteGrid", &deleteGridG);
+	pushFun("pushRandomGrid", &pushRandomGridG);
 	pushFun("setAlgorithmId", &setAlgorithmIdG);
 	pushFun("setHeuristicId", &setHeuristicIdG);
 	pushFun("setCost", &setCostG);
@@ -190,15 +218,22 @@ PS::Bundle::Bundle(Main &main, OCamlBinding &ocaml)
 	{
 		this->grids.emplace_back(fileName);
 		gr = &this->grids[this->grids.size() - 1];
-		std::cout << "salut" << std::endl;
 		gr->convert(ocaml.transposition_toabstract(gr->getSize()));
-		std::cout << "salut" << std::endl;
 	}
-	act.fireEvent("onPuzzlesLoaded", this->grids);
-	ftlua::stackdump(act.getLuaState());
-	// act.fireEvent("onPuzzlesLoaded", this->grids[0]);
+	act.fireEvent("onPuzzlesLoaded", this->extractGridNames());
+	return ;
 }
 
 PS::Bundle::~Bundle()
 {
+}
+
+// std::vector<std::string>	PS::Bundle::extractGridNames(void)
+std::vector<std::string const*>	PS::Bundle::extractGridNames(void)
+{
+	std::vector<std::string const*>		ret;
+
+	for (auto const &it : this->grids)
+		ret.push_back(&it.getName());
+	return ret;
 }

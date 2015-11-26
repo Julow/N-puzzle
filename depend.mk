@@ -11,22 +11,21 @@ libs:
 
 
 MAX_SOURCE_LEN := 32
-o/srcs/Grid.o: srcs/Grid.cpp include/Grid.hpp \
+o/srcs/Grid.o: srcs/Grid.cpp modules/_objs/_public/ft/assert.hpp \
 	modules/_objs/_public/ft/Rect.hpp modules/_objs/_public/ft/Vec.hpp \
 	modules/_objs/_public/ft/templates/Rect.tpp \
 	modules/_objs/_public/ft/templates/Vec2.tpp \
 	modules/_objs/_public/ft/templates/Vec3.tpp \
 	modules/_objs/_public/ft/templates/Vec4.tpp \
 	modules/_objs/_public/ft/type_traits.hpp \
-	modules/_objs/_public/ft/utils.hpp \
+	modules/_objs/_public/ft/utils.hpp include/Grid.hpp \
 	modules/_objs/_public/ftlua/Converter.hpp \
 	modules/_objs/_public/ftlua/KeysWrapper.hpp \
 	modules/_objs/_public/ftlua/push.hpp \
 	modules/_objs/_public/ftlua/stackassert.hpp \
 	modules/_objs/_public/ftlua/types.hpp \
 	modules/_objs/_public/ftlua/utils.hpp modules/_objs/_public/liblua/lua.hpp \
-	include/GridParser.hpp include/Tokenizer.hpp \
-	modules/_objs/_public/ft/assert.hpp | o/srcs/
+	include/GridParser.hpp include/Tokenizer.hpp | o/srcs/
 o/srcs/GridParser.o: srcs/GridParser.cpp include/GridParser.hpp \
 	include/Tokenizer.hpp modules/_objs/_public/ft/Rect.hpp \
 	modules/_objs/_public/ft/Vec.hpp \
