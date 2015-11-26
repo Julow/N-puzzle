@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/02 18:43:04 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 16:10:12 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/26 17:52:49 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -152,6 +152,8 @@ template<typename T>
 Rect<T>		make_rect(T left, T top, T right, T bottom);
 template<typename T>
 Rect<T>		make_rect(Vec2<T> pos, Vec2<T> size);
+template<typename T>
+Rect<T>		operator^(Vec2<T> pos, Vec2<T> size);
 
 };
 

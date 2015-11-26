@@ -161,6 +161,7 @@ clean:
 # Clean everything
 fclean: clean
 	rm -f $(NAME)
+	make -C modules fclean
 
 # Clean and make
 re: fclean all

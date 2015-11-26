@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/25 18:03:11 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/25 18:41:46 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/26 17:23:57 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,6 +18,7 @@
 #include "ftui/LinearLayout.hpp"
 #include "ftui/SolidView.hpp"
 #include "ftui/SliderView.hpp"
+#include "ftui/ScrollableLayout.hpp"
 #include "ftui/ASolidView.hpp"
 #include "ftui/TextView.hpp"
 #include "ftui/Button.hpp"
@@ -69,6 +70,10 @@ Activity::views_info_t		Activity::viewsInfo
 	{"LinearLayout", {"ALayout", &LinearLayout::createView, {
 		INSG(LinearLayout, getDirection), INSG(LinearLayout, setDirection),
 	}, {}}},
+	{"ScrollableLayout", {"LinearLayout", &ScrollableLayout::createView, {
+		INSG(ScrollableLayout, getScroll), INSG(ScrollableLayout, setScroll),
+		INSG(ScrollableLayout, getMaxScroll),
+	}, {}}},
 	{"SolidView", {"ASolidView", &SolidView::createView, {}, {}}},
 };
 
@@ -100,6 +105,9 @@ Activity::callback_map_t	Activity::callback_map
 	{"onDoubleClick",		LUA_CALLBACK_ID(Button, DOUBLE_CLICK)},
 
 	{"onValueChange",		LUA_CALLBACK_ID(SliderView, VALUE_CHANGE)},
+
+	{"onScrollChange",		LUA_CALLBACK_ID(ScrollableLayout, SCROLL_CHANGE)},
+	{"onMaxScrollChange",	LUA_CALLBACK_ID(ScrollableLayout, MAX_SCROLL_CHANGE)},
 };
 
 Activity::view_factory_t	Activity::getFactory(std::string const &name)

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/05 14:06:16 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/23 16:10:46 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/26 18:54:01 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -66,7 +66,7 @@ void		Rect<T>::setPos(Vec2<T> pos)
 template<typename T>
 Vec2<T>		Rect<T>::getPos(void) const
 {
-	return (Vec2<T>(top, left));
+	return (Vec2<T>(left, top));
 }
 
 template<typename T>
@@ -278,7 +278,7 @@ template<typename T>
 template<typename C>
 Rect<T>::operator Rect<C>(void) const
 {
-	return (ft::make_rect(
+	return (Rect<C>(
 		static_cast<C>(left),
 		static_cast<C>(top),
 		static_cast<C>(right),
@@ -294,6 +294,12 @@ Rect<T>		make_rect(T left, T top, T right, T bottom)
 
 template<typename T>
 Rect<T>		make_rect(Vec2<T> pos, Vec2<T> size)
+{
+	return (Rect<T>(pos, size));
+}
+
+template<typename T>
+Rect<T>		operator^(Vec2<T> pos, Vec2<T> size)
 {
 	return (Rect<T>(pos, size));
 }
