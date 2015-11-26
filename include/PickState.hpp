@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 18:05:46 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/25 18:38:07 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 13:20:14 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,7 +21,7 @@ class PickState : public IState
 	/* ATTRIBUTES ******************* */
 private:
 	class Bundle;
-	static Bundle			*loadBundle(Main &main);
+	static Bundle			*loadBundle(Main &main, OCamlBinding &ocaml);
 
 	Main					&_main;
 	OCamlBinding			&_ocaml;
@@ -74,7 +74,7 @@ class PickState::Bundle : public IBundle
 {
 public:
 	/* CONSTRUCTION ***************** */
-	Bundle(Main &main);
+	Bundle(Main &main, OCamlBinding &ocaml);
 	~Bundle();
 
 	Bundle() = delete;

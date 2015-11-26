@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/26 12:08:05 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/26 12:10:07 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 12:17:02 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -30,7 +30,7 @@ private:
 	template<typename C>
 	static no_t				&test(...);
 
-	using ItVal = decltype(test<T>(0));
+	using ItVal = decltype(test<T>(nullptr));
 public:
 	static constexpr bool	value = ISSAME(ItVal, yes_t&);
 

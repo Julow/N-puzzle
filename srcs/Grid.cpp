@@ -6,17 +6,21 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:12 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/25 19:29:30 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/26 13:41:32 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#include "Grid.hpp"
-#include "GridParser.hpp"
-#include "ft/assert.hpp"
-#include "ft/utils.hpp"
 #include <cstring>
+#include <algorithm>
 #include <stdexcept>
 #include <array>
+#include <cmath>
+
+#include "ft/assert.hpp"
+#include "ft/utils.hpp"
+
+#include "Grid.hpp"
+#include "GridParser.hpp"
 
 // ========================================================================== //
 // CONSTRUCTION
@@ -234,6 +238,15 @@ int					&Grid::get(int x, int y)
 void				Grid::set(int x, int y, int v)
 {
 	_data[y][x] = v;
+	return ;
+}
+
+void				Grid::convert(std::vector<int> const &table)
+{
+	FTASSERT((int)table.size() == this->_size * this->_size);
+	for (int y = 0; y < _size; y++)
+		for (int x = 0; x < _size; x++)
+			this->_data[y][x] = table[this->_data[y][x]];
 	return ;
 }
 

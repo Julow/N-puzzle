@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/25 18:21:03 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 14:09:02 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -45,7 +45,7 @@ namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 // TODO: Split hpp/cpp (ps: NO DEFAULT PARAMETERS IN PROTOTYPE)
 
-
+/*
 template <bool FIRSTISTOP, bool USELUAERR
 		  , typename... ARGS>
 int			push(lua_State *l, KeysWrapper<ARGS...> const &wrap);
@@ -61,20 +61,22 @@ int			push(lua_State *l, T &v);
 //TODO: validate this overload
 template <bool USELUAERR, typename T
 		  , OK_IFNODEF((sizeof(T) > 0u))
-	, OK_IFNODEF(ISCONST(T))
-	, typename NOCONST
-	, OK_IFNODEF(ISCONV(T, Converter<NOCONST>)) >
+	, OK_IFNODEF(!ISCONST(T))
+	// , OK_IFNODEF(ISCONST(T))
+	// , typename NOCONST
+	, OK_IFNODEF(ISCONV(T, Converter<const T>)) >
 int			push(lua_State *l, T &v);
 
 
-// Push (const-T to Converter<T>)
+// Push (const-T to Converter<T>) NOT(const-T to Converter<T const>)
 // Overload allowing const cast in User's cast-operator
 template <bool USELUAERR, typename T
 		  , OK_IFNODEF((sizeof(T) > 0u))
 	, OK_IFNODEF(ISCONST(T))
 	, typename NOCONST
-	, OK_IFNODEF(ISCONV(T, Converter<NOCONST>)) >
-int			push(lua_State *l, T &v);
+	, OK_IFNODEF(ISCONV(T, Converter<NOCONST>))
+	, OK_IFNODEF(!ISCONV(T, Converter<T>))>
+	int			push(lua_State *l, T &v);
 
 // Push (T* to push<T>) || (T-const * to push<T-const>)
 template <bool USELUAERR, typename T
@@ -85,7 +87,7 @@ template <bool USELUAERR, typename T
 	, OK_IFNODEF(ISCONV(NOPTRCONST, Converter<NOPTRCONST>))
 	>
 int			push(lua_State *l, T v);
-
+*/
 
 // ========================================================================== //
 // ========================================================================== //
@@ -244,35 +246,53 @@ int	push(lua_State *l, ft::Rect<T> const &v) {
 // 'OK_IF((sizeof(T) > 0u))'		Checks if T is a complete type
 //
 
-
-template <bool USELUAERR = false, typename T
+// T -> Converter<T>
+template <bool LuaErr = false, typename T
 		  , OK_IF((sizeof(T) > 0u))
-		  , OK_IF(ISCONV(T, Converter<T>)) >
+	, OK_IF(!ISCONST(T))
+	, OK_IF(ISCONV(T, Converter<T>)) >
 int			push(lua_State *l, T &v)
 {
 	return static_cast<Converter<T>>(v).callPush(l);
 }
 
-template <bool USELUAERR = false, typename T
+// T const -> Converter<T const>
+template <bool LuaErr = false, typename T
 		  , OK_IF((sizeof(T) > 0u))
 	, OK_IF(ISCONST(T))
-	, typename NOCONST = DELCONST(T)
-	, OK_IF(ISCONV(T, Converter<NOCONST>)) >
-int			push(lua_State *l, T &v) //TODO: validate this overload
+	, OK_IF(ISCONV(T, Converter<T>)) >
+int			push(lua_State *l, T &v)
 {
 	return static_cast<Converter<T>>(v).callPush(l);
 }
 
-template <bool USELUAERR = false, typename T
+// T -> Converter<T const>   NOT(T -> Converter<T>)
+template <bool LuaErr = false, typename T
 		  , OK_IF((sizeof(T) > 0u))
 	, OK_IF(!ISCONST(T))
-	, OK_IF(ISCONV(T const, Converter<T const>)) >
+	, OK_IF(ISCONV(T, Converter<const T>))
+	, OK_IF(!ISCONV(T, Converter<T>))
+	>
+int			push(lua_State *l, T const &v)
+{
+	return static_cast<Converter<const T>>(v).callPush(l);
+}
+
+// T const -> Converter<T>  NOT(T const -> Converter<T const)
+// Might require a const cast in user's cast-operator
+template <bool LuaErr = false, typename T
+		  , OK_IF((sizeof(T) > 0u))
+	, OK_IF(ISCONST(T))
+	, class TNoConst = DELCONST(T)
+	, OK_IF(ISCONV(T, Converter<TNoConst>))
+	, OK_IF(!ISCONV(T, Converter<T>))>
 int			push(lua_State *l, T &v)
 {
 	return static_cast<Converter<T const>>(v).callPush(l);
 }
 
-template <bool USELUAERR = false, typename T
+// Pointers tmp function
+template <bool LuaErr = false, typename T
 		  , OK_IF(ISPTR(T))
 		  , typename NOPTR = DELPTR(T)
 		  , OK_IF((sizeof(NOPTR) > 0u))
@@ -282,9 +302,9 @@ template <bool USELUAERR = false, typename T
 int			push(lua_State *l, T v)
 {
 	if (v == nullptr)
-		return push<USELUAERR>(l, nil);
+		return push<LuaErr>(l, nil);
 	else
-		return push<USELUAERR>(l, *v);
+		return push<LuaErr>(l, *v);
 }
 
 
@@ -298,14 +318,14 @@ namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 
-template <size_t I, bool USELUAERR
+template <size_t I, bool LuaErr
 		  , typename... ARGS
 		  >
 void		_dereference(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 {
-	ftlua::push<USELUAERR>(l, std::get<I>(wrap.tup));
+	ftlua::push<LuaErr>(l, std::get<I>(wrap.tup));
 	FTLUA_STACKASSERT(
-		l, lua_istable(l, -2), USELUAERR
+		l, lua_istable(l, -2), LuaErr
 		, ft::f("ftlua::push(KeysWrapper<%>) at param %/%."
 				, ft::tupleToString(wrap.tup), I + 1, sizeof...(ARGS))
 		, ft::f("Stack[-2] should have been a table.")
@@ -315,24 +335,24 @@ void		_dereference(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 	return ;
 }
 
-template <size_t I, bool USELUAERR
+template <size_t I, bool LuaErr
 		  , typename... ARGS
 		  , OK_IF((sizeof...(ARGS) - I == 1))
 		  >
 void		_loopKey(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 {
-	_dereference<I, USELUAERR>(l, wrap);
+	_dereference<I, LuaErr>(l, wrap);
 	return ;
 }
 
-template <size_t I, bool USELUAERR
+template <size_t I, bool LuaErr
 		  , typename... ARGS
 		  , OK_IF((sizeof...(ARGS) - I != 1))
 		  >
 void		_loopKey(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 {
-	_dereference<I, USELUAERR>(l, wrap);
-	_loopKey<I + 1, USELUAERR>(l, wrap);
+	_dereference<I, LuaErr>(l, wrap);
+	_loopKey<I + 1, LuaErr>(l, wrap);
 	return ;
 }
 
@@ -341,13 +361,13 @@ void		_loopKey(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 
-template <bool FIRSTISTOP = false, bool USELUAERR = false
+template <bool FIRSTISTOP = false, bool LuaErr = false
 		  , typename ...ARGS>
 int			push(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 {
 	if (!FIRSTISTOP)
 		lua_pushglobaltable(l);
-	internal::_loopKey<0, USELUAERR>(l, wrap);
+	internal::_loopKey<0, LuaErr>(l, wrap);
 	return 1;
 }
 
@@ -403,7 +423,7 @@ template<typename T>
 struct is_container : std::integral_constant<bool, has_const_iterator<T>::value && has_begin_end<T>::beg_value && has_begin_end<T>::end_value>
 { };
 
-template <bool USELUAERR = false
+template <bool LuaErr = false
 		  , class T
 		  , OK_IF(is_container<T>::value)
 		  >
@@ -441,16 +461,16 @@ namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 
-template <bool USELUAERR>
+template <bool LuaErr>
 int			_pushLoop(lua_State *)
 {
 	return 0;
 }
 
-template <bool USELUAERR, typename HEAD, typename ...TAIL>
+template <bool LuaErr, typename HEAD, typename ...TAIL>
 int			_pushLoop(lua_State *l, HEAD const &h, TAIL const &...t)
 {
-	return push<USELUAERR>(l, h) + _pushLoop<USELUAERR>(l, t...);
+	return push<LuaErr>(l, h) + _pushLoop<LuaErr>(l, t...);
 }
 
 
@@ -458,10 +478,10 @@ int			_pushLoop(lua_State *l, HEAD const &h, TAIL const &...t)
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 
-template <bool USELUAERR = false, typename ...ARGS>
+template <bool LuaErr = false, typename ...ARGS>
 int			multiPush(lua_State *l, ARGS const & ...args)
 {
-	return internal::_pushLoop<USELUAERR>(l, args...);
+	return internal::_pushLoop<LuaErr>(l, args...);
 }
 
 

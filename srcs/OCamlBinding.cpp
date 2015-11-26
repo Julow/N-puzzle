@@ -6,16 +6,16 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 11:51:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/16 14:57:16 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/26 13:47:40 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "OCamlBinding.hpp"
 #include "Grid.hpp"
 #include "ft/assert.hpp" // Tester d'autres prositions dans l'ordre d'include
+
 #include <stdexcept>
 #include <stdio.h>
-
 #include <vector>
 #include <tuple>
 
@@ -182,6 +182,20 @@ static std::string					valToFail(value &val)
 	return (valToString(Field(val, 0)));
 }
 
+static std::vector<int>				valToIntVector(value &val)
+{
+	std::vector<int>		vec;
+
+	FTASSERT(Is_block(val));
+	vec.reserve(Wosize_val(val));
+	for (unsigned int i = 0; i < Wosize_val(val); i++)
+	{
+		vec.push_back(valToInt(Field(val, i)));
+	}
+	return vec;
+}
+
+
 /* ************************************************************************** */
 /* C -> OCaml */
 
@@ -271,30 +285,36 @@ void        OCamlBinding::heuristic_list(void)
 	return ;
 }
 
-void        OCamlBinding::transposition_toreal(int w)
+std::vector<int>	OCamlBinding::transposition_toreal(unsigned int w)
 {
-	value *const	f = caml_named_value("transposition_toreal");
-	value			res;
+	value *const		f = caml_named_value("transposition_toreal");
+	value				res;
+	std::vector<int>	vec;
 
 	FTASSERT(f != nullptr);
 	res = caml_callback_exn(*f, Val_int(w));
 	if (Is_exception_result(res))
 		throw std::runtime_error(
 			caml_format_exception(Extract_exception(res)));
-	return ;
+	vec = valToIntVector(res);
+	FTASSERT(vec.size() == w * w);
+	return vec;
 }
 
-void        OCamlBinding::transposition_toabstract(int w)
+std::vector<int>	OCamlBinding::transposition_toabstract(unsigned int w)
 {
-	value *const	f = caml_named_value("transposition_toabstract");
-	value			res;
+	value *const		f = caml_named_value("transposition_toabstract");
+	value				res;
+	std::vector<int>	vec;
 
 	FTASSERT(f != nullptr);
 	res = caml_callback_exn(*f, Val_int(w));
 	if (Is_exception_result(res))
 		throw std::runtime_error(
 			caml_format_exception(Extract_exception(res)));
-	return ;
+	vec = valToIntVector(res);
+	FTASSERT(vec.size() == w * w);
+	return vec;
 }
 
 /* ************************************************************************** */

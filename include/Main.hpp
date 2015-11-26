@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 12:58:38 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 11:37:39 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/26 13:49:45 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -64,6 +64,7 @@ public:
 
 	static int				getGridG(lua_State *l);
 	Grid const				&getGrid(void) const;
+	Grid					getGridToReal(void);
 
 	static int				getAlgorithmIdG(lua_State *l);
 	int						getAlgorithmId(void) const;
