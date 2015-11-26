@@ -1,6 +1,6 @@
-module gl_canvas:
+module gl_canvas::gl_canvas:
 	public include public/
 
-	public require ft
-	public require ftui
-	private require gl
+	public require ft::ft
+	public require ftui::ftui
+	private require gl::gl

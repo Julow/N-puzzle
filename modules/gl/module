@@ -1,5 +1,4 @@
-
-module gl:
+module gl::gl:
 	public include .
 
 	makefile import gl.mk

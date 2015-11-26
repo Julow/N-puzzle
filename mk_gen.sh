@@ -7,7 +7,7 @@
 #    By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/17 15:02:58 by jaguillo          #+#    #+#              #
-#    Updated: 2015/11/17 15:13:47 by jaguillo         ###   ########.fr        #
+#    Updated: 2015/11/26 16:01:15 by jaguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,11 +33,11 @@ for file_name in `ocamldep -sort -native $OCAML_FLAGS $OCAML_SOURCES`; do
 	OCAML_OBJS="$OCAML_OBJS $file_name"
 done
 
+make -C modules/ init_rules
+
 (cd modules && makemake2 gen) || exit 1
 
 echo "modules/depend.mk generated"
-
-make -C modules
 
 (
 	printf "ML_OBJS ="

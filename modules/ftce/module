@@ -1,2 +1,2 @@
-module ftce:
+module ftce::ftce:
 	public include ./

@@ -1,4 +1,4 @@
-module ft_xml:
+module ft_xml::ft_xml:
 	public include public/
 
-	private require ft
+	private require ft::ft
