@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/05 14:06:16 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/26 18:54:01 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/27 16:35:45 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -64,6 +64,15 @@ void		Rect<T>::setPos(Vec2<T> pos)
 }
 
 template<typename T>
+void		Rect<T>::setPos(T x, T y)
+{
+	right = x + getWidth();
+	bottom = y + getHeight();
+	left = x;
+	top = y;
+}
+
+template<typename T>
 Vec2<T>		Rect<T>::getPos(void) const
 {
 	return (Vec2<T>(left, top));
@@ -88,6 +97,13 @@ void		Rect<T>::setSize(Vec2<T> size)
 {
 	right = left + size.x;
 	bottom = top + size.y;
+}
+
+template<typename T>
+void		Rect<T>::setSize(T w, T h)
+{
+	right = left + w;
+	bottom = top + h;
 }
 
 template<typename T>

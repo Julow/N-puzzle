@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/25 19:14:50 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/27 21:08:01 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -225,12 +225,14 @@ ft::Rect<int>	ACanvas::getClip(void) const
 
 void			ACanvas::setClip(ft::Rect<int> const &clip)
 {
-	_clip = clip + _origin;
+	_clip = clip;
+	_clip += _origin;
 }
 
 void			ACanvas::setClip(ft::Vec2<int> size)
 {
-	_clip = ft::make_rect(_origin, size);
+	_clip.setPos(_origin);
+	_clip.setSize(size);
 }
 
 void			ACanvas::clearClip(void)

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/25 13:23:56 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/25 18:40:45 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/27 21:17:35 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -193,12 +193,18 @@ void			LinearLayout::onDraw(ACanvas &canvas)
 {
 	float const			oldAlpha = canvas.getAlpha();
 	ft::Vec2<int> const	oldOrigin = canvas.getOrigin();
+	ft::Rect<int> const	layoutRect = canvas.getClip();
 	auto				redrawChild =
-		[=, &canvas](AView *v, ft::Vec2<int> pos, ft::Vec2<int> size)
+		[=, &canvas](AView *v, ft::Rect<int> const &bounds)
 	{
+		ft::Rect<int>		clip;
+
+		if (!bounds.collides(layoutRect, clip))
+			return ;
+		clip.setPos(0, 0);
 		canvas.applyAlpha(v->getAlpha());
-		canvas.applyOrigin(pos);
-		canvas.setClip(size);
+		canvas.applyOrigin(bounds.getPos());
+		canvas.setClip(clip);
 		v->onDraw(canvas);
 		canvas.setOrigin(oldOrigin);
 		canvas.setAlpha(oldAlpha);
@@ -215,8 +221,9 @@ void			LinearLayout::onDraw(ACanvas &canvas)
 		for (ViewHolder *vh : _childs)
 		{
 			v = vh->getView();
+			bounds = vh->getPos() ^ vh->getSize();
 			if (v->isVisible())
-				redrawChild(v, vh->getPos(), vh->getSize());
+				redrawChild(v, bounds);
 		}
 	}
 	else if (_layoutFlags & AView::REDRAW_QUERY)
@@ -225,10 +232,10 @@ void			LinearLayout::onDraw(ACanvas &canvas)
 		for (ViewHolder *vh : _childs)
 		{
 			v = vh->getView();
-			bounds = ft::make_rect(vh->getPos(), vh->getSize());
+			bounds = vh->getPos() ^ vh->getSize();
 			if (v->isVisible()
 				&& (v->isRedrawQueried() || redrawClip.collides(bounds)))
-				redrawChild(v, bounds.getPos(), bounds.getSize());
+				redrawChild(v, bounds);
 		}
 		_layoutFlags &= ~AView::REDRAW_QUERY;
 	}

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/02 18:43:04 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/26 17:52:49 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/27 16:33:53 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -46,11 +46,13 @@ public:
 	** Move the rect and keep it's size
 	*/
 	void		setPos(Vec2<T> pos);
+	void		setPos(T x, T y);
 	Vec2<T>		getPos(void) const;
 	void		setX(T x);
 	void		setY(T y);
 
 	void		setSize(Vec2<T> size);
+	void		setSize(T w, T h);
 	Vec2<T>		getSize(void) const;
 
 	T			getWidth(void) const;

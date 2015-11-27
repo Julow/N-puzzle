@@ -11,11 +11,21 @@
 	  marginTop="50"
 	  >
 
-	<SolidView
+	<LinearLayout
 		id="left-holder-dummy"
+		direction="vertical"
 		width="250" height="800"
 		backgroundColor="0xFFBB0000" alpha="0.66"
-		/>
+	>
+		<SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
+		<SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
+		<SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
+		<SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
+		<SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
+		<SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
+		<SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
+		<SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
+	</LinearLayout>
 
 	<LinearLayout
 		direction="vertical"

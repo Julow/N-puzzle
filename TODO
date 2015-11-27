@@ -19,3 +19,6 @@ TODO LIST
 	Override onDraw in lua
 
 	onSizeChange take size as args
+
+	LinearLayout stop matching content size
+	LinearLayout AUTO width and height

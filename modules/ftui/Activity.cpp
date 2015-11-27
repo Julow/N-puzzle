@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/25 18:44:34 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/27 20:53:09 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -192,9 +192,11 @@ void			Activity::render(ACanvas &canvas)
 	}
 	if (rv->isRedrawQueried())
 	{
-		canvas.clear(); //debug
-		this->queryRedrawAll(); //debug
+		canvas.clear(); //TODO debug
+		this->queryRedrawAll(); //TODO debug
 		// FTPADB("Redraw");
+		canvas.setOrigin(ft::make_vec(0, 0));
+		canvas.setClip(_size);
 		rv->onDraw(canvas);
 		// FTPADE();
 	}
