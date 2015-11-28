@@ -1,4 +1,4 @@
-# N-PUZZLE, Nov 2015
+# N-PUZZLE, Oct-Nov 2015
 >>>>> #####A* pathfinder. (group project)
 
 #####Grade ``(tbd/100)`` ``(tbd/125)*``
@@ -12,7 +12,7 @@ Team: [jaguillo](https://github.com/Julow) / [ngoguey](https://github.com/Ngogue
 - [X] Implement 3 admissibles heuristics.
 - [X] Reach the 'snail solution' as 'goal solution' (see below)
 - [ ] Handle any puzzle size without crashing.
-- [ ] Grid loader (from file) and generator.
+- [X] Grid loader (from file) and generator.
 - [ ] Ouput some data from the solving phase.
 - [X] Solve an **8-puzzle** in **less than 5 seconds**.
 
@@ -22,7 +22,7 @@ Team: [jaguillo](https://github.com/Julow) / [ngoguey](https://github.com/Ngogue
 - [ ] Provide a greedy search.
 
 #####Our work:
-- [X] Opportunity to write our libftui(TODO: LINK!) (75% of our project), providing an high-level UI for this project and the next ones.
+- [X] Opportunity to write our libftui(TODO: LINK!) (80% of our project), providing an high-level UI for this project and the next ones.
 - [X] Opportunity to use OCaml in a real project, for the *first time*.
 - [X] Disjoint Pattern Databases Heuristic(see below), allowing us to solve any **15-puzzles** in **less than 5 seconds**.
 - [X] Careful study of graph traversal algorithms.
