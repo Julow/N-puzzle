@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:12 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/26 18:02:30 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 17:58:00 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -260,4 +260,23 @@ void				Grid::alloc(int size)
 	_size = size;
 	for (i = 0; i < size; i++)
 		_data[i] = new int[size];
+}
+
+std::ostream		&operator<<(std::ostream &o, Grid const &rhs)
+{
+	int		v;
+
+	for (int y = 0; y < rhs.getSize(); y++)
+	{
+		for (int x = 0; x < rhs.getSize(); x++)
+		{
+			v = rhs.get(x, y);
+			if (v < 10)
+				o << ft::f(" % ", v);
+			else
+				o << ft::f("% ", v);
+		}
+		o << '\n';
+	}
+	return o;
 }

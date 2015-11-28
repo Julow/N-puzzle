@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/28 14:39:49 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 17:58:35 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -47,7 +47,7 @@ PS::PickState(Main &main, OCamlBinding &ocaml)
 	auto		*bun = this->_b;
 	auto		&act = bun->act;
 	int			ret;
-// TTAG push0
+// TODO: ftlua
 	ret = lua_getglobal(l, "PickState");
 	FTASSERT(ret == LUA_TTABLE);
 
@@ -82,6 +82,18 @@ void            PS::loop(std::unique_ptr<IState> &ptr, ftui::ACanvas &can)
 	(void)ptr;
 	this->_b->tiles.render();
 	this->_b->act.render(can);
+	if (this->_launchSolvingState)
+	{
+		ft::f(std::cout, "Algo % Heu % Cost % Grid %:\n%\n"
+			  , _main.algorithmId
+			  , _main.heuristicId
+			  , _main.cost
+			  , _b->selectedId
+			  , _main.grid
+			);
+
+		throw std::runtime_error("OK");
+	}
 	return ;
 }
 
@@ -210,6 +222,7 @@ int				PS::getMainGridId(void)
 {
 	return this->_b->selectedId;
 }
+
 
 
 

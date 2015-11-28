@@ -6,24 +6,29 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 13:01:05 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/28 12:14:59 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/28 18:26:25 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
 local INSETS = 5.; -- INSET BORDER OF THE VIEW
 local SPACING = 1.; -- SPACING BETWEEN TILES
-local PUZZLEFRAME_TEXT_SIZE = 16;
+-- local PUZZLEFRAME_TEXT_SIZE = 20;
 
 local f_frame = puzzleFrame;
 assert(f_frame ~= nil)
 local f_transpTables, f_curPuzzle, f_w;
 
 -- DRAW ------------------------------------------------------------------------
+local function gridFontSize(w)
+  return math.max(20 + 9 - w, 9);
+end
+
 local function drawTextCenter(canvas, text, x, y)
-  local text_w, text_h = canvas:measureText(text, PUZZLEFRAME_TEXT_SIZE);
+  local fontSize = gridFontSize(f_w);
+  local text_w, text_h = canvas:measureText(text, fontSize);
 
   canvas:drawText(text, x - (text_w / 2)
-				  , y - (text_h / 2), 0xFF555555, PUZZLEFRAME_TEXT_SIZE);
+				  , y - (text_h / 2), 0xFF555555, fontSize);
 end
 
 function f_frame.reloadGrid()

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/26 18:02:11 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 17:54:47 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -65,5 +65,6 @@ protected:
 
 private:
 };
+std::ostream			&operator<<(std::ostream &o, Grid const &rhs);
 
 #endif
