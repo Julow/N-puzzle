@@ -16,7 +16,12 @@
 		direction="vertical"
 		width="250" height="800"
 		backgroundColor="0xFFBB0000" alpha="0.66"
-	>
+		>
+	  <CheckBox
+		  id="cb1"
+		  width="30"
+		  height="30"
+		  />
 		<SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
 		<SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
 		<SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />

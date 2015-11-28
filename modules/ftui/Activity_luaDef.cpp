@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/25 18:03:11 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/26 18:41:13 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 13:09:33 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -22,6 +22,7 @@
 #include "ftui/ASolidView.hpp"
 #include "ftui/TextView.hpp"
 #include "ftui/Button.hpp"
+#include "ftui/CheckBox.hpp"
 
 namespace ftui
 {
@@ -65,6 +66,9 @@ Activity::views_info_t		Activity::viewsInfo
 	{"Button", {"ASolidView", &Button::createView, {
 		INSG(Button, lockHighlight),
 	}, {}}},
+	{"CheckBox", {"Button", &CheckBox::createView, {
+		// INSG(Button, lockHighlight),
+	}, {}}},
 	{"ALayout", {"ASolidView", nullptr, {
 		INSG(ALayout, size), INSG(ALayout, at), INSG(ALayout, addView)
 	}, "ALayout = ftui.ALayoutdef; ftui.ALayoutdef = nil;"}},
@@ -106,6 +110,8 @@ Activity::callback_map_t	Activity::callback_map
 	{"onDoubleClick",		LUA_CALLBACK_ID(Button, DOUBLE_CLICK)},
 
 	{"onValueChange",		LUA_CALLBACK_ID(SliderView, VALUE_CHANGE)},
+
+	{"onCheckStateChange",	LUA_CALLBACK_ID(CheckBox, CHECK)},
 
 	{"onScrollChange",		LUA_CALLBACK_ID(ScrollableLayout, SCROLL_CHANGE)},
 	{"onMaxScrollChange",	LUA_CALLBACK_ID(ScrollableLayout, MAX_SCROLL_CHANGE)},
