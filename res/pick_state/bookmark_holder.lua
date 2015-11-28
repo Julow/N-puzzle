@@ -6,22 +6,24 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/16 15:14:38 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/28 11:47:38 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/28 12:15:27 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
-local frame = _G['bookmark-holder']
-assert(frame ~= nil)
+local f_frame = _G['bookmark-holder'];
+assert(f_frame ~= nil);
+local f_names, f_curHighlight, f_count;
 
-function frame.refreshOneBookmark(name, i)
-  local bm = frame:at(i);
+-- DRAW ------------------------------------------------------------------------
+function f_frame.refreshOneBookmark(i)
+  local bm = f_frame:at(i);
   local b1;
 
-  bm:setText(name);
+  bm:setText(f_names[i]);
   bm:setVisibility(1);
-  if frame.curHighlight ~= nil then
+  if f_curHighlight ~= nil then
 	b1 = bm:at(0);
-	if frame.curHighlight == i then
+	if f_curHighlight == i then
 	  b1:lockHighlight(1);
 	else
 	  b1:lockHighlight(0);
@@ -29,52 +31,77 @@ function frame.refreshOneBookmark(name, i)
   end
 end
 
-function frame.refreshAllBookmarks(names, count)
+function f_frame.refreshAllBookmarks()
   local i = 0;
-  local nbm = frame:size();
+  local nbm = f_frame:size();
 
-  while (i < count) do
-	frame.refreshOneBookmark(names[i], i);
+  while (i < f_count) do
+	f_frame.refreshOneBookmark(i);
 	i = i + 1;
   end
   while (i < nbm) do
-	local v = frame:rawat(i);
+	local v = f_frame:rawat(i);
 	v:setVisibility(0);
 	i = i + 1;
   end
 end
 
-function bookmarkOnClick1(self)
-  local p = self:getParent();
-
-  PickState:selectGrid(p.i);
-end
-function bookmarkOnClick2(self)
-  local p = self:getParent();
-
-  PickState:deleteGrid(p.i);
-end
-
-function frame:at(i)
-  local sz = frame:size();
+-- BOOKMARK HANDLING -----------------------------------------------------------
+function f_frame.createbookmark(i)
   local v, b1, b2;
+  v = createView('Bookmark', 'Bookmark' .. tostring(i));
+  v.i = i;
+  b1 = v:at(0);
+  b2 = v:at(1);
+  f_frame:addView(v);
+  v:setVisibility(0);
+  b1:setCallback("onClick",
+				 function ()
+				   PickState:selectGrid(v.i);
+				 end
+  );
+  b2:setCallback("onClick",
+				 function ()
+				   PickState:deleteGrid(v.i);
+				 end
+  );
+  return v;
+end
+
+function f_frame:at(i)
+  local sz = f_frame:size();
 
   if i < sz then
-	return frame:rawat(i);
+	return f_frame:rawat(i);
   end
   while (sz < i + 1) do
-	v = createView('Bookmark', 'Bookmark' .. tostring(sz));
-	b1 = v:at(0);
-	b2 = v:at(1);
-	frame:addView(v);
-	v:setVisibility(0);
-	b1:setCallback("onClick", bookmarkOnClick1);
-	b2:setCallback("onClick", bookmarkOnClick2);
-	v.i = sz;
+	v = f_frame.createbookmark(sz)
 	sz = sz + 1;
   end
   return v;
 end
 
-frame.rawat = getmetatable(frame).at;
-frame.curHighlight = 0;
+f_frame.rawat = getmetatable(f_frame).at;
+
+-- EVENT HANDLING --------------------------------------------------------------
+function f_frame:GRID_LIST_UPDATE(names, n)
+  print('f_frame:GRID_LIST_UPDATE');
+  f_names = names;
+  f_count = n;
+  f_curHighlight = PickState:getMainGridId();
+  f_frame.refreshAllBookmarks();
+end
+
+function f_frame:SELECTED_GRID_CHANGED(i)
+  print('f_frame:SELECTED_GRID_CHANGED');
+  local iPrev = f_curHighlight;
+
+  f_curHighlight = i;
+  if iPrev < f_count then
+	f_frame.refreshOneBookmark(iPrev);
+  end
+  f_frame.refreshOneBookmark(i);
+end
+
+f_frame:registerEvent("GRID_LIST_UPDATE");
+f_frame:registerEvent("SELECTED_GRID_CHANGED");
