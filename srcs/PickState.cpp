@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/26 19:12:13 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 11:46:49 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -44,6 +44,8 @@ PS::PickState(Main &main, OCamlBinding &ocaml)
 	, _launchSolvingState(false)
 {
 	lua_State	*l = this->_b->act.getLuaState();
+	auto		*bun = this->_b;
+	auto		&act = bun->act;
 	int			ret;
 // TTAG push0
 	ret = lua_getglobal(l, "PickState");
@@ -54,8 +56,11 @@ PS::PickState(Main &main, OCamlBinding &ocaml)
 	lua_settable(l, -3);
 
 	lua_pop(l, 1);
+	act.fireEvent("GRID_LIST_UPDATE", bun->extractGridNames()
+						, bun->grids.size());
+	act.fireEvent("SELECTED_GRID_CHANGED", bun->selectedId);
 
-	this->_b->act.fireEvent("Bordel", 42, std::string("caca"));
+	act.fireEvent("Bordel", 42, std::string("caca"));
 
 
 	return ;
@@ -96,8 +101,13 @@ int				PS::selectGridG(lua_State *l) /*static*/
 }
 void			PS::selectGrid(int i)
 {
-	_main.grid = this->_b->grids[i]; //todo error check
-	this->_b->act.fireEvent("onDisplayedGridChanged", i);
+	auto		*bun = this->_b;
+	auto		&grids = bun->grids;
+
+	FTASSERT(i >= 0 && i < (int)grids.size());
+	_main.grid = grids[i];
+	bun->selectedId = i;
+	bun->act.fireEvent("SELECTED_GRID_CHANGED", i);
 	return ;
 }
 
@@ -107,17 +117,106 @@ int				PS::deleteGridG(lua_State *l) /*static*/
 }
 void			PS::deleteGrid(int i)
 {
-	auto				&grids = this->_b->grids;
+	auto		*bun = this->_b;
+	auto		&grids = bun->grids;
 
 	FTASSERT(i >= 0 && i < (int)grids.size());
 	if (grids.size() > 1)
 	{
 		grids.erase(grids.begin() + i);
-		this->_b->act.fireEvent("onPuzzlesLoaded", this->_b->extractGridNames());
-		// this->selectGrid(std::min(i, (int)grids.size() - 1));
+		if (i == bun->selectedId)
+		{
+			bun->selectedId = std::min(i, (int)grids.size() - 1);
+			_main.grid = bun->grids[bun->selectedId];
+			bun->act.fireEvent(
+				"GRID_LIST_UPDATE", bun->extractGridNames(), grids.size());
+			bun->act.fireEvent("SELECTED_GRID_CHANGED", bun->selectedId);
+		}
+		else if (bun->selectedId > i)
+		{
+			bun->selectedId -= 1;
+			bun->act.fireEvent(
+				"GRID_LIST_UPDATE", bun->extractGridNames(), grids.size());
+		}
+		else
+			bun->act.fireEvent(
+				"GRID_LIST_UPDATE", bun->extractGridNames(), grids.size());
 	}
 	return ;
 }
+
+
+int				PS::pushRandomGridG(lua_State *l) /*static*/
+{
+	return ftlua::handle<3, 0>(l, &PS::pushRandomGrid);
+}
+void			PS::pushRandomGrid(int w, bool solvable)
+{
+	static int	count = 0;
+	auto		*bun = this->_b;
+	auto		&grids = bun->grids;
+	int const	newIndex = grids.size();
+
+	grids.push_back(_ocaml.generate_grid(w, solvable));
+	grids[newIndex].setName(ft::f("Generated #%", count++));
+	_main.grid = bun->grids[newIndex];
+	bun->selectedId = newIndex;
+	bun->act.fireEvent("GRID_LIST_UPDATE", bun->extractGridNames(), grids.size());
+	bun->act.fireEvent("SELECTED_GRID_CHANGED", newIndex);
+	return ;
+}
+
+
+int				PS::getNumGridsG(lua_State *l) /*static*/
+{
+	return ftlua::handle<1, 1>(l, &PS::getNumGrids);
+}
+int				PS::getNumGrids(void)
+{
+	return this->_b->grids.size();
+}
+
+int				PS::getGridNameG(lua_State *l) /*static*/
+{
+	return ftlua::handle<2, 1>(l, &PS::getGridName);
+}
+std::string const	&PS::getGridName(int i)
+{
+	auto		*bun = this->_b;
+	auto		&grids = bun->grids;
+
+	FTASSERT(i >= 0 && i < (int)grids.size());
+	return grids[i].getName();
+}
+
+int				PS::getGridG(lua_State *l) /*static*/
+{
+	return ftlua::handle<2, 1>(l, &PS::getGridName);
+}
+Grid const		&PS::getGrid(int i)
+{
+	auto		*bun = this->_b;
+	auto		&grids = bun->grids;
+
+	FTASSERT(i >= 0 && i < (int)grids.size());
+	return grids[i];
+}
+
+int				PS::getMainGridIdG(lua_State *l) /*static*/
+{
+	return ftlua::handle<1, 1>(l, &PS::getMainGridId);
+}
+int				PS::getMainGridId(void)
+{
+	return this->_b->selectedId;
+}
+
+
+
+
+
+
+
 
 
 
@@ -128,25 +227,6 @@ int				PS::useDefaultGridG(lua_State *l) /*static*/
 }
 void			PS::useDefaultGrid(void)
 { _main.grid = Grid::def; }
-
-
-int				PS::pushRandomGridG(lua_State *l) /*static*/
-{
-	return ftlua::handle<3, 0>(l, &PS::pushRandomGrid);
-}
-void			PS::pushRandomGrid(int w, bool solvable)
-{
-	static int	count = 0;
-	int const	newIndex = this->_b->grids.size();
-
-	this->_b->grids.push_back(_ocaml.generate_grid(w, solvable));
-	this->_b->grids[newIndex].setName(ft::f("Generated #%", count++));
-	this->_b->act.fireEvent("onPuzzlesLoaded", this->_b->extractGridNames());
-	this->selectGrid(newIndex);
-	return ;
-}
-
-
 int				PS::setAlgorithmIdG(lua_State *l) /*static*/
 {
 	return ftlua::handle<2, 0>(l, &PS::setAlgorithmId);
@@ -194,6 +274,7 @@ static Tiles	make_tiles(void)
 PS::Bundle::Bundle(Main &main, OCamlBinding &ocaml)
 	: tiles(make_tiles())
 	, act(WIN_SIZEVI)
+	, selectedId(0)
 	, grids({Grid::def})
 {
 	ftui::Activity			&act = this->act;
@@ -206,10 +287,17 @@ PS::Bundle::Bundle(Main &main, OCamlBinding &ocaml)
 	act.inflate(is);
 	main.loadSharedScripts(act);
 	luaL_dostring(act.getLuaState(), "PickState = {}");
-	pushFun("useDefaultGrid", &useDefaultGridG);
 	pushFun("selectGrid", &selectGridG);
 	pushFun("deleteGrid", &deleteGridG);
+
 	pushFun("pushRandomGrid", &pushRandomGridG);
+
+	pushFun("getNumGrids", &getNumGridsG);
+	pushFun("getGridName", &getGridNameG);
+	pushFun("getGrid", &getGridG);
+	pushFun("getMainGridId", &getMainGridIdG);
+
+	pushFun("useDefaultGrid", &useDefaultGridG);
 	pushFun("setAlgorithmId", &setAlgorithmIdG);
 	pushFun("setHeuristicId", &setHeuristicIdG);
 	pushFun("setCost", &setCostG);
@@ -220,7 +308,9 @@ PS::Bundle::Bundle(Main &main, OCamlBinding &ocaml)
 		gr = &this->grids[this->grids.size() - 1];
 		gr->convert(ocaml.transposition_toabstract(gr->getSize()));
 	}
-	act.fireEvent("onPuzzlesLoaded", this->extractGridNames());
+	// this->act.fireEvent("GRID_LIST_UPDATE", this->extractGridNames()
+	// 					, this->grids.size());
+	// this->act.fireEvent("SELECTED_GRID_CHANGED", 0);
 	return ;
 }
 

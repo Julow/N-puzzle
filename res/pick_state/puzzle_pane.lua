@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/17 18:42:10 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/26 18:46:39 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/28 11:47:28 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -14,20 +14,24 @@ local pane = {};
 local frame = _G['bookmark-holder'];
 assert(frame ~= nil);
 
-function frame:onPuzzlesLoaded(names)
+function frame:GRID_LIST_UPDATE(names, n)
   local bm;
 
-  print('frame:onPuzzlesLoaded(names)', names);
   pane.names = names;
-  pane.count = #names + (names[0] == nil and 0 or 1);
-  frame.refreshAllBookmarks(names, pane.count);
+  pane.count = n;
+  frame.curHighlight = PickState:getMainGridId();
+  frame.refreshAllBookmarks(names, n);
 end
 
-function frame:onDisplayedGridChanged(index)
-  print('frame:onDisplayedGridChanged(', index, ')');
-  frame.curHighlight = index;
-  frame.refreshAllBookmarks(pane.names, pane.count);
+function frame:SELECTED_GRID_CHANGED(i)
+  local iPrev = frame.curHighlight;
+
+  frame.curHighlight = i;
+  if iPrev < pane.count then
+	frame.refreshOneBookmark(pane.names[iPrev], iPrev);
+  end
+  frame.refreshOneBookmark(pane.names[i], i);
 end
 
-frame:registerEvent("onPuzzlesLoaded");
-frame:registerEvent("onDisplayedGridChanged");
+frame:registerEvent("GRID_LIST_UPDATE");
+frame:registerEvent("SELECTED_GRID_CHANGED");

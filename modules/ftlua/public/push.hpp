@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/26 17:41:31 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 10:09:16 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -133,6 +133,7 @@ int			push(lua_State *l, lua_CFunction const &v) {
 
 
 // NUMBERS/STRING =================== //
+// TODO: more types from cstdint might be required here
 template <bool USELUAERR = false>
 int			push(lua_State *l, int8_t const &v)
 { lua_pushinteger(l, v); return 1; }
@@ -156,6 +157,12 @@ int			push(lua_State *l, uint32_t const &v)
 { lua_pushinteger(l, v); return 1; }
 template <bool USELUAERR = false>
 int			push(lua_State *l, uint64_t const &v)
+{ lua_pushinteger(l, v); return 1; }
+template <bool USELUAERR = false>
+int			push(lua_State *l, intmax_t const &v)
+{ lua_pushinteger(l, v); return 1; }
+template <bool USELUAERR = false>
+int			push(lua_State *l, uintmax_t const &v)
 { lua_pushinteger(l, v); return 1; }
 template <bool USELUAERR = false>
 int			push(lua_State *l, float const &v)

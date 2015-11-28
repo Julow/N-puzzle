@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 18:05:46 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/26 18:55:55 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 09:33:03 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -55,6 +55,16 @@ public:
 	void					pushRandomGrid(int w, bool solvable);
 
 
+	static int				getNumGridsG(lua_State *l);
+	int						getNumGrids(void);
+	static int				getGridNameG(lua_State *l);
+	std::string const		&getGridName(int i);
+	static int				getGridG(lua_State *l);
+	Grid const				&getGrid(int i);
+	static int				getMainGridIdG(lua_State *l);
+	int						getMainGridId(void);
+
+
 	static int				useDefaultGridG(lua_State *l);
 	void					useDefaultGrid(void);
 
@@ -90,6 +100,7 @@ public:
 	/* ATTRIBUTES ******************* */
 	Tiles const				tiles;
 	ftui::Activity			act;
+	int						selectedId;
 	std::vector<Grid>		grids;
 
 	/* FUNCTIONALITIES ************** */

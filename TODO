@@ -4,9 +4,8 @@ TODO LIST
 		...
 		-> debug/continue ocaml
 		-> debug layouts
-	onEvent
 	ftlua::handle rewrite
-	ftlua error handling
+	ftlua clean Keys
 	ocaml bindings
 	multithread canvas
 	AbsoluteLayout, RelativeLayout

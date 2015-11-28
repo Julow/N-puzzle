@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/16 15:14:38 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/26 19:08:55 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/28 11:47:38 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -34,13 +34,11 @@ function frame.refreshAllBookmarks(names, count)
   local nbm = frame:size();
 
   while (i < count) do
-	print('refreshing OK', i);
 	frame.refreshOneBookmark(names[i], i);
 	i = i + 1;
   end
   while (i < nbm) do
-	print('refreshing NOOK', i);
-	local v = frame.rawat(i);
+	local v = frame:rawat(i);
 	v:setVisibility(0);
 	i = i + 1;
   end
@@ -48,13 +46,11 @@ end
 
 function bookmarkOnClick1(self)
   local p = self:getParent();
-  print('bookmarkOnClick1');
 
   PickState:selectGrid(p.i);
 end
 function bookmarkOnClick2(self)
   local p = self:getParent();
-  print('bookmarkOnClick2');
 
   PickState:deleteGrid(p.i);
 end

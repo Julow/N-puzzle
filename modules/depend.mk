@@ -1,5 +1,5 @@
 LIBS_RULES += liblua
-LINK_FLAGS += -Lliblua/lua-5.3.1/src -llua -lfreetype
+LINK_FLAGS += -lfreetype -Lliblua/lua-5.3.1/src -llua
 O_FILES += $(O_DIR)/ft/assert.o $(O_DIR)/ft/padformat.o \
 	$(O_DIR)/ft_xml/srcs/XmlParser.o $(O_DIR)/ft_xml/srcs/XmlTokenizer.o \
 	$(O_DIR)/ftlua/cpp_utils.o $(O_DIR)/ftlua/push_utils.o \
@@ -539,22 +539,22 @@ $(O_DIR)/tiles/Tiles.o: tiles/Tiles.cpp ft/public/Vec.hpp \
 	ft/public/templates/Vec4.tpp gl/gl.h gl/gl.hpp tiles/include/Tiles.hpp
 
 # obj dirs
-$(O_DIR)/ft/padformat.o $(O_DIR)/ft/assert.o: | $(O_DIR)/ft/
-$(O_DIR)/ft_xml/srcs/XmlTokenizer.o $(O_DIR)/ft_xml/srcs/XmlParser.o: | \
-	$(O_DIR)/ft_xml/srcs/
-$(O_DIR)/tiles/Tiles.o: | $(O_DIR)/tiles/
-$(O_DIR)/ftui/AView.o $(O_DIR)/ftui/Activity_RootViewHolder.o \
-$(O_DIR)/ftui/ALayout_luaHandler.o $(O_DIR)/ftui/Activity_luaDef.o \
-$(O_DIR)/ftui/LinearLayout.o $(O_DIR)/ftui/SolidView.o \
-$(O_DIR)/ftui/AView_luaHandler.o $(O_DIR)/ftui/SliderView.o \
-$(O_DIR)/ftui/LinearLayout_ViewHolder.o $(O_DIR)/ftui/Activity.o \
-$(O_DIR)/ftui/ScrollableLayout.o $(O_DIR)/ftui/ALayout.o \
-$(O_DIR)/ftui/EventTarget.o $(O_DIR)/ftui/Button.o $(O_DIR)/ftui/ASolidView.o \
-$(O_DIR)/ftui/TextView.o $(O_DIR)/ftui/ACanvas.o: | $(O_DIR)/ftui/
-$(O_DIR)/gl_canvas/GlCanvas.o $(O_DIR)/gl_canvas/GlCanvasHolder.o: | \
-	$(O_DIR)/gl_canvas/
 $(O_DIR)/ftlua/push_utils.o $(O_DIR)/ftlua/stackError.o \
 $(O_DIR)/ftlua/cpp_utils.o: | $(O_DIR)/ftlua/
+$(O_DIR)/ft/padformat.o $(O_DIR)/ft/assert.o: | $(O_DIR)/ft/
+$(O_DIR)/gl_canvas/GlCanvasHolder.o $(O_DIR)/gl_canvas/GlCanvas.o: | \
+	$(O_DIR)/gl_canvas/
+$(O_DIR)/ftui/Activity.o $(O_DIR)/ftui/Activity_RootViewHolder.o \
+$(O_DIR)/ftui/ASolidView.o $(O_DIR)/ftui/Activity_luaDef.o \
+$(O_DIR)/ftui/ALayout_luaHandler.o $(O_DIR)/ftui/LinearLayout.o \
+$(O_DIR)/ftui/SolidView.o $(O_DIR)/ftui/AView_luaHandler.o \
+$(O_DIR)/ftui/TextView.o $(O_DIR)/ftui/ACanvas.o $(O_DIR)/ftui/AView.o \
+$(O_DIR)/ftui/ScrollableLayout.o $(O_DIR)/ftui/ALayout.o \
+$(O_DIR)/ftui/Button.o $(O_DIR)/ftui/EventTarget.o $(O_DIR)/ftui/SliderView.o \
+$(O_DIR)/ftui/LinearLayout_ViewHolder.o: | $(O_DIR)/ftui/
+$(O_DIR)/tiles/Tiles.o: | $(O_DIR)/tiles/
+$(O_DIR)/ft_xml/srcs/XmlTokenizer.o $(O_DIR)/ft_xml/srcs/XmlParser.o: | \
+	$(O_DIR)/ft_xml/srcs/
 
 # public links
 $(O_DIR)/_public/ft/Color.hpp: ft/public/Color.hpp
