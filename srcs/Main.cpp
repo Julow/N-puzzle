@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/28 14:41:20 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 16:55:43 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -49,9 +49,11 @@ void			Main::loadSharedScripts(ftui::Activity &act)
 	pushFun("getAlgorithms", &Main::getAlgorithmsG);
 	pushFun("getAlgorithmId", &Main::getAlgorithmIdG);
 
+	pushFun("getHeuristics", &Main::getHeuristicsG);
+	pushFun("getHeuristicId", &Main::getHeuristicIdG);
+
 	pushFun("getGrid", &Main::getGridG);
 	pushFun("getTableToReal", &Main::getGridG);
-	pushFun("getHeuristicId", &Main::getHeuristicIdG);
 	pushFun("getCost", &Main::getCostG);
 	pushFun("getTableToReal", &Main::getTableToRealG);
 
@@ -295,7 +297,9 @@ int				Main::getGridG(lua_State *l) /*static*/
 Grid const		&Main::getGrid(void) const
 { return this->grid; }
 
-int				Main::getAlgorithmsG(lua_State *l) /*static*/
+
+
+int							Main::getAlgorithmsG(lua_State *l) /*static*/
 {
 	return ftlua::handle<1, 1>(l, &Main::getAlgorithms);
 }
@@ -303,22 +307,31 @@ std::vector<std::string>	Main::getAlgorithms(void)
 {
 	return _ocaml.algorithm_list();
 }
-
-
-int				Main::getAlgorithmIdG(lua_State *l) /*static*/
+int							Main::getAlgorithmIdG(lua_State *l) /*static*/
 {
 	return ftlua::handle<1, 1>(l, &Main::getAlgorithmId);
 }
-int				Main::getAlgorithmId(void) const
+int							Main::getAlgorithmId(void) const
 { return this->algorithmId; }
 
 
-int				Main::getHeuristicIdG(lua_State *l) /*static*/
+
+int							Main::getHeuristicsG(lua_State *l) /*static*/
+{
+	return ftlua::handle<1, 1>(l, &Main::getHeuristics);
+}
+std::vector<std::string>	Main::getHeuristics(void)
+{
+	return _ocaml.heuristic_list();
+}
+int							Main::getHeuristicIdG(lua_State *l) /*static*/
 {
 	return ftlua::handle<1, 1>(l, &Main::getHeuristicId);
 }
-int				Main::getHeuristicId(void) const
+int							Main::getHeuristicId(void) const
 { return this->heuristicId; }
+
+
 
 
 int				Main::getCostG(lua_State *l) /*static*/

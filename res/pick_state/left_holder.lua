@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/28 14:05:17 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/28 16:44:10 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/28 16:56:58 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -15,8 +15,11 @@ assert(f_frame ~= nil);
 
 local f_algHolder = algo_holder;
 assert(f_algHolder ~= nil);
-
 local f_algFrames = {};
+
+local f_heuHolder = heu_holder;
+assert(f_heuHolder ~= nil);
+local f_heuFrames = {};
 
 -- SHARED BEHAVIOURS -----------------------------------------------------------
 local function onCheckBoxClick(self)
@@ -30,10 +33,11 @@ local function onCheckBoxClick(self)
 		self.group[k].check:setChecked(0);
 	  end
 	end
+	self.onChange(i);
   end
 end
 
-local function makeGroup(parent, groupName, names, count)
+local function makeGroup(parent, groupName, names, count, onChange)
   local group;
 
   group = {};
@@ -53,6 +57,7 @@ local function makeGroup(parent, groupName, names, count)
 	check:setCheckedParams(0xB0FFFF00, 0x01000000, 6);
 	check.i = i;
 	check.group = group;
+	check.onChange = onChange;
 
 	check:setCallback("onClick", onCheckBoxClick);
 
@@ -71,13 +76,34 @@ local function f_algInit()
   local names = Main:getAlgorithms();
   local count = #names + (names[0] == nil and 0 or 1);
 
-  f_algFrames = makeGroup(f_algHolder, 'algo', names, count);
+  f_algFrames = makeGroup(f_algHolder, 'algo', names, count,
+						  function (i)
+							PickState:setAlgorithmId(i);
+						  end
+  );
+  f_algFrames[Main:getAlgorithmId()].check:setChecked(1);
+end
+
+-- HEURISTICS ------------------------------------------------------------------
+local function f_heuInit()
+  local check, text;
+  local names = Main:getHeuristics();
+  local count = #names + (names[0] == nil and 0 or 1);
+
+  f_heuFrames = makeGroup(f_heuHolder, 'heuristics', names, count,
+						  function (i)
+							PickState:setHeuristicId(i);
+						  end
+  );
+  f_heuFrames[Main:getHeuristicId()].check:setChecked(1);
+
 end
 
 -- EVENT HANDLING --------------------------------------------------------------
-function f_frame:ON_GAME_LOADED(...)
-  print('salut');
+function f_frame:ON_GAME_LOADED(ev, ...)
   f_algInit();
+  f_heuInit();
+  f_frame:unregisterEvent("ON_GAME_LOADED");
 end
 
 f_frame:registerEvent('ON_GAME_LOADED');

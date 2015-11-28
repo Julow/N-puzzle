@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 11:51:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/28 16:11:38 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 16:57:51 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -287,13 +287,10 @@ std::vector<std::string>        OCamlBinding::algorithm_list(void)
 	if (Is_exception_result(res))
 		throw std::runtime_error(
 			caml_format_exception(Extract_exception(res)));
-	// std::cout << "lol" << std::endl;
-	// std::cout << Tag_val(res) << std::endl;
-	// std::cout << Wosize_val(res) << std::endl;
 	return valToStringVector(res);
 }
 
-void        OCamlBinding::heuristic_list(void)
+std::vector<std::string>        OCamlBinding::heuristic_list(void)
 {
 	value *const	f = caml_named_value("heuristic_list");
 	value			res;
@@ -303,7 +300,7 @@ void        OCamlBinding::heuristic_list(void)
 	if (Is_exception_result(res))
 		throw std::runtime_error(
 			caml_format_exception(Extract_exception(res)));
-	return ;
+	return valToStringVector(res);
 }
 
 std::vector<int>	OCamlBinding::transposition_toreal(unsigned int w)

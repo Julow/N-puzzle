@@ -38,6 +38,23 @@
 			/>
 	  </LinearLayout>
 
+	  <LinearLayout
+		  id="heu_holder"
+		  marginTop="5" marginBottom="5" marginLeft="5" marginRight="5"
+		  direction="vertical"
+		  backgroundColor="0xFF000000"
+		  >
+		<SolidView  width="190" height="1"/>
+		<TextView
+			textColor="0xffffffff"
+			textSize="14"
+			text="Heuristics"
+			marginTop="5"
+			marginLeft="15"
+			marginBottom="10"
+			/>
+	  </LinearLayout>
+
 	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
 	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
 	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />

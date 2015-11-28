@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/11/11 20:19:55 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/28 16:58:14 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -220,7 +220,7 @@ let algorithm_list _ =
   Hashtbl.fold (fun k _ l -> k::l) algorithms []
 
 let heuristic_list _ =
-  Hashtbl.fold (fun k _ l -> k::l) algorithms []
+  Hashtbl.fold (fun k _ l -> k::l) heuristics []
 
 let transposition_toreal : int -> int array = fun w ->
   Grid.init_transp_tables w;

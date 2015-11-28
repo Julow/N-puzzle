@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 12:58:38 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/28 14:37:17 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 16:57:10 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -58,10 +58,11 @@ public:
 		GLFWwindow *window, int button, int action, int mods);
 
 	/* LIBFTUI INTERACTIONS ********* */
-	static int				getAlgorithmsG(lua_State *l);
+	static int					getAlgorithmsG(lua_State *l);
 	std::vector<std::string>	getAlgorithms(void);
-	// static int				getHeuristics(lua_State *l);
-	// static int				getTranspToReal(lua_State *l);
+
+	static int					getHeuristicsG(lua_State *l);
+	std::vector<std::string>	getHeuristics(void);
 
 	static int				getTableToRealG(lua_State *l);
 	std::vector<int>		getTableToReal(int i);
