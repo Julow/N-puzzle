@@ -5,7 +5,7 @@
 NAME			:= libmodules.a
 
 # Git submodule to init
-SUBMODULES		:=
+SUBMODULES		:= 
 
 # Base flags
 BASE_FLAGS		= -Wall -Wextra
@@ -31,7 +31,7 @@ export DEBUG_MODE
 O_DIR			:= _objs
 
 # Jobs
-JOBS			:= 8
+JOBS			:= 4
 
 # Column output
 COLUMN_OUTPUT	:= 1
@@ -53,7 +53,7 @@ PRINT_FILE		:= .tmp_print
 SHELL			:= /bin/bash
 
 # Default rule (need to be before any include)
-all: $(SUBMODULE_RULES) init_rules
+all: $(SUBMODULE_RULES) init
 ifeq ($(COLUMN_OUTPUT),0)
 	make -j$(JOBS) $(NAME)
 else
@@ -80,7 +80,7 @@ endif
 # Include $(O_FILES) and dependencies
 include $(DEPEND)
 
-init_rules: $(LIBS_RULES) $(PUBLIC_LINKS)
+init: $(LIBS_RULES) $(OBJ_DIR_TREE) $(PUBLIC_LINKS)
 
 # Linking
 $(NAME): $(LINK_DEPENDS) $(O_FILES)
@@ -101,7 +101,7 @@ $(SUBMODULE_RULES):
 $(PUBLIC_LINKS):
 	ln -fs $(abspath $<) $@
 # Create obj directories
-$(O_DIR)/%/:
+$(OBJ_DIR_TREE):
 	mkdir -p $@
 
 # Set debug mode and make
@@ -112,9 +112,9 @@ rebug: fclean debug
 
 # Clean obj files
 clean:
-	rm -f $(PRINT_FILE)
-	rm -f $(O_FILES) $(PUBLIC_LINKS)
-	# rmdir $(PUBLIC_LINK_DIRS)
+	-rm -f $(PRINT_FILE) 2> /dev/null
+	-rm -f $(O_FILES) $(PUBLIC_LINKS) 2> /dev/null
+	-rm -df $(OBJ_DIR_TREE) 2> /dev/null
 
 # Clean everything
 fclean: clean
@@ -128,4 +128,4 @@ _debug:
 	$(eval DEBUG_MODE = 1)
 
 .SILENT:
-.PHONY: all clean fclean re debug rebug _debug init_rules
+.PHONY: all clean fclean re debug rebug _debug init
