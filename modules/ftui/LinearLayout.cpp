@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/25 13:23:56 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/28 11:12:08 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 15:06:06 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -344,14 +344,14 @@ void			LinearLayout::setParam(std::string const &k,
 
 int				LinearLayout::getDirectionG(lua_State *l)
 {
-	LinearLayout *const	self = ftlua::retrieveSelf<LinearLayout>(l, -1);
+	LinearLayout *const	self = ftlua::retrieveSelf<LinearLayout>(l, 1);
 
 	return (ftlua::push(l, static_cast<int>(self->getDirection())));
 }
 
 int				LinearLayout::setDirectionG(lua_State *l)
 {
-	LinearLayout *const	self = ftlua::retrieveSelf<LinearLayout>(l, -1);
+	LinearLayout *const	self = ftlua::retrieveSelf<LinearLayout>(l, 1);
 
 	self->setDirection(static_cast<Direction>(luaL_checkinteger(l, 1)));
 	lua_pop(l, 1);

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/28 11:46:49 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 14:39:49 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -310,7 +310,7 @@ PS::Bundle::Bundle(Main &main, OCamlBinding &ocaml)
 	}
 	// this->act.fireEvent("GRID_LIST_UPDATE", this->extractGridNames()
 	// 					, this->grids.size());
-	// this->act.fireEvent("SELECTED_GRID_CHANGED", 0);
+	this->act.fireEvent("ON_GAME_LOADED");
 	return ;
 }
 

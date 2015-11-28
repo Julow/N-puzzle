@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/28 12:40:54 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/28 13:10:19 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 15:50:43 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -57,9 +57,11 @@ public:
 
 	ACanvas::Params const	&getCheckedParams(void) const;
 	void					setCheckedParams(ACanvas::Params const &p);
+	static int				setCheckedParamsG(lua_State *l);
 
 	ACanvas::Params const	&getDisabledCheckedParams(void) const;
 	void					setDisabledCheckedParams(ACanvas::Params const &p);
+	static int				setDisabledCheckedParamsG(lua_State *l);
 
 protected:
 	bool				_isChecked;

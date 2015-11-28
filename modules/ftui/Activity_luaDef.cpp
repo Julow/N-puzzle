@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/25 18:03:11 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/28 13:09:33 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 15:52:57 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -64,10 +64,12 @@ Activity::views_info_t		Activity::viewsInfo
 		INSG(SliderView, getSteps), INSG(SliderView, setSteps),
 	}, {}}},
 	{"Button", {"ASolidView", &Button::createView, {
-		INSG(Button, lockHighlight),
+		INSG(Button, lockHighlight), INSG(Button, setNormalParams),
+		INSG(Button, setDisabledParams), INSG(Button, setPushedParams),
+		INSG(Button, setHighlightParams),
 	}, {}}},
 	{"CheckBox", {"Button", &CheckBox::createView, {
-		// INSG(Button, lockHighlight),
+		INSG(CheckBox, setCheckedParams), INSG(CheckBox, setDisabledCheckedParams),
 	}, {}}},
 	{"ALayout", {"ASolidView", nullptr, {
 		INSG(ALayout, size), INSG(ALayout, at), INSG(ALayout, addView)

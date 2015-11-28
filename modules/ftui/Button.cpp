@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:32:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/26 18:39:33 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 15:47:56 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -226,6 +226,24 @@ void				Button::lockHighlight(bool status)
 	}
 }
 
+ACanvas::Params			Button::retrieveParams(lua_State *l) /*static*/
+{
+	ACanvas::Params		p{0, 0, 0, 0};
+	int const			top = lua_gettop(l);
+
+	if (top == 1)
+		p.fillColor = luaL_checkinteger(l, 1);
+	else if (top == 3)
+	{
+		p.fillColor = luaL_checkinteger(l, 1);
+		p.strokeColor = luaL_checkinteger(l, 2);
+		p.lineWidth = luaL_checkinteger(l, 3);
+	}
+	else
+		luaL_error(l, "Bad arguments count");
+	return p;
+}
+
 
 ACanvas::Params const	&Button::getNormalParams(void) const
 { return this->_normal ; }
@@ -233,12 +251,27 @@ ACanvas::Params const	&Button::getNormalParams(void) const
 void					Button::setNormalParams(ACanvas::Params const &p)
 { this->_normal = p; }
 
+int						Button::setNormalParamsG(lua_State *l)
+{
+	Button	*v = ftlua::retrieveSelf<Button>(l, 1);
+
+	v->setNormalParams(Button::retrieveParams(l));
+	return 0;
+}
+
 
 ACanvas::Params const	&Button::getDisabledParams(void) const
 { return this->_disabled ; }
 
 void					Button::setDisabledParams(ACanvas::Params const &p)
 { this->_disabled = p; }
+int						Button::setDisabledParamsG(lua_State *l)
+{
+	Button	*v = ftlua::retrieveSelf<Button>(l, 1);
+
+	v->setDisabledParams(Button::retrieveParams(l));
+	return 0;
+}
 
 
 ACanvas::Params const	&Button::getPushedParams(void) const
@@ -246,6 +279,13 @@ ACanvas::Params const	&Button::getPushedParams(void) const
 
 void					Button::setPushedParams(ACanvas::Params const &p)
 { this->_pushed = p; }
+int						Button::setPushedParamsG(lua_State *l)
+{
+	Button	*v = ftlua::retrieveSelf<Button>(l, 1);
+
+	v->setPushedParams(Button::retrieveParams(l));
+	return 0;
+}
 
 
 ACanvas::Params const	&Button::getHighlightParams(void) const
@@ -253,5 +293,12 @@ ACanvas::Params const	&Button::getHighlightParams(void) const
 
 void					Button::setHighlightParams(ACanvas::Params const &p)
 { this->_highlight = p; }
+int						Button::setHighlightParamsG(lua_State *l)
+{
+	Button	*v = ftlua::retrieveSelf<Button>(l, 1);
+
+	v->setHighlightParams(Button::retrieveParams(l));
+	return 0;
+}
 
 };

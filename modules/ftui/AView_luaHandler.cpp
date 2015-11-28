@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/25 15:25:18 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 15:01:53 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -133,7 +133,7 @@ int			AView::setRequestedSizeG(lua_State *l)
 	s.x = luaL_checkinteger(l, -2);
 	s.y = luaL_checkinteger(l, -1);
 	lua_pop(l, 2);
-	if (h == nullptr)
+	if (h != nullptr)
 		h->setRequestedSize(s);
 	return (0);
 }

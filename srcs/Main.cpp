@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/26 15:52:50 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 14:41:20 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -46,9 +46,11 @@ void			Main::loadSharedScripts(ftui::Activity &act)
 	lua_State *const	l = act.getLuaState();
 
 	luaL_dostring(l, "Main = {}");
+	pushFun("getAlgorithms", &Main::getAlgorithmsG);
+	pushFun("getAlgorithmId", &Main::getAlgorithmIdG);
+
 	pushFun("getGrid", &Main::getGridG);
 	pushFun("getTableToReal", &Main::getGridG);
-	pushFun("getAlgorithmId", &Main::getAlgorithmIdG);
 	pushFun("getHeuristicId", &Main::getHeuristicIdG);
 	pushFun("getCost", &Main::getCostG);
 	pushFun("getTableToReal", &Main::getTableToRealG);
@@ -292,6 +294,16 @@ int				Main::getGridG(lua_State *l) /*static*/
 }
 Grid const		&Main::getGrid(void) const
 { return this->grid; }
+
+int				Main::getAlgorithmsG(lua_State *l) /*static*/
+{
+	return ftlua::handle<1, 1>(l, &Main::getAlgorithms);
+}
+std::vector<std::string>	Main::getAlgorithms(void)
+{
+	return _ocaml.algorithm_list();
+}
+
 
 int				Main::getAlgorithmIdG(lua_State *l) /*static*/
 {

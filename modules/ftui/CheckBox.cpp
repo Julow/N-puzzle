@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/28 12:40:52 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/28 13:18:48 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 15:52:05 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -33,7 +33,7 @@ AView		*CheckBox::createView(
 CheckBox::CheckBox(Activity &act, ft::XmlParser const &xml)
 	: Button(act, xml)
 	, _isChecked(false)
-	, _checked{ 0x01000000, 0xFFFFFF00, 2, 0}
+	, _checked{ 0x01000000, 0xFFFFFF00, 9, 0}
 	, _disabledChecked{	0, 0, 0, 0}
 {
 	return ;
@@ -43,7 +43,7 @@ CheckBox::CheckBox(Activity &act, std::string const *id
 				   , std::string const &viewName /* = "CheckBox" */)
 	: Button(act, id, viewName)
 	, _isChecked(false)
-	, _checked{ 0x01000000, 0xFF0000FF, 0, 0}
+	, _checked{ 0x01000000, 0xFFFFFF00, 9, 0}
 	, _disabledChecked{	0, 0, 0, 0}
 {
 	return ;
@@ -62,6 +62,7 @@ void		CheckBox::onDraw(ACanvas &canvas)
 {
 	IViewHolder		*vh = this->getViewHolder();
 
+	std::cout << _holder->getSize() << std::endl;
 	FTASSERT(vh != nullptr);
 	Button::onDraw(canvas);
 	if (_state && _isChecked)
@@ -104,6 +105,13 @@ ACanvas::Params const	&CheckBox::getCheckedParams(void) const
 
 void					CheckBox::setCheckedParams(ACanvas::Params const &p)
 { this->_checked = p; }
+int                     CheckBox::setCheckedParamsG(lua_State *l)
+{
+	CheckBox  *v = ftlua::retrieveSelf<CheckBox>(l, 1);
+
+	v->setCheckedParams(CheckBox::retrieveParams(l));
+	return 0;
+}
 
 
 ACanvas::Params const	&CheckBox::getDisabledCheckedParams(void) const
@@ -112,4 +120,11 @@ ACanvas::Params const	&CheckBox::getDisabledCheckedParams(void) const
 void				CheckBox::setDisabledCheckedParams(ACanvas::Params const &p)
 { this->_disabledChecked = p; }
 
+int                     CheckBox::setDisabledCheckedParamsG(lua_State *l)
+{
+	CheckBox  *v = ftlua::retrieveSelf<CheckBox>(l, 1);
+
+	v->setDisabledCheckedParams(CheckBox::retrieveParams(l));
+	return 0;
+}
 };

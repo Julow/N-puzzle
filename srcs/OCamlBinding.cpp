@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 11:51:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/26 18:14:44 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 14:36:29 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -259,7 +259,7 @@ Grid		OCamlBinding::generate_grid(int w, bool solvable)
 	return valToGrid(res);
 }
 
-void        OCamlBinding::algorithm_list(void)
+std::vector<std::string>        OCamlBinding::algorithm_list(void)
 {
 	value *const	f = caml_named_value("algorithm_list");
 	value			res;
@@ -269,7 +269,7 @@ void        OCamlBinding::algorithm_list(void)
 	if (Is_exception_result(res))
 		throw std::runtime_error(
 			caml_format_exception(Extract_exception(res)));
-	return ;
+	return {"Salut", "Hello"};
 }
 
 void        OCamlBinding::heuristic_list(void)
