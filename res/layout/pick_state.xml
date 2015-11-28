@@ -36,11 +36,6 @@
 			marginLeft="15"
 			marginBottom="10"
 			/>
-		<!-- <CheckBox -->
-		<!-- 	id="cb1" -->
-		<!-- 	width="30" -->
-		<!-- 	height="30" -->
-		<!-- 	/> -->
 	  </LinearLayout>
 
 	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />

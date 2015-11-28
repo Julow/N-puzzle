@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/25 18:03:11 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/28 15:52:57 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 16:33:39 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -70,6 +70,7 @@ Activity::views_info_t		Activity::viewsInfo
 	}, {}}},
 	{"CheckBox", {"Button", &CheckBox::createView, {
 		INSG(CheckBox, setCheckedParams), INSG(CheckBox, setDisabledCheckedParams),
+		INSG(CheckBox, isChecked), INSG(CheckBox, setChecked),
 	}, {}}},
 	{"ALayout", {"ASolidView", nullptr, {
 		INSG(ALayout, size), INSG(ALayout, at), INSG(ALayout, addView)
@@ -112,8 +113,6 @@ Activity::callback_map_t	Activity::callback_map
 	{"onDoubleClick",		LUA_CALLBACK_ID(Button, DOUBLE_CLICK)},
 
 	{"onValueChange",		LUA_CALLBACK_ID(SliderView, VALUE_CHANGE)},
-
-	{"onCheckStateChange",	LUA_CALLBACK_ID(CheckBox, CHECK)},
 
 	{"onScrollChange",		LUA_CALLBACK_ID(ScrollableLayout, SCROLL_CHANGE)},
 	{"onMaxScrollChange",	LUA_CALLBACK_ID(ScrollableLayout, MAX_SCROLL_CHANGE)},

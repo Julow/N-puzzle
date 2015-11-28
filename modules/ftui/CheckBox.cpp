@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/28 12:40:52 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/28 15:52:05 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 16:31:08 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -62,7 +62,6 @@ void		CheckBox::onDraw(ACanvas &canvas)
 {
 	IViewHolder		*vh = this->getViewHolder();
 
-	std::cout << _holder->getSize() << std::endl;
 	FTASSERT(vh != nullptr);
 	Button::onDraw(canvas);
 	if (_state && _isChecked)
@@ -81,24 +80,35 @@ void		CheckBox::onDraw(ACanvas &canvas)
 
 void		CheckBox::onClick(int mods)
 {
-	_isChecked = _isChecked ? false : true;
+	this->setChecked(_isChecked ? false : true);
 	Button::onClick(mods);
-	this->onCheckStateChange(_isChecked);
 	return ;
 }
 
-void		CheckBox::onCheckStateChange(bool state)
+int          CheckBox::isCheckedG(lua_State *l) /*static*/
 {
-	this->callLuaCallback(
-		_act.getLuaState()
-		, static_cast<uint32_t>(LuaCallback::CHECK), state);
-	return ;
+	return ftlua::handle<1, 1>(l, &CheckBox::isChecked);
 }
-
-bool		CheckBox::isChecked(void)
+bool		CheckBox::isChecked(void) const
 {
 	return _isChecked;
 }
+
+int          CheckBox::setCheckedG(lua_State *l) /*static*/
+{
+	return ftlua::handle<2, 0>(l, &CheckBox::setChecked);
+}
+void		CheckBox::setChecked(bool b)
+{
+	if (_isChecked != b)
+	{
+		_isChecked = b;
+		this->queryRedraw();
+	}
+	return ;
+}
+
+
 
 ACanvas::Params const	&CheckBox::getCheckedParams(void) const
 { return this->_checked ; }

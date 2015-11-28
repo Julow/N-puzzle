@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 11:51:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/28 14:36:29 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 16:11:38 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -145,6 +145,24 @@ static std::vector<Grid>			valToGridVector(value &val)
 	return vec;
 }
 
+static std::vector<std::string>		valToStringVector(value &val)
+{
+	std::vector<std::string>	vec;
+	value						node;
+
+	FTASSERT(Is_block(val));
+	node = val;
+	while (1)
+	{
+		if (Is_long(node))
+			break ;
+		vec.push_back(valToString(Field(node, 0)));
+		node = Field(node, 1);
+	}
+	FTASSERT(vec.size() > 0);
+	return vec;
+}
+
 static ISolverListener::report_s	valToReport(value &val)
 {
 	value							val2 = Field(val, 0);
@@ -269,7 +287,10 @@ std::vector<std::string>        OCamlBinding::algorithm_list(void)
 	if (Is_exception_result(res))
 		throw std::runtime_error(
 			caml_format_exception(Extract_exception(res)));
-	return {"Salut", "Hello"};
+	// std::cout << "lol" << std::endl;
+	// std::cout << Tag_val(res) << std::endl;
+	// std::cout << Wosize_val(res) << std::endl;
+	return valToStringVector(res);
 }
 
 void        OCamlBinding::heuristic_list(void)

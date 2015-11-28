@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/28 12:40:54 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/28 15:50:43 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/28 16:30:46 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -25,12 +25,6 @@ namespace ftui
 class CheckBox : public Button
 {
 public:
-
-	enum class	LuaCallback : uint32_t
-	{
-		CHECK = static_cast<uint32_t>(Button::LuaCallback::__LAST),
-		__LAST
-	};
 
 	// CONSTRUCTION ***************** //
 	static AView		*createView(
@@ -51,9 +45,13 @@ public:
 	virtual void		onDraw(ACanvas &canvas);
 
 	virtual void		onClick(int mods);
-	virtual void		onCheckStateChange(bool state);
 
-	bool				isChecked(void);
+	static int			isCheckedG(lua_State *l);
+	bool				isChecked(void) const;
+
+	static int			setCheckedG(lua_State *l);
+	void				setChecked(bool b);
+
 
 	ACanvas::Params const	&getCheckedParams(void) const;
 	void					setCheckedParams(ACanvas::Params const &p);
