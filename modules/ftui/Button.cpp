@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:32:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/28 15:47:56 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/29 11:54:14 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -46,9 +46,9 @@ Button::Button(Activity &act, ft::XmlParser const &xml)
 	, _pushed{		0xFF00AA00, 0xFFAA0000, 2, 0}
 	, _highlight{	0, 0x40FFFF00, 5, 0}
 	, _lastClick(_zero)
-{
-	return ;
-}
+	{
+		return ;
+	}
 
 Button::Button(Activity &act, std::string const *id
 			   , std::string const &viewName /* = "Button" */)
@@ -60,9 +60,9 @@ Button::Button(Activity &act, std::string const *id
 	, _pushed{		0xFF00AA00, 0xFFAA0000, 2, 0}
 	, _highlight{	0, 0x40FFFF00, 5, 0}
 	, _lastClick(_zero)
-{
-	return ;
-}
+	{
+		return ;
+	}
 
 Button::~Button()
 {
@@ -299,6 +299,41 @@ int						Button::setHighlightParamsG(lua_State *l)
 
 	v->setHighlightParams(Button::retrieveParams(l));
 	return 0;
+}
+
+void                Button::setParam(
+	std::string const &k, std::string const &v)
+{
+	using lambda = void (*)(Button*,std::string const&);
+	using map = std::unordered_map<std::string, lambda>;
+
+	static map      param_map
+	{
+		{"highlightLocked", [](Button *v, std::string const &str) {
+				v->lockHighlight(str == "true");
+		}},
+		{"normalFillColor", [](Button *v, std::string const &str) {
+				auto old = v->getNormalParams();
+				old.fillColor = std::stoul(str, NULL, 16);
+				v->setNormalParams(old);
+		}},
+		{"normalStrokeColor", [](Button *v, std::string const &str) {
+				auto old = v->getNormalParams();
+				old.strokeColor = std::stoul(str, NULL, 16);
+				v->setNormalParams(old);
+		}},
+		{"normalBorderWidth", [](Button *v, std::string const &str) {
+				auto old = v->getNormalParams();
+				old.lineWidth = std::stoi(str, NULL);
+				v->setNormalParams(old);
+		}},
+	};
+	auto const      &it = param_map.find(k);
+
+	if (it != param_map.end())
+		it->second(this, v);
+	else
+		AView::setParam(k, v);
 }
 
 };

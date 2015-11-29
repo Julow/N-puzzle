@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:26:40 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/28 15:48:42 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/29 11:38:25 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -48,7 +48,7 @@ public:
 	Button(Button const &src) = delete;
 	Button				&operator=(Button const &rhs) = delete;
 
-	// virtual void setParam(std::string const &k, std::string const &v); //TODO: this
+	virtual void		setParam(std::string const &k, std::string const &v);
 
 	// DRAW ************************* //
 	virtual void		onDraw(ACanvas &canvas);

@@ -6,60 +6,121 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 16:41:33 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/29 10:22:10 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/29 12:03:38 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
 local puzzleFrame = puzzleFrame;
 local bookmark_holder = _G['bookmark-holder'];
-local gen_slider = _G['gen_slider'];
-local nloops_slider = _G['nloops_slider'];
+
+
+local gensize_slider = _G['gensize_slider'];
+local gensize_slider_text = _G['gensize_slider_text'];
+
+local genloops_slider = _G['genloops_slider'];
+local genloops_slider_text = _G['genloops_slider_text'];
+
+local gencheckbox_no = gencheckbox_no;
+local gencheckbox_yes = gencheckbox_yes;
+
+local f_genloops, f_gensize, f_gensolvable;
 
 -- ************************************************************************** --
 local randomizeButton = randomPuzzleButton
 assert(randomizeButton ~= nil);
 
-local function int_to_float_expscale(v)
-  return math.tointeger((math.exp(v) - 1.) // 1.)
+local function refresh_genloops()
+  f_genloops = math.tointeger((math.exp(genloops_slider:getValue()) - 1.) // 1.);
 end
 
 function randomizeButton:onClick(_, _)
-  local size = math.tointeger(gen_slider:getValue() // 1);
-  local nloops = int_to_float_expscale(nloops_slider:getValue());
 
-  print('size, 1, nloops', size, 1, nloops);
-  PickState:pushRandomGrid(size, 1, nloops);
+  print('size, , genloops', f_gensize, f_gensolvable, f_genloops);
+  PickState:pushRandomGrid(f_gensize, f_gensolvable, f_genloops);
   -- TODO: RETREIVE WIDTH AND SOLVABLE FROM SLIDER/CHECKBOXES
 end
 
 randomizeButton:setCallback('onClick', randomizeButton.onClick);
 
+genloops_slider:setCallback(
+  'onValueChange',
+  function (self, v)
+	refresh_genloops();
+	genloops_slider_text:setText(f_genloops);
+  end
+);
+refresh_genloops();
+
+
+
+
+local function refresh_gensize()
+  f_gensize = math.tointeger(gensize_slider:getValue() // 1);
+end
+
+gensize_slider:setCallback(
+  'onValueChange',
+  function (self, v)
+	refresh_gensize();
+	gensize_slider_text:setText(f_gensize);
+  end
+);
+refresh_gensize();
+
+
+
+
+gencheckbox_yes:setCallback(
+  'onClick',
+	function (self)
+	  if self:isChecked() == false then
+		self:setChecked(1);
+	  else
+		gencheckbox_no:setChecked(0);
+		f_gensolvable = 1;
+	  end
+	end
+);
+
+gencheckbox_no:setCallback(
+  'onClick',
+	function (self)
+	  if self:isChecked() == false then
+		self:setChecked(1);
+	  else
+		gencheckbox_yes:setChecked(0);
+		f_gensolvable = 0;
+	  end
+	end
+);
+f_gensolvable = 1;
+
 -- ************************************************************************** --
-local fileButton = filePuzzleButton
-assert(fileButton ~= nil);
+-- local fileButton = filePuzzleButton
+-- assert(fileButton ~= nil);
 
-function fileButton:onClick(_, _)
-  ft.pchildren(UIParent);
-  ft.pparents(self);
-end
+-- function fileButton:onClick(_, _)
+--   ft.pchildren(UIParent);
+--   ft.pparents(self);
+-- end
 
-fileButton:setCallback('onClick', fileButton.onClick);
+-- fileButton:setCallback('onClick', fileButton.onClick);
 
 -- ************************************************************************** --
-local defaultButton = defaultPuzzleButton
-assert(defaultButton ~= nil);
+-- local defaultButton = defaultPuzzleButton
+-- assert(defaultButton ~= nil);
 
-function defaultButton:Bordel(...)
-  print('defaultButton:Bordel', ...);
-end
+-- function defaultButton:Bordel(...)
+--   print('defaultButton:Bordel', ...);
+-- end
 
-function defaultButton:onClick(_, _)
-  PickState:useDefaultGrid();
-  puzzleFrame:reloadGrid();
-  self:registerEvent("Bordel");
-end
+-- function defaultButton:onClick(_, _)
+--   PickState:useDefaultGrid();
+--   puzzleFrame:reloadGrid();
+--   self:registerEvent("Bordel");
+-- end
 
-defaultButton:setCallback('onClick', defaultButton.onClick);
+-- defaultButton:setCallback('onClick', defaultButton.onClick);
 
 -- ************************************************************************** --
 local solveButton = solveLaunchButton

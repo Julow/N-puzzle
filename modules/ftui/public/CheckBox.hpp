@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/28 12:40:54 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/28 16:30:46 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/29 11:38:09 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -39,7 +39,7 @@ public:
 	CheckBox(CheckBox const &src) = delete;
 	CheckBox				&operator=(CheckBox const &rhs) = delete;
 
-	// virtual void setParam(std::string const &k, std::string const &v); //TODO: this
+	virtual void		setParam(std::string const &k, std::string const &v);
 
 	// DRAW ************************* //
 	virtual void		onDraw(ACanvas &canvas);

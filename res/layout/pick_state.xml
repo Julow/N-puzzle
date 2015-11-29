@@ -90,7 +90,6 @@
 			marginTop="1"
 			marginBottom="5"
 			/>
-
 	  </LinearLayout>
 
 	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
@@ -119,55 +118,162 @@
 	  <LinearLayout
 	  	  direction="horizontal"
 		  id="mid-bot-holder"
-		  backgroundColor="0xFFFFFF00" alpha="0.66"
+		  backgroundColor="0xE0FFFF00"
 		  >
-		<SliderView
-			id="gen_slider"
-			marginTop="10" marginBottom="10" marginLeft="10" marginRight="10"
-			width="180"
-			height="60"
-			backgroundColor="0xFF555555"
-			minValue="3"
-			maxValue="20"
-			steps="17"
-			value="4"
-			/>
+
+
+		<LinearLayout
+			id="genslider_holder"
+			marginTop="5" marginLeft="5" marginBottom="5"
+			direction="vertical"
+			backgroundColor="0x40000000"
+			>
+		  <SolidView  width="184" height="1"/>
+		  <TextView
+			  textColor="0xffffffff"
+			  align="CENTER"
+			  textSize="12"
+			  text="Size"
+			  marginTop="2"
+			  marginBottom="2"
+			  />
+		  <SliderView
+			  id="gensize_slider"
+			  marginTop="3" marginLeft="2" marginRight="2"
+			  width="180"
+			  height="35"
+			  backgroundColor="0xFF555555"
+			  minValue="3"
+			  maxValue="20"
+			  steps="17"
+			  value="4"
+			  />
+		  <TextView
+			  align="CENTER"
+			  id="gensize_slider_text"
+			  textColor="0xffffffff"
+			  textSize="12"
+			  text="1"
+			  marginTop="1"
+			  marginBottom="3"
+			  />
+		</LinearLayout>
+
+
+		<LinearLayout
+			id="gencheckbox_holder"
+			marginTop="5" marginLeft="5" marginBottom="5"
+			direction="vertical"
+			backgroundColor="0x40000000"
+			>
+		  <SolidView  width="100" height="1"/>
+		  <TextView
+			  textColor="0xffffffff"
+			  align="CENTER"
+			  textSize="12"
+			  text="Solvable"
+			  marginTop="2"
+			  marginBottom="2"
+			  />
+		  <LinearLayout
+			  marginTop="3"
+			  marginLeft="3"
+			  id="gencheckboxyes_holder"
+			  direction="horizontal"
+			  >
+			<CheckBox
+				id="gencheckbox_yes"
+				alpha="0.75"
+				width="20"
+				height="20"
+				checked="true"
+				normalFillColor="0xFFFF0000"
+				normalStrokeColor="0xFF00AA00"
+				normalBorderWidth="3"
+				checkedFillColor="0xB0FFFF00"
+				checkedStrokeColor="0x01000000"
+				checkedBorderWidth="6"
+				/>
+			<TextView
+				text="yes"
+				textSize="12"
+				marginLeft="3"
+				textColor="0x99ffffff"
+				/>
+		  </LinearLayout>
+		  <LinearLayout
+			  marginTop="3"
+			  marginLeft="3"
+			  id="gencheckboxno_holder"
+			  direction="horizontal"
+			  >
+			<CheckBox
+				id="gencheckbox_no"
+				alpha="0.75"
+				width="20"
+				height="20"
+				normalFillColor="0xFFFF0000"
+				normalStrokeColor="0xFF00AA00"
+				normalBorderWidth="3"
+				checkedFillColor="0xB0FFFF00"
+				checkedStrokeColor="0x01000000"
+				checkedBorderWidth="6"
+				/>
+			<TextView
+				text="no"
+				textSize="12"
+				marginLeft="3"
+				textColor="0x99ffffff"
+				/>
+		  </LinearLayout>
+
+		</LinearLayout>
+
+
 		<Button
 			id="randomPuzzleButton"
-			marginTop="10" marginBottom="10" marginLeft="10" marginRight="10"
+			marginTop="10" marginBottom="10" marginLeft="10"
 			align="CENTER"
-			width="60"
-			height="60"
+			width="50"
+			height="50"
 			alpha="0.66"
 			/>
-		<Button
-			id="filePuzzleButton"
-			marginTop="10" marginBottom="10"
-			align="CENTER"
-			width="20"
-			height="60"
-			alpha="0.66"
-			/>
-		<Button
-			id="defaultPuzzleButton"
-			marginTop="10" marginBottom="10"
-			align="CENTER"
-			width="20"
-			height="60"
-			alpha="0.66"
-			/>
+		<!-- <Button -->
+		<!-- 	id="filePuzzleButton" -->
+		<!-- 	marginTop="10" marginBottom="10" -->
+		<!-- 	align="CENTER" -->
+		<!-- 	width="20" -->
+		<!-- 	height="60" -->
+		<!-- 	alpha="0.66" -->
+		<!-- 	/> -->
+		<!-- <Button -->
+		<!-- 	id="defaultPuzzleButton" -->
+		<!-- 	marginTop="10" marginBottom="10" -->
+		<!-- 	align="CENTER" -->
+		<!-- 	width="20" -->
+		<!-- 	height="60" -->
+		<!-- 	alpha="0.66" -->
+		<!-- 	/> -->
 		<Button
 			id="solveLaunchButton"
-			marginTop="10" marginBottom="10" marginLeft="10" marginRight="10"
+			marginTop="10" marginBottom="10" marginLeft="10"
 			align="CENTER"
-			width="120"
-			height="60"
+			width="50"
+			height="50"
 			alpha="0.66"
 			/>
 	  </LinearLayout>
+	  <TextView
+		  textColor="0xffffffff"
+		  align="CENTER"
+		  textSize="13"
+		  text="Swaps"
+		  marginTop="1"
+		  marginBottom="1"
+		  />
 	  <SliderView
-		  id="nloops_slider"
-		  marginTop="10" marginBottom="10" marginLeft="10" marginRight="10"
+		  id="genloops_slider"
+		  marginTop="0" marginLeft="10" marginRight="10"
 		  width="480"
 		  height="30"
 		  backgroundColor="0xFF555555"
@@ -176,6 +282,16 @@
 		  steps="480"
 		  value="1"
 		  />
+	  <TextView
+		  align="CENTER"
+		  id="genloops_slider_text"
+		  textColor="0xffffffff"
+		  textSize="12"
+		  text="1"
+		  marginTop="1"
+		  marginBottom="5"
+		  />
+
 
 	</LinearLayout>
 	<LinearLayout
@@ -194,11 +310,11 @@
 		  direction="horizontal"
 		  >
 		<TextView
-			text="<"
-		id="lol_slider_right"
-		textColor="0xFFFFFFFF"
-		mouse_click_target="true"
-		/>
+			text="-"
+			id="lol_slider_right"
+			textColor="0xFFFFFFFF"
+			mouse_click_target="true"
+			/>
 		<SliderView
 			id="lol_slider"
 			width="150"
@@ -211,7 +327,7 @@
 			disabled="true"
 			/>
 		<TextView
-			text=">"
+			text="+"
 			id="lol_slider_left"
 			textColor="0xFFFFFFFF"
 			mouse_click_target="true"

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/28 12:40:52 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/28 16:31:08 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/29 11:56:43 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -137,4 +137,45 @@ int                     CheckBox::setDisabledCheckedParamsG(lua_State *l)
 	v->setDisabledCheckedParams(CheckBox::retrieveParams(l));
 	return 0;
 }
+
+void                CheckBox::setParam(
+	std::string const &k, std::string const &v)
+{
+	using lambda = void (*)(CheckBox*,std::string const&);
+	using map = std::unordered_map<std::string, lambda>;
+
+	static map		param_map
+	{
+		{"checked", [](CheckBox *v, std::string const &str) {
+				v->setChecked(str == "true");
+			}},
+		{"checkedFillColor", [](CheckBox *v, std::string const &str) {
+				auto old = v->getCheckedParams();
+				old.fillColor = std::stoul(str, NULL, 16);
+				v->setCheckedParams(old);
+			}},
+		{"checkedStrokeColor", [](CheckBox *v, std::string const &str) {
+				auto old = v->getCheckedParams();
+				old.strokeColor = std::stoul(str, NULL, 16);
+				v->setCheckedParams(old);
+			}},
+		{"checkedBorderWidth", [](CheckBox *v, std::string const &str) {
+				auto old = v->getCheckedParams();
+				old.lineWidth = std::stoi(str, NULL);
+				v->setCheckedParams(old);
+			}},
+			// {"checkedBorderWidth", [](CheckBox *v, std::string const &str) {
+		// 		auto old = v->getCheckedParams();
+		// 		old.lineWidth = std::stoi(str, NULL);
+		// 		v->setCheckedParams(old);
+		// 	}},
+	};
+	auto const      &it = param_map.find(k);
+
+	if (it != param_map.end())
+		it->second(this, v);
+	else
+		Button::setParam(k, v);
+}
+
 };
