@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 13:01:05 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/28 18:26:25 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/29 14:40:36 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -47,6 +47,9 @@ function f_frame:onDraw(canvas)
   assert(f_w ~= nil and f_w > 0);
   assert(f_wpx ~= nil and f_wpx > 0);
 
+  local f_color = GridColor + 0xA5000000
+  local f_borderColor = GridColor + 0xB0000000
+
   local last = f_w - 1;
   local tile_w = (f_wpx - INSETS * 2 - SPACING * last) / f_w;
   local transpTable = f_transpTables[f_w];
@@ -64,7 +67,7 @@ function f_frame:onDraw(canvas)
 	  realNbr = transpTable[f_curPuzzle[i]];
 	  if realNbr ~= 0 then
 		canvas:drawRect(xpx, ypx, xpx + tile_w, ypx + tile_w
-						, 0xB0FF0000, 0xA5FF0000, 8);
+						, f_color, f_borderColor, 8);
 		drawTextCenter(canvas, tostring(realNbr)
 					   , xpx + (tile_w / 2), ypx + (tile_w / 2));
 	  end

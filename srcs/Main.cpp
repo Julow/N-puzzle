@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/28 16:55:43 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/29 14:30:24 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,12 +14,13 @@
 #include <array>
 
 #include "ft/utils.hpp"
+#include "ftui/AView.hpp"
 
+#include "libftui_extend/Bookmark.hpp"
 #include "Main.hpp"
 #include "config_window.hpp"
 #include "PickState.hpp"
-#include "ftui/AView.hpp"
-#include "libftui_extend/Bookmark.hpp"
+#include "SolvingState.hpp"
 
 /*
 ** ************************************************************************** **
@@ -125,6 +126,7 @@ Main::Main(void)
 
 Main::~Main(void)
 {
+	_state.reset();
 	glfwDestroyWindow(_window);
 	glfwTerminate();
 }

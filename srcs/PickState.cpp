@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/29 09:54:35 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/29 14:41:02 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,6 +15,7 @@
 #include <algorithm>
 
 #include "PickState.hpp"
+#include "SolvingState.hpp"
 #include "config_window.hpp"
 
 using PS = PickState;
@@ -91,8 +92,9 @@ void            PS::loop(std::unique_ptr<IState> &ptr, ftui::ACanvas &can)
 			  , _b->selectedId
 			  , _main.grid
 			);
-
-		throw std::runtime_error("OK");
+		can.clear();
+		ptr.reset(new SolvingState(_main, _ocaml));
+		// throw std::runtime_error("OK");
 	}
 	return ;
 }
@@ -299,7 +301,8 @@ PS::Bundle::Bundle(Main &main, OCamlBinding &ocaml)
 
 	act.inflate(is);
 	main.loadSharedScripts(act);
-	luaL_dostring(act.getLuaState(), "PickState = {}");
+	luaL_dostring(act.getLuaState()
+				  , "PickState = {}; GridColor = 0x0000FF;");
 	pushFun("selectGrid", &selectGridG);
 	pushFun("deleteGrid", &deleteGridG);
 

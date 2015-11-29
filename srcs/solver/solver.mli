@@ -38,8 +38,8 @@ val thread_handle : Thread.t option ref
 val thread_done : bool
 val launch : 'a * 'b * 'c * ('a -> 'b -> 'd -> 'e) * ('c -> 'd) -> unit
 val launch_str : Grid.t -> Grid.t -> int -> string -> string -> unit
-val solve' : 'a -> unit
-val solve : 'a -> unit
+val solve' : Npuzzle.t -> unit
+val solve : Npuzzle.t -> unit
 val poll_event : 'a -> EventHandler.t
 val abort : 'a -> unit
 val generate_grid : int -> bool -> int -> Grid.t

@@ -1,0 +1,55 @@
+<LinearLayout
+	direction="vertical"
+	id="UIParent"
+	activity_scripts="res/lua_utils;res/global;res/solving_state"
+	>
+
+  <LinearLayout
+  	  direction="horizontal"
+	  id="panes-holder"
+	  align="CENTER"
+	  marginTop="50"
+	  >
+	<LinearLayout
+		id="left_holder"
+		direction="vertical"
+		width="250" height="800"
+		backgroundColor="0x60BB0000" alpha="0.6"
+		>
+
+	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
+	</LinearLayout>
+
+	<LinearLayout
+		direction="vertical"
+		id="mid-holder"
+		align="TOP"
+		backgroundColor="0xFFFF0000" alpha="0.66"
+		>
+	  <SolidView
+		  id="puzzleFrame"
+		  marginTop="35"
+		  align="CENTER"
+		  width="500" height="500"
+		  backgroundColor="0x30FFFFFF" alpha="0.66"
+		  />
+
+	</LinearLayout>
+	<LinearLayout
+		direction="vertical"
+		id="right-holder"
+		backgroundColor="0x20BB0000" alpha="0.75"
+		align="TOP"
+		>
+	  <SolidView
+		  id="right-holder-dummy"
+		  marginTop="5" marginBottom="5" marginLeft="10" marginRight="10"
+		  width="230" height="25"
+		  backgroundColor="0xFFBB0000" alpha="0.75"
+		  />
+	</LinearLayout>
+
+
+
+  </LinearLayout>
+</LinearLayout>
