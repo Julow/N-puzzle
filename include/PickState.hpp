@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 18:05:46 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/28 09:33:03 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/29 09:54:54 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -52,7 +52,7 @@ public:
 	void					deleteGrid(int i);
 
 	static int				pushRandomGridG(lua_State *l);
-	void					pushRandomGrid(int w, bool solvable);
+	void					pushRandomGrid(int w, bool solvable, int nloops);
 
 
 	static int				getNumGridsG(lua_State *l);

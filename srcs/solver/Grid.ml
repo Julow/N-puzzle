@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:58 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/25 18:47:31 by jaguillo         ###   ########.fr       *)
+(*   Updated: 2015/11/29 10:48:20 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -20,14 +20,15 @@ module Heuristic : (GenericInterfaces.HEURISTIC
 	type maker = int -> fn
   end
 
-let bit_per_piv_component = 8
+let bit_per_piv_component = 7
+let piv_component_mask = (1 lsl bit_per_piv_component) - 1
 
 (* ************************************************************************** *)
 (* PERF CRITICAL *)
 
-(* TODO: Protect versus x-overflow (IMPORTANT) je dois le faire moi meme *)
+(* TODO: Protect versus x-overflow (IMPORTANT) and debug *)
 let pivxy piv =
-  piv land 0xF, piv lsr bit_per_piv_component
+  piv land piv_component_mask, piv lsr bit_per_piv_component
 
 let pivv (x, y) =
   x + y lsl bit_per_piv_component
@@ -290,7 +291,7 @@ let goal w =
   iter_cells mat aux;
   mat, pivv (zero_coords w)
 
-let generate w solvable =
+let generate w solvable nloops =
 
   let try_successor ((mat, piv) (* as gr *)) =
 	let x0, y0 = pivxy piv in
@@ -312,10 +313,11 @@ let generate w solvable =
   in
   let mat, piv = goal w in
   let rec aux i piv =
-	match i with
-	| 100000	-> piv
-	| _			-> let piv = try_successor (mat, piv) in
-				   aux (i + 1) piv
+	if i = nloops
+	then piv
+	else (
+	  let piv = try_successor (mat, piv) in
+	  aux (i + 1) piv)
   in
   let (mat, piv) as gr = mat, aux 0 piv in
   match solvable with

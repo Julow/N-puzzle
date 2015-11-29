@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/27 18:52:13 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/09 18:21:44 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/29 10:50:10 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -26,24 +26,32 @@ include DPatternDB
 module Hash =
   struct
 	type t = int
-	(* TODO: HEAVY TESTS ON OPERATORS PRIORITY *)
+	(* TODO: TEST OVERFLOW *)
 
+	let i_bits = 32
+	let piv_bits = Grid.bit_per_piv_component * 2
+	let g_bits = 8
+	let i_piv_bits = piv_bits + i_bits
+
+	let i_mask = (1 lsl i_bits) - 1
+	let piv_mask = (1 lsl piv_bits) - 1
+	let i_piv_mask = (piv_mask lsl i_bits) + i_mask
 	(** Required by hmap functor *)
 	let equal a b =
-	  a land 0x00_FFFF_FFFF_FFFF = b land 0x00_FFFF_FFFF_FFFF
+	  a land i_piv_mask = b land i_piv_mask
 
 	(** Required by batheap functor *)
 	let compare a b =
-	  a lsr (32 + Grid.bit_per_piv_component * 2)
-	  - b lsr (32 + Grid.bit_per_piv_component * 2)
+	  a lsr i_piv_bits
+	  - b lsr i_piv_bits
 
 	let make g piv i =
-	  g lsl (32 + Grid.bit_per_piv_component * 2) + piv lsl 32 + i
+	  g lsl i_piv_bits + piv lsl i_bits + i
 
 	let disass s =
-	  s lsr (32 + Grid.bit_per_piv_component * 2)
-	  , s lsr 32 land 0xFF
-	  , s land 0xFFFF_FFFF
+	  s lsr i_piv_bits
+	  , s lsr i_bits land piv_mask
+	  , s land i_mask
 
 	let hash i =
 	  i

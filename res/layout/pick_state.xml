@@ -165,6 +165,17 @@
 			alpha="0.66"
 			/>
 	  </LinearLayout>
+	  <SliderView
+		  id="nloops_slider"
+		  marginTop="10" marginBottom="10" marginLeft="10" marginRight="10"
+		  width="480"
+		  height="30"
+		  backgroundColor="0xFF555555"
+		  minValue="0"
+		  maxValue="12"
+		  steps="480"
+		  value="1"
+		  />
 
 	</LinearLayout>
 	<LinearLayout

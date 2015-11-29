@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:12 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/09 18:23:42 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/29 09:55:28 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -48,7 +48,7 @@ val zero_coords			: int -> int * int
 val is_solvable			: t -> bool
 
 val goal				: int -> t
-val generate			: int -> bool -> t
+val generate			: int -> bool -> int -> t
 val to_filename			: matrix -> string
 
 (* Printing *)

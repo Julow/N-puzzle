@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/28 17:58:35 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/29 09:54:35 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -160,16 +160,16 @@ void			PS::deleteGrid(int i)
 
 int				PS::pushRandomGridG(lua_State *l) /*static*/
 {
-	return ftlua::handle<3, 0>(l, &PS::pushRandomGrid);
+	return ftlua::handle<4, 0>(l, &PS::pushRandomGrid);
 }
-void			PS::pushRandomGrid(int w, bool solvable)
+void			PS::pushRandomGrid(int w, bool solvable, int nloops)
 {
 	static int	count = 0;
 	auto		*bun = this->_b;
 	auto		&grids = bun->grids;
 	int const	newIndex = grids.size();
 
-	grids.push_back(_ocaml.generate_grid(w, solvable));
+	grids.push_back(_ocaml.generate_grid(w, solvable, nloops));
 	grids[newIndex].setName(ft::f("Generated #%", count++));
 	_main.grid = bun->grids[newIndex];
 	bun->selectedId = newIndex;

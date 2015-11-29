@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/11/28 16:58:14 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/11/29 09:55:47 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -161,7 +161,7 @@ let launch_str abstgr goalgr w algo_str heu_maker_str =
 let solve' npuzzle =
   let solvable = true in
   let size = 3 in
-  let (abstmat, _) as abstgr = Grid.generate size solvable in
+  let (abstmat, _) as abstgr = Grid.generate size solvable 10000 in
   (* let (realmat, realpiv) as realgr = grid_from_file "lol3.np" in *)
   (* let (realmat, realpiv) as realgr = Grid.of_cgrid npuzzle in *)
 
@@ -212,8 +212,8 @@ let abort _ =
   EventHandler.clearq ();
   ()
 
-let generate_grid : int -> bool -> Grid.t = fun w solvable ->
-  let gr = Grid.generate w solvable in
+let generate_grid : int -> bool -> int -> Grid.t = fun w solvable nloops ->
+  let gr = Grid.generate w solvable nloops in
   gr
 
 let algorithm_list _ =

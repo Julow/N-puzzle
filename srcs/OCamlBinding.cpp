@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 11:51:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/28 16:57:51 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/29 09:53:58 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -264,13 +264,14 @@ void        OCamlBinding::abort(void)
 	return ;
 }
 
-Grid		OCamlBinding::generate_grid(int w, bool solvable)
+Grid		OCamlBinding::generate_grid(int w, bool solvable, int nloops)
 {
 	value *const	f = caml_named_value("generate_grid");
 	value			res;
 
 	FTASSERT(f != nullptr);
-	res = caml_callback2_exn(*f, Val_int(w), Val_bool(solvable)); // TODO: memory leak ?
+	res = caml_callback3_exn(
+		*f, Val_int(w), Val_bool(solvable), Val_int(nloops)); // TODO: memory leak ?
 	if (Is_exception_result(res))
 		throw std::runtime_error(
 			caml_format_exception(Extract_exception(res)));

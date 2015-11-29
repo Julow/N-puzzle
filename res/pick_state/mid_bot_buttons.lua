@@ -6,26 +6,30 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 16:41:33 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/28 18:16:52 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/11/29 10:22:10 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
 local puzzleFrame = puzzleFrame;
 local bookmark_holder = _G['bookmark-holder'];
 local gen_slider = _G['gen_slider'];
+local nloops_slider = _G['nloops_slider'];
 
 -- ************************************************************************** --
 local randomizeButton = randomPuzzleButton
 assert(randomizeButton ~= nil);
 
-function randomizeButton:onClick(_, _)
-  local size = gen_slider:getValue();
+local function int_to_float_expscale(v)
+  return math.tointeger((math.exp(v) - 1.) // 1.)
+end
 
-  print(size);
-  PickState:pushRandomGrid(size, 1);
-  -- TODO: ACCEPT BOOLEAN IN ftlua::handle
+function randomizeButton:onClick(_, _)
+  local size = math.tointeger(gen_slider:getValue() // 1);
+  local nloops = int_to_float_expscale(nloops_slider:getValue());
+
+  print('size, 1, nloops', size, 1, nloops);
+  PickState:pushRandomGrid(size, 1, nloops);
   -- TODO: RETREIVE WIDTH AND SOLVABLE FROM SLIDER/CHECKBOXES
-  -- TODO: CHECK SIZE FOR SEGFAULT
 end
 
 randomizeButton:setCallback('onClick', randomizeButton.onClick);

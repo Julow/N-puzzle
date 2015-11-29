@@ -42,7 +42,7 @@ val solve' : 'a -> unit
 val solve : 'a -> unit
 val poll_event : 'a -> EventHandler.t
 val abort : 'a -> unit
-val generate_grid : int -> bool -> Grid.t
+val generate_grid : int -> bool -> int -> Grid.t
 val algorithm_list : 'a -> string list
 val heuristic_list : 'a -> string list
 val transposition_toreal : int -> int array
