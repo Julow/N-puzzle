@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/30 12:06:18 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/30 18:38:18 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -136,7 +136,7 @@ void			Activity::inflate(std::istream &stream)
 
 	FTASSERT(_l == nullptr, "Activity.inflate called again");
 	_l = new_lua_env();
-	ftlua::set(_l, ftlua::make_keys("ftui"), "activity", ftlua::light(this));
+	ftlua::set(_l, ftlua::makeKeys("ftui"), "activity", ftlua::light(this));
 	if (!xml.next(state))
 		throw std::runtime_error("Activity::inflate: "
 								 "Activity should own at least 1 view");
@@ -356,7 +356,7 @@ void			Activity::registerLuaCFun_table(
 	, std::string const &funName
 	, lua_CFunction f)
 {
-	ftlua::set(_l, ftlua::make_keys(tabName), funName, f);
+	ftlua::set(_l, ftlua::makeKeys(tabName), funName, f);
 	return ;
 }
 
@@ -392,7 +392,7 @@ Activity		*Activity::retrieveActivity(lua_State *l)
 {
 	Activity	*act;
 
-	ftlua::push(l, ftlua::make_keys("ftui", "activity"));
+	ftlua::push(l, ftlua::makeKeys("ftui", "activity"));
 	FTLUA_STACKASSERT(l, lua_islightuserdata(l, -1), true
 					  , "Activity::retrieveActivity"
 					  , "Could not retrieve _G['ftui']['activity']");

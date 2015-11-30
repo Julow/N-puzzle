@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 17:09:57 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 19:33:35 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/30 19:18:05 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -25,21 +25,34 @@ int					pcall(
 	lua_State *l, unsigned int nRet, unsigned int nArgsStack
 	, ARGS const & ...args)
 {
-	return lua_pcall(
-		l, multiPush(l, args...) + nArgsStack, nRet, 0);
+	FTLUA_STACKASSERT(
+		l, lua_isfunction(l, -nArgsStack - 1), false
+		, ft::f("ftlua::pcall(%, %, %)."
+				, nRet, nArgsStack, ft::variadicToString(args...))
+		, ft::f("Function was expected at index.")
+		);
+	return lua_pcall(l, multiPush(l, args...) + nArgsStack, nRet, 0);
 }
 
 // Consumes the table
 template <typename ...ARGS, typename ...FKEYS>
 int					pcallMethod(
 	lua_State *l, unsigned int nRet
-	, KeysWrapper<FKEYS...> const &methodTabKeys
+	, KeysWrapper< (-1), FKEYS...> const &methodTabKeys
 	, ARGS const & ...args)
 {
-	lua_pushvalue(l, -1);				// []	[]
-	push<true>(l, methodTabKeys);		// f	[]
-	lua_pushvalue(l, -2);				// []	f	[]
-	lua_remove(l, -3);					// []	f
+	//											[]
+	push(l, methodTabKeys);					//	f	[]
+	FTLUA_STACKASSERT(
+		l, lua_isfunction(l, -1), false
+		, ft::f("ftlua::pcall(%, KeysWrapper<%>, %)."
+				, nRet
+				, ft::tupleToString(methodTabKeys.tup)
+				, ft::variadicToString(args...))
+		, ft::f("Function not found in table.")
+		);
+	lua_pushvalue(l, -2);					//	[]	f	[]
+	lua_remove(l, -3);						//	[]	f
 	return lua_pcall(l, multiPush(l, args...) + 1, nRet, 0);
 }
 

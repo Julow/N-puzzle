@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/25 18:03:11 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/28 16:33:39 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/30 18:39:28 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -168,7 +168,7 @@ static void     push_luacfun_methods(
 		, std::vector<Activity::view_info_s::luamethod_t> const &methods)
 {
 	for (auto const &itm : methods)
-		ftlua::set(l, ftlua::make_keys(view_name)
+		ftlua::set(l, ftlua::makeKeys(view_name)
 				   , std::get<0>(itm), std::get<1>(itm));
 	return ;
 }
@@ -178,9 +178,9 @@ static void     finalize_template(
 {
 	int     err;
 
-	ftlua::push(l, ftlua::make_keys("ftui", "finalize_template"));
+	ftlua::push(l, ftlua::makeKeys("ftui", "finalize_template"));
 	err = ftlua::pcall(
-		l, 0, 0, ftlua::make_keys(name), ftlua::make_keys(i.parent));
+		l, 0, 0, ftlua::makeKeys(name), ftlua::makeKeys(i.parent));
 	FTASSERT(err == 0);
 	return ;
 }

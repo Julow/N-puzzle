@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/30 16:47:10 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/30 18:37:42 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -149,17 +149,17 @@ int				ACanvas::measureTextG(lua_State *l)
 void			ACanvas::pushTemplate(lua_State *l)
 {
 	luaL_dostring(l, "ACanvas = {}; ACanvas.__index = ACanvas;");
-	ftlua::set(l, ftlua::make_keys("ACanvas"), "drawRect", &ACanvas::drawRectG);
-	ftlua::set(l, ftlua::make_keys("ACanvas"), "drawText", &ACanvas::drawTextG);
-	ftlua::set(l, ftlua::make_keys("ACanvas"), "measureText"
+	ftlua::set(l, ftlua::makeKeys("ACanvas"), "drawRect", &ACanvas::drawRectG);
+	ftlua::set(l, ftlua::makeKeys("ACanvas"), "drawText", &ACanvas::drawTextG);
+	ftlua::set(l, ftlua::makeKeys("ACanvas"), "measureText"
 			   , &ACanvas::measureTextG);
-	ftlua::set(l, ftlua::make_keys("ACanvas"), "setFont", &ACanvas::setFontG);
+	ftlua::set(l, ftlua::makeKeys("ACanvas"), "setFont", &ACanvas::setFontG);
 	return ;
 }
 
 void			ACanvas::pushLua(lua_State *l)
 {
-	ftlua::multiPush(l, ftlua::newtab, ftlua::make_keys("ACanvas"));
+	ftlua::multiPush(l, ftlua::newtab, ftlua::makeKeys("ACanvas"));
 	FTLUA_STACKASSERT(l, lua_istable(l, -1), false
 					  , "ACanvas::pushLua", "Could not retreive _G['ACanvas']");
 	lua_setmetatable(l, -2);

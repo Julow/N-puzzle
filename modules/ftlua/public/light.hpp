@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/22 11:58:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 13:20:56 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/30 18:42:45 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -30,14 +30,16 @@ inline int					pushLight(lua_State *l, void *ptr)
 	return 1;
 }
 
-inline KeysWrapper<void*>	lightKey(void *ptr)
+template <int Relative = 0>
+KeysWrapper<Relative, void*>	lightKey(void *ptr)
 {
-	return ftlua::make_keys(ptr);
+	return ftlua::makeKeys<Relative>(ptr);
 }
 
-inline int					pushLightKey(lua_State *l, void *ptr)
+template <int Relative = 0>
+int							pushLightKey(lua_State *l, void *ptr)
 {
-	return ftlua::push(l, ftlua::make_keys(ptr));
+	return ftlua::push(l, ftlua::makeKeys<Relative>(ptr));
 }
 
 

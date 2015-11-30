@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/28 10:09:16 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/30 19:06:24 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -46,12 +46,12 @@ namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // TODO: Split hpp/cpp (ps: NO DEFAULT PARAMETERS IN PROTOTYPE)
 
 /*
-template <bool FIRSTISTOP, bool USELUAERR
+template <bool FIRSTISTOP, bool LuaErr
 		  , typename... ARGS>
 int			push(lua_State *l, KeysWrapper<ARGS...> const &wrap);
 
 // Push (T to Converter<T>) || (const-T to Converter<const-T>)
-template <bool USELUAERR, typename T
+template <bool LuaErr, typename T
 		  , OK_IFNODEF((sizeof(T) > 0u))
 		  , OK_IFNODEF(ISCONV(T, Converter<T>)) >
 int			push(lua_State *l, T &v);
@@ -59,7 +59,7 @@ int			push(lua_State *l, T &v);
 
 // Push (T to Converter<T const>)
 //TODO: validate this overload
-template <bool USELUAERR, typename T
+template <bool LuaErr, typename T
 		  , OK_IFNODEF((sizeof(T) > 0u))
 	, OK_IFNODEF(!ISCONST(T))
 	// , OK_IFNODEF(ISCONST(T))
@@ -70,7 +70,7 @@ int			push(lua_State *l, T &v);
 
 // Push (const-T to Converter<T>) NOT(const-T to Converter<T const>)
 // Overload allowing const cast in User's cast-operator
-template <bool USELUAERR, typename T
+template <bool LuaErr, typename T
 		  , OK_IFNODEF((sizeof(T) > 0u))
 	, OK_IFNODEF(ISCONST(T))
 	, typename NOCONST
@@ -79,7 +79,7 @@ template <bool USELUAERR, typename T
 	int			push(lua_State *l, T &v);
 
 // Push (T* to push<T>) || (T-const * to push<T-const>)
-template <bool USELUAERR, typename T
+template <bool LuaErr, typename T
 		  , OK_IFNODEF(ISPTR(T))
 		  , typename NOPTR
 		  , OK_IFNODEF((sizeof(NOPTR) > 0u))
@@ -96,37 +96,37 @@ int			push(lua_State *l, T v);
 
 
 // IMPLICIT CASTS DISABLED ========== //
-template <bool USELUAERR = false, typename T, OK_IF(ISSAME(T, bool))>
+template <bool LuaErr = false, typename T, OK_IF(ISSAME(T, bool))>
 int			push(lua_State *l, T const &v)
 { lua_pushboolean(l, v); return 1; }
 // ftlua::push<void*>	No const accepted here, const_cast yourself before call.
-template <bool USELUAERR = false, typename T, OK_IF(ISSAME(T, void*))>
+template <bool LuaErr = false, typename T, OK_IF(ISSAME(T, void*))>
 int			push(lua_State *l, T const &v) {
 	if (v == nullptr) lua_pushnil(l);
 	else lua_pushlightuserdata(l, v); return 1; }
 
 
 // LUA SPECIFIC ===================== //
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, nil_t const &)
 { lua_pushnil(l); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, newtab_t const &)
 { lua_createtable(l, 0, 0); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, dup_t const &i)
 {
 	int const	index = i.i < 0 ? -i.i : i.i;
 
 	FTLUA_STACKASSERT(
-		l, index <= lua_gettop(l), USELUAERR
+		l, index <= lua_gettop(l), LuaErr
 		, ft::f("ftlua::push(dup(%)).", i.i)
 		, ft::f("Stack index does not exist.")
 		);
 	lua_pushvalue(l, i.i);
 	return 1;
 }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, lua_CFunction const &v) {
 	if (v == NULL) lua_pushnil(l);
 	else lua_pushcfunction(l, v); return 1; }
@@ -134,113 +134,113 @@ int			push(lua_State *l, lua_CFunction const &v) {
 
 // NUMBERS/STRING =================== //
 // TODO: more types from cstdint might be required here
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, int8_t const &v)
 { lua_pushinteger(l, v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, int16_t const &v)
 { lua_pushinteger(l, v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, int32_t const &v)
 { lua_pushinteger(l, v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, int64_t const &v)
 { lua_pushinteger(l, v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, uint8_t const &v)
 { lua_pushinteger(l, v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, uint16_t const &v)
 { lua_pushinteger(l, v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, uint32_t const &v)
 { lua_pushinteger(l, v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, uint64_t const &v)
 { lua_pushinteger(l, v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, intmax_t const &v)
 { lua_pushinteger(l, v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, uintmax_t const &v)
 { lua_pushinteger(l, v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, float const &v)
 { lua_pushnumber(l, v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, double const &v)
 { lua_pushnumber(l, v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, std::string const &v)
 { lua_pushstring(l, v.c_str()); return 1; }
 
 
 // BOOL/NUMBERS/STRING/ ----- POINTER //
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, bool const *const &v) {
 	if (v == nullptr) lua_pushnil(l);
 	else lua_pushboolean(l, *v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, int8_t const *const &v) {
 	if (v == nullptr) lua_pushnil(l);
 	else lua_pushinteger(l, *v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, int16_t const *const &v) {
 	if (v == nullptr) lua_pushnil(l);
 	else lua_pushinteger(l, *v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, int32_t const *const &v) {
 	if (v == nullptr) lua_pushnil(l);
 	else lua_pushinteger(l, *v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, int64_t const *const &v) {
 	if (v == nullptr) lua_pushnil(l);
 	else lua_pushinteger(l, *v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, uint8_t const *const &v){
 	if (v == nullptr) lua_pushnil(l);
 	else lua_pushinteger(l, *v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, uint16_t const *const &v){
 	if (v == nullptr) lua_pushnil(l);
 	else lua_pushinteger(l, *v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, uint32_t const *const &v){
 	if (v == nullptr) lua_pushnil(l);
 	else lua_pushinteger(l, *v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, uint64_t const *const &v){
 	if (v == nullptr) lua_pushnil(l);
 	else lua_pushinteger(l, *v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, float const *const &v){
 	if (v == nullptr) lua_pushnil(l);
 	else lua_pushnumber(l, *v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, double const *const &v){
 	if (v == nullptr) lua_pushnil(l);
 	else lua_pushnumber(l, *v); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, std::string const *const &v) {
 	if (v == nullptr) lua_pushnil(l);
 	else lua_pushstring(l, v->c_str()); return 1; }
-template <bool USELUAERR = false>
+template <bool LuaErr = false>
 int			push(lua_State *l, char const *v) {
 	if (v == NULL) lua_pushnil(l);
 	else lua_pushstring(l, v); return 1; }
 
 
 // 'ft::' COMPOUND TYPES ============ //
-template <bool USELUAERR = false, typename T>
+template <bool LuaErr = false, typename T>
 int	push(lua_State *l, ft::Vec2<T> const &v)
 { push(l, v.x); push(l, v.y); return 2; }
-template <bool USELUAERR = false, typename T>
+template <bool LuaErr = false, typename T>
 int	push(lua_State *l, ft::Vec3<T> const &v)
 { push(l, v.x); push(l, v.y); push(l, v.z); return 3; }
-template <bool USELUAERR = false, typename T>
+template <bool LuaErr = false, typename T>
 int	push(lua_State *l, ft::Vec4<T> const &v)
 { push(l, v.x); push(l, v.y); push(l, v.z); push(l, v.w); return 4; }
-template <bool USELUAERR = false, typename T>
+template <bool LuaErr = false, typename T>
 int	push(lua_State *l, ft::Rect<T> const &v) {
 	push(l, v.left); push(l, v.top); push(l, v.right); push(l, v.bottom);
 	return 4; }
@@ -326,9 +326,11 @@ namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 
 template <size_t I, bool LuaErr
+		  , int Relative
 		  , typename... ARGS
 		  >
-void		_dereference(lua_State *l, KeysWrapper<ARGS...> const &wrap)
+void		_dereference(
+	lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 {
 	ftlua::push<LuaErr>(l, std::get<I>(wrap.tup));
 	FTLUA_STACKASSERT(
@@ -343,20 +345,22 @@ void		_dereference(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 }
 
 template <size_t I, bool LuaErr
+		  , int Relative
 		  , typename... ARGS
 		  , OK_IF((sizeof...(ARGS) - I == 1))
 		  >
-void		_loopKey(lua_State *l, KeysWrapper<ARGS...> const &wrap)
+void		_loopKey(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 {
 	_dereference<I, LuaErr>(l, wrap);
 	return ;
 }
 
 template <size_t I, bool LuaErr
+		  , int Relative
 		  , typename... ARGS
 		  , OK_IF((sizeof...(ARGS) - I != 1))
 		  >
-void		_loopKey(lua_State *l, KeysWrapper<ARGS...> const &wrap)
+void		_loopKey(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 {
 	_dereference<I, LuaErr>(l, wrap);
 	_loopKey<I + 1, LuaErr>(l, wrap);
@@ -368,12 +372,23 @@ void		_loopKey(lua_State *l, KeysWrapper<ARGS...> const &wrap)
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 
-template <bool FIRSTISTOP = false, bool LuaErr = false
+template <bool LuaErr = false
+		  , int Relative
 		  , typename ...ARGS>
-int			push(lua_State *l, KeysWrapper<ARGS...> const &wrap)
+int			push(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 {
-	if (!FIRSTISTOP)
+	if (Relative == 0)
 		lua_pushglobaltable(l);
+	else
+	{
+		FTLUA_STACKASSERT(
+			l, lua_istable(l, Relative), LuaErr
+			, ft::f("ftlua::push(KeysWrapper<%, %>)."
+					, Relative, ft::tupleToString(wrap.tup))
+			, ft::f("Table was expected at KeysWrapper's Relative index.")
+			);
+		lua_pushvalue(l, Relative);
+	}
 	internal::_loopKey<0, LuaErr>(l, wrap);
 	return 1;
 }

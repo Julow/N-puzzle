@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:23:28 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 16:07:58 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/30 18:55:31 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -22,7 +22,7 @@
 namespace ftlua
 {
 
-template<typename... ARGS>
+template<int Relative = 0, typename... ARGS>
 struct KeysWrapper
 {
 	static_assert(sizeof...(ARGS) > 0, "This should hold at least one key");
@@ -43,11 +43,12 @@ struct KeysWrapper
 
 };
 
-template<typename... ARGS>
-KeysWrapper<ARGS...>		make_keys(ARGS const& ...args)
+template<int Relative = 0, typename... ARGS>
+KeysWrapper<Relative, ARGS...>		makeKeys(ARGS const& ...args)
 {
-	return KeysWrapper<ARGS...>(args...);
+	return KeysWrapper<Relative, ARGS...>(args...);
 }
+
 
 };
 

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/30 12:05:48 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/30 18:40:03 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -214,7 +214,7 @@ void			Main::onKeyDown(int key, int scancode, int mods)
 	{
 		std::cout << "set cpp callback" << std::endl;
 
-		ftlua::push(l, ftlua::make_keys("Bookmark2"));
+		ftlua::push(l, ftlua::makeKeys("Bookmark2"));
 		Bookmark	*k = ftlua::retrieveSelf<Bookmark>(l, -1);
 
 		act.registerEvent("Bordel", k, &Bookmark::onBordel);

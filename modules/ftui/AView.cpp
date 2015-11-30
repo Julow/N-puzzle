@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/30 16:33:51 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/30 18:40:16 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -56,8 +56,8 @@ static void			push_to_lua(lua_State *l
 {
 	int		err;
 
-	ftlua::push(l, ftlua::make_keys("ftui", "push_view"));
-	ftlua::push(l, ftlua::make_keys(viewName));
+	ftlua::push(l, ftlua::makeKeys("ftui", "push_view"));
+	ftlua::push(l, ftlua::makeKeys(viewName));
 	FTASSERT(lua_istable(l, -1));
 	err = ftlua::pcall(l, 0, 1, ftlua::light(vptr), id);
 	FTASSERT(err == LUA_OK);
@@ -312,7 +312,6 @@ void				AView::onDraw(ACanvas &canvas)
 	this->_flags &= ~AView::REDRAW_QUERY;
 	this->callLuaCallback(_act.getLuaState(), LuaCallback::DRAW
 						  , &canvas);
-						  // , ftlua::make_keys(&canvas));
 	return ;
 }
 

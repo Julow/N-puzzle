@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/22 11:52:23 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/23 17:28:19 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/30 19:02:10 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -26,7 +26,7 @@ template <bool USELUAERR = false
 		  , class ...ARGS, class TK, class TV>
 void        set(
 	lua_State *l
-	, KeysWrapper<ARGS...> const &tabGlobalKeys
+	, KeysWrapper<0, ARGS...> const &tabGlobalKeys
 	, TK const &key
 	, TV const &val)
 {
