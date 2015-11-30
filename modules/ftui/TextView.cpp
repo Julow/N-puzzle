@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/12 08:49:42 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 11:13:39 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/30 11:25:39 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -65,6 +65,8 @@ std::string const	&TextView::getText(void) const
 void				TextView::setText(std::string const &text)
 {
 	_text = text;
+	queryMeasure();
+	queryRedraw();
 }
 
 ACanvas::font_t		TextView::getFont(void) const
@@ -75,6 +77,8 @@ ACanvas::font_t		TextView::getFont(void) const
 void				TextView::setFont(ACanvas::font_t font)
 {
 	_textParams.font = font;
+	queryMeasure();
+	queryRedraw();
 }
 
 ft::Color::t		TextView::getTextColor(void) const
@@ -85,6 +89,7 @@ ft::Color::t		TextView::getTextColor(void) const
 void				TextView::setTextColor(ft::Color::t color)
 {
 	_textParams.fillColor = color;
+	queryRedraw();
 }
 
 int32_t				TextView::getTextSize(void) const
@@ -95,6 +100,8 @@ int32_t				TextView::getTextSize(void) const
 void				TextView::setTextSize(int32_t size)
 {
 	_textParams.lineWidth = size;
+	queryMeasure();
+	queryRedraw();
 }
 
 void				TextView::setParam(std::string const &k,
