@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/29 14:30:24 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/30 12:05:48 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -117,6 +117,7 @@ Main::Main(void)
 	glfwSetKeyCallback(_window, &Main::handleKeyEvents);
 	glfwSetCursorPosCallback(_window, &Main::handleMousePosEvents);
 	glfwSetMouseButtonCallback(_window, &Main::handleMouseButtonEvents);
+	glfwSetScrollCallback(_window, &Main::handleMouseScrollEvents);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -229,6 +230,11 @@ void			Main::onMouseMove(int x, int y)
 	_state->getActivity().onMouseMove(x, y);
 }
 
+void			Main::onMouseScroll(float delta)
+{
+	_state->getActivity().onMouseScroll(delta);
+}
+
 void			Main::onMouseUp(int x, int y, int button, int mods)
 {
 	_state->getActivity().onMouseUp(x, y, button, mods);
@@ -252,14 +258,24 @@ void			Main::handleKeyEvents(
 		main->onKeyDown(key, scancode, mods);
 }
 
-void			Main::handleMousePosEvents(
-	GLFWwindow *window, double x, double y)
+void			Main::handleMousePosEvents(GLFWwindow *window,
+					double x, double y)
 {
 	Main		*main;
 
 	main = reinterpret_cast<Main*>(glfwGetWindowUserPointer(window));
 	FTASSERT(main != NULL);
 	main->onMouseMove(x, y);
+}
+
+void			Main::handleMouseScrollEvents(GLFWwindow *window,
+					double, double y)
+{
+	Main		*main;
+
+	main = reinterpret_cast<Main*>(glfwGetWindowUserPointer(window));
+	FTASSERT(main != NULL);
+	main->onMouseScroll(y);
 }
 
 void			Main::handleMouseButtonEvents(

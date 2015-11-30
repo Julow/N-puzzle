@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/25 18:43:32 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/30 11:58:29 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -57,6 +57,7 @@ public:
 	bool				onKeyUp(int key_code, int mods);
 	bool				onKeyDown(int key_code, int mods);
 	void				onMouseMove(int x, int y);
+	void				onMouseScroll(float delta);
 	void				onMouseUp(int x, int y, int button, int mods);
 	bool				onMouseDown(int x, int y, int button, int mods);
 
@@ -188,6 +189,8 @@ protected:
 	ft::Vec2<int>				_size;
 	lua_State					*_l;
 	std::vector<std::string>	_scriptsPaths;
+
+	ft::Vec2<int>				_cursorPos;
 
 private:
 

@@ -11,7 +11,6 @@ TODO LIST
 	AbsoluteLayout, RelativeLayout
 	Gen big databases
 
-	LinearLayout fix overflow crash
 	ScrollableLayout
 	LinearLayout direction REV_VERTICAL and REV_HORIZONTAL
 

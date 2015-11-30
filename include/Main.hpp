@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 12:58:38 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/28 16:57:10 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/30 12:06:37 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -45,6 +45,7 @@ public:
 public:
 	/* GLFW INTERACTIONS ************ */
 	void					onMouseMove(int x, int y);
+	void					onMouseScroll(float delta);
 	void					onKeyUp(int key, int scancode, int mods);
 	void					onKeyDown(int key, int scancode, int mods);
 	void					onMouseUp(int x, int y, int button, int mods);
@@ -56,6 +57,8 @@ public:
 		GLFWwindow *window, double x, double y);
 	static void				handleMouseButtonEvents(
 		GLFWwindow *window, int button, int action, int mods);
+	static void				handleMouseScrollEvents(GLFWwindow *window,
+								double, double y);
 
 	/* LIBFTUI INTERACTIONS ********* */
 	static int					getAlgorithmsG(lua_State *l);

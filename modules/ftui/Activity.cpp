@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/27 20:53:09 by juloo            ###   ########.fr       //
+//   Updated: 2015/11/30 12:06:18 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -42,7 +42,8 @@ Activity::Activity(ft::Vec2<int> size) :
 	_rootView(NULL),
 	_eventMap(),
 	_size(size),
-	_l(nullptr)
+	_l(nullptr),
+	_cursorPos(0, 0)
 {
 	return ;
 }
@@ -218,13 +219,25 @@ bool			Activity::onKeyDown(int key_code, int mods)
 	return (false);
 }
 
+void			Activity::onMouseScroll(float delta)
+{
+	auto		rv = _rootView != nullptr ? _rootView->getView() : nullptr;
+
+	if (rv != nullptr && ((rv->isMouseScrollTargeted()
+				&& ft::Rect<int>{0, 0, _size.x, _size.y}.contains(_cursorPos))
+			|| rv->isMouseCaptureTargeted()))
+		rv->onMouseScroll(_cursorPos.x, _cursorPos.y, delta);
+}
+
 void			Activity::onMouseMove(int x, int y)
 {
 	auto		rv = _rootView != nullptr ? _rootView->getView() : nullptr;
 
+	_cursorPos.x = x;
+	_cursorPos.y = y;
 	if (rv != nullptr && rv->isMouseMoveTargeted())
 	{
-		if (ft::Rect<int>{0, 0, _size.x, _size.y}.contains(ft::Vec2<int>{x, y}))
+		if ((ft::make_vec(0, 0) ^ _size).contains(ft::make_vec(x, y)))
 		{
 			if (!rv->isMouseOver())
 				rv->setMouseOver(x, y, true);

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/29 14:06:13 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/29 15:47:26 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/30 11:33:43 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -70,9 +70,9 @@ SS::SolvingState(Main &main, OCamlBinding &ocaml)
 
 	// act.fireEvent("Bordel", 42, std::string("caca"));
 
-	std::thread		th (launch, &ocaml, &main.grid);
+	// std::thread		th (launch, &ocaml, &main.grid);
 
-	th.join();
+	// th.join();
 	// std::thread		th (launch, ocaml, main.grid);
 	// ocaml.solve(main.grid);
 
