@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/26 16:08:13 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/26 17:23:12 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/30 16:28:15 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -43,15 +43,16 @@ ScrollableLayout::~ScrollableLayout(void)
 
 void				ScrollableLayout::onSizeChange(void)
 {
+	LinearLayout::onSizeChange();
+
 	ft::Vec2<int> const	size = _holder->getSize();
-	ft::Vec2<int> const	requestedSize = _holder->getRequestedSize();
 	int					maxScroll;
 	int					scroll;
 
 	if (_direction == Direction::VERTICAL)
-		maxScroll = requestedSize.y - size.y;
+		maxScroll = _fullSize.y - size.y;
 	else
-		maxScroll = requestedSize.x - size.x;
+		maxScroll = _fullSize.x - size.x;
 	FTASSERT(maxScroll >= 0);
 	scroll = _scroll;
 	if (maxScroll != _maxScroll)
@@ -64,9 +65,18 @@ void				ScrollableLayout::onSizeChange(void)
 	setScroll(scroll);
 }
 
+void				ScrollableLayout::onMeasure(void)
+{
+	LinearLayout::onMeasure();
+}
+
 void				ScrollableLayout::onDraw(ACanvas &canvas)
 {
+	ft::Vec2<int> const	oldOrigin = canvas.getOrigin();
+
+	canvas.applyOrigin(ft::make_vec(0, -_scroll));
 	LinearLayout::onDraw(canvas);
+	canvas.setOrigin(oldOrigin);
 }
 
 int					ScrollableLayout::getScroll(void) const
@@ -91,25 +101,11 @@ int					ScrollableLayout::getMaxScroll(void) const
 	return (_maxScroll);
 }
 
-void				ScrollableLayout::setMaxScroll(int maxScroll)
-{
-	if (maxScroll == _maxScroll)
-		return ;
-	if (maxScroll < 0)
-		maxScroll = 0;
-	_maxScroll = maxScroll;
-	if (_scroll > maxScroll)
-		setScroll(maxScroll);
-	onMaxScrollChange(maxScroll);
-}
-
 void				ScrollableLayout::onScrollChange(int scroll)
 {
-	queryMeasure();
 	queryRedraw();
 	callLuaCallback(_act.getLuaState(),
 		static_cast<uint32_t>(LuaCallback::SCROLL_CHANGE), scroll);
-	std::cout << "Scroll " << scroll << std::endl;
 }
 
 void				ScrollableLayout::onMaxScrollChange(int max)
@@ -122,7 +118,7 @@ bool				ScrollableLayout::onMouseScroll(int x, int y, float delta)
 {
 	int const			oldScroll = _scroll;
 
-	if (LinearLayout::onMouseScroll(x, y, delta))
+	if (LinearLayout::onMouseScroll(x, y + _scroll, delta))
 		return (true);
 	setScroll(_scroll + delta);
 	if (oldScroll == _scroll)
@@ -130,16 +126,36 @@ bool				ScrollableLayout::onMouseScroll(int x, int y, float delta)
 	return (true);
 }
 
+bool				ScrollableLayout::onMouseDown(int x, int y, int button, int mods)
+{
+	return (LinearLayout::onMouseDown(x, y + _scroll, button, mods));
+}
+
+bool				ScrollableLayout::onMouseUp(int x, int y, int button, int mods)
+{
+	return (LinearLayout::onMouseUp(x, y + _scroll, button, mods));
+}
+
+bool				ScrollableLayout::onMouseMove(int x, int y)
+{
+	return (LinearLayout::onMouseMove(x, y + _scroll));
+}
+
+void				ScrollableLayout::onMouseLeave(int x, int y)
+{
+	LinearLayout::onMouseLeave(x, y + _scroll);
+}
+
 void				ScrollableLayout::onAttach(void)
 {
 	hookMouseScroll(true);
-	ScrollableLayout::onAttach();
+	LinearLayout::onAttach();
 }
 
 void				ScrollableLayout::onDetach(void)
 {
 	hookMouseScroll(false);
-	ScrollableLayout::onDetach();
+	LinearLayout::onDetach();
 }
 
 int					ScrollableLayout::getScrollG(lua_State *l)

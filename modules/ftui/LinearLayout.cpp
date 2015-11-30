@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/25 13:23:56 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/30 13:16:06 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/30 16:28:11 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -28,7 +28,7 @@ LinearLayout::LinearLayout(Activity &act, ft::XmlParser const &xml) :
 	ALayout(act, xml),
 	_childs(),
 	_direction(Direction::VERTICAL),
-	_linearLayoutFlags(0)
+	_fullSize(0)
 {
 }
 
@@ -37,7 +37,7 @@ LinearLayout::LinearLayout(Activity &act, std::string const *id,
 	ALayout(act, id, viewName),
 	_childs(),
 	_direction(Direction::VERTICAL),
-	_linearLayoutFlags(0)
+	_fullSize(0)
 {
 }
 
@@ -158,14 +158,10 @@ void			LinearLayout::onMeasure(void)
 		}
 	}
 	if (_direction == Direction::VERTICAL)
-		requestedSize = ft::make_vec(maxWidth, offset);
+		_fullSize = ft::make_vec(maxWidth, offset);
 	else
-		requestedSize = ft::make_vec(offset, maxWidth);
-	if (_linearLayoutFlags & FIXED_WIDTH)
-		requestedSize.x = _holder->getRequestedSize().x;
-	if (_linearLayoutFlags & FIXED_HEIGHT)
-		requestedSize.y = _holder->getRequestedSize().y;
-	_holder->setRequestedSize(requestedSize);
+		_fullSize = ft::make_vec(offset, maxWidth);
+	_holder->setRequestedSize(_fullSize);
 	AView::onMeasure();
 	alignChilds();
 	_layoutFlags &= ~AView::MEASURE_QUERY;
@@ -212,7 +208,7 @@ void			LinearLayout::onDraw(ACanvas &canvas)
 
 		if (!bounds.collides(layoutRect, clip))
 			return ;
-		clip.setPos(0, 0);
+		clip -= bounds.getPos();
 		canvas.applyAlpha(v->getAlpha());
 		canvas.applyOrigin(bounds.getPos());
 		canvas.setClip(clip);
@@ -335,37 +331,21 @@ void			LinearLayout::setParam(std::string const &k,
 			auto const		&it = direction_map.find(v);
 
 			if (it == direction_map.cend())
-				throw std::domain_error("");
+				return (false);
 			layout->setDirection(it->second);
 			return (true);
-		}},
-		{"width", [](LinearLayout *layout, std::string const &v)
-		{
-			layout->_linearLayoutFlags |= FIXED_WIDTH;
-			return (false);
-		}},
-		{"height", [](LinearLayout *layout, std::string const &v)
-		{
-			layout->_linearLayoutFlags |= FIXED_HEIGHT;
-			return (false);
 		}},
 	};
 	auto const		&it = param_map.find(k);
 
 	if (it != param_map.cend())
 	{
-		try
-		{
-			if (it->second(this, v))
-				return ;
-		}
-		catch (std::exception const &)
-		{
+		if (!it->second(this, v))
 			throw std::domain_error(ft::f("LinearLayout::setParam: "
 				"Invalid param: %=\"%\"", k, v));
-		}
 	}
-	ALayout::setParam(k, v);
+	else
+		ALayout::setParam(k, v);
 }
 
 int				LinearLayout::getDirectionG(lua_State *l)

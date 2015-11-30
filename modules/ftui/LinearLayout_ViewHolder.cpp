@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 10:11:27 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/28 15:01:13 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/30 16:11:18 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -25,7 +25,8 @@ LinearLayout::ViewHolder::ViewHolder(LinearLayout *p, AView *v) :
 	_size(0, 0),
 	_requestedSize(0, 0),
 	_margin(0, 0, 0, 0),
-	_align(LinearLayout::Align::LEFT)
+	_align(LinearLayout::Align::LEFT),
+	_flags(0)
 {
 }
 
@@ -71,9 +72,17 @@ void			LinearLayout::ViewHolder::setSize(ft::Vec2<int> size)
 	_view->onSizeChange();
 }
 
+uint32_t		LinearLayout::ViewHolder::getFlags(void) const
+{
+	return (_flags);
+}
+
 void			LinearLayout::ViewHolder::setRequestedSize(ft::Vec2<int> size)
 {
-	_requestedSize = size;
+	if (!(_flags & FIXED_WIDTH))
+		_requestedSize.x = size.x;
+	if (!(_flags & FIXED_HEIGHT))
+		_requestedSize.y = size.y;
 }
 
 void			LinearLayout::ViewHolder::setParam(std::string const &k,
@@ -120,11 +129,13 @@ void			LinearLayout::ViewHolder::setParam(std::string const &k,
 		}},
 		{"width", [](LinearLayout::ViewHolder *holder, std::string const &v)
 		{
+			holder->_flags |= FIXED_WIDTH;
 			holder->_requestedSize.x = atoi(v.c_str());
 			return (true);
 		}},
 		{"height", [](LinearLayout::ViewHolder *holder, std::string const &v)
 		{
+			holder->_flags |= FIXED_HEIGHT;
 			holder->_requestedSize.y = atoi(v.c_str());
 			return (true);
 		}},

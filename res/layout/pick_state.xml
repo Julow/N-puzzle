@@ -14,10 +14,11 @@
 		TODO $parent dans les attributs
 		parentKey in child
 	-->
-	<LinearLayout
+	<ScrollableLayout
 		id="left_holder"
+		<!-- width="100" -->
+		height="400"
 		direction="vertical"
-		width="250" height="800"
 		backgroundColor="0x60BB0000" alpha="0.6"
 		>
 
@@ -93,14 +94,14 @@
 	  </LinearLayout>
 
 	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
-	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
-	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
-	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
-	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
-	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
-	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
-	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
-	</LinearLayout>
+	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFF00FFFF" />
+	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFF00FF" />
+	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFF00" />
+	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFF0000" />
+	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFF00FF00" />
+	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFF0000FF" />
+	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFF000000" />
+	</ScrollableLayout>
 
 	<LinearLayout
 		direction="vertical"

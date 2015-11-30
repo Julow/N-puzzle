@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/25 13:24:07 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/30 13:06:03 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/30 16:27:50 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -111,19 +111,13 @@ public:
 
 protected:
 
-	enum	LinearLayoutFlags
-	{
-		FIXED_WIDTH = 1 << 1,
-		FIXED_HEIGHT = 1 << 2
-	};
-
 	typedef std::vector<ViewHolder*>	child_container_t;
 
 	child_container_t		_childs;
 
 	Direction				_direction;
 
-	uint32_t				_linearLayoutFlags;
+	ft::Vec2<int>			_fullSize;
 
 	virtual void			alignChilds(void);
 	virtual ft::Rect<int>	getRedrawClip(void) const;
@@ -141,6 +135,12 @@ private:
 class	LinearLayout::ViewHolder : public IViewHolder
 {
 public:
+	enum	Flags
+	{
+		FIXED_WIDTH = 1 << 1,
+		FIXED_HEIGHT = 1 << 2
+	};
+
 	ViewHolder(LinearLayout *p, AView *v);
 
 	virtual ~ViewHolder(void);
@@ -181,6 +181,8 @@ public:
 	Align					getAlign(void) const;
 	void					setAlign(LinearLayout::Align align);
 
+	uint32_t				getFlags(void) const;
+
 protected:
 
 	AView					*_view;
@@ -192,6 +194,8 @@ protected:
 
 	ft::Rect<int>			_margin;
 	LinearLayout::Align		_align;
+
+	uint32_t				_flags;
 
 private:
 	ViewHolder(void) = delete;
