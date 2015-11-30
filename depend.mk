@@ -56,7 +56,6 @@ o/srcs/Main.o: srcs/Main.cpp modules/_objs/_public/ft/Rect.hpp \
 	modules/_objs/_public/ftlua/templates/ftlua_handler.tpp \
 	modules/_objs/_public/ftlua/types.hpp \
 	modules/_objs/_public/ftlua/utils.hpp modules/_objs/_public/ftui/AView.hpp \
-	modules/_objs/_public/ftui/ftlua_extend.hpp \
 	modules/_objs/_public/ftui/libftui.hpp \
 	modules/_objs/_public/ftui/templates/AView_callLuaCallback.tpp \
 	modules/_objs/_public/liblua/lua.hpp include/libftui_extend/Bookmark.hpp \
@@ -70,11 +69,11 @@ o/srcs/Main.o: srcs/Main.cpp modules/_objs/_public/ft/Rect.hpp \
 	modules/_objs/_public/ftui/IViewHolder.hpp \
 	modules/_objs/_public/ftui/templates/Activity.tpp include/Grid.hpp \
 	include/IBundle.hpp include/ISolverListener.hpp include/IState.hpp \
-	include/Main.hpp include/OCamlBinding.hpp include/ftlua_extend.hpp \
-	modules/_objs/_public/gl/gl.hpp \
+	include/Main.hpp include/OCamlBinding.hpp modules/_objs/_public/gl/gl.hpp \
 	modules/_objs/_public/gl_canvas/GlCanvasHolder.hpp \
 	include/config_window.hpp modules/_objs/_public/ftce/math.hpp \
-	include/PickState.hpp modules/_objs/_public/tiles/Tiles.hpp | o/srcs/
+	include/PickState.hpp modules/_objs/_public/tiles/Tiles.hpp \
+	include/SolvingState.hpp | o/srcs/
 o/srcs/OCamlBinding.o: srcs/OCamlBinding.cpp include/Grid.hpp \
 	include/ISolverListener.hpp include/OCamlBinding.hpp \
 	modules/_objs/_public/ft/Rect.hpp modules/_objs/_public/ft/Vec.hpp \
@@ -93,7 +92,7 @@ o/srcs/OCamlBinding.o: srcs/OCamlBinding.cpp include/Grid.hpp \
 	| o/srcs/
 o/srcs/PickState.o: srcs/PickState.cpp include/Grid.hpp include/IBundle.hpp \
 	include/ISolverListener.hpp include/IState.hpp include/Main.hpp \
-	include/OCamlBinding.hpp include/PickState.hpp include/ftlua_extend.hpp \
+	include/OCamlBinding.hpp include/PickState.hpp \
 	modules/_objs/_public/ft/Color.hpp modules/_objs/_public/ft/Rect.hpp \
 	modules/_objs/_public/ft/TupleRef.hpp modules/_objs/_public/ft/Vec.hpp \
 	modules/_objs/_public/ft/assert.hpp \
@@ -121,20 +120,20 @@ o/srcs/PickState.o: srcs/PickState.cpp include/Grid.hpp include/IBundle.hpp \
 	modules/_objs/_public/ftui/EventTarget.hpp \
 	modules/_objs/_public/ftui/EventTargetCpp.hpp \
 	modules/_objs/_public/ftui/IViewHolder.hpp \
-	modules/_objs/_public/ftui/ftlua_extend.hpp \
 	modules/_objs/_public/ftui/libftui.hpp \
 	modules/_objs/_public/ftui/templates/AView_callLuaCallback.tpp \
 	modules/_objs/_public/ftui/templates/Activity.tpp \
 	modules/_objs/_public/gl/gl.hpp \
 	modules/_objs/_public/gl_canvas/GlCanvasHolder.hpp \
 	modules/_objs/_public/liblua/lua.hpp modules/_objs/_public/tiles/Tiles.hpp \
-	include/config_window.hpp modules/_objs/_public/ftce/math.hpp | o/srcs/
+	include/SolvingState.hpp include/config_window.hpp \
+	modules/_objs/_public/ftce/math.hpp | o/srcs/
 o/srcs/SolvingState.o: srcs/SolvingState.cpp include/Grid.hpp \
 	include/IBundle.hpp include/ISolverListener.hpp include/IState.hpp \
 	include/Main.hpp include/OCamlBinding.hpp include/SolvingState.hpp \
-	include/ftlua_extend.hpp modules/_objs/_public/ft/Color.hpp \
-	modules/_objs/_public/ft/Rect.hpp modules/_objs/_public/ft/TupleRef.hpp \
-	modules/_objs/_public/ft/Vec.hpp modules/_objs/_public/ft/assert.hpp \
+	modules/_objs/_public/ft/Color.hpp modules/_objs/_public/ft/Rect.hpp \
+	modules/_objs/_public/ft/TupleRef.hpp modules/_objs/_public/ft/Vec.hpp \
+	modules/_objs/_public/ft/assert.hpp \
 	modules/_objs/_public/ft/templates/Rect.tpp \
 	modules/_objs/_public/ft/templates/Vec2.tpp \
 	modules/_objs/_public/ft/templates/Vec3.tpp \
@@ -159,7 +158,6 @@ o/srcs/SolvingState.o: srcs/SolvingState.cpp include/Grid.hpp \
 	modules/_objs/_public/ftui/EventTarget.hpp \
 	modules/_objs/_public/ftui/EventTargetCpp.hpp \
 	modules/_objs/_public/ftui/IViewHolder.hpp \
-	modules/_objs/_public/ftui/ftlua_extend.hpp \
 	modules/_objs/_public/ftui/libftui.hpp \
 	modules/_objs/_public/ftui/templates/AView_callLuaCallback.tpp \
 	modules/_objs/_public/ftui/templates/Activity.tpp \
@@ -205,7 +203,6 @@ o/srcs/libftui_extend/Bookmark.o: srcs/libftui_extend/Bookmark.cpp \
 	modules/_objs/_public/ftui/EventTarget.hpp \
 	modules/_objs/_public/ftui/EventTargetCpp.hpp \
 	modules/_objs/_public/ftui/IViewHolder.hpp \
-	modules/_objs/_public/ftui/ftlua_extend.hpp \
 	modules/_objs/_public/ftui/libftui.hpp \
 	modules/_objs/_public/ftui/templates/AView_callLuaCallback.tpp \
 	modules/_objs/_public/ftui/templates/Activity.tpp \

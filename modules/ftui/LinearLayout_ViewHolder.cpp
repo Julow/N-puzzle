@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 10:11:27 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/30 16:11:18 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/30 16:32:54 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -69,7 +69,7 @@ void			LinearLayout::ViewHolder::setSize(ft::Vec2<int> size)
 	if (_size == size)
 		return ;
 	_size = size;
-	_view->onSizeChange();
+	_view->onSizeChange(size);
 }
 
 uint32_t		LinearLayout::ViewHolder::getFlags(void) const

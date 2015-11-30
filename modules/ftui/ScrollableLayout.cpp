@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/26 16:08:13 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/30 16:28:15 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/30 16:32:40 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -41,14 +41,12 @@ ScrollableLayout::~ScrollableLayout(void)
 {
 }
 
-void				ScrollableLayout::onSizeChange(void)
+void				ScrollableLayout::onSizeChange(ft::Vec2<int> size)
 {
-	LinearLayout::onSizeChange();
-
-	ft::Vec2<int> const	size = _holder->getSize();
 	int					maxScroll;
 	int					scroll;
 
+	LinearLayout::onSizeChange(size);
 	if (_direction == Direction::VERTICAL)
 		maxScroll = _fullSize.y - size.y;
 	else

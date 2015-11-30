@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 09:38:59 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/11 13:06:04 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/30 16:33:03 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -65,7 +65,7 @@ void			Activity::RootViewHolder::setSize(ft::Vec2<int> size)
 	if (size == _size)
 		return ;
 	_size = size;
-	_view->onSizeChange();
+	_view->onSizeChange(size);
 }
 
 void			Activity::RootViewHolder::setRequestedSize(ft::Vec2<int> size)

@@ -7,7 +7,7 @@
 #    By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/17 15:02:58 by jaguillo          #+#    #+#              #
-#    Updated: 2015/11/26 16:01:15 by jaguillo         ###   ########.fr        #
+#    Updated: 2015/11/30 16:42:23 by jaguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ for file_name in `ocamldep -sort -native $OCAML_FLAGS $OCAML_SOURCES`; do
 	OCAML_OBJS="$OCAML_OBJS $file_name"
 done
 
-make -C modules/ init_rules
+make -C modules/ init
 
 (cd modules && makemake2 gen) || exit 1
 

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/28 12:14:36 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/11/30 16:47:10 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,6 +24,7 @@ extern "C"
 
 #include "ft/utils.hpp"
 #include "ftlua/stackassert.hpp"
+#include "ftlua/ftlua.hpp"
 
 #include "ftui/ACanvas.hpp"
 

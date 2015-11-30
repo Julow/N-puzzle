@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/25 18:39:25 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/30 16:44:09 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,7 +21,8 @@
 # include "ft_xml/XmlParser.hpp"
 
 # include "ftui/libftui.hpp"
-# include "ftui/ftlua_extend.hpp"
+
+# include "ftlua/ftlua.hpp"
 
 namespace ftui
 {
@@ -223,7 +224,7 @@ public:
 										// , IEventParams *p);
 	virtual void				onPositionChange(void);
 	// virtual void				onCaptureChange(bool status); //TODO ??
-	virtual void				onSizeChange(void);
+	virtual void				onSizeChange(ft::Vec2<int> size);
 	virtual void				onVisibilityChange(bool hidden);
 
 	/*

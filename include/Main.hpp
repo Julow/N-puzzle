@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 12:58:38 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/30 12:06:37 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/30 16:48:40 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -17,7 +17,6 @@
 
 # include "gl/gl.hpp"
 
-# include "ftlua_extend.hpp"
 # include "gl_canvas/GlCanvasHolder.hpp"
 # include "OCamlBinding.hpp"
 # include "IState.hpp"

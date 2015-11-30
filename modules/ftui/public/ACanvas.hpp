@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/25 10:59:42 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/30 16:43:42 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,8 +19,9 @@
 # include "ft/Rect.hpp"
 # include "ft/Vec.hpp"
 
-# include "ftui/ftlua_extend.hpp"
 # include "ftui/libftui.hpp"
+
+# include "ftlua/Converter.hpp"
 
 namespace ftui
 {

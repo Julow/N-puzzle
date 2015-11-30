@@ -11,12 +11,4 @@ TODO LIST
 	AbsoluteLayout, RelativeLayout
 	Gen big databases
 
-	ScrollableLayout
 	LinearLayout direction REV_VERTICAL and REV_HORIZONTAL
-
-	Override onDraw in lua
-
-	onSizeChange take size as args
-
-	LinearLayout stop matching content size
-	LinearLayout AUTO width and height

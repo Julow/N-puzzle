@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/26 16:06:28 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/30 16:24:02 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/30 16:31:52 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -64,7 +64,7 @@ public:
 	/*
 	** Extended
 	*/
-	virtual void			onSizeChange(void);
+	virtual void			onSizeChange(ft::Vec2<int> size);
 
 	virtual void			onDraw(ACanvas &canvas);
 

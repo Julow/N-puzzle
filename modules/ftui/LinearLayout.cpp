@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/25 13:23:56 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/30 16:28:11 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/11/30 16:31:17 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -170,9 +170,9 @@ void			LinearLayout::onMeasure(void)
 /*
 ** onSizeChange
 */
-void			LinearLayout::onSizeChange(void)
+void			LinearLayout::onSizeChange(ft::Vec2<int> size)
 {
-	AView::onSizeChange();
+	AView::onSizeChange(size);
 	alignChilds();
 }
 
