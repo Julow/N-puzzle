@@ -1,10 +1,18 @@
+
+<template name="mdr" backgroudColor="0xFFFFFFFF">
+	<Button id="$parentlol" parentKey="but" />
+</template>
+
+<template name="white_text" textColor="0xFFFFFFFF" />
+
 <LinearLayout
 	direction="vertical"
-	id="UIParent"
 	activity_scripts="res/lua_utils;res/global;res/pick_state"
+	virtual_xml="res/layout/"
 	>
 
   <LinearLayout
+  		inherit="mdr white_text"
   	  direction="horizontal"
 	  id="panes-holder"
 	  align="CENTER"

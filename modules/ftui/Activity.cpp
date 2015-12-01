@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/30 18:38:18 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/01 14:30:57 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -131,21 +131,34 @@ static void		walk_lua_dir(std::string const &dir_name,
 void			Activity::inflate(std::istream &stream)
 {
 	ft::XmlParser			xml(stream);
-	AView					*v;
+	AView					*rootView;
 	ft::XmlParser::State	state;
+	ViewTemplate			*viewTemplate;
 
 	FTASSERT(_l == nullptr, "Activity.inflate called again");
 	_l = new_lua_env();
 	ftlua::set(_l, ftlua::makeKeys("ftui"), "activity", ftlua::light(this));
-	if (!xml.next(state))
+	rootView = nullptr;
+	while (xml.next(state))
+	{
+		if (state != ft::XmlParser::State::END)
+			throw std::runtime_error("Activity::inflate: lol");
+		if (xml.getMarkupName() != "template")
+			break ;
+		viewTemplate = new ViewTemplate(xml);
+		auto const &it = viewTemplate.find("name");
+		if (it == viewTemplate.getParams().end())
+			throw std::runtime_error("Activity::inflate: "
+									"<template> without 'name' param");
+	}
+	if (rootView == nullptr)
 		throw std::runtime_error("Activity::inflate: "
 								 "Activity should own at least 1 view");
-	FTASSERT(state == ft::XmlParser::State::START, "Cannot fail");
-	v = Activity::getFactory(xml.getMarkupName())(*this, &xml, nullptr);
-	this->_rootView = new Activity::RootViewHolder(*this, xml, v, this->_size);
-	v->setViewHolder(this->_rootView);
-	v->setAttached(true);
-	v->inflate(*this, xml);
+	rootView = Activity::getFactory(xml.getMarkupName())(*this, &xml, nullptr);
+	this->_rootView = new Activity::RootViewHolder(*this, xml, rootView, this->_size);
+	rootView->setViewHolder(this->_rootView);
+	rootView->setAttached(true);
+	rootView->inflate(*this, xml);
 	if (xml.next(state))
 		throw std::runtime_error("Activity::inflate: "
 								 "Activity should not own more than 1 view");

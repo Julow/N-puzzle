@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/30 18:40:16 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/01 12:47:33 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -94,6 +94,10 @@ AView::~AView(void)
 	if (_id != nullptr)
 		delete _id;
 }
+
+void				AView::inflateFromTemplate()
+// {
+// }
 
 void				AView::inflate(Activity &, ft::XmlParser &xml)
 {

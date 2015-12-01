@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/30 16:47:33 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 14:24:33 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -180,9 +180,12 @@ public:
 	AView const			*getRoot(void) const;
 
 protected:
-	class RootViewHolder;
-	typedef std::unordered_multimap<std::string, EventTarget*> event_map_t;
-	typedef std::stack<std::pair<std::string, AView*>> unregister_stack_t;
+	class	RootViewHolder;
+	class	ViewTemplate;
+
+	typedef std::unordered_multimap<std::string, EventTarget*>	event_map_t;
+	typedef std::stack<std::pair<std::string, AView*>>		unregister_stack_t;
+	typedef std::unordered_map<std::string, ViewTemplate*>	view_template_map_t;
 
 	RootViewHolder				*_rootView;
 	event_map_t					_eventMap;
@@ -193,13 +196,43 @@ protected:
 
 	ft::Vec2<int>				_cursorPos;
 
+	view_template_map_t			_viewTemplates;
+
 private:
 
 	void			cleanEventMap(void);
 	void			removeFromEvents(std::pair<std::string, AView*> const &p);
 	template<typename... Args>
 	bool			fireEventInternal(std::string const &event, Args... args);
+};
 
+/*
+** Activity::ViewTemplate
+** -
+** Recursively hold a 
+*/
+class	Activity::ViewTemplate
+{
+public:
+	typedef std::unordered_map<std::string, std::string>	param_map_t;
+	typedef std::vector<ViewTemplate*>						child_vector_t;
+
+	ViewTemplate(XmlParser &xml, bool root = true);
+	virtual ~ViewTemplate(void);
+
+	param_map_t const	&getParams(void) const;
+
+protected:
+	std::string const	*_viewName;
+	param_map_t			_params;
+	child_vector_t		_childs;
+
+private:
+	ViewTemplate(void) = delete;
+	ViewTemplate(ViewTemplate &&src) = delete;
+	ViewTemplate(ViewTemplate const &src) = delete;
+	ViewTemplate		&operator=(ViewTemplate &&rhs) = delete;
+	ViewTemplate		&operator=(ViewTemplate const &rhs) = delete;
 };
 
 /*
