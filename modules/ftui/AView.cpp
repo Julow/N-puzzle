@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/01 12:47:33 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 18:01:49 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -95,9 +95,14 @@ AView::~AView(void)
 		delete _id;
 }
 
-void				AView::inflateFromTemplate()
-// {
-// }
+void				AView::inflate(Activity &, ViewTemplate const &t)
+{
+	for (auto const &p : t.getParams())
+		setParam(p.first, p.second);
+	if (t.getChilds().size() > 0)
+		throw std::runtime_error(ft::f("A simple view (#%) cannot have child "
+				"(inherited from template)", (_id == nullptr) ? "" : *_id));
+}
 
 void				AView::inflate(Activity &, ft::XmlParser &xml)
 {
@@ -247,7 +252,6 @@ bool				AView::isAttached(void) const
 	return (this->_flags & AView::ATTACHED);
 }
 
-
 void				AView::setParam(string const &k, string const &v)
 {
 	static std::unordered_map<std::string, void (*)(AView*,
@@ -280,6 +284,22 @@ void				AView::setParam(string const &k, string const &v)
 		{"activity_scripts", [](AView *view, std::string const &p)
 		{
 			view->_act.saveScriptPath(p);
+		}},
+		{"inherit", [](AView *view, std::string const &p)
+		{
+			std::stringstream	ss(p);
+			char				buff[64];
+
+			while (ss.getline(buff, sizeof(buff), ' '))
+			{
+				ViewTemplate const	*tmpl;
+
+				tmpl = view->_act.getViewTemplate(std::string(buff));
+				if (tmpl == nullptr)
+					throw std::runtime_error(ft::f("Unknown template: %",
+						buff));
+				view->inflate(view->_act, *tmpl);
+			}
 		}},
 	};
 	auto const		&it = param_map.find(k);

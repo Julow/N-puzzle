@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/30 16:44:09 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 18:02:36 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,6 +21,7 @@
 # include "ft_xml/XmlParser.hpp"
 
 # include "ftui/libftui.hpp"
+# include "ftui/ViewTemplate.hpp"
 
 # include "ftlua/ftlua.hpp"
 
@@ -154,6 +155,7 @@ public:
 	** v->setHolder(...)	// if any
 	** v->inflate(xml)
 	*/
+	virtual void				inflate(Activity &act, ViewTemplate const &t);
 	virtual void				inflate(Activity &act, ft::XmlParser &xml);
 
 /*

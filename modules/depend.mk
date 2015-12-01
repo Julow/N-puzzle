@@ -22,8 +22,9 @@ O_FILES += $(O_DIR)/ft/assert.o $(O_DIR)/ft/padformat.o \
 	$(O_DIR)/ftui/EventTarget.o $(O_DIR)/ftui/LinearLayout.o \
 	$(O_DIR)/ftui/LinearLayout_ViewHolder.o $(O_DIR)/ftui/ScrollableLayout.o \
 	$(O_DIR)/ftui/SliderView.o $(O_DIR)/ftui/SolidView.o \
-	$(O_DIR)/ftui/TextView.o $(O_DIR)/gl_canvas/GlCanvas.o \
-	$(O_DIR)/gl_canvas/GlCanvasHolder.o $(O_DIR)/tiles/Tiles.o
+	$(O_DIR)/ftui/TextView.o $(O_DIR)/ftui/ViewTemplate.o \
+	$(O_DIR)/gl_canvas/GlCanvas.o $(O_DIR)/gl_canvas/GlCanvasHolder.o \
+	$(O_DIR)/tiles/Tiles.o
 PUBLIC_LINKS += $(O_DIR)/_public/ft/assert.hpp $(O_DIR)/_public/ft/Color.hpp \
 	$(O_DIR)/_public/ft/Rect.hpp $(O_DIR)/_public/ft/TupleRef.hpp \
 	$(O_DIR)/_public/ft/type_traits.hpp $(O_DIR)/_public/ft/utils.hpp \
@@ -54,7 +55,7 @@ PUBLIC_LINKS += $(O_DIR)/_public/ft/assert.hpp $(O_DIR)/_public/ft/Color.hpp \
 	$(O_DIR)/_public/ftui/RelativeLayout.hpp \
 	$(O_DIR)/_public/ftui/ScrollableLayout.hpp \
 	$(O_DIR)/_public/ftui/SliderView.hpp $(O_DIR)/_public/ftui/SolidView.hpp \
-	$(O_DIR)/_public/ftui/TextView.hpp \
+	$(O_DIR)/_public/ftui/TextView.hpp $(O_DIR)/_public/ftui/ViewTemplate.hpp \
 	$(O_DIR)/_public/ftui/templates/Activity.tpp \
 	$(O_DIR)/_public/ftui/templates/AView_callLuaCallback.tpp \
 	$(O_DIR)/_public/gl/gl.h $(O_DIR)/_public/gl/gl.hpp \
@@ -179,8 +180,8 @@ $(O_DIR)/ftui/ALayout.o: ftui/ALayout.cpp ft/public/Color.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ALayout.hpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
 	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \
-	ftui/public/IViewHolder.hpp ftui/public/libftui.hpp \
-	ftui/public/templates/AView_callLuaCallback.tpp \
+	ftui/public/IViewHolder.hpp ftui/public/ViewTemplate.hpp \
+	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
@@ -196,7 +197,8 @@ $(O_DIR)/ftui/ALayout_luaHandler.o: ftui/ALayout_luaHandler.cpp \
 	ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ALayout.hpp \
-	ftui/public/ASolidView.hpp ftui/public/AView.hpp ftui/public/libftui.hpp \
+	ftui/public/ASolidView.hpp ftui/public/AView.hpp \
+	ftui/public/ViewTemplate.hpp ftui/public/libftui.hpp \
 	ftui/public/templates/AView_callLuaCallback.tpp \
 	liblua/lua-5.3.1/src/lauxlib.h liblua/lua-5.3.1/src/lua.h \
 	liblua/lua-5.3.1/src/lua.hpp liblua/lua-5.3.1/src/luaconf.h \
@@ -213,7 +215,8 @@ $(O_DIR)/ftui/ASolidView.o: ftui/ASolidView.cpp ft/public/Color.hpp \
 	ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ASolidView.hpp \
-	ftui/public/AView.hpp ftui/public/IViewHolder.hpp ftui/public/libftui.hpp \
+	ftui/public/AView.hpp ftui/public/IViewHolder.hpp \
+	ftui/public/ViewTemplate.hpp ftui/public/libftui.hpp \
 	ftui/public/templates/AView_callLuaCallback.tpp \
 	liblua/lua-5.3.1/src/lauxlib.h liblua/lua-5.3.1/src/lua.h \
 	liblua/lua-5.3.1/src/lua.hpp liblua/lua-5.3.1/src/luaconf.h \
@@ -232,8 +235,8 @@ $(O_DIR)/ftui/AView.o: ftui/AView.cpp ft/public/Color.hpp ft/public/Rect.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ALayout.hpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
 	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \
-	ftui/public/IViewHolder.hpp ftui/public/libftui.hpp \
-	ftui/public/templates/AView_callLuaCallback.tpp \
+	ftui/public/IViewHolder.hpp ftui/public/ViewTemplate.hpp \
+	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
@@ -251,7 +254,8 @@ $(O_DIR)/ftui/AView_luaHandler.o: ftui/AView_luaHandler.cpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ALayout.hpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp \
 	ftui/public/IViewHolder.hpp ftui/public/TextView.hpp \
-	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
+	ftui/public/ViewTemplate.hpp ftui/public/libftui.hpp \
+	ftui/public/templates/AView_callLuaCallback.tpp \
 	liblua/lua-5.3.1/src/lauxlib.h liblua/lua-5.3.1/src/lua.h \
 	liblua/lua-5.3.1/src/lua.hpp liblua/lua-5.3.1/src/luaconf.h \
 	liblua/lua-5.3.1/src/lualib.h
@@ -269,7 +273,8 @@ $(O_DIR)/ftui/Activity.o: ftui/Activity.cpp ft/public/Color.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/AView.hpp \
 	ftui/public/Activity.hpp ftui/public/EventTarget.hpp \
 	ftui/public/EventTargetCpp.hpp ftui/public/IViewHolder.hpp \
-	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
+	ftui/public/ViewTemplate.hpp ftui/public/libftui.hpp \
+	ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
@@ -286,8 +291,8 @@ $(O_DIR)/ftui/Activity_RootViewHolder.o: ftui/Activity_RootViewHolder.cpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
 	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \
-	ftui/public/IViewHolder.hpp ftui/public/libftui.hpp \
-	ftui/public/templates/AView_callLuaCallback.tpp \
+	ftui/public/IViewHolder.hpp ftui/public/ViewTemplate.hpp \
+	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
@@ -308,7 +313,8 @@ $(O_DIR)/ftui/Activity_luaDef.o: ftui/Activity_luaDef.cpp ft/public/Color.hpp \
 	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \
 	ftui/public/IViewHolder.hpp ftui/public/LinearLayout.hpp \
 	ftui/public/ScrollableLayout.hpp ftui/public/SliderView.hpp \
-	ftui/public/SolidView.hpp ftui/public/TextView.hpp ftui/public/libftui.hpp \
+	ftui/public/SolidView.hpp ftui/public/TextView.hpp \
+	ftui/public/ViewTemplate.hpp ftui/public/libftui.hpp \
 	ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
@@ -327,8 +333,8 @@ $(O_DIR)/ftui/Button.o: ftui/Button.cpp ft/public/Color.hpp ft/public/Rect.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/AView.hpp \
 	ftui/public/Activity.hpp ftui/public/Button.hpp \
 	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \
-	ftui/public/IViewHolder.hpp ftui/public/libftui.hpp \
-	ftui/public/templates/AView_callLuaCallback.tpp \
+	ftui/public/IViewHolder.hpp ftui/public/ViewTemplate.hpp \
+	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
@@ -346,8 +352,8 @@ $(O_DIR)/ftui/CheckBox.o: ftui/CheckBox.cpp ft/public/Color.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/AView.hpp \
 	ftui/public/Activity.hpp ftui/public/Button.hpp ftui/public/CheckBox.hpp \
 	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \
-	ftui/public/IViewHolder.hpp ftui/public/libftui.hpp \
-	ftui/public/templates/AView_callLuaCallback.tpp \
+	ftui/public/IViewHolder.hpp ftui/public/ViewTemplate.hpp \
+	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
@@ -372,7 +378,8 @@ $(O_DIR)/ftui/LinearLayout.o: ftui/LinearLayout.cpp ft/public/Color.hpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
 	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \
 	ftui/public/IViewHolder.hpp ftui/public/LinearLayout.hpp \
-	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
+	ftui/public/ViewTemplate.hpp ftui/public/libftui.hpp \
+	ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
@@ -391,7 +398,8 @@ $(O_DIR)/ftui/LinearLayout_ViewHolder.o: ftui/LinearLayout_ViewHolder.cpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
 	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \
 	ftui/public/IViewHolder.hpp ftui/public/LinearLayout.hpp \
-	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
+	ftui/public/ViewTemplate.hpp ftui/public/libftui.hpp \
+	ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
@@ -410,8 +418,8 @@ $(O_DIR)/ftui/ScrollableLayout.o: ftui/ScrollableLayout.cpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
 	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \
 	ftui/public/IViewHolder.hpp ftui/public/LinearLayout.hpp \
-	ftui/public/ScrollableLayout.hpp ftui/public/libftui.hpp \
-	ftui/public/templates/AView_callLuaCallback.tpp \
+	ftui/public/ScrollableLayout.hpp ftui/public/ViewTemplate.hpp \
+	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
@@ -429,8 +437,8 @@ $(O_DIR)/ftui/SliderView.o: ftui/SliderView.cpp ft/public/Color.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ASolidView.hpp \
 	ftui/public/AView.hpp ftui/public/Activity.hpp ftui/public/EventTarget.hpp \
 	ftui/public/EventTargetCpp.hpp ftui/public/IViewHolder.hpp \
-	ftui/public/SliderView.hpp ftui/public/libftui.hpp \
-	ftui/public/templates/AView_callLuaCallback.tpp \
+	ftui/public/SliderView.hpp ftui/public/ViewTemplate.hpp \
+	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
@@ -445,7 +453,8 @@ $(O_DIR)/ftui/SolidView.o: ftui/SolidView.cpp ft/public/Color.hpp \
 	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ASolidView.hpp \
-	ftui/public/AView.hpp ftui/public/SolidView.hpp ftui/public/libftui.hpp \
+	ftui/public/AView.hpp ftui/public/SolidView.hpp \
+	ftui/public/ViewTemplate.hpp ftui/public/libftui.hpp \
 	ftui/public/templates/AView_callLuaCallback.tpp \
 	liblua/lua-5.3.1/src/lauxlib.h liblua/lua-5.3.1/src/lua.h \
 	liblua/lua-5.3.1/src/lua.hpp liblua/lua-5.3.1/src/luaconf.h \
@@ -462,10 +471,29 @@ $(O_DIR)/ftui/TextView.o: ftui/TextView.cpp ft/public/Color.hpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ASolidView.hpp \
 	ftui/public/AView.hpp ftui/public/IViewHolder.hpp ftui/public/TextView.hpp \
-	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
+	ftui/public/ViewTemplate.hpp ftui/public/libftui.hpp \
+	ftui/public/templates/AView_callLuaCallback.tpp \
 	liblua/lua-5.3.1/src/lauxlib.h liblua/lua-5.3.1/src/lua.h \
 	liblua/lua-5.3.1/src/lua.hpp liblua/lua-5.3.1/src/luaconf.h \
 	liblua/lua-5.3.1/src/lualib.h
+$(O_DIR)/ftui/ViewTemplate.o: ftui/ViewTemplate.cpp ft/public/Rect.hpp \
+	ft/public/TupleRef.hpp ft/public/Vec.hpp ft/public/assert.hpp \
+	ft/public/templates/Rect.tpp ft/public/templates/Vec2.tpp \
+	ft/public/templates/Vec3.tpp ft/public/templates/Vec4.tpp \
+	ft/public/type_traits.hpp ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
+	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
+	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
+	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
+	ftlua/public/set.hpp ftlua/public/stackassert.hpp \
+	ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
+	ftlua/public/utils.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
+	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \
+	ftui/public/IViewHolder.hpp ftui/public/ViewTemplate.hpp \
+	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
+	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
+	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
+	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
 
 $(O_DIR)/ftui/ACanvas.o $(O_DIR)/ftui/ALayout.o \
 $(O_DIR)/ftui/ALayout_luaHandler.o $(O_DIR)/ftui/ASolidView.o \
@@ -475,8 +503,9 @@ $(O_DIR)/ftui/Activity_luaDef.o $(O_DIR)/ftui/Button.o \
 $(O_DIR)/ftui/CheckBox.o $(O_DIR)/ftui/EventTarget.o \
 $(O_DIR)/ftui/LinearLayout.o $(O_DIR)/ftui/LinearLayout_ViewHolder.o \
 $(O_DIR)/ftui/ScrollableLayout.o $(O_DIR)/ftui/SliderView.o \
-$(O_DIR)/ftui/SolidView.o $(O_DIR)/ftui/TextView.o: BASE_FLAGS += \
-	-DRES_PATH='"$(abspath ftui/res/)"'
+$(O_DIR)/ftui/SolidView.o $(O_DIR)/ftui/TextView.o \
+$(O_DIR)/ftui/ViewTemplate.o: BASE_FLAGS += -DRES_PATH='"$(abspath \
+	ftui/res/)"'
 
 # module gl::gl
 ifeq ($(shell uname),Darwin)
@@ -588,6 +617,7 @@ $(O_DIR)/_public/ftui/ScrollableLayout.hpp: ftui/public/ScrollableLayout.hpp
 $(O_DIR)/_public/ftui/SliderView.hpp: ftui/public/SliderView.hpp
 $(O_DIR)/_public/ftui/SolidView.hpp: ftui/public/SolidView.hpp
 $(O_DIR)/_public/ftui/TextView.hpp: ftui/public/TextView.hpp
+$(O_DIR)/_public/ftui/ViewTemplate.hpp: ftui/public/ViewTemplate.hpp
 $(O_DIR)/_public/ftui/libftui.hpp: ftui/public/libftui.hpp
 $(O_DIR)/_public/ftui/templates/AView_callLuaCallback.tpp: \
 ftui/public/templates/AView_callLuaCallback.tpp

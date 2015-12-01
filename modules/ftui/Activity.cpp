@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/01 14:30:57 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 18:01:16 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -138,22 +138,24 @@ void			Activity::inflate(std::istream &stream)
 	FTASSERT(_l == nullptr, "Activity.inflate called again");
 	_l = new_lua_env();
 	ftlua::set(_l, ftlua::makeKeys("ftui"), "activity", ftlua::light(this));
-	rootView = nullptr;
 	while (xml.next(state))
 	{
-		if (state != ft::XmlParser::State::END)
+		if (state != ft::XmlParser::State::START)
 			throw std::runtime_error("Activity::inflate: lol");
 		if (xml.getMarkupName() != "template")
 			break ;
 		viewTemplate = new ViewTemplate(xml);
-		auto const &it = viewTemplate.find("name");
-		if (it == viewTemplate.getParams().end())
+		auto const &it = viewTemplate->getParams().find("name");
+		if (it == viewTemplate->getParams().end())
 			throw std::runtime_error("Activity::inflate: "
 									"<template> without 'name' param");
+		if (!_viewTemplates.insert({it->second, viewTemplate}).second)
+			throw std::runtime_error(ft::f("Activity::inflate: "
+					"Template redefinition: %", it->second));
 	}
-	if (rootView == nullptr)
+	if (state != ft::XmlParser::State::START)
 		throw std::runtime_error("Activity::inflate: "
-								 "Activity should own at least 1 view");
+								 "Activity should own 1 view");
 	rootView = Activity::getFactory(xml.getMarkupName())(*this, &xml, nullptr);
 	this->_rootView = new Activity::RootViewHolder(*this, xml, rootView, this->_size);
 	rootView->setViewHolder(this->_rootView);
@@ -180,6 +182,20 @@ void			Activity::saveScriptPath(std::string const &str)
 			_scriptsPaths.push_back(buf);
 	}
 	return ;
+}
+
+/*
+** ========================================================================== **
+** View template
+*/
+
+ViewTemplate const	*Activity::getViewTemplate(std::string const &name) const
+{
+	auto const		&it = _viewTemplates.find(name);
+
+	if (it == _viewTemplates.end())
+		return (nullptr);
+	return (it->second);
 }
 
 // ========================================================================== //

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/25 18:21:23 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 18:01:57 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -217,6 +217,21 @@ void				ALayout::spreadQueryRedraw(void)
 /*
 ** * AView legacy *********************************************************** **
 */
+
+void				ALayout::inflate(Activity &, ViewTemplate const &t)
+{
+	AView				*view;
+
+	for (auto const &p : t.getParams())
+		setParam(p.first, p.second);
+	for (ViewTemplate const *child : t.getChilds())
+	{
+		// view = Activity::getFactory(child->getName())(_act, )
+		throw std::runtime_error("Does not support child in template yet");
+		(void)child;
+		(void)view;
+	}
+}
 
 void				ALayout::inflate(Activity &a, ft::XmlParser &xml)
 {

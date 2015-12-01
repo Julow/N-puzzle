@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/30 16:40:50 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 18:02:05 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -48,6 +48,7 @@ public:
 /*
 ** AView legacy
 */
+	virtual void				inflate(Activity &, ViewTemplate const &t);
 	virtual void				inflate(Activity &a, ft::XmlParser &xml);
 
 	virtual void				onUpdate(void) = 0;
