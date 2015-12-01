@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 14:36:46 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/26 12:46:24 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/01 14:05:13 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -33,8 +33,9 @@ struct is_printable
 {
 	using Ret = decltype((*(std::ostream*)(0x0)) << (*(T*)(0x0)));
 
-	static constexpr bool	value = std::is_same<Ret, std::ostream&>::value
-													|| std::is_convertible<T, std::string>::value;
+	static constexpr bool	value =
+		std::is_same<Ret, std::ostream&>::value
+		|| std::is_convertible<T, std::string>::value;
 };
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE DONT_DROOL //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
