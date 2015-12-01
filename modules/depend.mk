@@ -122,9 +122,8 @@ $(O_DIR)/ftlua/cpp_utils.o: ftlua/cpp_utils.cpp ft/public/Rect.hpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
 	ft/public/templates/Vec4.tpp ftlua/public/Converter.hpp \
 	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
-	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
-	ftlua/public/set.hpp ftlua/public/stackassert.hpp \
-	ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/light.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
+	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
@@ -134,9 +133,8 @@ $(O_DIR)/ftlua/push_utils.o: ftlua/push_utils.cpp ft/public/Rect.hpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
 	ft/public/templates/Vec4.tpp ftlua/public/Converter.hpp \
 	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
-	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
-	ftlua/public/set.hpp ftlua/public/stackassert.hpp \
-	ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/light.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
+	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
@@ -157,9 +155,8 @@ $(O_DIR)/ftui/ACanvas.o: ftui/ACanvas.cpp ft/public/Color.hpp \
 	ft/public/templates/Vec3.tpp ft/public/templates/Vec4.tpp \
 	ft/public/type_traits.hpp ft/public/utils.hpp ftlua/public/Converter.hpp \
 	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
-	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
-	ftlua/public/set.hpp ftlua/public/stackassert.hpp \
-	ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/light.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
+	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/libftui.hpp \
 	liblua/lua-5.3.1/src/lauxlib.h liblua/lua-5.3.1/src/lua.h \
@@ -173,8 +170,8 @@ $(O_DIR)/ftui/ALayout.o: ftui/ALayout.cpp ft/public/Color.hpp \
 	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
 	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
 	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
-	ftlua/public/pop.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
-	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/push.hpp ftlua/public/set.hpp ftlua/public/stackassert.hpp \
+	ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ALayout.hpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
@@ -191,9 +188,8 @@ $(O_DIR)/ftui/ALayout_luaHandler.o: ftui/ALayout_luaHandler.cpp \
 	ft/public/templates/Vec4.tpp ft_xml/public/XmlParser.hpp \
 	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
 	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
-	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
-	ftlua/public/set.hpp ftlua/public/stackassert.hpp \
-	ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/light.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
+	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ALayout.hpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp ftui/public/libftui.hpp \
@@ -208,9 +204,8 @@ $(O_DIR)/ftui/ASolidView.o: ftui/ASolidView.cpp ft/public/Color.hpp \
 	ft/public/type_traits.hpp ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
 	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
 	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
-	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
-	ftlua/public/set.hpp ftlua/public/stackassert.hpp \
-	ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/light.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
+	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ASolidView.hpp \
 	ftui/public/AView.hpp ftui/public/IViewHolder.hpp ftui/public/libftui.hpp \
@@ -225,9 +220,8 @@ $(O_DIR)/ftui/AView.o: ftui/AView.cpp ft/public/Color.hpp ft/public/Rect.hpp \
 	ft/public/type_traits.hpp ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
 	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
 	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
-	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
-	ftlua/public/set.hpp ftlua/public/stackassert.hpp \
-	ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/light.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
+	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ALayout.hpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
@@ -244,9 +238,8 @@ $(O_DIR)/ftui/AView_luaHandler.o: ftui/AView_luaHandler.cpp \
 	ft/public/templates/Vec4.tpp ft_xml/public/XmlParser.hpp \
 	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
 	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
-	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
-	ftlua/public/set.hpp ftlua/public/stackassert.hpp \
-	ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/light.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
+	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ALayout.hpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp \
@@ -263,8 +256,8 @@ $(O_DIR)/ftui/Activity.o: ftui/Activity.cpp ft/public/Color.hpp \
 	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
 	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
 	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
-	ftlua/public/pop.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
-	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/push.hpp ftlua/public/set.hpp ftlua/public/stackassert.hpp \
+	ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/AView.hpp \
 	ftui/public/Activity.hpp ftui/public/EventTarget.hpp \
@@ -281,8 +274,8 @@ $(O_DIR)/ftui/Activity_RootViewHolder.o: ftui/Activity_RootViewHolder.cpp \
 	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
 	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
 	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
-	ftlua/public/pop.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
-	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/push.hpp ftlua/public/set.hpp ftlua/public/stackassert.hpp \
+	ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
 	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \
@@ -299,8 +292,8 @@ $(O_DIR)/ftui/Activity_luaDef.o: ftui/Activity_luaDef.cpp ft/public/Color.hpp \
 	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
 	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
 	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
-	ftlua/public/pop.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
-	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/push.hpp ftlua/public/set.hpp ftlua/public/stackassert.hpp \
+	ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ALayout.hpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
@@ -320,9 +313,8 @@ $(O_DIR)/ftui/Button.o: ftui/Button.cpp ft/public/Color.hpp ft/public/Rect.hpp \
 	ft/public/type_traits.hpp ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
 	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
 	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
-	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
-	ftlua/public/set.hpp ftlua/public/stackassert.hpp \
-	ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/light.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
+	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/AView.hpp \
 	ftui/public/Activity.hpp ftui/public/Button.hpp \
@@ -340,8 +332,8 @@ $(O_DIR)/ftui/CheckBox.o: ftui/CheckBox.cpp ft/public/Color.hpp \
 	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
 	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
 	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
-	ftlua/public/pop.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
-	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/push.hpp ftlua/public/set.hpp ftlua/public/stackassert.hpp \
+	ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/AView.hpp \
 	ftui/public/Activity.hpp ftui/public/Button.hpp ftui/public/CheckBox.hpp \
@@ -365,8 +357,8 @@ $(O_DIR)/ftui/LinearLayout.o: ftui/LinearLayout.cpp ft/public/Color.hpp \
 	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
 	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
 	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
-	ftlua/public/pop.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
-	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/push.hpp ftlua/public/set.hpp ftlua/public/stackassert.hpp \
+	ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ALayout.hpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
@@ -384,8 +376,8 @@ $(O_DIR)/ftui/LinearLayout_ViewHolder.o: ftui/LinearLayout_ViewHolder.cpp \
 	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
 	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
 	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
-	ftlua/public/pop.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
-	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/push.hpp ftlua/public/set.hpp ftlua/public/stackassert.hpp \
+	ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ALayout.hpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
@@ -403,8 +395,8 @@ $(O_DIR)/ftui/ScrollableLayout.o: ftui/ScrollableLayout.cpp \
 	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
 	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
 	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
-	ftlua/public/pop.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
-	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/push.hpp ftlua/public/set.hpp ftlua/public/stackassert.hpp \
+	ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ALayout.hpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
@@ -423,8 +415,8 @@ $(O_DIR)/ftui/SliderView.o: ftui/SliderView.cpp ft/public/Color.hpp \
 	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
 	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
 	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
-	ftlua/public/pop.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
-	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/push.hpp ftlua/public/set.hpp ftlua/public/stackassert.hpp \
+	ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ASolidView.hpp \
 	ftui/public/AView.hpp ftui/public/Activity.hpp ftui/public/EventTarget.hpp \
@@ -441,8 +433,8 @@ $(O_DIR)/ftui/SolidView.o: ftui/SolidView.cpp ft/public/Color.hpp \
 	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
 	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
 	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
-	ftlua/public/pop.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
-	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/push.hpp ftlua/public/set.hpp ftlua/public/stackassert.hpp \
+	ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ASolidView.hpp \
 	ftui/public/AView.hpp ftui/public/SolidView.hpp ftui/public/libftui.hpp \
@@ -457,8 +449,8 @@ $(O_DIR)/ftui/TextView.o: ftui/TextView.cpp ft/public/Color.hpp \
 	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
 	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
 	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
-	ftlua/public/pop.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
-	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/push.hpp ftlua/public/set.hpp ftlua/public/stackassert.hpp \
+	ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ASolidView.hpp \
 	ftui/public/AView.hpp ftui/public/IViewHolder.hpp ftui/public/TextView.hpp \

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 14:36:46 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/01 14:05:13 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/01 16:58:03 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,7 +21,6 @@
 
 namespace ft // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-
 namespace dont_drool // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
@@ -116,11 +115,24 @@ struct is_container : std::integral_constant<
 	&& has_begin<T>::value && has_end<T>::value>
 {};
 
+template <typename T>
+class is_complete
+{
+	typedef char			yes_t[1];
+	typedef char			no_t[2];
+
+	template<typename C, OK_IF((sizeof(C) > 0))>
+	static yes_t			&test(C *);
+	template<typename C>
+	static no_t				&test(...);
+
+	using TestVal = decltype(test<T>(nullptr));
+public:
+	static constexpr bool	value = ISSAME(TestVal, yes_t&);
+};
 
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FT //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-
 # undef OK_IF
 # undef ISSAME
-
 #endif /* ************************************************ FT_TYPE_TRAITS_HPP */

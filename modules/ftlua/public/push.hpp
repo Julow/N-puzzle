@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/01 14:30:47 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/01 17:01:30 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -45,55 +45,10 @@ namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 // TODO: Split hpp/cpp (ps: NO DEFAULT PARAMETERS IN PROTOTYPE)
 
-/*
-template <bool FIRSTISTOP, bool LuaErr
-		  , typename... ARGS>
-int			push(lua_State *l, KeysWrapper<ARGS...> const &wrap);
-
-// Push (T to Converter<T>) || (const-T to Converter<const-T>)
-template <bool LuaErr, typename T
-		  , OK_IFNODEF((sizeof(T) > 0u))
-		  , OK_IFNODEF(ISCONV(T, Converter<T>)) >
-int			push(lua_State *l, T &v);
-
-
-// Push (T to Converter<T const>)
-//TODO: validate this overload
-template <bool LuaErr, typename T
-		  , OK_IFNODEF((sizeof(T) > 0u))
-	, OK_IFNODEF(!ISCONST(T))
-	// , OK_IFNODEF(ISCONST(T))
-	// , typename NOCONST
-	, OK_IFNODEF(ISCONV(T, Converter<const T>)) >
-int			push(lua_State *l, T &v);
-
-
-// Push (const-T to Converter<T>) NOT(const-T to Converter<T const>)
-// Overload allowing const cast in User's cast-operator
-template <bool LuaErr, typename T
-		  , OK_IFNODEF((sizeof(T) > 0u))
-	, OK_IFNODEF(ISCONST(T))
-	, typename NOCONST
-	, OK_IFNODEF(ISCONV(T, Converter<NOCONST>))
-	, OK_IFNODEF(!ISCONV(T, Converter<T>))>
-	int			push(lua_State *l, T &v);
-
-// Push (T* to push<T>) || (T-const * to push<T-const>)
-template <bool LuaErr, typename T
-		  , OK_IFNODEF(ISPTR(T))
-		  , typename NOPTR
-		  , OK_IFNODEF((sizeof(NOPTR) > 0u))
-	, typename NOPTRCONST
-	, OK_IFNODEF(ISCONV(NOPTRCONST, Converter<NOPTRCONST>))
-	>
-int			push(lua_State *l, T v);
-*/
-
 // ========================================================================== //
 // ========================================================================== //
 // STRAIGHTFORWARD PUSH-OVERLOADS
 //
-
 
 // IMPLICIT CASTS DISABLED ========== //
 template <bool LuaErr = false, typename T, OK_IF(ISSAME(T, bool))>
@@ -235,35 +190,12 @@ int	push(lua_State *l, ft::Rect<T> const &v)
 // ========================================================================== //
 // CONVERTER<T> PUSH-OVERLOADS
 //
-// 'OK_IF((sizeof(T) > 0u))'		Checks if T is a complete type
-//
-
-// template<typename T>
-// struct is_complete : std::integral_constant<bool, (sizeof(T) == sizeof(T))>
-// struct is_complete : std::integral_constant<bool, (typeid(T) == typeid(T))>
-// struct is_complete : std::integral_constant<bool, (sizeof(T) > 0u)>
-// {};
-
-template<typename T>
-auto	is_complete_fn(T*)
-	-> typename std::enable_if<sizeof(T), std::true_type>::type;
-
-auto	is_complete_fn(...)
-	-> std::false_type;
-
-template<
-	typename T
-	, bool value = decltype(is_complete_fn((T*)nullptr))::value
-	>
-struct is_complete : std::integral_constant<bool, value>
-{};
-
 
 // T -> Converter<T>
 template <bool LuaErr = false, typename T
-		  , OK_IF((sizeof(T) > 0u))
-							  , OK_IF(!ISCONST(T))
-							  , OK_IF(ISCONV(T, Converter<T>)) >
+		  , OK_IF(ft::is_complete<T>::value)
+		  , OK_IF(!ISCONST(T))
+		  , OK_IF(ISCONV(T, Converter<T>)) >
 int			push(lua_State *l, T &v)
 {
 	return static_cast<Converter<T>>(v).callPush(l);
@@ -271,9 +203,9 @@ int			push(lua_State *l, T &v)
 
 // T const -> Converter<T const>
 template <bool LuaErr = false, typename T
-		  , OK_IF((sizeof(T) > 0u))
-	, OK_IF(ISCONST(T))
-	, OK_IF(ISCONV(T, Converter<T>)) >
+		  , OK_IF(ft::is_complete<T>::value)
+		  , OK_IF(ISCONST(T))
+		  , OK_IF(ISCONV(T, Converter<T>)) >
 int			push(lua_State *l, T &v)
 {
 	return static_cast<Converter<T>>(v).callPush(l);
@@ -281,11 +213,11 @@ int			push(lua_State *l, T &v)
 
 // T -> Converter<T const>   NOT(T -> Converter<T>)
 template <bool LuaErr = false, typename T
-		  , OK_IF((sizeof(T) > 0u))
-	, OK_IF(!ISCONST(T))
-	, OK_IF(ISCONV(T, Converter<const T>))
-	, OK_IF(!ISCONV(T, Converter<T>))
-	>
+		  , OK_IF(ft::is_complete<T>::value)
+		  , OK_IF(!ISCONST(T))
+		  , OK_IF(ISCONV(T, Converter<const T>))
+		  , OK_IF(!ISCONV(T, Converter<T>))
+		  >
 int			push(lua_State *l, T const &v)
 {
 	return static_cast<Converter<const T>>(v).callPush(l);
@@ -294,11 +226,11 @@ int			push(lua_State *l, T const &v)
 // T const -> Converter<T>  NOT(T const -> Converter<T const)
 // Might require a const cast in user's cast-operator
 template <bool LuaErr = false, typename T
-		  , OK_IF((sizeof(T) > 0u))
-	, OK_IF(ISCONST(T))
-	, class TNoConst = DELCONST(T)
-	, OK_IF(ISCONV(T, Converter<TNoConst>))
-	, OK_IF(!ISCONV(T, Converter<T>))>
+		  , OK_IF(ft::is_complete<T>::value)
+		  , OK_IF(ISCONST(T))
+		  , class TNoConst = DELCONST(T)
+		  , OK_IF(ISCONV(T, Converter<TNoConst>))
+		  , OK_IF(!ISCONV(T, Converter<T>))>
 int			push(lua_State *l, T &v)
 {
 	return static_cast<Converter<T const>>(v).callPush(l);
@@ -308,11 +240,10 @@ int			push(lua_State *l, T &v)
 template <bool LuaErr = false, typename T
 		  , OK_IF(ISPTR(T))
 		  , typename NOPTR = DELPTR(T)
-		  // , OK_IF(is_complete<NOPTR>::value)
-		  , OK_IF((sizeof(NOPTR) > 0u))
-	, typename NOPTRCONST = DELCONST(NOPTR)
-	, OK_IF(ISCONV(NOPTRCONST, Converter<NOPTRCONST>))
-	>
+		  , OK_IF(ft::is_complete<NOPTR>::value)
+		  , typename NOPTRCONST = DELCONST(NOPTR)
+		  , OK_IF(ISCONV(NOPTRCONST, Converter<NOPTRCONST>))
+		  >
 int			push(lua_State *l, T v)
 {
 	if (v == nullptr)
