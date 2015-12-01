@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/28 12:40:54 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/29 11:38:09 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/01 19:21:24 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -27,12 +27,9 @@ class CheckBox : public Button
 public:
 
 	// CONSTRUCTION ***************** //
-	static AView		*createView(
-		ftui::Activity &act, ft::XmlParser const *xml, std::string const *id);
+	static AView		*createView(ftui::Activity &act);
 
-	CheckBox(Activity &act, ft::XmlParser const &xml);
-	CheckBox(Activity &act, std::string const *id
-			, std::string const &viewName = "CheckBox");
+	CheckBox(Activity &act, std::string const &viewName = "CheckBox");
 	virtual ~CheckBox();
 
 	CheckBox() = delete;

@@ -14,5 +14,8 @@ TODO LIST
 	LinearLayout direction REV_VERTICAL and REV_HORIZONTAL
 
 	Xml parentKey param
-	Clean View construction and inflation
 	Clean Activity::_scriptsPaths
+
+	change to insert_ordered_map in XmlParser ?
+
+	remove libftui.hpp

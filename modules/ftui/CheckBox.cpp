@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/28 12:40:52 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/29 11:56:43 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/01 19:24:27 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,27 +21,13 @@ namespace ftui
 ** CONSTRUCTION
 */
 
-AView		*CheckBox::createView(
-	ftui::Activity &act, ft::XmlParser const *xml, std::string const *id)
+AView		*CheckBox::createView(ftui::Activity &act)
 {
-	FTASSERT((xml == nullptr) != (id == nullptr));
-	if (xml == nullptr)
-		return new CheckBox(act, id);
-	return new CheckBox(act, *xml);
+	return (new CheckBox(act));
 }
 
-CheckBox::CheckBox(Activity &act, ft::XmlParser const &xml)
-	: Button(act, xml)
-	, _isChecked(false)
-	, _checked{ 0x01000000, 0xFFFFFF00, 9, 0}
-	, _disabledChecked{	0, 0, 0, 0}
-{
-	return ;
-}
-
-CheckBox::CheckBox(Activity &act, std::string const *id
-				   , std::string const &viewName /* = "CheckBox" */)
-	: Button(act, id, viewName)
+CheckBox::CheckBox(Activity &act, std::string const &viewName)
+	: Button(act, viewName)
 	, _isChecked(false)
 	, _checked{ 0x01000000, 0xFFFFFF00, 9, 0}
 	, _disabledChecked{	0, 0, 0, 0}

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/01 14:30:57 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 19:31:57 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -138,27 +138,29 @@ void			Activity::inflate(std::istream &stream)
 	FTASSERT(_l == nullptr, "Activity.inflate called again");
 	_l = new_lua_env();
 	ftlua::set(_l, ftlua::makeKeys("ftui"), "activity", ftlua::light(this));
-	rootView = nullptr;
 	while (xml.next(state))
 	{
-		if (state != ft::XmlParser::State::END)
+		if (state != ft::XmlParser::State::START)
 			throw std::runtime_error("Activity::inflate: lol");
 		if (xml.getMarkupName() != "template")
 			break ;
 		viewTemplate = new ViewTemplate(xml);
-		auto const &it = viewTemplate.find("name");
-		if (it == viewTemplate.getParams().end())
+		auto const &it = viewTemplate->getParams().find("name");
+		if (it == viewTemplate->getParams().end())
 			throw std::runtime_error("Activity::inflate: "
 									"<template> without 'name' param");
+		if (!_viewTemplates.insert({it->second, viewTemplate}).second)
+			throw std::runtime_error(ft::f("Activity::inflate: "
+					"Template redefinition: %", it->second));
 	}
-	if (rootView == nullptr)
+	if (state != ft::XmlParser::State::START)
 		throw std::runtime_error("Activity::inflate: "
-								 "Activity should own at least 1 view");
-	rootView = Activity::getFactory(xml.getMarkupName())(*this, &xml, nullptr);
+								 "Activity should own 1 view");
+	rootView = Activity::getFactory(xml.getMarkupName())(*this);
 	this->_rootView = new Activity::RootViewHolder(*this, xml, rootView, this->_size);
 	rootView->setViewHolder(this->_rootView);
 	rootView->setAttached(true);
-	rootView->inflate(*this, xml);
+	rootView->inflate(xml);
 	if (xml.next(state))
 		throw std::runtime_error("Activity::inflate: "
 								 "Activity should not own more than 1 view");
@@ -180,6 +182,20 @@ void			Activity::saveScriptPath(std::string const &str)
 			_scriptsPaths.push_back(buf);
 	}
 	return ;
+}
+
+/*
+** ========================================================================== **
+** View template
+*/
+
+ViewTemplate const	*Activity::getViewTemplate(std::string const &name) const
+{
+	auto const		&it = _viewTemplates.find(name);
+
+	if (it == _viewTemplates.end())
+		return (nullptr);
+	return (it->second);
 }
 
 // ========================================================================== //
@@ -381,10 +397,8 @@ int				Activity::createViewG(lua_State *l)
 	AView						*v;
 	Activity::view_factory_t	fact;
 	std::string const			type(luaL_checkstring(l, 1));
-	std::string	const *const	id = top == 2
-		? (std::string[]){std::string(luaL_checkstring(l, 2))} : nullptr;
 
-	FTLUA_STACKASSERT(l, top <= 2, true, "Activity::createViewG"
+	FTLUA_STACKASSERT(l, top <= 1, true, "Activity::createViewG"
 					  , "Too many arguments");
 	try {
 		fact = Activity::getFactory(type); }
@@ -395,7 +409,7 @@ int				Activity::createViewG(lua_State *l)
 		luaL_error(l, ft::f("Activity::createViewG: "
 							"Cannot instanciate type '%'", type).c_str());
 	lua_pop(l, top);
-	v = fact(*Activity::retrieveActivity(l), nullptr, id);
+	v = fact(*Activity::retrieveActivity(l));
 	ftlua::push(l, v);
 	FTASSERT(lua_istable(l, -1));
 	return 1;

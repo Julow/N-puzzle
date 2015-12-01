@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/01 16:59:56 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/01 19:33:30 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -67,6 +67,7 @@ DEF_LUACFUN_GSUFFIX(ASolidView, setBorderColor,		2,	0)
 */
 
 DEF_LUACFUN_GSUFFIX(AView, setAlpha,				2,	0)
+DEF_LUACFUN_GSUFFIX(AView, setId,					2,	0)
 DEF_LUACFUN_GSUFFIX(AView, setVisibility,			2,	0)
 DEF_LUACFUN_GSUFFIX(AView, setParam,				3,	0)
 DEF_LUACFUN_GSUFFIX(AView, hookMouseScroll,			2,	0)

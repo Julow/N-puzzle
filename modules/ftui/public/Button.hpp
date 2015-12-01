@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:26:40 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/29 11:38:25 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/01 19:26:11 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,9 +16,7 @@
 # include "ftui/AView.hpp"
 # include "ftui/ACanvas.hpp"
 
-//# include <string>
 # include <iostream>
-//# include <stdexcept>
 # include <chrono>
 
 namespace ftui
@@ -36,17 +34,10 @@ public:
 	};
 
 	// CONSTRUCTION ***************** //
-	static AView		*createView(
-		ftui::Activity &act, ft::XmlParser const *xml, std::string const *id);
+	static AView		*createView(ftui::Activity &act);
 
-	Button(Activity &act, ft::XmlParser const &xml);
-	Button(Activity &act, std::string const *id
-			, std::string const &viewName = "Button");
+	Button(Activity &act, std::string const &viewName = "Button");
 	virtual ~Button();
-
-	Button() = delete;
-	Button(Button const &src) = delete;
-	Button				&operator=(Button const &rhs) = delete;
 
 	virtual void		setParam(std::string const &k, std::string const &v);
 
@@ -107,8 +98,11 @@ private:
 	static const time_diff	_maxDelta;
 	time_point			_lastClick;
 
+	Button(void) = delete;
+	Button(Button const &src) = delete;
+	Button				&operator=(Button const &rhs) = delete;
 };
+
 };
-//std::ostream					&operator<<(std::ostream &o, Button const &rhs);
 
 #endif // ******************************************************** BUTTON_HPP //

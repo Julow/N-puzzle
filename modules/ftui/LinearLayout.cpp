@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/25 13:23:56 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/30 16:31:17 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 19:24:36 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,26 +15,13 @@
 namespace ftui
 {
 
-AView			*LinearLayout::createView(ftui::Activity &act,
-					ft::XmlParser const *xml, std::string const *id)
+AView			*LinearLayout::createView(ftui::Activity &act)
 {
-	FTASSERT((xml == nullptr) != (id == nullptr));
-	if (xml == nullptr)
-		return (new LinearLayout(act, id));
-	return (new LinearLayout(act, *xml));
+	return (new LinearLayout(act));
 }
 
-LinearLayout::LinearLayout(Activity &act, ft::XmlParser const &xml) :
-	ALayout(act, xml),
-	_childs(),
-	_direction(Direction::VERTICAL),
-	_fullSize(0)
-{
-}
-
-LinearLayout::LinearLayout(Activity &act, std::string const *id,
-		std::string const &viewName) :
-	ALayout(act, id, viewName),
+LinearLayout::LinearLayout(Activity &act, std::string const &viewName) :
+	ALayout(act, viewName),
 	_childs(),
 	_direction(Direction::VERTICAL),
 	_fullSize(0)

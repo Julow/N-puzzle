@@ -1,9 +1,8 @@
 
-<template name="mdr" backgroudColor="0xFFFFFFFF">
-	<Button id="$parentlol" parentKey="but" />
+<template name="mdr" backgroundColor="0x55FFFFFF">
+	<!-- <Button id="$parentlol" parentKey="but" /> -->
 </template>
-
-<template name="white_text" textColor="0xFFFFFFFF" />
+<template name="slider_test" width="200" height="350" backgroundColor="0xFFFFFFFF" />
 
 <LinearLayout
 	direction="vertical"
@@ -12,7 +11,7 @@
 	>
 
   <LinearLayout
-  		inherit="mdr white_text"
+  		inherit="mdr"
   	  direction="horizontal"
 	  id="panes-holder"
 	  align="CENTER"
@@ -101,14 +100,14 @@
 			/>
 	  </LinearLayout>
 
-	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
-	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFF00FFFF" />
-	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFF00FF" />
-	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFF00" />
-	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFF0000" />
-	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFF00FF00" />
-	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFF0000FF" />
-	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFF000000" />
+	  <SolidView inherit="slider_test" backgroundColor="0xFFFFFFFF" />
+	  <SolidView inherit="slider_test" backgroundColor="0xFF00FFFF" />
+	  <SolidView inherit="slider_test" backgroundColor="0xFFFF00FF" />
+	  <SolidView inherit="slider_test" backgroundColor="0xFFFFFF00" />
+	  <SolidView inherit="slider_test" backgroundColor="0xFFFF0000" />
+	  <SolidView inherit="slider_test" backgroundColor="0xFF00FF00" />
+	  <SolidView inherit="slider_test" backgroundColor="0xFF0000FF" />
+	  <SolidView inherit="slider_test" backgroundColor="0xFF000000" />
 	</ScrollableLayout>
 
 	<LinearLayout

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/08 11:45:37 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 13:23:29 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 19:02:02 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -49,9 +49,7 @@ public:
 	void				setBorderWidth(int width);
 
 protected:
-
-	ASolidView(Activity &act, ft::XmlParser const &xml);
-	ASolidView(Activity &act, std::string const *id, std::string const &viewName);
+	ASolidView(Activity &act, std::string const &viewName);
 
 	ACanvas::Params		_bgParams;
 

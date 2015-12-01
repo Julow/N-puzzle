@@ -1,18 +1,21 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   Activity_ViewTemplate.cpp                          :+:      :+:    :+:   //
+//   ViewTemplate.cpp                                   :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/12/01 13:57:19 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/01 14:24:51 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 17:59:42 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "ftui/Activity.hpp"
 
-Activity::ViewTemplate::ViewTemplate(XmlParser &xml, bool root = true) :
+namespace ftui
+{
+
+ViewTemplate::ViewTemplate(ft::XmlParser &xml, bool root) :
 	_viewName(root ? nullptr : new std::string(xml.getMarkupName())),
 	_params(xml.getParams()),
 	_childs()
@@ -31,7 +34,7 @@ Activity::ViewTemplate::ViewTemplate(XmlParser &xml, bool root = true) :
 	FTASSERT(false, "Should not be reached");
 }
 
-Activity::ViewTemplate::~ViewTemplate(void)
+ViewTemplate::~ViewTemplate(void)
 {
 	if (_viewName != nullptr)
 		delete _viewName;
@@ -39,7 +42,21 @@ Activity::ViewTemplate::~ViewTemplate(void)
 		delete child;
 }
 
-param_map_t const	&Activity::ViewTemplate::getParams(void) const
+std::string const		&ViewTemplate::getName(void) const
+{
+	return (*_viewName);
+}
+
+ViewTemplate::params_map_t const
+						&ViewTemplate::getParams(void) const
 {
 	return (_params);
 }
+
+ViewTemplate::child_vector_t const
+						&ViewTemplate::getChilds(void) const
+{
+	return (_childs);
+}
+
+};

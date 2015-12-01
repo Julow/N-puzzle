@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/28 14:05:17 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/28 18:10:41 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/12/01 19:35:46 by jaguillo         ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -47,9 +47,9 @@ local function makeGroup(parent, groupName, names, count, onChange)
 
   group = {};
   for i = 0, count - 1 do
-	line = createView('LinearLayout', groupName .. 'Line' .. tostring(i));
-	check = createView('CheckBox', groupName .. 'CheckBox' .. tostring(i));
-	text = createView('TextView', groupName .. 'TextView' .. tostring(i));
+	line = createView('LinearLayout');
+	check = createView('CheckBox');
+	text = createView('TextView');
 
 	parent:addView(line);
 	line:addView(check);

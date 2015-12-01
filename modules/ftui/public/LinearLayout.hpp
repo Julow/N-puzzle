@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/25 13:24:07 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/30 16:35:31 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 19:22:13 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -63,12 +63,9 @@ public:
 	/*
 	** Constructs
 	*/
-	static AView			*createView(Activity &act, ft::XmlParser const *xml,
-								std::string const *id);
+	static AView			*createView(Activity &act);
 
-	LinearLayout(Activity &act, ft::XmlParser const &xml);
-	LinearLayout(Activity &act, std::string const *id,
-		std::string const &viewName = "LinearLayout");
+	LinearLayout(Activity &act, std::string const &viewName = "LinearLayout");
 
 	virtual ~LinearLayout(void);
 

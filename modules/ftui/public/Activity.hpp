@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/01 14:24:33 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 19:18:34 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -22,6 +22,7 @@
 
 # include "ftui/libftui.hpp"
 # include "ftui/IViewHolder.hpp"
+# include "ftui/ViewTemplate.hpp"
 
 # include "ftlua/ftlua.hpp"
 
@@ -67,6 +68,12 @@ public:
 	void				queryUpdateAll(void);
 
 	/*
+	** ====================================================================== **
+	** View template
+	*/
+	ViewTemplate const	*getViewTemplate(std::string const &name) const;
+
+	/*
 	 *	registerEvent(e,v)		Registers an event for a given view:
 	 * 								- DerivedView::onEvent()	c++ method
 	 * 								- self:fname()				lua callback
@@ -107,23 +114,21 @@ public:
 	// Lua init
 	// ====================================================================== //
 
-	typedef AView		*(*view_factory_t)(Activity &, ft::XmlParser const *,
-							std::string const *);
-
-	struct view_info_s
+	typedef AView		*(*view_factory_t)(Activity &);
+	struct	view_info_s
 	{
-		typedef std::tuple<std::string, lua_CFunction>	luamethod_t;
+		typedef std::tuple<std::string, lua_CFunction>		luamethod_t;
 
 		std::string					parent;
 		view_factory_t				factory;
 		std::vector<luamethod_t>	luaMethods;
 		std::string					tableInit;
 	};
-
 	typedef std::unordered_map<std::string, view_info_s>	views_info_t;
+	typedef std::unordered_map<std::string, uint32_t>	callback_map_t;
+
 	static views_info_t				viewsInfo;
 
-	typedef std::unordered_map<std::string, uint32_t>	callback_map_t;
 	static callback_map_t			callback_map;
 
 	/*
@@ -141,7 +146,7 @@ public:
 
 	static void						pushViewTemplates(lua_State *l);
 
-	static view_factory_t	getFactory(std::string const &name);
+	static view_factory_t			getFactory(std::string const &name);
 
 	/*
 	** Register a lua callback
@@ -181,7 +186,6 @@ public:
 
 protected:
 	class	RootViewHolder;
-	class	ViewTemplate;
 
 	typedef std::unordered_multimap<std::string, EventTarget*>	event_map_t;
 	typedef std::stack<std::pair<std::string, AView*>>		unregister_stack_t;
@@ -204,35 +208,6 @@ private:
 	void			removeFromEvents(std::pair<std::string, AView*> const &p);
 	template<typename... Args>
 	bool			fireEventInternal(std::string const &event, Args... args);
-};
-
-/*
-** Activity::ViewTemplate
-** -
-** Recursively hold a 
-*/
-class	Activity::ViewTemplate
-{
-public:
-	typedef std::unordered_map<std::string, std::string>	param_map_t;
-	typedef std::vector<ViewTemplate*>						child_vector_t;
-
-	ViewTemplate(XmlParser &xml, bool root = true);
-	virtual ~ViewTemplate(void);
-
-	param_map_t const	&getParams(void) const;
-
-protected:
-	std::string const	*_viewName;
-	param_map_t			_params;
-	child_vector_t		_childs;
-
-private:
-	ViewTemplate(void) = delete;
-	ViewTemplate(ViewTemplate &&src) = delete;
-	ViewTemplate(ViewTemplate const &src) = delete;
-	ViewTemplate		&operator=(ViewTemplate &&rhs) = delete;
-	ViewTemplate		&operator=(ViewTemplate const &rhs) = delete;
 };
 
 /*

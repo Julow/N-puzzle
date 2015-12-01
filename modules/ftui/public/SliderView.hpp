@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 13:27:39 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 13:27:08 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 19:01:25 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -40,20 +40,19 @@ namespace ftui
 ** 	onValueChange		float value
 ** 				Called when the value change (by user interation or setValue())
 */
-class	SliderView : ftui::ASolidView
+class	SliderView : ASolidView
 {
 public:
 	enum class	LuaCallback : uint32_t
 	{
-		VALUE_CHANGE = static_cast<uint32_t>(ftui::AView::LuaCallback::__LAST),
+		VALUE_CHANGE = static_cast<uint32_t>(AView::LuaCallback::__LAST),
 		__LAST
 	};
 
-	SliderView(ftui::Activity &act, ft::XmlParser const &xml);
+	SliderView(ftui::Activity &act, std::string const &viewName = "SliderView");
 	virtual ~SliderView(void);
 
-	static ftui::AView	*createView(ftui::Activity &act,
-							ft::XmlParser const *xml, std::string const *id);
+	static AView		*createView(Activity &act);
 
 	/*
 	** Value is between bounds.x and bounds.y
@@ -86,8 +85,8 @@ public:
 	/*
 	** ACanvas params used to draw the slider bar
 	*/
-	ftui::ACanvas::Params	&getBarParams(void);
-	ftui::ACanvas::Params const	&getBarParams(void) const;
+	ACanvas::Params			&getBarParams(void);
+	ACanvas::Params const	&getBarParams(void) const;
 
 	/*
 	** Set if the user can change the value
@@ -109,7 +108,7 @@ public:
 	/*
 	** -
 	*/
-	virtual void		onDraw(ftui::ACanvas &canvas);
+	virtual void		onDraw(ACanvas &canvas);
 
 	virtual bool		onMouseDown(int x, int y, int button, int mods);
 	virtual bool		onMouseUp(int x, int y, int button, int mods);
@@ -146,14 +145,11 @@ protected:
 	float				_value;
 	int					_steps;
 
-	ftui::ACanvas::Params	_barParams;
+	ACanvas::Params		_barParams;
 
 	uint32_t			_flags;
 
 	void				setValueWidth(int x);
-
-	SliderView(ftui::Activity &act, std::string const *id,
-		std::string const &viewName = "SliderView");
 
 private:
 	SliderView(void);
