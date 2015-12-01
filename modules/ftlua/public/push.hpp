@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/01 17:01:30 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/01 22:05:44 by juloo            ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -100,13 +100,13 @@ DEFINE_PUSH(int8_t, integer)
 DEFINE_PUSH(int16_t, integer)
 DEFINE_PUSH(int32_t, integer)
 DEFINE_PUSH(int64_t, integer)
-DEFINE_PUSH(intmax_t, integer)
+// DEFINE_PUSH(intmax_t, integer)
 
 DEFINE_PUSH(uint8_t, integer)
 DEFINE_PUSH(uint16_t, integer)
 DEFINE_PUSH(uint32_t, integer)
 DEFINE_PUSH(uint64_t, integer)
-DEFINE_PUSH(uintmax_t, integer)
+// DEFINE_PUSH(uintmax_t, integer)
 // TODO: more types from cstdint might be required here
 
 DEFINE_PUSH(float, number)
@@ -134,13 +134,13 @@ DEFINE_PUSH(int8_t, integer)
 DEFINE_PUSH(int16_t, integer)
 DEFINE_PUSH(int32_t, integer)
 DEFINE_PUSH(int64_t, integer)
-DEFINE_PUSH(intmax_t, integer)
+// DEFINE_PUSH(intmax_t, integer)
 
 DEFINE_PUSH(uint8_t, integer)
 DEFINE_PUSH(uint16_t, integer)
 DEFINE_PUSH(uint32_t, integer)
 DEFINE_PUSH(uint64_t, integer)
-DEFINE_PUSH(uintmax_t, integer)
+// DEFINE_PUSH(uintmax_t, integer)
 
 DEFINE_PUSH(float, number)
 DEFINE_PUSH(double, number)
