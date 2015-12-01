@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 15:04:00 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/19 13:30:58 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 18:13:09 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -55,6 +55,8 @@ public:
 
 	OPERATORS(Vec2)
 
+	typedef T			value_type;
+
 protected:
 private:
 };
@@ -79,6 +81,8 @@ public:
 	T			z;
 
 	OPERATORS(Vec3)
+
+	typedef T			value_type;
 
 protected:
 private:
@@ -113,6 +117,8 @@ public:
 	T			w;
 
 	OPERATORS(Vec4)
+
+	typedef T			value_type;
 
 protected:
 private:

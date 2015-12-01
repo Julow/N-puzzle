@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/30 18:40:03 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/01 19:47:38 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -359,9 +359,20 @@ int				Main::getCostG(lua_State *l) /*static*/
 int				Main::getCost(void) const
 { return this->cost; }
 
+#include "ftlua/pop.hpp"
 
 int				main(void)
 {
+	// FTASSERT(false);
+	// auto lol = ftlua::pop<int>(nullptr, -1);
+	// FTASSERT(false);
+	// ftlua::pop<std::string *>(nullptr, -1);
+	// FTASSERT(false);
+	// ftlua::pop< ft::Vec2<int> >(nullptr, -1);
+	// FTASSERT(false);
+	ftlua::pop< ftui::AView >(nullptr, -1);
+
+
 	try
 	{
 		Main *const	main = Main::instance();

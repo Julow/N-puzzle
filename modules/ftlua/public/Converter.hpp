@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/21 10:27:37 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/22 13:39:57 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/01 19:44:17 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -45,7 +45,7 @@ public:
 			return this->_p(l, this->_v);
 		}
 
-private:
+// private:
 	T						&_v;
 	push_t					_p;
 };
