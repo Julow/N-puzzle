@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/01 18:00:55 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 19:18:34 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -114,11 +114,10 @@ public:
 	// Lua init
 	// ====================================================================== //
 
-	typedef AView		*(*view_factory_t)(Activity &, ft::XmlParser const *,
-							std::string const *);
+	typedef AView		*(*view_factory_t)(Activity &);
 	struct	view_info_s
 	{
-		typedef std::tuple<std::string, lua_CFunction>	luamethod_t;
+		typedef std::tuple<std::string, lua_CFunction>		luamethod_t;
 
 		std::string					parent;
 		view_factory_t				factory;
@@ -147,7 +146,7 @@ public:
 
 	static void						pushViewTemplates(lua_State *l);
 
-	static view_factory_t	getFactory(std::string const &name);
+	static view_factory_t			getFactory(std::string const &name);
 
 	/*
 	** Register a lua callback

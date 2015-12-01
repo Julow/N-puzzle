@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/12 08:49:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 13:26:21 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 18:59:34 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -33,18 +33,10 @@ namespace ftui
 class	TextView : public ASolidView
 {
 public:
-	static AView		*createView(
-		ftui::Activity &act, ft::XmlParser const *xml, std::string const *id);
+	static AView		*createView(ftui::Activity &act);
 
-	TextView(Activity &a, ft::XmlParser const &xml);
-	TextView(Activity &act, std::string const *id
-			 , std::string const &viewName = "TextView");
+	TextView(Activity &act, std::string const &viewName = "TextView");
 	virtual ~TextView(void);
-
-	TextView(void) = delete;
-	TextView(TextView const &src) = delete;
-	TextView			&operator=(TextView const &rhs) = delete;
-
 
 	virtual void		onMeasure(void);
 	virtual void		onDraw(ACanvas &canvas);
@@ -66,6 +58,11 @@ public:
 protected:
 	std::string			_text;
 	ACanvas::Params		_textParams;
+
+private:
+	TextView(void) = delete;
+	TextView(TextView const &src) = delete;
+	TextView			&operator=(TextView const &rhs) = delete;
 
 /*
 ** Static

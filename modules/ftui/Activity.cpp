@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/01 18:01:16 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 19:31:57 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -156,11 +156,11 @@ void			Activity::inflate(std::istream &stream)
 	if (state != ft::XmlParser::State::START)
 		throw std::runtime_error("Activity::inflate: "
 								 "Activity should own 1 view");
-	rootView = Activity::getFactory(xml.getMarkupName())(*this, &xml, nullptr);
+	rootView = Activity::getFactory(xml.getMarkupName())(*this);
 	this->_rootView = new Activity::RootViewHolder(*this, xml, rootView, this->_size);
 	rootView->setViewHolder(this->_rootView);
 	rootView->setAttached(true);
-	rootView->inflate(*this, xml);
+	rootView->inflate(xml);
 	if (xml.next(state))
 		throw std::runtime_error("Activity::inflate: "
 								 "Activity should not own more than 1 view");
@@ -397,10 +397,8 @@ int				Activity::createViewG(lua_State *l)
 	AView						*v;
 	Activity::view_factory_t	fact;
 	std::string const			type(luaL_checkstring(l, 1));
-	std::string	const *const	id = top == 2
-		? (std::string[]){std::string(luaL_checkstring(l, 2))} : nullptr;
 
-	FTLUA_STACKASSERT(l, top <= 2, true, "Activity::createViewG"
+	FTLUA_STACKASSERT(l, top <= 1, true, "Activity::createViewG"
 					  , "Too many arguments");
 	try {
 		fact = Activity::getFactory(type); }
@@ -411,7 +409,7 @@ int				Activity::createViewG(lua_State *l)
 		luaL_error(l, ft::f("Activity::createViewG: "
 							"Cannot instanciate type '%'", type).c_str());
 	lua_pop(l, top);
-	v = fact(*Activity::retrieveActivity(l), nullptr, id);
+	v = fact(*Activity::retrieveActivity(l));
 	ftlua::push(l, v);
 	FTASSERT(lua_istable(l, -1));
 	return 1;

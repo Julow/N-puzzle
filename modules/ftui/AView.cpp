@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/01 18:01:49 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 19:38:45 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -40,52 +40,22 @@ AView::operator ftlua::Converter<AView>()
 		});
 }
 
-static std::string const	*retrieve_id(ft::XmlParser const &xml)
+AView::AView(Activity &act, std::string const &viewName) :
+	_holder(nullptr),
+	_act(act),
+	_id(nullptr),
+	_flags(0),
+	_luaCallbacks(0),
+	_alpha(1.f)
 {
-	auto const		&it = xml.getParams().find("id");
+	lua_State *const	l = act.getLuaState();
 
-	if (it != xml.getParams().end())
-		return (new std::string(it->second));
-	return (nullptr);
-}
-
-static void			push_to_lua(lua_State *l
-								, std::string const *id
-								, std::string const &viewName,
-								AView *vptr)
-{
-	int		err;
-
-	ftlua::push(l, ftlua::makeKeys("ftui", "push_view"));
+	ftlua::push(l, ftlua::newtab);
 	ftlua::push(l, ftlua::makeKeys(viewName));
-	FTASSERT(lua_istable(l, -1));
-	err = ftlua::pcall(l, 0, 1, ftlua::light(vptr), id);
-	FTASSERT(err == LUA_OK);
-	return ;
-}
-
-AView::AView(Activity &act, ft::XmlParser const &xml) :
-	_holder(nullptr),
-	_act(act),
-	_id(retrieve_id(xml)),
-	_flags(0),
-	_luaCallbacks(0),
-	_alpha(1.f)
-{
-	push_to_lua(act.getLuaState(), _id, xml.getMarkupName(), this);
-	return ;
-}
-
-AView::AView(Activity &act, std::string const *id
-			 , std::string const &viewName) :
-	_holder(nullptr),
-	_act(act),
-	_id(id == nullptr ? nullptr : new std::string(*id)),
-	_flags(0),
-	_luaCallbacks(0),
-	_alpha(1.f)
-{
-	push_to_lua(act.getLuaState(), _id, viewName, this);
+	lua_setmetatable(l, -2);
+	ftlua::set(l, -1, 0, ftlua::light(this));
+	ftlua::set(l, ftlua::light(this), ftlua::dup(-3));
+	lua_pop(l, -1);
 	return ;
 }
 
@@ -95,7 +65,7 @@ AView::~AView(void)
 		delete _id;
 }
 
-void				AView::inflate(Activity &, ViewTemplate const &t)
+void				AView::inflate(ViewTemplate const &t)
 {
 	for (auto const &p : t.getParams())
 		setParam(p.first, p.second);
@@ -104,7 +74,7 @@ void				AView::inflate(Activity &, ViewTemplate const &t)
 				"(inherited from template)", (_id == nullptr) ? "" : *_id));
 }
 
-void				AView::inflate(Activity &, ft::XmlParser &xml)
+void				AView::inflate(ft::XmlParser &xml)
 {
 	ft::XmlParser::State	state;
 
@@ -143,6 +113,17 @@ IViewHolder			*AView::getViewHolder(void)
 IViewHolder const	*AView::getViewHolder(void) const
 {
 	return (this->_holder);
+}
+
+void				AView::setId(std::string const &id)
+{
+	lua_State *const	l = _act.getLuaState();
+
+	if (_id != nullptr)
+		throw std::runtime_error(ft::f("Id set twice (#%)", *_id));
+	_id = new std::string(id);
+	ftlua::push(l, this); // TODO assert 'this'
+	lua_setglobal(l, _id->c_str());
 }
 
 void				AView::setMouseOver(int x, int y, bool state)
@@ -257,6 +238,10 @@ void				AView::setParam(string const &k, string const &v)
 	static std::unordered_map<std::string, void (*)(AView*,
 		std::string const &)> const		param_map
 	{
+		{"id", [](AView *view, std::string const &p)
+		{
+			view->setId(p);
+		}},
 		{"alpha", [](AView *view, std::string const &p)
 		{
 			view->setAlpha(std::atof(p.c_str()));
@@ -298,7 +283,7 @@ void				AView::setParam(string const &k, string const &v)
 				if (tmpl == nullptr)
 					throw std::runtime_error(ft::f("Unknown template: %",
 						buff));
-				view->inflate(view->_act, *tmpl);
+				view->inflate(*tmpl);
 			}
 		}},
 	};

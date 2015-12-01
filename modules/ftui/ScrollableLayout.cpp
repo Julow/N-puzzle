@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/26 16:08:13 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/30 16:32:40 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 19:22:47 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,24 +15,13 @@
 namespace ftui
 {
 
-AView			*ScrollableLayout::createView(ftui::Activity &act,
-					ft::XmlParser const *xml, std::string const *id)
+AView			*ScrollableLayout::createView(ftui::Activity &act)
 {
-	FTASSERT((xml == nullptr) != (id == nullptr));
-	if (xml == nullptr)
-		return (new ScrollableLayout(act, id));
-	return (new ScrollableLayout(act, *xml));
+	return (new ScrollableLayout(act));
 }
 
-ScrollableLayout::ScrollableLayout(Activity &act, ft::XmlParser const &xml) :
-	LinearLayout(act, xml),
-	_scroll(0)
-{
-}
-
-ScrollableLayout::ScrollableLayout(Activity &act, std::string const *id,
-		std::string const &viewName) :
-	LinearLayout(act, id, viewName),
+ScrollableLayout::ScrollableLayout(Activity &act, std::string const &viewName) :
+	LinearLayout(act, viewName),
 	_scroll(0)
 {
 }

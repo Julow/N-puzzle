@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:32:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/29 11:54:14 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/01 19:26:48 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -28,31 +28,13 @@ Button::time_diff const	Button::_maxDelta =
 ** CONSTRUCTION
 */
 
-AView		*Button::createView(
-	ftui::Activity &act, ft::XmlParser const *xml, std::string const *id)
+AView		*Button::createView(ftui::Activity &act)
 {
-	FTASSERT((xml == nullptr) != (id == nullptr));
-	if (xml == nullptr)
-		return new Button(act, id);
-	return new Button(act, *xml);
+	return (new Button(act));
 }
 
-Button::Button(Activity &act, ft::XmlParser const &xml)
-	: AView(act, xml)
-	, _state(true)
-	, _highlightLocked(false)
-	, _normal{		0xFF00AA00, 0xFFFF0000, 5, 0}
-	, _disabled{	0, 0, 0, 0}
-	, _pushed{		0xFF00AA00, 0xFFAA0000, 2, 0}
-	, _highlight{	0, 0x40FFFF00, 5, 0}
-	, _lastClick(_zero)
-	{
-		return ;
-	}
-
-Button::Button(Activity &act, std::string const *id
-			   , std::string const &viewName /* = "Button" */)
-	: AView(act, id, viewName)
+Button::Button(Activity &act, std::string const &viewName /* = "Button" */)
+	: AView(act, viewName)
 	, _state(true)
 	, _highlightLocked(false)
 	, _normal{		0xFF00AA00, 0xFFFF0000, 5, 0}

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/25 18:03:11 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/30 18:39:28 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/01 19:34:03 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -44,7 +44,7 @@ Activity::views_info_t		Activity::viewsInfo
 		INSG_AV(isMouseCaptureTargeted), INSG_AV(isKeyboardTargeted),
 		INSG_AV(isUpdateQueried), INSG_AV(isMeasureQueried),
 		INSG_AV(isRedrawQueried), INSG_AV(setCallback), INSG_AV(registerEvent),
-		INSG_AV(unregisterEvent),
+		INSG_AV(unregisterEvent), INSG_AV(setId)
 	}, {}}},
 	{"ASolidView", {"AView", nullptr, {
 		INSG(ASolidView, getBackgroundColor), INSG(ASolidView, getBorderColor),

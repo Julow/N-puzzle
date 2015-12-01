@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/12 20:48:21 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/25 15:19:04 by jaguillo         ###   ########.fr       --
+--   Updated: 2015/12/01 18:29:53 by jaguillo         ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -22,18 +22,6 @@ function ftui.finalize_template(t, p)
 		 t.__ipairs = p.__ipairs
 	  end
    end
-end
-
-function ftui.push_view(metatab, ud, id)
-   local t = {};
-
-   setmetatable(t, metatab);
-   t.__index = t;
-   t[0] = ud;
-   if id ~= nil then
-	  _G[id] = t;
-   end
-   _G[ud] = t;
 end
 
 ftui.ALayoutdef = {

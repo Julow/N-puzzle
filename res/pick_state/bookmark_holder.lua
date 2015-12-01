@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/16 15:14:38 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/28 14:05:06 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/12/01 19:36:05 by jaguillo         ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -49,7 +49,8 @@ end
 -- BOOKMARK HANDLING -----------------------------------------------------------
 function f_frame.createbookmark(i)
   local v, b1, b2;
-  v = createView('Bookmark', 'Bookmark' .. tostring(i));
+  v = createView('Bookmark');
+  v:setId('Bookmark' .. tostring(i));
   v.i = i;
   b1 = v:at(0);
   b2 = v:at(1);

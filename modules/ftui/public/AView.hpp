@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/01 18:02:36 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 19:32:55 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -140,8 +140,7 @@ public:
 		__LAST
 	};
 
-	AView(Activity &act, ft::XmlParser const &xml);
-	AView(Activity &act, std::string const *id, std::string const &viewName);
+	AView(Activity &act, std::string const &viewName);
 	virtual ~AView(void);
 
 	operator ftlua::Converter<AView>();
@@ -155,8 +154,8 @@ public:
 	** v->setHolder(...)	// if any
 	** v->inflate(xml)
 	*/
-	virtual void				inflate(Activity &act, ViewTemplate const &t);
-	virtual void				inflate(Activity &act, ft::XmlParser &xml);
+	virtual void				inflate(ViewTemplate const &t);
+	virtual void				inflate(ft::XmlParser &xml);
 
 /*
 ** View core
@@ -168,6 +167,8 @@ public:
 
 	IViewHolder					*getViewHolder(void);
 	IViewHolder const			*getViewHolder(void) const;
+
+	void						setId(std::string const &id);
 	void						setMouseOver(int x, int y, bool state);
 	void						setViewHolder(IViewHolder *holder);
 	void						setAttached(bool state);
@@ -281,7 +282,7 @@ protected:
 	IViewHolder					*_holder;
 	Activity					&_act;
 
-	std::string const *const	_id;
+	std::string const			*_id;
 	uint32_t					_flags;
 	uint32_t					_luaCallbacks;
 	float						_alpha;
@@ -309,6 +310,7 @@ public:
 	static int				getAlphaG(lua_State *l);
 	static int				isVisibleG(lua_State *l);
 	static int				isMouseOverG(lua_State *l);
+	static int				setIdG(lua_State *l);
 	static int				setVisibilityG(lua_State *l);
 	static int				setAlphaG(lua_State *l);
 

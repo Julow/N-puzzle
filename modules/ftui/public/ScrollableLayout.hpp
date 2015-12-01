@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/26 16:06:28 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/30 16:31:52 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 19:23:09 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -35,11 +35,9 @@ public:
 		__LAST
 	};
 
-	static AView			*createView(Activity &act, ft::XmlParser const *xml,
-								std::string const *id);
+	static AView			*createView(Activity &act);
 
-	ScrollableLayout(Activity &act, ft::XmlParser const &xml);
-	ScrollableLayout(Activity &act, std::string const *id,
+	ScrollableLayout(Activity &act,
 		std::string const &viewName = "ScrollableLayout");
 
 	virtual ~ScrollableLayout(void);

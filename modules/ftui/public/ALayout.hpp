@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/01 18:02:05 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 19:09:26 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -39,8 +39,7 @@ class	ALayout : public ASolidView
 {
 public:
 
-	ALayout(Activity &act, ft::XmlParser const &xml);
-	ALayout(Activity &act, std::string const *id, std::string const &viewName);
+	ALayout(Activity &act, std::string const &viewName);
 	virtual ~ALayout(void);
 
 	operator ftlua::Converter<ALayout>();
@@ -48,8 +47,8 @@ public:
 /*
 ** AView legacy
 */
-	virtual void				inflate(Activity &, ViewTemplate const &t);
-	virtual void				inflate(Activity &a, ft::XmlParser &xml);
+	virtual void				inflate(ViewTemplate const &t);
+	virtual void				inflate(ft::XmlParser &xml);
 
 	virtual void				onUpdate(void) = 0;
 	virtual void				onMeasure(void) = 0;

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/01 18:01:57 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/01 19:10:18 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,14 +24,8 @@ using std::string;
 namespace ftui
 {
 
-ALayout::ALayout(Activity &act, ft::XmlParser const &xml) :
-	ASolidView(act, xml)
-{
-}
-
-ALayout::ALayout(
-	Activity &act, std::string const *id, std::string const &viewName) :
-	ASolidView(act, id, viewName)
+ALayout::ALayout(Activity &act, std::string const &viewName) :
+	ASolidView(act, viewName)
 {
 }
 
@@ -218,7 +212,7 @@ void				ALayout::spreadQueryRedraw(void)
 ** * AView legacy *********************************************************** **
 */
 
-void				ALayout::inflate(Activity &, ViewTemplate const &t)
+void				ALayout::inflate(ViewTemplate const &t)
 {
 	AView				*view;
 
@@ -233,7 +227,7 @@ void				ALayout::inflate(Activity &, ViewTemplate const &t)
 	}
 }
 
-void				ALayout::inflate(Activity &a, ft::XmlParser &xml)
+void				ALayout::inflate(ft::XmlParser &xml)
 {
 	AView					*v;
 	ft::XmlParser::State	state;
@@ -244,9 +238,9 @@ void				ALayout::inflate(Activity &a, ft::XmlParser &xml)
 	{
 		if (state == ft::XmlParser::State::START)
 		{
-			v = Activity::getFactory(xml.getMarkupName())(a, &xml, nullptr);
+			v = Activity::getFactory(xml.getMarkupName())(_act);
 			this->addView(v);
-			v->inflate(a, xml);
+			v->inflate(xml);
 		}
 		else if (state == ft::XmlParser::State::END)
 			return ;
