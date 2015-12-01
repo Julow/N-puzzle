@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/30 19:06:24 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/01 14:30:47 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -133,117 +133,102 @@ int			push(lua_State *l, lua_CFunction const &v) {
 
 
 // NUMBERS/STRING =================== //
+# define DEFINE_PUSH(TYPE, FUNCSUFFIX, ...)			\
+	template <bool LuaErr = false>					\
+	int			push(lua_State *l, TYPE const &v)	\
+	{												\
+		lua_push##FUNCSUFFIX(l, v __VA_ARGS__);		\
+		return 1;									\
+	}
+
+DEFINE_PUSH(int8_t, integer)
+DEFINE_PUSH(int16_t, integer)
+DEFINE_PUSH(int32_t, integer)
+DEFINE_PUSH(int64_t, integer)
+DEFINE_PUSH(intmax_t, integer)
+
+DEFINE_PUSH(uint8_t, integer)
+DEFINE_PUSH(uint16_t, integer)
+DEFINE_PUSH(uint32_t, integer)
+DEFINE_PUSH(uint64_t, integer)
+DEFINE_PUSH(uintmax_t, integer)
 // TODO: more types from cstdint might be required here
-template <bool LuaErr = false>
-int			push(lua_State *l, int8_t const &v)
-{ lua_pushinteger(l, v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, int16_t const &v)
-{ lua_pushinteger(l, v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, int32_t const &v)
-{ lua_pushinteger(l, v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, int64_t const &v)
-{ lua_pushinteger(l, v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, uint8_t const &v)
-{ lua_pushinteger(l, v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, uint16_t const &v)
-{ lua_pushinteger(l, v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, uint32_t const &v)
-{ lua_pushinteger(l, v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, uint64_t const &v)
-{ lua_pushinteger(l, v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, intmax_t const &v)
-{ lua_pushinteger(l, v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, uintmax_t const &v)
-{ lua_pushinteger(l, v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, float const &v)
-{ lua_pushnumber(l, v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, double const &v)
-{ lua_pushnumber(l, v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, std::string const &v)
-{ lua_pushstring(l, v.c_str()); return 1; }
 
+DEFINE_PUSH(float, number)
+DEFINE_PUSH(double, number)
 
-// BOOL/NUMBERS/STRING/ ----- POINTER //
-template <bool LuaErr = false>
-int			push(lua_State *l, bool const *const &v) {
-	if (v == nullptr) lua_pushnil(l);
-	else lua_pushboolean(l, *v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, int8_t const *const &v) {
-	if (v == nullptr) lua_pushnil(l);
-	else lua_pushinteger(l, *v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, int16_t const *const &v) {
-	if (v == nullptr) lua_pushnil(l);
-	else lua_pushinteger(l, *v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, int32_t const *const &v) {
-	if (v == nullptr) lua_pushnil(l);
-	else lua_pushinteger(l, *v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, int64_t const *const &v) {
-	if (v == nullptr) lua_pushnil(l);
-	else lua_pushinteger(l, *v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, uint8_t const *const &v){
-	if (v == nullptr) lua_pushnil(l);
-	else lua_pushinteger(l, *v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, uint16_t const *const &v){
-	if (v == nullptr) lua_pushnil(l);
-	else lua_pushinteger(l, *v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, uint32_t const *const &v){
-	if (v == nullptr) lua_pushnil(l);
-	else lua_pushinteger(l, *v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, uint64_t const *const &v){
-	if (v == nullptr) lua_pushnil(l);
-	else lua_pushinteger(l, *v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, float const *const &v){
-	if (v == nullptr) lua_pushnil(l);
-	else lua_pushnumber(l, *v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, double const *const &v){
-	if (v == nullptr) lua_pushnil(l);
-	else lua_pushnumber(l, *v); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, std::string const *const &v) {
-	if (v == nullptr) lua_pushnil(l);
-	else lua_pushstring(l, v->c_str()); return 1; }
-template <bool LuaErr = false>
-int			push(lua_State *l, char const *v) {
-	if (v == NULL) lua_pushnil(l);
-	else lua_pushstring(l, v); return 1; }
+DEFINE_PUSH(std::string, string, .c_str())
 
+# undef DEFINE_PUSH
+
+// BOOL/NUMBERS/STRING/ ==== POINTERS //
+# define DEFINE_PUSH(TYPE, FUNCSUFFIX, ...)					\
+	template <bool LuaErr = false>							\
+	int			push(lua_State *l, TYPE const *const &v)	\
+	{														\
+		if (v == nullptr)									\
+			lua_pushnil(l);									\
+		else												\
+			lua_push##FUNCSUFFIX(l, (*v) __VA_ARGS__);		\
+		return 1;											\
+	}
+
+DEFINE_PUSH(bool, boolean)
+
+DEFINE_PUSH(int8_t, integer)
+DEFINE_PUSH(int16_t, integer)
+DEFINE_PUSH(int32_t, integer)
+DEFINE_PUSH(int64_t, integer)
+DEFINE_PUSH(intmax_t, integer)
+
+DEFINE_PUSH(uint8_t, integer)
+DEFINE_PUSH(uint16_t, integer)
+DEFINE_PUSH(uint32_t, integer)
+DEFINE_PUSH(uint64_t, integer)
+DEFINE_PUSH(uintmax_t, integer)
+
+DEFINE_PUSH(float, number)
+DEFINE_PUSH(double, number)
+
+DEFINE_PUSH(std::string, string, .c_str())
+
+# undef DEFINE_PUSH
+
+template <bool LuaErr = false>
+int			push(lua_State *l, char const *v)
+{
+	if (v == NULL)
+		lua_pushnil(l);
+	else
+		lua_pushstring(l, v);
+	return 1;
+}
 
 // 'ft::' COMPOUND TYPES ============ //
 template <bool LuaErr = false, typename T>
 int	push(lua_State *l, ft::Vec2<T> const &v)
-{ push(l, v.x); push(l, v.y); return 2; }
+{
+	push(l, v.x); push(l, v.y);
+	return 2;
+}
 template <bool LuaErr = false, typename T>
 int	push(lua_State *l, ft::Vec3<T> const &v)
-{ push(l, v.x); push(l, v.y); push(l, v.z); return 3; }
+{
+	push(l, v.x); push(l, v.y); push(l, v.z);
+	return 3;
+}
 template <bool LuaErr = false, typename T>
 int	push(lua_State *l, ft::Vec4<T> const &v)
-{ push(l, v.x); push(l, v.y); push(l, v.z); push(l, v.w); return 4; }
+{
+	push(l, v.x); push(l, v.y); push(l, v.z); push(l, v.w);
+	return 4;
+}
 template <bool LuaErr = false, typename T>
-int	push(lua_State *l, ft::Rect<T> const &v) {
+int	push(lua_State *l, ft::Rect<T> const &v)
+{
 	push(l, v.left); push(l, v.top); push(l, v.right); push(l, v.bottom);
-	return 4; }
+	return 4;
+}
 
 
 // ========================================================================== //
@@ -253,11 +238,32 @@ int	push(lua_State *l, ft::Rect<T> const &v) {
 // 'OK_IF((sizeof(T) > 0u))'		Checks if T is a complete type
 //
 
+// template<typename T>
+// struct is_complete : std::integral_constant<bool, (sizeof(T) == sizeof(T))>
+// struct is_complete : std::integral_constant<bool, (typeid(T) == typeid(T))>
+// struct is_complete : std::integral_constant<bool, (sizeof(T) > 0u)>
+// {};
+
+template<typename T>
+auto	is_complete_fn(T*)
+	-> typename std::enable_if<sizeof(T), std::true_type>::type;
+
+auto	is_complete_fn(...)
+	-> std::false_type;
+
+template<
+	typename T
+	, bool value = decltype(is_complete_fn((T*)nullptr))::value
+	>
+struct is_complete : std::integral_constant<bool, value>
+{};
+
+
 // T -> Converter<T>
 template <bool LuaErr = false, typename T
 		  , OK_IF((sizeof(T) > 0u))
-	, OK_IF(!ISCONST(T))
-	, OK_IF(ISCONV(T, Converter<T>)) >
+							  , OK_IF(!ISCONST(T))
+							  , OK_IF(ISCONV(T, Converter<T>)) >
 int			push(lua_State *l, T &v)
 {
 	return static_cast<Converter<T>>(v).callPush(l);
@@ -302,6 +308,7 @@ int			push(lua_State *l, T &v)
 template <bool LuaErr = false, typename T
 		  , OK_IF(ISPTR(T))
 		  , typename NOPTR = DELPTR(T)
+		  // , OK_IF(is_complete<NOPTR>::value)
 		  , OK_IF((sizeof(NOPTR) > 0u))
 	, typename NOPTRCONST = DELCONST(NOPTR)
 	, OK_IF(ISCONV(NOPTRCONST, Converter<NOPTRCONST>))
@@ -399,55 +406,9 @@ int			push(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 // CONTAINERS<...> PUSH-OVERLOADS
 //
 
-template<typename T>
-struct has_const_iterator
-{
-private:
-	typedef char						yes;
-	typedef struct { char array[2]; }	no;
-
-	template<typename C>
-	static yes							test(typename C::const_iterator*);
-	template<typename C>
-	static no							test(...);
-public:
-	static const bool					value = sizeof(test<T>(0)) == sizeof(yes);
-	typedef T							type;
-};
-
-template <typename T>
-struct has_begin_end //TODO understand and rewrite
-{
-
-#define CONSTIT typename C::const_iterator (C::*)() const
-#define VOID_IF(PRED) typename std::enable_if<PRED, void>::type*
-
-	template<typename C>
-	static char		(&f(
-						VOID_IF(ISSAME(decltype(static_cast<CONSTIT>(&C::begin)), CONSTIT)))
-		)[1];
-
-	template<typename C>
-	static char		(&f(...))[2];
-
-	template<typename C>
-	static char		(&g(
-						VOID_IF(ISSAME(decltype(static_cast<CONSTIT>(&C::end)), CONSTIT)))
-		)[1];
-	template<typename C>
-	static char		(&g(...))[2];
-
-	static bool const beg_value = sizeof(f<T>(0)) == 1;
-	static bool const end_value = sizeof(g<T>(0)) == 1;
-};
-
-template<typename T>
-struct is_container : std::integral_constant<bool, has_const_iterator<T>::value && has_begin_end<T>::beg_value && has_begin_end<T>::end_value>
-{ };
-
 template <bool LuaErr = false
 		  , class T
-		  , OK_IF(is_container<T>::value)
+		  , OK_IF(ft::is_container<T>::value)
 		  >
 int			push(lua_State *l, T &cont)
 {
@@ -474,7 +435,7 @@ int			push(lua_State *l, T &cont)
 
 template <bool LuaErr = false
 		  , class T
-		  , OK_IF(is_container<T>::value)
+		  , OK_IF(ft::is_container<T>::value)
 		  >
 int			push(lua_State *l, T const &cont)
 {
