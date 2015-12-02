@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/22 11:52:23 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/30 19:02:10 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 13:07:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -37,7 +37,7 @@ void        set(
 				, ft::tupleToString(tabGlobalKeys.tup)
 				, ft::valToString(key)
 				, ft::valToString(val))
-		, ft::f("Table was expected after as set target.")
+		, ft::f("Table was expected as set target.")
 		);
 	lua_settable(l, -3);
 	lua_pop(l, 1);

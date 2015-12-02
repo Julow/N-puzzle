@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/01 19:47:38 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 13:42:40 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -371,6 +371,25 @@ int				main(void)
 	// ftlua::pop< ft::Vec2<int> >(nullptr, -1);
 	// FTASSERT(false);
 	ftlua::pop< ftui::AView >(nullptr, -1);
+
+#define TEST1(TYPE)									\
+	ft::f(std::cout, "has_size %: %\n"				\
+		  , #TYPE, ftlua::has_size<TYPE>::value)
+
+#define TEST2(TYPE)									\
+	ft::f(std::cout, "has_push %: %\n"				\
+		  , #TYPE, ftlua::has_push<TYPE>::value)
+
+	TEST1(int);
+	TEST1(Grid);
+	TEST1(ftui::AView);
+	TEST1(ftui::ALayout);
+
+	TEST2(int);
+	TEST2(Grid);
+	TEST2(ftui::AView);
+	TEST2(ftui::ALayout);
+
 
 
 	try

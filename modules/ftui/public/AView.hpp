@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/01 19:32:55 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/02 13:18:14 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -143,7 +143,21 @@ public:
 	AView(Activity &act, std::string const &viewName);
 	virtual ~AView(void);
 
+
 	operator ftlua::Converter<AView>();
+
+	/*
+	void		addView(AView *v);
+	void		machintrucView(AView &v);
+	*/
+
+	bool							ftlua_push(lua_State *l);
+	static AView					*ftlua_pop(lua_State *l, bool &err);
+	// static constexpr unsigned int	ftlua_size = 1;
+	typedef std::integral_constant<unsigned int, 1>	ftlua_size;
+
+
+	// static constexpr unsigned int	ftlua_size(void);
 
 	/*
 	** Extract the view tree from a xml file

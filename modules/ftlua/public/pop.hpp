@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:16:24 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/01 19:47:26 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 12:04:58 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -44,7 +44,6 @@ namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // 	if (!lua_isinteger(l, index))
 // 	{
 // 		if (info != nullptr && info->first == true)
-
 // 			}
 // 	else if (info != nullptr)
 // 		info->second = 1;
@@ -107,12 +106,9 @@ template <class T, bool LuaErr = true
 		  >
 T	&pop(lua_State *l, int index)
 {
-	// std::cout << "eto" << std::endl;
 	Converter<T>	conv = static_cast< Converter<T> >(*(T*)(0x0));
-	// std::cout << "nant" << std::endl;
 	std::cout << (void*)&conv._v << std::endl;
 	std::cout << (void*)conv._p << std::endl;
-
 	(void)l;
 	(void)index;
 	return *(T*)(0x0);
