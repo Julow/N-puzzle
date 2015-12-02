@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/21 10:27:37 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 15:39:54 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 16:03:13 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -52,9 +52,8 @@ FT_DEFINE_TYPETRAIT_TEST(
 
 FT_DEFINE_TYPETRAIT_TEST(
 	has_pop
-	, class WishedFun = C (*)(lua_State*, bool &)
+	, class WishedFun = C (*)(lua_State*, int, bool &)
 	, class Fun = decltype(static_cast<WishedFun>(&C::ftlua_pop))
-	// , OK_IF(ISCONV(Fun, WishedFun))
 	, OK_IF(ISSAME(Fun, WishedFun))
 	);
 
@@ -64,7 +63,7 @@ FT_DEFINE_TYPETRAIT_TEST(
 	, class Ret = typename ft::return_type<Fun>::type
 	, OK_IF(ISPTR(Ret))
 	, OK_IF(ISBASE(DELPTR(Ret), C))
-	, class WishedFun = Ret (*)(lua_State*, bool &)
+	, class WishedFun = Ret (*)(lua_State*, int, bool &)
 	, OK_IF(ISSAME(Fun, WishedFun))
 	);
 

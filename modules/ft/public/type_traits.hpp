@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 14:36:46 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 15:28:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 15:53:10 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -148,8 +148,9 @@ public:
 	static constexpr bool	value = ISSAME(TestVal, yes_t&);
 };
 
+
 template <class F>
-struct return_type;
+struct return_type;//TODO:: overloads for member functions
 
 template <class Ret, class ...Args>
 struct return_type<Ret (*)(Args...)>

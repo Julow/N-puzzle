@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 13:18:14 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 16:20:27 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -151,10 +151,34 @@ public:
 	void		machintrucView(AView &v);
 	*/
 
-	bool							ftlua_push(lua_State *l);
-	static AView					*ftlua_pop(lua_State *l, bool &err);
-	// static constexpr unsigned int	ftlua_size = 1;
 	typedef std::integral_constant<unsigned int, 1>	ftlua_size;
+	bool			ftlua_push(lua_State *l)
+		{
+			ftlua::pushLightKey(l, this);
+			if (!lua_istable(l, -1))
+				return false;
+			return true;
+		}
+	static AView	*ftlua_pop(lua_State *l, int i, bool &err)
+		{
+			AView		*v;
+
+			if (!lua_istable(l, i))
+			{
+				err = true;
+				return nullptr;
+			}
+			ftlua::push(l, 0);
+			if (lua_gettable(l, i < 0 ? i - 1 : i) != LUA_TLIGHTUSERDATA)
+			{
+				err = true;
+				return nullptr;
+			}
+			v = reinterpret_cast<AView*>(lua_touserdata(l, -1));
+			lua_pop(l, 1);
+			lua_remove(l, i);
+			return v;
+		}
 
 
 	// static constexpr unsigned int	ftlua_size(void);

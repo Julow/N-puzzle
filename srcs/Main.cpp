@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 15:40:48 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 16:14:48 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -361,33 +361,33 @@ int				Main::getCost(void) const
 
 #include "ftlua/pop.hpp"
 #include <type_traits>
-# define OK_IF(PRED) typename std::enable_if<PRED>::type* = nullptr
-# define ISSAME(A, B) std::is_same<A, B>::value
-# define ISBASE(A, B) std::is_base_of<A, B>::value
-# define ISPTR(A) std::is_pointer<A>::value
-# define DELPTR(T) typename std::remove_pointer<T>::type
+// # define OK_IF(PRED) typename std::enable_if<PRED>::type* = nullptr
+// # define ISSAME(A, B) std::is_same<A, B>::value
+// # define ISBASE(A, B) std::is_base_of<A, B>::value
+// # define ISPTR(A) std::is_pointer<A>::value
+// # define DELPTR(T) typename std::remove_pointer<T>::type
 
-template <class C
-		  , class Fun = decltype(&C::ftlua_pop)
-		  , class Ret = typename ft::return_type<Fun>::type
-		  , OK_IF(ISPTR(Ret))
-		  , OK_IF(ISBASE(DELPTR(Ret), C))
-		  , class WishedFun = Ret (*)(lua_State*, bool &)
-		  , OK_IF(ISSAME(Fun, WishedFun))
-		  >
-void		lol(void)
-{
-	std::cout << ft::typesToString<Fun>() << std::endl;
-	std::cout << ft::typesToString<Ret>() << std::endl;
-	std::cout << ft::typesToString<WishedFun>() << std::endl;
-	// std::cout << ft::typesToString<typename std::result_of<Fun>::type>() << std::endl;
+// template <class C
+// 		  , class Fun = decltype(&C::ftlua_pop)
+// 		  , class Ret = typename ft::return_type<Fun>::type
+// 		  , OK_IF(ISPTR(Ret))
+// 		  , OK_IF(ISBASE(DELPTR(Ret), C))
+// 		  , class WishedFun = Ret (*)(lua_State*, int, bool &)
+// 		  , OK_IF(ISSAME(Fun, WishedFun))
+// 		  >
+// void		lol(void)
+// {
+// 	std::cout << ft::typesToString<Fun>() << std::endl;
+// 	std::cout << ft::typesToString<Ret>() << std::endl;
+// 	std::cout << ft::typesToString<WishedFun>() << std::endl;
+// 	// std::cout << ft::typesToString<typename std::result_of<Fun>::type>() << std::endl;
 
-}
+// }
 
 int				main(void)
 {
-	lol<ftui::AView>();
-	lol<ftui::ALayout>();
+	// lol<ftui::AView>();
+	// lol<ftui::ALayout>();
 	// lol<int>();
 
 	ftlua::pop< ftui::AView >(nullptr, -1);
