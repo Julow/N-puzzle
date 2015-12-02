@@ -1,16 +1,16 @@
 -- ************************************************************************** --
 --                                                                            --
 --                                                        :::      ::::::::   --
---   global.lua                                         :+:      :+:    :+:   --
+--   test.lua                                           :+:      :+:    :+:   --
 --                                                    +:+ +:+         +:+     --
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 13:02:54 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/24 09:18:28 by jaguillo         ###   ########.fr       --
+--   Updated: 2015/12/02 13:16:59 by jaguillo         ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
--- test begin
+--[[ test slider ]]
 
 function lol_slider:onValueChange(val)
 	print("Value change: " .. tostring(val)
@@ -31,4 +31,14 @@ end)
 
 lol_slider:setCallback("onValueChange", lol_slider.onValueChange)
 
--- test end
+--[[ test parent_key ]]
+
+function test(k)
+	assert(test_parent_key[k]:getText() == k, "parent." .. k .. " != " .. test_parent_key[k]:getText())
+	print("parent." .. k .. " = " .. test_parent_key[k]:getText())
+end
+
+test("a");
+test("b");
+test("c");
+test("d");

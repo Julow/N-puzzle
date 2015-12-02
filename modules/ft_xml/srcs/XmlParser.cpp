@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:45 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/16 14:23:51 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 11:55:14 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -88,7 +88,7 @@ bool							XmlParser::next(State &state)
 				if (_token != XmlTokenizer::Token::STRING)
 					break ;
 // ft::f(std::cout, " %=\"%\"\n", param_name, token_str);
-				_params[param_name] = token_str;
+				_params.emplace_back(param_name, token_str);
 			}
 		}
 	}

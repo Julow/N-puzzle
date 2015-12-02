@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/01 19:31:57 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/02 11:59:04 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -145,8 +145,13 @@ void			Activity::inflate(std::istream &stream)
 		if (xml.getMarkupName() != "template")
 			break ;
 		viewTemplate = new ViewTemplate(xml);
-		auto const &it = viewTemplate->getParams().find("name");
-		if (it == viewTemplate->getParams().end())
+		auto const &params = viewTemplate->getParams();
+		auto const &it = std::find_if(params.begin(), params.end(),
+			[](auto const &param)
+			{
+				return (param.first == "name");
+			});
+		if (it == params.end())
 			throw std::runtime_error("Activity::inflate: "
 									"<template> without 'name' param");
 		if (!_viewTemplates.insert({it->second, viewTemplate}).second)
