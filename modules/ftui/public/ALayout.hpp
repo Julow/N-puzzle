@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/01 19:09:26 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/02 20:34:25 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -47,8 +47,10 @@ public:
 /*
 ** AView legacy
 */
-	virtual void				inflate(ViewTemplate const &t);
-	virtual void				inflate(ft::XmlParser &xml);
+	virtual void				inflate(ViewTemplate const &t,
+									ParamMap const *parent_p = nullptr);
+	virtual void				inflate(ft::XmlParser &xml,
+									ParamMap const *parent_p = nullptr);
 
 	virtual void				onUpdate(void) = 0;
 	virtual void				onMeasure(void) = 0;

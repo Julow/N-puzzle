@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/01 19:18:34 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/02 14:34:38 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -38,6 +38,7 @@ namespace ftui
 class	Activity
 {
 public:
+	typedef ft::XmlParser::params_map_t			params_map_t;
 
 	// ====================================================================== //
 	// Interactions with application

@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 13:02:54 by ngoguey           #+#    #+#             --
---   Updated: 2015/12/02 13:16:59 by jaguillo         ###   ########.fr       --
+--   Updated: 2015/12/02 19:54:04 by jaguillo         ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -33,12 +33,11 @@ lol_slider:setCallback("onValueChange", lol_slider.onValueChange)
 
 --[[ test parent_key ]]
 
-function test(k)
-	assert(test_parent_key[k]:getText() == k, "parent." .. k .. " != " .. test_parent_key[k]:getText())
-	print("parent." .. k .. " = " .. test_parent_key[k]:getText())
+function test(v, k)
+	print("parent." .. k .. " = " .. v[k]:getText() .. " (id=#" .. v[k]:getId() .. ")")
 end
 
-test("a");
-test("b");
-test("c");
-test("d");
+test(test_parent_key, "a");
+test(test_parent_key, "b");
+test(_G["big_layout-test2"], "a");
+test(_G["big_layout-test2"], "b");

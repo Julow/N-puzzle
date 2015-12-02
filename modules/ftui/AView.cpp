@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/02 13:12:29 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/02 20:47:19 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -25,11 +25,6 @@ using std::string;
 
 namespace ftui
 {
-
-/*
-** ========================================================================== **
-** CONSTRUCTION
-*/
 
 AView::operator ftlua::Converter<AView>()
 {
@@ -65,25 +60,75 @@ AView::~AView(void)
 		delete _id;
 }
 
-void				AView::inflate(ViewTemplate const &t)
+void				AView::inflate(ViewTemplate const &t,
+						ParamMap const *parent_map)
 {
-	for (auto const &p : t.getParams())
-		setParam(p.first, p.second);
+	inflateParams(t.getParams(), parent_map);
 	if (t.getChilds().size() > 0)
 		throw std::runtime_error(ft::f("A simple view (#%) cannot have child "
 				"(inherited from template)", (_id == nullptr) ? "" : *_id));
 }
 
-void				AView::inflate(ft::XmlParser &xml)
+void				AView::inflate(ft::XmlParser &xml,
+						ParamMap const *parent_map)
 {
 	ft::XmlParser::State	state;
 
-	for (auto const &p : xml.getParams())
-		setParam(p.first, p.second);
+	inflateParams(xml.getParams(), parent_map);
 	if (!xml.next(state))
 		FTASSERT(false);
 	FTASSERT(state == ft::XmlParser::State::END);
 	return ;
+}
+
+void				AView::inflateParams(param_map_t const &params,
+						ParamMap const *parent_map)
+{
+	static const std::string	parent_var("$parent");
+	ParamMap					param_map(params, parent_map);
+
+	for (auto const &param : params)
+	{
+		if (param.first == "inherit")
+		{
+			std::stringstream	ss(param.second);
+			char				buff[64];
+			ViewTemplate const	*tmpl;
+
+			while (ss.getline(buff, sizeof(buff), ' '))
+			{
+				tmpl = _act.getViewTemplate(std::string(buff));
+				if (tmpl == nullptr)
+					throw std::runtime_error(ft::f("Unknown template: %",
+						buff));
+				inflate(*tmpl, &param_map);
+			}
+		}
+		else
+			setParam2(param.first, param.second, &param_map);
+	}
+}
+
+void				AView::setParam2(std::string const &key,
+						std::string const &value, ParamMap const *param_map)
+{
+	static const std::string	parent_var("$parent");
+	std::string::size_type		pos;
+	std::string					tmp_val(value);
+
+	pos = 0;
+	while ((pos = value.find(parent_var, pos)) != std::string::npos)
+	{
+		std::string const	*parent_value;
+
+		if ((param_map = param_map->prev) == nullptr
+			|| (parent_value = param_map->find(key)) == nullptr)
+			throw std::runtime_error(ft::f("Parent does not have a % param"
+					" (#%)", key, (_id == nullptr) ? "" : *_id));
+		tmp_val.replace(pos, parent_var.size(), *parent_value);
+		pos += parent_value->size();
+	}
+	setParam(key, tmp_val);
 }
 
 /*
@@ -270,35 +315,19 @@ void				AView::setParam(string const &k, string const &v)
 		{
 			view->_act.saveScriptPath(p);
 		}},
-		{"parent_key", [](AView *view, std::string const &p)
+		{"parentKey", [](AView *view, std::string const &p)
 		{
 			AView *const		parent = view->getParent();
 			lua_State *const	l = view->_act.getLuaState();
 
 			if (parent == nullptr)
-				throw std::runtime_error(ft::f("parent_key used on unattached "
+				throw std::runtime_error(ft::f("parentKey used on unattached "
 					"view (#%)", (view->_id == nullptr) ? "" : *view->_id));
 			// parent[p] = view
 			ftlua::push(l, parent);
 			ftlua::set(l, -1, p, view);
 			// TODO: WTF? ftlua::set(l, ftlua::lightKey(parent), p, view)
 			lua_pop(l, -1);
-		}},
-		{"inherit", [](AView *view, std::string const &p)
-		{
-			std::stringstream	ss(p);
-			char				buff[64];
-
-			while (ss.getline(buff, sizeof(buff), ' '))
-			{
-				ViewTemplate const	*tmpl;
-
-				tmpl = view->_act.getViewTemplate(std::string(buff));
-				if (tmpl == nullptr)
-					throw std::runtime_error(ft::f("Unknown template: %",
-						buff));
-				view->inflate(*tmpl);
-			}
 		}},
 	};
 	auto const		&it = param_map.find(k);
@@ -633,6 +662,31 @@ void			AView::queryRedraw(void)
 			p->spreadQueryRedraw();
 	}
 	return ;
+}
+
+/*
+** ========================================================================== **
+** AView::ParamMap
+*/
+
+AView::ParamMap::ParamMap(param_map_t const &params, ParamMap const *prev) :
+	params(params),
+	prev(prev)
+{
+}
+
+AView::ParamMap::~ParamMap(void)
+{
+}
+
+std::string const	*AView::ParamMap::find(std::string const &key) const
+{
+	for (auto const &p : params)
+	{
+		if (p.first == key)
+			return (&(p.second));
+	}
+	return (nullptr);
 }
 
 };

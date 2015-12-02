@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/01 19:32:55 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/02 20:38:00 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -140,6 +140,9 @@ public:
 		__LAST
 	};
 
+	typedef ft::XmlParser::params_map_t		param_map_t;
+	class	ParamMap;
+
 	AView(Activity &act, std::string const &viewName);
 	virtual ~AView(void);
 
@@ -154,8 +157,12 @@ public:
 	** v->setHolder(...)	// if any
 	** v->inflate(xml)
 	*/
-	virtual void				inflate(ViewTemplate const &t);
-	virtual void				inflate(ft::XmlParser &xml);
+	virtual void				inflate(ViewTemplate const &t,
+									ParamMap const *parent_p = nullptr);
+	virtual void				inflate(ft::XmlParser &xml,
+									ParamMap const *parent_p = nullptr);
+	void						inflateParams(param_map_t const &params,
+									ParamMap const *parent_p = nullptr);
 
 /*
 ** View core
@@ -193,8 +200,8 @@ public:
 	** AView::setParam()		is called from CustomView::setParam()
 	** IViewHolder::setParam()	is called from AView::setParam()
 	*/
-	virtual void				setParam(std::string const &k,
-										 std::string const &v);
+	virtual void				setParam(std::string const &key,
+										 std::string const &value);
 
 /*
 ** Callbacks
@@ -288,6 +295,13 @@ protected:
 	float						_alpha;
 
 /*
+** inflateParams
+*/
+	void						setParam2(std::string const &key,
+									std::string const &value,
+									ParamMap const *param_map);
+
+/*
 ** Callbacks
 */
 	/*
@@ -350,6 +364,27 @@ private:
 	AView() = delete;
 	AView(AView const &src) = delete;
 	AView				&operator=(AView const &rhs) = delete;
+};
+
+class	AView::ParamMap
+{
+public:
+	ParamMap(param_map_t const &params, ParamMap const *prev);
+	virtual ~ParamMap(void);
+
+	param_map_t const	&params;
+	ParamMap const		*prev;
+
+	std::string const	*find(std::string const &key) const;
+
+protected:
+
+private:
+	ParamMap(void) = delete;
+	ParamMap(ParamMap &&src) = delete;
+	ParamMap(ParamMap const &src) = delete;
+	ParamMap			&operator=(ParamMap &&rhs) = delete;
+	ParamMap			&operator=(ParamMap const &rhs) = delete;
 };
 
 };

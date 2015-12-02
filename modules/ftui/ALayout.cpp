@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/02 11:50:25 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/02 20:49:39 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -212,34 +212,36 @@ void				ALayout::spreadQueryRedraw(void)
 ** * AView legacy *********************************************************** **
 */
 
-void				ALayout::inflate(ViewTemplate const &t)
+void				ALayout::inflate(ViewTemplate const &t,
+						ParamMap const *parent_map)
 {
 	AView				*view;
 
-	for (auto const &p : t.getParams())
-		setParam(p.first, p.second);
+	inflateParams(t.getParams(), parent_map);
 	for (ViewTemplate const *child : t.getChilds())
 	{
 		view = Activity::getFactory(child->getName())(_act);
 		addView(view);
-		view->inflate(*child);
+		view->inflate(*child, parent_map);
 	}
 }
 
-void				ALayout::inflate(ft::XmlParser &xml)
+void				ALayout::inflate(ft::XmlParser &xml,
+						ParamMap const *parent_map)
 {
 	AView					*v;
 	ft::XmlParser::State	state;
+	param_map_t				params_save(xml.getParams());
+	ParamMap				param_map(params_save, parent_map);
 
-	for (auto const &p : xml.getParams())
-		setParam(p.first, p.second);
+	inflateParams(param_map.params, parent_map);
 	while (xml.next(state))
 	{
 		if (state == ft::XmlParser::State::START)
 		{
 			v = Activity::getFactory(xml.getMarkupName())(_act);
 			this->addView(v);
-			v->inflate(xml);
+			v->inflate(xml, &param_map);
 		}
 		else if (state == ft::XmlParser::State::END)
 			return ;
