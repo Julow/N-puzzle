@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 17:43:31 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 17:53:34 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -172,8 +172,6 @@ public:
 			return v;
 		}
 
-
-	// static constexpr unsigned int	ftlua_size(void);
 
 	/*
 	** Extract the view tree from a xml file

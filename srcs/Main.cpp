@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 17:34:32 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 20:02:35 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -386,6 +386,56 @@ int				Main::getCost(void) const
 
 int				main(void)
 {
+
+	// ftlua::push<>
+	// char		*truc = "bordel";
+	// char const		*truc2 = "bordel";
+
+	// ftlua::push(nullptr, truc);
+	// ftlua::push(nullptr, truc2);
+	// std::cout << "salit" << std::endl;
+
+#define LOLTEST(T1, T2)								\
+	static_assert(!std::is_same<T1, T2>::value, "")
+
+#define LOLTESTT(T)								\
+	LOLTEST(T, int8_t);							\
+	LOLTEST(T, int16_t);						\
+	LOLTEST(T, int32_t);						\
+	LOLTEST(T, int64_t);						\
+	LOLTEST(T, uint8_t);						\
+	LOLTEST(T, uint16_t);						\
+	LOLTEST(T, uint32_t);						\
+	LOLTEST(T, uint64_t);						\
+	LOLTEST(T, int_least8_t);					\
+	LOLTEST(T, int_fast8_t);					\
+	LOLTEST(T, intmax_t);						\
+	LOLTEST(T, uintmax_t)
+
+
+	// LOLTESTT(int); 				// int32_t
+	// LOLTESTT(unsigned int); 	//uint32_t
+	// LOLTESTT(size_t); 			//uintmax_t
+	// LOLTESTT(char);
+	// LOLTESTT(unsigned char); 	//uint8_t
+	// LOLTESTT(short); 			//int16_t
+	// LOLTESTT(unsigned short); 	//uint16_t
+	// LOLTESTT(long);				//intmax_t
+	// LOLTESTT(unsigned long);	//uintmax_t
+	// LOLTESTT(long long);		//int64_t
+	// LOLTESTT(unsigned long long);//uint64_t
+
+	// ftlua::push(nullptr, truc);
+
+	// ftlua::size<void*>();
+	// ftlua::size<bool>();
+	// ftlua::size<int8_t>();
+	// // ftlua::size<int8_t&>();
+	// ftlua::size<int8_t*>();
+	// ftlua::size<int8_t const>();
+	// ftlua::size<float>();
+	// ftlua::size<std::string const*>::value;
+
 	// lol<ftui::AView>();
 	// lol<ftui::ALayout>();
 	// lol<int>();

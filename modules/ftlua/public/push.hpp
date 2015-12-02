@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 17:44:41 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 19:57:04 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -53,7 +53,7 @@ namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 // IMPLICIT CASTS DISABLED ========== //
 template <bool LuaErr = false, typename T, OK_IF(ISSAME(T, bool))>
-int			push(lua_State *l, T const &v)
+	int			push(lua_State *l, T const &v)
 { lua_pushboolean(l, v); return 1; }
 // ftlua::push<void*>	No const accepted here, const_cast yourself before call.
 template <bool LuaErr = false, typename T, OK_IF(ISSAME(T, void*))>
@@ -89,75 +89,84 @@ int			push(lua_State *l, lua_CFunction const &v) {
 
 
 // NUMBERS/STRING =================== //
-# define DEFINE_PUSH(TYPE, FUNCSUFFIX, ...)			\
-	template <bool LuaErr = false>					\
-	int			push(lua_State *l, TYPE const &v)	\
-	{												\
-		lua_push##FUNCSUFFIX(l, v __VA_ARGS__);		\
-		return 1;									\
-	}
+template <bool LuaErr = false, class T
+		  , OK_IF(!ISPTR(T))
+		  , OK_IF(!ISSAME(bool, DELCONST(T)))
+		  , OK_IF(!std::is_floating_point<T>::value)
+		  , OK_IF(ISCONV(T, lua_Integer))
+		  >
+int			push(lua_State *l, T const &v)
+{
+	lua_pushinteger(l, static_cast<lua_Integer>(v));
+	return 1;
+}
 
-DEFINE_PUSH(int8_t, integer)
-DEFINE_PUSH(int16_t, integer)
-DEFINE_PUSH(int32_t, integer)
-DEFINE_PUSH(int64_t, integer)
-DEFINE_PUSH(intmax_t, integer)
+template <bool LuaErr = false, class T
+		  , OK_IF(std::is_floating_point<T>::value)
+		  , OK_IF(ISCONV(T, lua_Number))
+		  >
+int			push(lua_State *l, T const &v)
+{
+	lua_pushnumber(l, static_cast<lua_Number>(v));
+	return 1;
+}
 
-static_assert(!ISSAME(intmax_t, int8_t), "");
-static_assert(!ISSAME(intmax_t, int16_t), "");
-static_assert(!ISSAME(intmax_t, int32_t), "");
-static_assert(!ISSAME(intmax_t, int64_t), "");
+template <bool LuaErr = false>
+int			push(lua_State *l, std::string const &v)
+{
+	lua_pushstring(l, v.c_str());
+	return 1;
+}
 
-DEFINE_PUSH(uint8_t, integer)
-DEFINE_PUSH(uint16_t, integer)
-DEFINE_PUSH(uint32_t, integer)
-DEFINE_PUSH(uint64_t, integer)
-DEFINE_PUSH(uintmax_t, integer)
-// TODO: more types from cstdint might be required here
-
-DEFINE_PUSH(float, number)
-DEFINE_PUSH(double, number)
-
-DEFINE_PUSH(std::string, string, .c_str())
-
-# undef DEFINE_PUSH
 
 // BOOL/NUMBERS/STRING/ ==== POINTERS //
-# define DEFINE_PUSH(TYPE, FUNCSUFFIX, ...)					\
-	template <bool LuaErr = false>							\
-	int			push(lua_State *l, TYPE const *const &v)	\
-	{														\
-		if (v == nullptr)									\
-			lua_pushnil(l);									\
-		else												\
-			lua_push##FUNCSUFFIX(l, (*v) __VA_ARGS__);		\
-		return 1;											\
-	}
+template <bool LuaErr = false, class T
+			, OK_IF(ISPTR(T))
+			, class NOPTR = DELPTR(T)
+			, OK_IF(!ISPTR(NOPTR))
+			, OK_IF(!ISSAME(char, DELCONST(NOPTR)))
+			, OK_IF(!std::is_floating_point<NOPTR>::value)
+			, OK_IF(ISCONV(NOPTR, lua_Integer))
+			>
+int			push(lua_State *l, T v)
+{
+	if (v == nullptr)
+		lua_pushnil(l);
+	else
+		lua_pushinteger(l, static_cast<lua_Integer>(*v));
+	return 1;
+}
 
-DEFINE_PUSH(bool, boolean)
+template <bool LuaErr = false, class T
+			, OK_IF(ISPTR(T))
+			, class NOPTR = DELPTR(T)
+			, OK_IF(!ISPTR(NOPTR))
+			, OK_IF(std::is_floating_point<NOPTR>::value)
+			, OK_IF(ISCONV(NOPTR, lua_Number))
+			>
+int			push(lua_State *l, T v)
+{
+	if (v == nullptr)
+		lua_pushnil(l);
+	else
+		lua_pushinteger(l, static_cast<lua_Integer>(*v));
+	return 1;
+}
 
-DEFINE_PUSH(int8_t, integer)
-DEFINE_PUSH(int16_t, integer)
-DEFINE_PUSH(int32_t, integer)
-DEFINE_PUSH(int64_t, integer)
-// DEFINE_PUSH(intmax_t, integer)
-
-DEFINE_PUSH(uint8_t, integer)
-DEFINE_PUSH(uint16_t, integer)
-DEFINE_PUSH(uint32_t, integer)
-DEFINE_PUSH(uint64_t, integer)
-// DEFINE_PUSH(uintmax_t, integer)
-
-DEFINE_PUSH(float, number)
-DEFINE_PUSH(double, number)
-
-DEFINE_PUSH(std::string, string, .c_str())
-
-# undef DEFINE_PUSH
+template <bool LuaErr = false>
+int			push(lua_State *l, std::string const *const &v)
+{
+	if (v == nullptr)
+		lua_pushnil(l);
+	else
+		lua_pushstring(l, v->c_str());
+	return 1;
+}
 
 template <bool LuaErr = false>
 int			push(lua_State *l, char const *v)
 {
+	FTASSERT(false);
 	if (v == NULL)
 		lua_pushnil(l);
 	else
@@ -198,14 +207,13 @@ int	push(lua_State *l, ft::Rect<T> const &v)
 //
 
 
-// (T -> T::ftlua_push()) OR (T -> T::ftlua_push() const)
+// (T -> T::ftlua_push())
 template <bool LuaErr = false, typename T
-		  // , OK_IF(ft::is_complete<T>::value) // TODO: test is_complete?
-		  , OK_IF(!ISCONST(T))
-		  , OK_IF(ftlua::has_size<T>::value)
-		  , OK_IF(ftlua::has_push<T>::value)
-				  // || ftlua::has_constpush<T>::value)
-		  >
+			// , OK_IF(ft::is_complete<T>::value) // TODO: in_complete works?
+			, OK_IF(!ISCONST(T))
+			, OK_IF(ftlua::has_size<T>::value)
+			, OK_IF(ftlua::has_push<T>::value)
+			>
 int			push(lua_State *l, T &v)
 {
 	bool const	err = v.ftlua_push(l);
@@ -214,12 +222,11 @@ int			push(lua_State *l, T &v)
 	return T::ftlua_size::value;
 }
 
-// (T const -> T::ftlua_push() const)
+// (T -> T::ftlua_push() const) OR (T const -> T::ftlua_push() const)
 template <bool LuaErr = false, typename T
-		  // , OK_IF(ft::is_complete<T>::value) // TODO: test is_complete?
-		  , OK_IF(ftlua::has_size<T>::value)
-		  , OK_IF(ftlua::has_constpush<T>::value)
-		  >
+			, OK_IF(ftlua::has_size<T>::value)
+			, OK_IF(ftlua::has_constpush<T>::value)
+			>
 int			push(lua_State *l, T const &v)
 {
 	bool const	err = v.ftlua_push(l);
@@ -230,12 +237,12 @@ int			push(lua_State *l, T const &v)
 
 // Pointers tmp function
 template <bool LuaErr = false, typename T
-		  , OK_IF(ISPTR(T))
-		  , class NOPTR = DELPTR(T)
-		  , OK_IF(ftlua::has_size<NOPTR>::value)
-		  , OK_IF(ftlua::has_push<NOPTR>::value
-				  || ftlua::has_constpush<NOPTR>::value)
-		  >
+			, OK_IF(ISPTR(T))
+			, class NOPTR = DELPTR(T)
+			, OK_IF(ftlua::has_size<NOPTR>::value)
+			, OK_IF(ftlua::has_push<NOPTR>::value
+					|| ftlua::has_constpush<NOPTR>::value)
+			>
 int			push(lua_State *l, T v)
 {
 	if (v == nullptr)
@@ -244,20 +251,19 @@ int			push(lua_State *l, T v)
 		return push<LuaErr>(l, *v);
 }
 
+
 // ========================================================================== //
 // ========================================================================== //
 // KeysWrapper<...> PUSH-OVERLOADS
 //
-
-
 namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 
 template <size_t I, bool LuaErr
-		  , int Relative
-		  , typename... ARGS
-		  >
+			, int Relative
+			, typename... ARGS
+			>
 void		_dereference(
 	lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 {
@@ -274,10 +280,10 @@ void		_dereference(
 }
 
 template <size_t I, bool LuaErr
-		  , int Relative
-		  , typename... ARGS
-		  , OK_IF((sizeof...(ARGS) - I == 1))
-		  >
+			, int Relative
+			, typename... ARGS
+			, OK_IF((sizeof...(ARGS) - I == 1))
+			>
 void		_loopKey(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 {
 	_dereference<I, LuaErr>(l, wrap);
@@ -285,10 +291,10 @@ void		_loopKey(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 }
 
 template <size_t I, bool LuaErr
-		  , int Relative
-		  , typename... ARGS
-		  , OK_IF((sizeof...(ARGS) - I != 1))
-		  >
+			, int Relative
+			, typename... ARGS
+			, OK_IF((sizeof...(ARGS) - I != 1))
+			>
 void		_loopKey(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 {
 	_dereference<I, LuaErr>(l, wrap);
@@ -302,8 +308,8 @@ void		_loopKey(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 
 
 template <bool LuaErr = false
-		  , int Relative
-		  , typename ...ARGS>
+			, int Relative
+			, typename ...ARGS>
 int			push(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 {
 	if (Relative == 0)
@@ -323,18 +329,16 @@ int			push(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 }
 
 
-
-
-
 // ========================================================================== //
 // ========================================================================== //
 // CONTAINERS<...> PUSH-OVERLOADS
 //
 
+
 template <bool LuaErr = false
-		  , class T
-		  , OK_IF(ft::is_container<T>::value)
-		  >
+			, class T
+			, OK_IF(ft::is_container<T>::value)
+			>
 int			push(lua_State *l, T &cont)
 {
 	int			i(0);
@@ -359,9 +363,9 @@ int			push(lua_State *l, T &cont)
 }
 
 template <bool LuaErr = false
-		  , class T
-		  , OK_IF(ft::is_container<T>::value)
-		  >
+			, class T
+			, OK_IF(ft::is_container<T>::value)
+			>
 int			push(lua_State *l, T const &cont)
 {
 	int			i(0);
@@ -390,8 +394,6 @@ int			push(lua_State *l, T const &cont)
 // ========================================================================== //
 // MULTI-PUSH
 //
-
-
 namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
@@ -422,8 +424,6 @@ int			multiPush(lua_State *l, ARGS const & ...args)
 
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-
-
 # undef DELPTR
 # undef DELCONST
 # undef ISCONV
@@ -432,5 +432,4 @@ int			multiPush(lua_State *l, ARGS const & ...args)
 # undef OK_IF
 # undef OK_IFNODEF
 # undef ISSAME
-
 #endif

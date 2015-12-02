@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 14:36:46 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 15:53:10 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 18:01:21 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -36,6 +36,12 @@
 		static constexpr bool	value = ISSAME(TestRetType, yes_t&);	\
 	}
 
+#define FT_DEFINE_TYPETRAIT_BOOLCONSTANT(NAME, PRED)	\
+	template<typename T>								\
+	struct NAME : std::integral_constant<bool, PRED>	\
+	{}
+
+
 namespace ft // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 namespace dont_drool // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -56,98 +62,37 @@ struct is_printable
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE DONT_DROOL //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-template<typename T>
-struct is_printable
-{
-	static constexpr bool	value = dont_drool::is_printable<T>::value;
-};
 
-template<typename T>
-struct has_iterator
-{
-private:
-	typedef char			yes_t[1];
-	typedef char			no_t[2];
+FT_DEFINE_TYPETRAIT_BOOLCONSTANT(
+	is_printable, dont_drool::is_printable<T>::value);
 
-	template<typename C>
-	static yes_t			&test(typename C::const_iterator*);
-	template<typename C>
-	static no_t				&test(...);
+FT_DEFINE_TYPETRAIT_TEST(
+	has_iterator
+	, class It = typename C::const_iterator
+	);
 
-	using ItVal = decltype(test<T>(nullptr));
-public:
-	static constexpr bool	value = ISSAME(ItVal, yes_t&);
+FT_DEFINE_TYPETRAIT_TEST(
+	has_begin
+	, class WishedFun = typename C::const_iterator (C::*)() const
+	, class BeginFun = decltype(static_cast<WishedFun>(&C::begin))
+	, OK_IF(ISSAME(WishedFun, BeginFun))
+	);
 
-};
+FT_DEFINE_TYPETRAIT_TEST(
+	has_end
+	, class WishedFun = typename C::const_iterator (C::*)() const
+	, class BeginFun = decltype(static_cast<WishedFun>(&C::end))
+	, OK_IF(ISSAME(WishedFun, BeginFun))
+	);
 
-template<typename T >
-class has_begin
-{
-	typedef char			yes_t[1];
-	typedef char			no_t[2];
+FT_DEFINE_TYPETRAIT_BOOLCONSTANT(
+	is_container
+	, has_iterator<T>::value && has_begin<T>::value && has_end<T>::value);
 
-	template <class C
-			  , class WishedFun = typename C::const_iterator (C::*)() const
-			  , class BeginFun = decltype(static_cast<WishedFun>(&C::begin))
-			  , OK_IF(ISSAME(WishedFun, BeginFun))
-			  >
-	static yes_t			&test(void *);
-
-	template <class C>
-	static no_t				&test(...);
-
-	using BeginVal = decltype(test<T>(nullptr));
-
-public:
-	static constexpr bool	value = ISSAME(BeginVal, yes_t&);
-
-};
-
-template<typename T >
-class has_end
-{
-	typedef char			yes_t[1];
-	typedef char			no_t[2];
-
-	template <class C
-			  , class WishedFun = typename C::const_iterator (C::*)() const
-			  , class EndFun = decltype(static_cast<WishedFun>(&C::end))
-			  , OK_IF(ISSAME(WishedFun, EndFun))
-			  >
-	static yes_t			&test(void *);
-
-	template <class C>
-	static no_t				&test(...);
-
-	using EndVal = decltype(test<T>(nullptr));
-
-public:
-	static constexpr bool	value = ISSAME(EndVal, yes_t&);
-
-};
-
-template<typename T>
-struct is_container : std::integral_constant<
-	bool, has_iterator<T>::value
-	&& has_begin<T>::value && has_end<T>::value>
-{};
-
-template <typename T>
-class is_complete
-{
-	typedef char			yes_t[1];
-	typedef char			no_t[2];
-
-	template<typename C, OK_IF((sizeof(C) > 0))>
-	static yes_t			&test(C *);
-	template<typename C>
-	static no_t				&test(...);
-
-	using TestVal = decltype(test<T>(nullptr));
-public:
-	static constexpr bool	value = ISSAME(TestVal, yes_t&);
-};
-
+FT_DEFINE_TYPETRAIT_TEST(
+	is_complete //TODO: debug
+	, OK_IF((sizeof(C) > 0))
+	);
 
 template <class F>
 struct return_type;//TODO:: overloads for member functions

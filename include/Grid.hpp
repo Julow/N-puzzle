@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/02 17:38:52 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 17:53:47 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -38,8 +38,6 @@ public:
 	Grid				&operator=(Grid &&rhs);
 
 	~Grid(void);
-    // operator ftlua::Converter<Grid const>() const;
-
 
 	typedef std::integral_constant<unsigned int, 1>	ftlua_size;
 	bool				ftlua_push(lua_State *l) const
