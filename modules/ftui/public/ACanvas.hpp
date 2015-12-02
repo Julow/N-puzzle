@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/30 16:43:42 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/02 17:42:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,7 +21,8 @@
 
 # include "ftui/libftui.hpp"
 
-# include "ftlua/Converter.hpp"
+# include "ftlua/utils.hpp" //ftlua_push
+# include "ftlua/light.hpp" //ftlua_push
 
 namespace ftui
 {
@@ -164,7 +165,14 @@ public:
 ** ========================================================================== **
 ** Lua interactions
 */
-	operator ftlua::Converter<ACanvas>();
+	typedef std::integral_constant<unsigned int, 1> ftlua_size;
+	bool			ftlua_push(lua_State *l)
+		{
+			ftlua::pushLightKey(l, this);
+			if (!lua_istable(l, -1))
+				return false;
+			return true;
+		}
 
 	static void			pushTemplate(lua_State *l);
 	static int			drawRectG(lua_State *l);

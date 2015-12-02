@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:12:33 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/22 11:33:15 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 17:43:56 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,7 +16,6 @@
 # include <cstddef>
 
 # include "ftlua/KeysWrapper.hpp"
-# include "ftlua/Converter.hpp"
 
 namespace ftlua
 {

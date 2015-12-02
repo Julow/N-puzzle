@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/30 18:37:42 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 17:40:25 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -67,15 +67,6 @@ ACanvas::~ACanvas(void)
 ** ========================================================================== **
 ** LUA Interations
 */
-
-ACanvas::operator ftlua::Converter<ACanvas>()
-{
-	return ftlua::Converter<ACanvas>(
-		*this, [](lua_State *l, ACanvas &v)
-		{
-			return ftlua::pushLightKey(l, &v);
-		});
-}
 
 int				ACanvas::drawRectG(lua_State *l)
 {

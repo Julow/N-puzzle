@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 16:14:48 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 17:34:32 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -390,7 +390,7 @@ int				main(void)
 	// lol<ftui::ALayout>();
 	// lol<int>();
 
-	ftlua::pop< ftui::AView >(nullptr, -1);
+	// ftlua::pop< ftui::AView >(nullptr, -1);
 
 #define TEST1(TYPE)									\
 	ft::f(std::cout, "has_size %: %\n"				\

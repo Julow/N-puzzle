@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/01 19:09:26 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/02 17:33:43 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -41,8 +41,6 @@ public:
 
 	ALayout(Activity &act, std::string const &viewName);
 	virtual ~ALayout(void);
-
-	operator ftlua::Converter<ALayout>();
 
 /*
 ** AView legacy

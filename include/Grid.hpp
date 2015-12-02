@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/02 16:55:32 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 17:38:52 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -38,7 +38,7 @@ public:
 	Grid				&operator=(Grid &&rhs);
 
 	~Grid(void);
-    operator ftlua::Converter<Grid const>() const;
+    // operator ftlua::Converter<Grid const>() const;
 
 
 	typedef std::integral_constant<unsigned int, 1>	ftlua_size;
@@ -83,7 +83,7 @@ public:
 			int const	tabindex2 = i < 0 ? i - 1 : i;
 			int			type;
 			int			w;
-
+// TODO: test ftlua_pop
 			if (!lua_istable(l, i))
 			{
 				err = true;

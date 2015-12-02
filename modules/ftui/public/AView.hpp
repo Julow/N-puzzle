@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 16:20:27 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 17:43:31 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -142,14 +142,6 @@ public:
 
 	AView(Activity &act, std::string const &viewName);
 	virtual ~AView(void);
-
-
-	operator ftlua::Converter<AView>();
-
-	/*
-	void		addView(AView *v);
-	void		machintrucView(AView &v);
-	*/
 
 	typedef std::integral_constant<unsigned int, 1>	ftlua_size;
 	bool			ftlua_push(lua_State *l)

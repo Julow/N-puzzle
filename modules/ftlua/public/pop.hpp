@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:16:24 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 15:38:39 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 17:46:30 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -22,6 +22,7 @@
 # include "ft/utils.hpp"
 # include "ft/assert.hpp" //debug
 
+# include "ftlua/conversions.hpp"
 # include "ftlua/types.hpp"
 # include "ftlua/utils.hpp"
 
@@ -88,32 +89,32 @@ TT	pop(lua_State *l, int index, std::pair<bool, unsigned int> *info = nullptr)
 }
 
 
-template <class T, bool LuaErr = true
-		  , OK_IF(ft::is_complete<T>::value)
-		  , OK_IF(ISCONV(T, Converter<T>))
-		  , OK_IF(std::is_default_constructible<T>::value)
-		  >
-T	pop(lua_State *l, int index)
-{
-	(void)l;
-	(void)index;
-	return {};
-}
+// template <class T, bool LuaErr = true
+// 		  , OK_IF(ft::is_complete<T>::value)
+// 		  , OK_IF(ISCONV(T, Converter<T>))
+// 		  , OK_IF(std::is_default_constructible<T>::value)
+// 		  >
+// T	pop(lua_State *l, int index)
+// {
+// 	(void)l;
+// 	(void)index;
+// 	return {};
+// }
 
-template <class T, bool LuaErr = true
-		  , OK_IF(ft::is_complete<T>::value)
-		  , OK_IF(ISCONV(T, Converter<T>))
-		  , OK_IF(!std::is_default_constructible<T>::value)
-		  >
-T	&pop(lua_State *l, int index)
-{
-	Converter<T>	conv = static_cast< Converter<T> >(*(T*)(0x0));
-	std::cout << (void*)&conv._v << std::endl;
-	std::cout << (void*)conv._p << std::endl;
-	(void)l;
-	(void)index;
-	return *(T*)(0x0);
-}
+// template <class T, bool LuaErr = true
+// 		  , OK_IF(ft::is_complete<T>::value)
+// 		  , OK_IF(ISCONV(T, Converter<T>))
+// 		  , OK_IF(!std::is_default_constructible<T>::value)
+// 		  >
+// T	&pop(lua_State *l, int index)
+// {
+// 	Converter<T>	conv = static_cast< Converter<T> >(*(T*)(0x0));
+// 	std::cout << (void*)&conv._v << std::endl;
+// 	std::cout << (void*)conv._p << std::endl;
+// 	(void)l;
+// 	(void)index;
+// 	return *(T*)(0x0);
+// }
 
 
 

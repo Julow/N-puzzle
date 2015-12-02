@@ -19,8 +19,8 @@ o/srcs/Grid.o: srcs/Grid.cpp modules/_objs/_public/ft/assert.hpp \
 	modules/_objs/_public/ft/templates/Vec4.tpp \
 	modules/_objs/_public/ft/type_traits.hpp \
 	modules/_objs/_public/ft/utils.hpp include/Grid.hpp \
-	modules/_objs/_public/ftlua/Converter.hpp \
 	modules/_objs/_public/ftlua/KeysWrapper.hpp \
+	modules/_objs/_public/ftlua/conversions.hpp \
 	modules/_objs/_public/ftlua/push.hpp \
 	modules/_objs/_public/ftlua/stackassert.hpp \
 	modules/_objs/_public/ftlua/types.hpp \
@@ -46,9 +46,10 @@ o/srcs/Main.o: srcs/Main.cpp modules/_objs/_public/ft/Rect.hpp \
 	modules/_objs/_public/ft/utils.hpp modules/_objs/_public/ft/assert.hpp \
 	modules/_objs/_public/ft_xml/XmlParser.hpp \
 	modules/_objs/_public/ft_xml/XmlTokenizer.hpp \
-	modules/_objs/_public/ftlua/Converter.hpp \
 	modules/_objs/_public/ftlua/KeysWrapper.hpp \
-	modules/_objs/_public/ftlua/call.hpp modules/_objs/_public/ftlua/ftlua.hpp \
+	modules/_objs/_public/ftlua/call.hpp \
+	modules/_objs/_public/ftlua/conversions.hpp \
+	modules/_objs/_public/ftlua/ftlua.hpp \
 	modules/_objs/_public/ftlua/light.hpp modules/_objs/_public/ftlua/push.hpp \
 	modules/_objs/_public/ftlua/set.hpp \
 	modules/_objs/_public/ftlua/stackassert.hpp \
@@ -84,8 +85,8 @@ o/srcs/OCamlBinding.o: srcs/OCamlBinding.cpp include/Grid.hpp \
 	modules/_objs/_public/ft/templates/Vec4.tpp \
 	modules/_objs/_public/ft/type_traits.hpp \
 	modules/_objs/_public/ft/utils.hpp \
-	modules/_objs/_public/ftlua/Converter.hpp \
 	modules/_objs/_public/ftlua/KeysWrapper.hpp \
+	modules/_objs/_public/ftlua/conversions.hpp \
 	modules/_objs/_public/ftlua/push.hpp \
 	modules/_objs/_public/ftlua/stackassert.hpp \
 	modules/_objs/_public/ftlua/types.hpp \
@@ -105,9 +106,10 @@ o/srcs/PickState.o: srcs/PickState.cpp include/Grid.hpp include/IBundle.hpp \
 	modules/_objs/_public/ft/utils.hpp \
 	modules/_objs/_public/ft_xml/XmlParser.hpp \
 	modules/_objs/_public/ft_xml/XmlTokenizer.hpp \
-	modules/_objs/_public/ftlua/Converter.hpp \
 	modules/_objs/_public/ftlua/KeysWrapper.hpp \
-	modules/_objs/_public/ftlua/call.hpp modules/_objs/_public/ftlua/ftlua.hpp \
+	modules/_objs/_public/ftlua/call.hpp \
+	modules/_objs/_public/ftlua/conversions.hpp \
+	modules/_objs/_public/ftlua/ftlua.hpp \
 	modules/_objs/_public/ftlua/light.hpp modules/_objs/_public/ftlua/push.hpp \
 	modules/_objs/_public/ftlua/set.hpp \
 	modules/_objs/_public/ftlua/stackassert.hpp \
@@ -144,9 +146,10 @@ o/srcs/SolvingState.o: srcs/SolvingState.cpp include/Grid.hpp \
 	modules/_objs/_public/ft/utils.hpp \
 	modules/_objs/_public/ft_xml/XmlParser.hpp \
 	modules/_objs/_public/ft_xml/XmlTokenizer.hpp \
-	modules/_objs/_public/ftlua/Converter.hpp \
 	modules/_objs/_public/ftlua/KeysWrapper.hpp \
-	modules/_objs/_public/ftlua/call.hpp modules/_objs/_public/ftlua/ftlua.hpp \
+	modules/_objs/_public/ftlua/call.hpp \
+	modules/_objs/_public/ftlua/conversions.hpp \
+	modules/_objs/_public/ftlua/ftlua.hpp \
 	modules/_objs/_public/ftlua/light.hpp modules/_objs/_public/ftlua/push.hpp \
 	modules/_objs/_public/ftlua/set.hpp \
 	modules/_objs/_public/ftlua/stackassert.hpp \
@@ -188,9 +191,10 @@ o/srcs/libftui_extend/Bookmark.o: srcs/libftui_extend/Bookmark.cpp \
 	modules/_objs/_public/ft/utils.hpp \
 	modules/_objs/_public/ft_xml/XmlParser.hpp \
 	modules/_objs/_public/ft_xml/XmlTokenizer.hpp \
-	modules/_objs/_public/ftlua/Converter.hpp \
 	modules/_objs/_public/ftlua/KeysWrapper.hpp \
-	modules/_objs/_public/ftlua/call.hpp modules/_objs/_public/ftlua/ftlua.hpp \
+	modules/_objs/_public/ftlua/call.hpp \
+	modules/_objs/_public/ftlua/conversions.hpp \
+	modules/_objs/_public/ftlua/ftlua.hpp \
 	modules/_objs/_public/ftlua/light.hpp modules/_objs/_public/ftlua/push.hpp \
 	modules/_objs/_public/ftlua/set.hpp \
 	modules/_objs/_public/ftlua/stackassert.hpp \

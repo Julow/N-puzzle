@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:12 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/28 17:58:00 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 17:29:18 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -182,23 +182,23 @@ Grid::~Grid(void)
 	return ;
 }
 
-Grid::operator ftlua::Converter<Grid const>() const
-{
-	return ftlua::Converter<Grid const>(
-		*this, [](lua_State *l, Grid const &gr)
-		{
-			int const   w = gr.getSize();
+// Grid::operator ftlua::Converter<Grid const>() const
+// {
+// 	return ftlua::Converter<Grid const>(
+// 		*this, [](lua_State *l, Grid const &gr)
+// 		{
+// 			int const   w = gr.getSize();
 
-			lua_createtable(l, w * w, 0);
-			for (int i = 0; i < w * w; i++)
-			{
-				lua_pushinteger(l, i);
-				lua_pushinteger(l, gr.get(i % w, i / w));
-				lua_settable(l, -3);
-			}
-			return 1;
-		});
-}
+// 			lua_createtable(l, w * w, 0);
+// 			for (int i = 0; i < w * w; i++)
+// 			{
+// 				lua_pushinteger(l, i);
+// 				lua_pushinteger(l, gr.get(i % w, i / w));
+// 				lua_settable(l, -3);
+// 			}
+// 			return 1;
+// 		});
+// }
 
 std::string const	&Grid::getName(void) const
 {

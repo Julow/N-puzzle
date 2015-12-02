@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 10:43:48 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 17:44:41 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -24,6 +24,7 @@
 # include "ft/assert.hpp" //debug
 
 # include "ftlua/types.hpp"
+# include "ftlua/conversions.hpp"
 # include "ftlua/stackassert.hpp"
 # include "ftlua/utils.hpp"
 
@@ -193,61 +194,47 @@ int	push(lua_State *l, ft::Rect<T> const &v)
 
 // ========================================================================== //
 // ========================================================================== //
-// CONVERTER<T> PUSH-OVERLOADS
+// CUSTOM::ftlua_push() PUSH-OVERLOADS
 //
 
-// T -> Converter<T>
+
+// (T -> T::ftlua_push()) OR (T -> T::ftlua_push() const)
 template <bool LuaErr = false, typename T
-		  , OK_IF(ft::is_complete<T>::value)
+		  // , OK_IF(ft::is_complete<T>::value) // TODO: test is_complete?
 		  , OK_IF(!ISCONST(T))
-		  , OK_IF(ISCONV(T, Converter<T>)) >
+		  , OK_IF(ftlua::has_size<T>::value)
+		  , OK_IF(ftlua::has_push<T>::value)
+				  // || ftlua::has_constpush<T>::value)
+		  >
 int			push(lua_State *l, T &v)
 {
-	return static_cast<Converter<T>>(v).callPush(l);
+	bool const	err = v.ftlua_push(l);
+
+	FTASSERT(err == true); //TODO FTLUA_STACKASSERT
+	return T::ftlua_size::value;
 }
 
-// T const -> Converter<T const>
+// (T const -> T::ftlua_push() const)
 template <bool LuaErr = false, typename T
-		  , OK_IF(ft::is_complete<T>::value)
-		  , OK_IF(ISCONST(T))
-		  , OK_IF(ISCONV(T, Converter<T>)) >
-int			push(lua_State *l, T &v)
-{
-	return static_cast<Converter<T>>(v).callPush(l);
-}
-
-// T -> Converter<T const>   NOT(T -> Converter<T>)
-template <bool LuaErr = false, typename T
-		  , OK_IF(ft::is_complete<T>::value)
-		  , OK_IF(!ISCONST(T))
-		  , OK_IF(ISCONV(T, Converter<const T>))
-		  , OK_IF(!ISCONV(T, Converter<T>))
+		  // , OK_IF(ft::is_complete<T>::value) // TODO: test is_complete?
+		  , OK_IF(ftlua::has_size<T>::value)
+		  , OK_IF(ftlua::has_constpush<T>::value)
 		  >
 int			push(lua_State *l, T const &v)
 {
-	return static_cast<Converter<const T>>(v).callPush(l);
-}
+	bool const	err = v.ftlua_push(l);
 
-// T const -> Converter<T>  NOT(T const -> Converter<T const)
-// Might require a const cast in user's cast-operator
-template <bool LuaErr = false, typename T
-		  , OK_IF(ft::is_complete<T>::value)
-		  , OK_IF(ISCONST(T))
-		  , class TNoConst = DELCONST(T)
-		  , OK_IF(ISCONV(T, Converter<TNoConst>))
-		  , OK_IF(!ISCONV(T, Converter<T>))>
-int			push(lua_State *l, T &v)
-{
-	return static_cast<Converter<T const>>(v).callPush(l);
+	FTASSERT(err == true); //TODO FTLUA_STACKASSERT
+	return T::ftlua_size::value;
 }
 
 // Pointers tmp function
 template <bool LuaErr = false, typename T
 		  , OK_IF(ISPTR(T))
-		  , typename NOPTR = DELPTR(T)
-		  , OK_IF(ft::is_complete<NOPTR>::value)
-		  , typename NOPTRCONST = DELCONST(NOPTR)
-		  , OK_IF(ISCONV(NOPTRCONST, Converter<NOPTRCONST>))
+		  , class NOPTR = DELPTR(T)
+		  , OK_IF(ftlua::has_size<NOPTR>::value)
+		  , OK_IF(ftlua::has_push<NOPTR>::value
+				  || ftlua::has_constpush<NOPTR>::value)
 		  >
 int			push(lua_State *l, T v)
 {
@@ -256,7 +243,6 @@ int			push(lua_State *l, T v)
 	else
 		return push<LuaErr>(l, *v);
 }
-
 
 // ========================================================================== //
 // ========================================================================== //
@@ -335,6 +321,9 @@ int			push(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 	internal::_loopKey<0, LuaErr>(l, wrap);
 	return 1;
 }
+
+
+
 
 
 // ========================================================================== //

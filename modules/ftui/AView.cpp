@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/02 13:12:29 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/02 17:32:30 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -31,14 +31,14 @@ namespace ftui
 ** CONSTRUCTION
 */
 
-AView::operator ftlua::Converter<AView>()
-{
-	return ftlua::Converter<AView>(
-		*this, [](lua_State *l, AView &v)
-		{
-			return ftlua::pushLightKey(l, &v);
-		});
-}
+// AView::operator ftlua::Converter<AView>()
+// {
+// 	return ftlua::Converter<AView>(
+// 		*this, [](lua_State *l, AView &v)
+// 		{
+// 			return ftlua::pushLightKey(l, &v);
+// 		});
+// }
 
 AView::AView(Activity &act, std::string const &viewName) :
 	_holder(nullptr),

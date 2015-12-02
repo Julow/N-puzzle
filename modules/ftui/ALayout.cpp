@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/02 11:50:25 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/02 17:33:55 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -32,15 +32,6 @@ ALayout::ALayout(Activity &act, std::string const &viewName) :
 
 ALayout::~ALayout(void)
 {
-}
-
-ALayout::operator ftlua::Converter<ALayout>()
-{
-	return ftlua::Converter<ALayout>(
-		*this, [](lua_State *l, ALayout &v)
-		{
-			return ftlua::pushLightKey(l, &v);
-		});
 }
 
 void				ALayout::queryUpdate(void)
