@@ -475,9 +475,8 @@ $(O_DIR)/ftui/ViewTemplate.o: ftui/ViewTemplate.cpp ft/public/Rect.hpp \
 	ft/public/type_traits.hpp ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
 	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
 	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
-	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
-	ftlua/public/set.hpp ftlua/public/stackassert.hpp \
-	ftlua/public/templates/ftlua_caller.tpp \
+	ftlua/public/light.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
+	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
 	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \

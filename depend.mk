@@ -56,6 +56,7 @@ o/srcs/Main.o: srcs/Main.cpp modules/_objs/_public/ft/Rect.hpp \
 	modules/_objs/_public/ftlua/templates/ftlua_handler.tpp \
 	modules/_objs/_public/ftlua/types.hpp \
 	modules/_objs/_public/ftlua/utils.hpp modules/_objs/_public/ftui/AView.hpp \
+	modules/_objs/_public/ftui/ViewTemplate.hpp \
 	modules/_objs/_public/ftui/libftui.hpp \
 	modules/_objs/_public/ftui/templates/AView_callLuaCallback.tpp \
 	modules/_objs/_public/liblua/lua.hpp include/libftui_extend/Bookmark.hpp \
@@ -120,6 +121,7 @@ o/srcs/PickState.o: srcs/PickState.cpp include/Grid.hpp include/IBundle.hpp \
 	modules/_objs/_public/ftui/EventTarget.hpp \
 	modules/_objs/_public/ftui/EventTargetCpp.hpp \
 	modules/_objs/_public/ftui/IViewHolder.hpp \
+	modules/_objs/_public/ftui/ViewTemplate.hpp \
 	modules/_objs/_public/ftui/libftui.hpp \
 	modules/_objs/_public/ftui/templates/AView_callLuaCallback.tpp \
 	modules/_objs/_public/ftui/templates/Activity.tpp \
@@ -158,6 +160,7 @@ o/srcs/SolvingState.o: srcs/SolvingState.cpp include/Grid.hpp \
 	modules/_objs/_public/ftui/EventTarget.hpp \
 	modules/_objs/_public/ftui/EventTargetCpp.hpp \
 	modules/_objs/_public/ftui/IViewHolder.hpp \
+	modules/_objs/_public/ftui/ViewTemplate.hpp \
 	modules/_objs/_public/ftui/libftui.hpp \
 	modules/_objs/_public/ftui/templates/AView_callLuaCallback.tpp \
 	modules/_objs/_public/ftui/templates/Activity.tpp \
@@ -203,6 +206,7 @@ o/srcs/libftui_extend/Bookmark.o: srcs/libftui_extend/Bookmark.cpp \
 	modules/_objs/_public/ftui/EventTarget.hpp \
 	modules/_objs/_public/ftui/EventTargetCpp.hpp \
 	modules/_objs/_public/ftui/IViewHolder.hpp \
+	modules/_objs/_public/ftui/ViewTemplate.hpp \
 	modules/_objs/_public/ftui/libftui.hpp \
 	modules/_objs/_public/ftui/templates/AView_callLuaCallback.tpp \
 	modules/_objs/_public/ftui/templates/Activity.tpp \
