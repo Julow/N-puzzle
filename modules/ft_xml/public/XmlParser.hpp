@@ -1,20 +1,20 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   XmlParser.hpp                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 13:12:32 by jaguillo          #+#    #+#             */
-//   Updated: 2015/11/16 14:43:44 by ngoguey          ###   ########.fr       //
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   XmlParser.hpp                                      :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/09/22 13:12:32 by jaguillo          #+#    #+#             //
+//   Updated: 2015/12/02 11:55:30 by jaguillo         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #ifndef XMLPARSER_HPP
 # define XMLPARSER_HPP
 
 # include <istream>
-# include <unordered_map>
+# include <vector>
 # include <stack>
 
 # include "ft_xml/XmlTokenizer.hpp"
@@ -44,7 +44,7 @@ public:
 		END,
 	};
 
-	typedef std::unordered_map<std::string, std::string>	params_map_t;
+	typedef std::vector<std::pair<std::string, std::string>>	params_map_t;
 
 	XmlParser(std::istream &stream);
 	virtual ~XmlParser(void);

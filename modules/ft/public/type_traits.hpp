@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 14:36:46 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/01 16:58:03 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 15:28:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,6 +18,23 @@
 
 #define ISSAME(A, B) std::is_same<A, B>::value
 #define OK_IF(PRED) typename std::enable_if<PRED>::type* = nullptr
+
+#define FT_DEFINE_TYPETRAIT_TEST(NAME, ...)								\
+	template <typename T>												\
+	class NAME															\
+	{																	\
+		typedef char			yes_t[1];								\
+		typedef char			no_t[2];								\
+																		\
+		template<typename C, __VA_ARGS__>								\
+			static yes_t		&test(void *);							\
+		template<typename C>											\
+			static no_t			&test(...);								\
+																		\
+		using TestRetType = decltype(test<T>(nullptr));					\
+	public:																\
+		static constexpr bool	value = ISSAME(TestRetType, yes_t&);	\
+	}
 
 namespace ft // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -33,8 +50,8 @@ struct is_printable
 	using Ret = decltype((*(std::ostream*)(0x0)) << (*(T*)(0x0)));
 
 	static constexpr bool	value =
-		std::is_same<Ret, std::ostream&>::value
-		|| std::is_convertible<T, std::string>::value;
+					std::is_same<Ret, std::ostream&>::value
+					|| std::is_convertible<T, std::string>::value;
 };
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE DONT_DROOL //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -130,6 +147,22 @@ class is_complete
 public:
 	static constexpr bool	value = ISSAME(TestVal, yes_t&);
 };
+
+template <class F>
+struct return_type;
+
+template <class Ret, class ...Args>
+struct return_type<Ret (*)(Args...)>
+{
+	typedef Ret type;
+};
+
+template <class Ret, class ...Args>
+struct return_type<Ret (*)(Args..., ...)>
+{
+	typedef Ret type;
+};
+
 
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FT //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //

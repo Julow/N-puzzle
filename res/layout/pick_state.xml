@@ -1,17 +1,23 @@
 
-<template name="mdr" backgroundColor="0x55FFFFFF">
-	<!-- <Button id="$parentlol" parentKey="but" /> -->
+<template
+	name="template_test"
+	direction="vertical"
+	width="200"
+	backgroundColor="0xFFFFFFFF"
+>
+	<TextView text="a" textSize="24" textColor="0xFFFFFFFF" parent_key="a" width="150" align="CENTER" marginTop="10" marginBottom="10" backgroundColor="0x55FFFFFF" />
+	<TextView text="b" textSize="24" textColor="0xFFFFFFFF" parent_key="b" width="150" align="CENTER" marginTop="10" marginBottom="10" backgroundColor="0x55FFFFFF" />
+	<TextView text="c" textSize="24" textColor="0xFFFFFFFF" parent_key="c" width="150" align="CENTER" marginTop="10" marginBottom="10" backgroundColor="0x55FFFFFF" />
+	<TextView text="d" textSize="24" textColor="0xFFFFFFFF" parent_key="d" width="150" align="CENTER" marginTop="10" marginBottom="10" backgroundColor="0x55FFFFFF" />
 </template>
-<template name="slider_test" width="200" height="350" backgroundColor="0xFFFFFFFF" />
 
 <LinearLayout
 	direction="vertical"
-	activity_scripts="res/lua_utils;res/global;res/pick_state"
+	activity_scripts="res/lua_utils;res/global;res/pick_state;res/test.lua"
 	virtual_xml="res/layout/"
 	>
 
   <LinearLayout
-  		inherit="mdr"
   	  direction="horizontal"
 	  id="panes-holder"
 	  align="CENTER"
@@ -100,14 +106,14 @@
 			/>
 	  </LinearLayout>
 
-	  <SolidView inherit="slider_test" backgroundColor="0xFFFFFFFF" />
-	  <SolidView inherit="slider_test" backgroundColor="0xFF00FFFF" />
-	  <SolidView inherit="slider_test" backgroundColor="0xFFFF00FF" />
-	  <SolidView inherit="slider_test" backgroundColor="0xFFFFFF00" />
-	  <SolidView inherit="slider_test" backgroundColor="0xFFFF0000" />
-	  <SolidView inherit="slider_test" backgroundColor="0xFF00FF00" />
-	  <SolidView inherit="slider_test" backgroundColor="0xFF0000FF" />
-	  <SolidView inherit="slider_test" backgroundColor="0xFF000000" />
+	  <LinearLayout id="test_parent_key" inherit="template_test" backgroundColor="0xFFFFFFFF" />
+	  <LinearLayout inherit="template_test" backgroundColor="0xFF00FFFF" />
+	  <LinearLayout inherit="template_test" backgroundColor="0xFFFF00FF" />
+	  <LinearLayout inherit="template_test" backgroundColor="0xFFFFFF00" />
+	  <LinearLayout inherit="template_test" backgroundColor="0xFFFF0000" />
+	  <LinearLayout inherit="template_test" backgroundColor="0xFF00FF00" />
+	  <LinearLayout inherit="template_test" backgroundColor="0xFF0000FF" />
+	  <LinearLayout inherit="template_test" backgroundColor="0xFF000000" />
 	</ScrollableLayout>
 
 	<LinearLayout

@@ -121,10 +121,11 @@ $(O_DIR)/ft_xml/srcs/XmlTokenizer.o: ft_xml/srcs/XmlTokenizer.cpp \
 $(O_DIR)/ftlua/cpp_utils.o: ftlua/cpp_utils.cpp ft/public/Rect.hpp \
 	ft/public/Vec.hpp ft/public/assert.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
-	ft/public/templates/Vec4.tpp ftlua/public/Converter.hpp \
-	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
-	ftlua/public/light.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
-	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp \
+	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
+	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
+	ftlua/public/push.hpp ftlua/public/set.hpp ftlua/public/stackassert.hpp \
+	ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
@@ -132,10 +133,11 @@ $(O_DIR)/ftlua/cpp_utils.o: ftlua/cpp_utils.cpp ft/public/Rect.hpp \
 $(O_DIR)/ftlua/push_utils.o: ftlua/push_utils.cpp ft/public/Rect.hpp \
 	ft/public/Vec.hpp ft/public/assert.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
-	ft/public/templates/Vec4.tpp ftlua/public/Converter.hpp \
-	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
-	ftlua/public/light.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
-	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp \
+	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
+	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
+	ftlua/public/push.hpp ftlua/public/set.hpp ftlua/public/stackassert.hpp \
+	ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
@@ -186,11 +188,12 @@ $(O_DIR)/ftui/ALayout_luaHandler.o: ftui/ALayout_luaHandler.cpp \
 	ft/public/Color.hpp ft/public/Rect.hpp ft/public/Vec.hpp \
 	ft/public/assert.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
-	ft/public/templates/Vec4.tpp ft_xml/public/XmlParser.hpp \
-	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
-	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
-	ftlua/public/light.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
-	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp \
+	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
+	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
+	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
+	ftlua/public/push.hpp ftlua/public/set.hpp ftlua/public/stackassert.hpp \
+	ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ALayout.hpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp \
@@ -238,11 +241,12 @@ $(O_DIR)/ftui/AView_luaHandler.o: ftui/AView_luaHandler.cpp \
 	ft/public/Color.hpp ft/public/Rect.hpp ft/public/Vec.hpp \
 	ft/public/assert.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
-	ft/public/templates/Vec4.tpp ft_xml/public/XmlParser.hpp \
-	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
-	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
-	ftlua/public/light.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
-	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp \
+	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
+	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
+	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
+	ftlua/public/push.hpp ftlua/public/set.hpp ftlua/public/stackassert.hpp \
+	ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ALayout.hpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp \
@@ -438,11 +442,11 @@ $(O_DIR)/ftui/SolidView.o: ftui/SolidView.cpp ft/public/Color.hpp \
 	ft/public/Rect.hpp ft/public/Vec.hpp ft/public/assert.hpp \
 	ft/public/templates/Rect.tpp ft/public/templates/Vec2.tpp \
 	ft/public/templates/Vec3.tpp ft/public/templates/Vec4.tpp \
-	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
-	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
-	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
-	ftlua/public/push.hpp ftlua/public/set.hpp ftlua/public/stackassert.hpp \
-	ftlua/public/templates/ftlua_caller.tpp \
+	ft/public/type_traits.hpp ft_xml/public/XmlParser.hpp \
+	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
+	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
+	ftlua/public/light.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
+	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ASolidView.hpp \
 	ftui/public/AView.hpp ftui/public/SolidView.hpp \
@@ -455,11 +459,11 @@ $(O_DIR)/ftui/TextView.o: ftui/TextView.cpp ft/public/Color.hpp \
 	ft/public/Rect.hpp ft/public/Vec.hpp ft/public/assert.hpp \
 	ft/public/templates/Rect.tpp ft/public/templates/Vec2.tpp \
 	ft/public/templates/Vec3.tpp ft/public/templates/Vec4.tpp \
-	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
-	ftlua/public/Converter.hpp ftlua/public/KeysWrapper.hpp \
-	ftlua/public/call.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
-	ftlua/public/push.hpp ftlua/public/set.hpp ftlua/public/stackassert.hpp \
-	ftlua/public/templates/ftlua_caller.tpp \
+	ft/public/type_traits.hpp ft_xml/public/XmlParser.hpp \
+	ft_xml/public/XmlTokenizer.hpp ftlua/public/Converter.hpp \
+	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp ftlua/public/ftlua.hpp \
+	ftlua/public/light.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
+	ftlua/public/stackassert.hpp ftlua/public/templates/ftlua_caller.tpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ASolidView.hpp \
 	ftui/public/AView.hpp ftui/public/IViewHolder.hpp ftui/public/TextView.hpp \
@@ -511,7 +515,8 @@ $(O_DIR)/gl_canvas/GlCanvas.o: gl_canvas/GlCanvas.cpp ft/public/Color.hpp \
 	ft/public/Rect.hpp ft/public/Vec.hpp ft/public/assert.hpp \
 	ft/public/templates/Rect.tpp ft/public/templates/Vec2.tpp \
 	ft/public/templates/Vec3.tpp ft/public/templates/Vec4.tpp \
-	ftlua/public/Converter.hpp ftui/public/ACanvas.hpp ftui/public/libftui.hpp \
+	ft/public/type_traits.hpp ftlua/public/Converter.hpp \
+	ftui/public/ACanvas.hpp ftui/public/libftui.hpp \
 	gl_canvas/public/GlCanvas.hpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h

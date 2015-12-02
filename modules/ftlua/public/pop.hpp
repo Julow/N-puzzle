@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:16:24 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 12:04:58 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 15:38:39 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -37,6 +37,7 @@ namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 # define ISCONV(A, B) std::is_convertible<A, B>::value
 # define ISSAME(A, B) std::is_same<A, B>::value
 # define OK_IFSAME(A, B) OK_IF(ISSAME(A, B))
+
 
 // template <class T, bool LuaErr = true, OK_IFSAME(T, int)>
 // T	pop(lua_State *l, int index, bool &noErr, unsigned int &nret)

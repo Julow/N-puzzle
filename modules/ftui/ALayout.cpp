@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/01 19:10:18 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/02 11:50:25 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -220,10 +220,9 @@ void				ALayout::inflate(ViewTemplate const &t)
 		setParam(p.first, p.second);
 	for (ViewTemplate const *child : t.getChilds())
 	{
-		// view = Activity::getFactory(child->getName())(_act, )
-		throw std::runtime_error("Does not support child in template yet");
-		(void)child;
-		(void)view;
+		view = Activity::getFactory(child->getName())(_act);
+		addView(view);
+		view->inflate(*child);
 	}
 }
 

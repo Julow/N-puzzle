@@ -6,96 +6,70 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/21 10:27:37 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 13:41:47 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 15:39:54 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef FTLUA_CONVERTER_HPP
 # define FTLUA_CONVERTER_HPP
 
-# include <type_traits>
+# include "ft/type_traits.hpp"
 # include "liblua/lua.hpp"
-
 
 namespace ftlua // ========================================================== //
 {
 
+# define ISSAME(A, B) std::is_same<A, B>::value
+# define OK_IF(PRED) typename std::enable_if<PRED>::type* = nullptr
+# define ISCONV(A, B) std::is_convertible<A, B>::value
 
-#define ISSAME(A, B) std::is_same<A, B>::value
-#define OK_IF(PRED) typename std::enable_if<PRED>::type* = nullptr
+# define ISBASE(A, B) std::is_base_of<A, B>::value
+# define ISPTR(A) std::is_pointer<A>::value
+# define DELPTR(T) typename std::remove_pointer<T>::type
 
-template <typename T>
-class has_size
-{
-	typedef char			yes_t[1];
-	typedef char			no_t[2];
+FT_DEFINE_TYPETRAIT_TEST(
+	has_size
+	, class TT = typename C::ftlua_size
+	, class T1 = typename TT::value_type
+	, OK_IF(ISSAME(T1, unsigned int))
+	, unsigned int T2 = TT::value
+	, OK_IF((T2 > 0))
+	);
 
-	template<typename C
-			 , class TT = typename C::ftlua_size
-			 , class T1 = typename TT::value_type
-			 , OK_IF(ISSAME(T1, unsigned int))
-			 , unsigned int T2 = TT::value
-			 , OK_IF((T2 > 0))
-		>
-	static yes_t			&test(void *);
-	template<typename C>
-	static no_t				&test(...);
+FT_DEFINE_TYPETRAIT_TEST(
+	has_push
+	, class WishedFun = bool (C::*)(lua_State*)
+	, class Fun = decltype(static_cast<WishedFun>(&C::ftlua_push))
+	, OK_IF(ISSAME(Fun, WishedFun))
+	);
 
-	using TestRetType = decltype(test<T>(nullptr));
-public:
-	static constexpr bool	value = ISSAME(TestRetType, yes_t&);
-};
+FT_DEFINE_TYPETRAIT_TEST(
+	has_constpush
+	, class WishedFun = bool (C::*)(lua_State*) const
+	, class Fun = decltype(static_cast<WishedFun>(&C::ftlua_push))
+	, OK_IF(ISSAME(Fun, WishedFun))
+	);
 
+FT_DEFINE_TYPETRAIT_TEST(
+	has_pop
+	, class WishedFun = C (*)(lua_State*, bool &)
+	, class Fun = decltype(static_cast<WishedFun>(&C::ftlua_pop))
+	// , OK_IF(ISCONV(Fun, WishedFun))
+	, OK_IF(ISSAME(Fun, WishedFun))
+	);
 
-template<typename T>
-class has_push
-{
-	typedef char			yes_t[1];
-	typedef char			no_t[2];
-
-	template <class C
-			  , class WishedFun = bool (C::*)(lua_State*)
-			  , class Fun = decltype(static_cast<WishedFun>(&C::ftlua_push))
-			  , OK_IF(ISSAME(Fun, WishedFun))
-			  >
-	static yes_t			&test(void *);
-
-	template <class C>
-	static no_t				&test(...);
-
-	using TestRetType = decltype(test<T>(nullptr));
-
-public:
-	static constexpr bool	value = ISSAME(TestRetType, yes_t&);
-
-};
-
-// template<typename T>
-// class has_constpush
-// {
-// 	typedef char			yes_t[1];
-// 	typedef char			no_t[2];
-
-// 	template <class C
-// 			  , class WishedFun = typename bool (C::*)(lua_State*) const
-// 			  , class Fun = decltype(static_cast<WishedFun>(&C::ftlua_push))
-// 			  , OK_IF(ISSAME(Fun, BeginFun))
-// 			  >
-// 	static yes_t			&test(void *);
-
-// 	template <class C>
-// 	static no_t				&test(...);
-
-// 	using TestRetType = decltype(test<T>(nullptr));
-
-// public:
-// 	static constexpr bool	value = ISSAME(TestRetType, yes_t&);
-
-// };
+FT_DEFINE_TYPETRAIT_TEST(
+	has_ptrpop
+	, class Fun = decltype(&C::ftlua_pop)
+	, class Ret = typename ft::return_type<Fun>::type
+	, OK_IF(ISPTR(Ret))
+	, OK_IF(ISBASE(DELPTR(Ret), C))
+	, class WishedFun = Ret (*)(lua_State*, bool &)
+	, OK_IF(ISSAME(Fun, WishedFun))
+	);
 
 
-template<typename T
-		 , OK_IF(!std::is_void<T>::value)>
+template<typename T, OK_IF(!std::is_void<T>::value)>
 class Converter
 {
 public:
@@ -127,5 +101,10 @@ public:
 
 # undef ISSAME
 # undef OK_IF
+# undef ISCONV
+# undef ISBASE
+# undef ISPTR
+# undef ISCONV
+
 
 #endif /* *********************************************** FTLUA_CONVERTER_HPP */

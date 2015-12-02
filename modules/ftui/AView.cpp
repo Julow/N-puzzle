@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/01 19:38:45 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/02 13:12:29 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -269,6 +269,20 @@ void				AView::setParam(string const &k, string const &v)
 		{"activity_scripts", [](AView *view, std::string const &p)
 		{
 			view->_act.saveScriptPath(p);
+		}},
+		{"parent_key", [](AView *view, std::string const &p)
+		{
+			AView *const		parent = view->getParent();
+			lua_State *const	l = view->_act.getLuaState();
+
+			if (parent == nullptr)
+				throw std::runtime_error(ft::f("parent_key used on unattached "
+					"view (#%)", (view->_id == nullptr) ? "" : *view->_id));
+			// parent[p] = view
+			ftlua::push(l, parent);
+			ftlua::set(l, -1, p, view);
+			// TODO: WTF? ftlua::set(l, ftlua::lightKey(parent), p, view)
+			lua_pop(l, -1);
 		}},
 		{"inherit", [](AView *view, std::string const &p)
 		{
