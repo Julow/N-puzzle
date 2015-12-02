@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/28 17:54:47 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 17:53:47 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,6 +15,7 @@
 
 # include <string>
 # include <vector>
+# include <cmath> //ftlua_pop
 
 # include "ftlua/push.hpp"
 
@@ -37,7 +38,77 @@ public:
 	Grid				&operator=(Grid &&rhs);
 
 	~Grid(void);
-    operator ftlua::Converter<Grid const>() const;
+
+	typedef std::integral_constant<unsigned int, 1>	ftlua_size;
+	bool				ftlua_push(lua_State *l) const
+		{
+			int const	w = this->_size;
+
+			lua_createtable(l, w * w, 0);
+			for (int i = 0; i < w * w; i++)
+			{
+				lua_pushinteger(l, i);
+				lua_pushinteger(l, this->_data[i / w][i % w]);
+				lua_settable(l, -3);
+			}
+			return true;
+		}
+
+
+	static Grid			helper(lua_State *l, bool &err, int tabindex2, int w)
+		{
+			Grid		gr = Grid(w, "From_lua");
+
+			for (int y = 0; y < w; y++)
+			{
+				for (int x = 0; x < w; x++)
+				{
+					ftlua::push(l, y * w + x);
+					if (lua_gettable(l, tabindex2) != LUA_TNUMBER)
+					{
+						err = true;
+						return Grid(0);
+					}
+					gr.set(x, y, lua_tointeger(l, -1));
+					lua_pop(l, 1);
+				}
+			}
+			return gr;
+		}
+	static Grid			ftlua_pop(lua_State *l, int i, bool &err)
+		{
+			int			len;
+			int const	tabindex2 = i < 0 ? i - 1 : i;
+			int			type;
+			int			w;
+// TODO: test ftlua_pop
+			if (!lua_istable(l, i))
+			{
+				err = true;
+				return Grid(0);
+			}
+			ftlua::push(l, 0);
+			type = lua_gettable(l, tabindex2);
+			if (type == LUA_TNIL)
+				len = 0;
+			else if (type == LUA_TNUMBER)
+				len = 1 + luaL_len(l, tabindex2);
+			else
+			{
+				lua_pop(l, 1);
+				err = true;
+				return Grid(0);
+			}
+			lua_pop(l, 1);
+			w = static_cast<int>(sqrt(static_cast<float>(len)));
+			if (w * w != len)
+			{
+				err = true;
+				return Grid(0);
+			}
+			return helper(l, err, tabindex2, w);
+		}
+
 
 	std::string const	&getName(void) const;
 	void				setName(std::string const &name);

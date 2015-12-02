@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 20:38:00 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/02 17:53:34 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -146,7 +146,35 @@ public:
 	AView(Activity &act, std::string const &viewName);
 	virtual ~AView(void);
 
-	operator ftlua::Converter<AView>();
+	typedef std::integral_constant<unsigned int, 1>	ftlua_size;
+	bool			ftlua_push(lua_State *l)
+		{
+			ftlua::pushLightKey(l, this);
+			if (!lua_istable(l, -1))
+				return false;
+			return true;
+		}
+	static AView	*ftlua_pop(lua_State *l, int i, bool &err)
+		{
+			AView		*v;
+
+			if (!lua_istable(l, i))
+			{
+				err = true;
+				return nullptr;
+			}
+			ftlua::push(l, 0);
+			if (lua_gettable(l, i < 0 ? i - 1 : i) != LUA_TLIGHTUSERDATA)
+			{
+				err = true;
+				return nullptr;
+			}
+			v = reinterpret_cast<AView*>(lua_touserdata(l, -1));
+			lua_pop(l, 1);
+			lua_remove(l, i);
+			return v;
+		}
+
 
 	/*
 	** Extract the view tree from a xml file

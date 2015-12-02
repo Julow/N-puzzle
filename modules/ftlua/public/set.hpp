@@ -37,7 +37,7 @@ void        set(
 				, ft::tupleToString(tabGlobalKeys.tup)
 				, ft::valToString(key)
 				, ft::valToString(val))
-		, ft::f("Table was expected after as set target.")
+		, ft::f("Table was expected as set target.")
 		);
 	lua_settable(l, -3);
 	lua_pop(l, 1);

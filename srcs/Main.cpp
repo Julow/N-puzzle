@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/01 19:47:38 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/02 20:02:35 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -360,17 +360,139 @@ int				Main::getCost(void) const
 { return this->cost; }
 
 #include "ftlua/pop.hpp"
+#include <type_traits>
+// # define OK_IF(PRED) typename std::enable_if<PRED>::type* = nullptr
+// # define ISSAME(A, B) std::is_same<A, B>::value
+// # define ISBASE(A, B) std::is_base_of<A, B>::value
+// # define ISPTR(A) std::is_pointer<A>::value
+// # define DELPTR(T) typename std::remove_pointer<T>::type
+
+// template <class C
+// 		  , class Fun = decltype(&C::ftlua_pop)
+// 		  , class Ret = typename ft::return_type<Fun>::type
+// 		  , OK_IF(ISPTR(Ret))
+// 		  , OK_IF(ISBASE(DELPTR(Ret), C))
+// 		  , class WishedFun = Ret (*)(lua_State*, int, bool &)
+// 		  , OK_IF(ISSAME(Fun, WishedFun))
+// 		  >
+// void		lol(void)
+// {
+// 	std::cout << ft::typesToString<Fun>() << std::endl;
+// 	std::cout << ft::typesToString<Ret>() << std::endl;
+// 	std::cout << ft::typesToString<WishedFun>() << std::endl;
+// 	// std::cout << ft::typesToString<typename std::result_of<Fun>::type>() << std::endl;
+
+// }
 
 int				main(void)
 {
-	// FTASSERT(false);
-	// auto lol = ftlua::pop<int>(nullptr, -1);
-	// FTASSERT(false);
-	// ftlua::pop<std::string *>(nullptr, -1);
-	// FTASSERT(false);
-	// ftlua::pop< ft::Vec2<int> >(nullptr, -1);
-	// FTASSERT(false);
-	ftlua::pop< ftui::AView >(nullptr, -1);
+
+	// ftlua::push<>
+	// char		*truc = "bordel";
+	// char const		*truc2 = "bordel";
+
+	// ftlua::push(nullptr, truc);
+	// ftlua::push(nullptr, truc2);
+	// std::cout << "salit" << std::endl;
+
+#define LOLTEST(T1, T2)								\
+	static_assert(!std::is_same<T1, T2>::value, "")
+
+#define LOLTESTT(T)								\
+	LOLTEST(T, int8_t);							\
+	LOLTEST(T, int16_t);						\
+	LOLTEST(T, int32_t);						\
+	LOLTEST(T, int64_t);						\
+	LOLTEST(T, uint8_t);						\
+	LOLTEST(T, uint16_t);						\
+	LOLTEST(T, uint32_t);						\
+	LOLTEST(T, uint64_t);						\
+	LOLTEST(T, int_least8_t);					\
+	LOLTEST(T, int_fast8_t);					\
+	LOLTEST(T, intmax_t);						\
+	LOLTEST(T, uintmax_t)
+
+
+	// LOLTESTT(int); 				// int32_t
+	// LOLTESTT(unsigned int); 	//uint32_t
+	// LOLTESTT(size_t); 			//uintmax_t
+	// LOLTESTT(char);
+	// LOLTESTT(unsigned char); 	//uint8_t
+	// LOLTESTT(short); 			//int16_t
+	// LOLTESTT(unsigned short); 	//uint16_t
+	// LOLTESTT(long);				//intmax_t
+	// LOLTESTT(unsigned long);	//uintmax_t
+	// LOLTESTT(long long);		//int64_t
+	// LOLTESTT(unsigned long long);//uint64_t
+
+	// ftlua::push(nullptr, truc);
+
+	// ftlua::size<void*>();
+	// ftlua::size<bool>();
+	// ftlua::size<int8_t>();
+	// // ftlua::size<int8_t&>();
+	// ftlua::size<int8_t*>();
+	// ftlua::size<int8_t const>();
+	// ftlua::size<float>();
+	// ftlua::size<std::string const*>::value;
+
+	// lol<ftui::AView>();
+	// lol<ftui::ALayout>();
+	// lol<int>();
+
+	// ftlua::pop< ftui::AView >(nullptr, -1);
+
+#define TEST1(TYPE)									\
+	ft::f(std::cout, "has_size %: %\n"				\
+		  , #TYPE, ftlua::has_size<TYPE>::value)
+	TEST1(int);
+	TEST1(Grid);
+	TEST1(ftui::AView);
+	TEST1(ftui::ALayout);
+	std::cout << "" << std::endl;
+
+#undef TEST1
+#define TEST1(TYPE)									\
+	ft::f(std::cout, "has_push %: %\n"				\
+		  , #TYPE, ftlua::has_push<TYPE>::value)
+	TEST1(int);
+	TEST1(Grid);
+	TEST1(ftui::AView);
+	TEST1(ftui::ALayout);
+	std::cout << std::endl;
+
+
+#undef TEST1
+#define TEST1(TYPE)									\
+	ft::f(std::cout, "has_constpush %: %\n"			\
+		  , #TYPE, ftlua::has_constpush<TYPE>::value)
+	TEST1(int);
+	TEST1(Grid);
+	TEST1(ftui::AView);
+	TEST1(ftui::ALayout);
+	std::cout << std::endl;
+
+#undef TEST1
+#define TEST1(TYPE)									\
+	ft::f(std::cout, "has_pop %: %\n"			\
+		  , #TYPE, ftlua::has_pop<TYPE>::value)
+	TEST1(int);
+	TEST1(Grid);
+	TEST1(ftui::AView);
+	TEST1(ftui::ALayout);
+	std::cout << std::endl;
+
+
+#undef TEST1
+#define TEST1(TYPE)									\
+	ft::f(std::cout, "has_ptrpop %: %\n"			\
+		  , #TYPE, ftlua::has_ptrpop<TYPE>::value)
+	TEST1(int);
+	TEST1(Grid);
+	TEST1(ftui::AView);
+	TEST1(ftui::ALayout);
+	std::cout << std::endl;
+
 
 
 	try
