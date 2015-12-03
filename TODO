@@ -13,7 +13,6 @@ TODO LIST
 
 	LinearLayout direction REV_VERTICAL and REV_HORIZONTAL
 
-	$parent
 	Clean Activity::_scriptsPaths
 
 	Clean AView destruction
@@ -23,3 +22,5 @@ TODO LIST
 	remove libftui.hpp
 
 	<template> in other file
+
+	"PARENT" as width and height

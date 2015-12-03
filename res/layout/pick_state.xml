@@ -1,360 +1,247 @@
+<template
+	name="config-holder"
+	marginTop="5" marginLeft="5" marginRight="5"
+	direction="vertical"
+	backgroundColor="0xFF000000"
+>
+	<SolidView width="190" height="1" />
+	<TextView
+		textColor="0xffffffff"
+		textSize="14"
+		text="$parent"
+		marginTop="5"
+		marginLeft="15"
+		marginBottom="10"
+	/>
+</template>
 
 <template
-	name="template_test"
+	name="gen-holder"
+	marginLeft="5"
+	marginTop="5"
+	marginRight="5"
+	marginBottom="5"
 	direction="vertical"
-	backgroundColor="0xFFFFFFFF"
+	backgroundColor="0x40000000"
 >
-	<TextView id="$parent-a" text="$parenta" textSize="8" textColor="0xFFFFFFFF" parentKey="a" width="$parent" align="CENTER" marginTop="10" marginBottom="10" backgroundColor="0x55FFFFFF" />
-	<TextView id="$parent-b" text="$parentb" textSize="8" textColor="0xFFFFFFFF" parentKey="b" width="$parent" align="CENTER" marginTop="10" marginBottom="10" backgroundColor="0x55FFFFFF" />
+	<SolidView width="100" height="1" />
+	<TextView
+		textColor="0xffffffff"
+		align="CENTER"
+		textSize="12"
+		text="$parent"
+		marginTop="2"
+		marginBottom="5"
+	/>
 </template>
+
+<template
+	name="puzzle-button"
+	marginTop="10"
+	marginBottom="10"
+	marginLeft="10"
+	align="CENTER"
+	width="50"
+	height="50"
+	alpha="0.66"
+/>
+
+<template
+	name="gen-checkbox"
+	alpha="0.75"
+	width="20"
+	height="20"
+	normalFillColor="0xFFFF0000"
+	normalStrokeColor="0xFF00AA00"
+	normalBorderWidth="3"
+	checkedFillColor="0xB0FFFF00"
+	checkedStrokeColor="0x01000000"
+	checkedBorderWidth="6"
+/>
 
 <LinearLayout
 	direction="vertical"
-	activity_scripts="res/lua_utils;res/global;res/pick_state;res/test.lua"
+	activity_scripts="res/lua_utils;res/global;res/pick_state"
 	virtual_xml="res/layout/"
-	id="big_layout"
 >
-	  <LinearLayout width="200" text="mdr-" id="test_parent_key" inherit="template_test" backgroundColor="0xFFFFFFFF" />
-	  <LinearLayout width="200" text="mdr-2" id="$parent-test2" inherit="template_test" backgroundColor="0xFF00FFFF" />
-<!-- 	  <LinearLayout width="200" text="mdr-3" id="test_parent_key3" inherit="template_test" backgroundColor="0xFFFF00FF" />
-	  <LinearLayout width="200" text="mdr-4" id="test_parent_key4" inherit="template_test" backgroundColor="0xFFFFFF00" />
-	  <LinearLayout width="200" text="mdr-5" id="test_parent_key5" inherit="template_test" backgroundColor="0xFFFF0000" />
-	  <LinearLayout width="200" text="mdr-6" id="test_parent_key6" inherit="template_test" backgroundColor="0xFF00FF00" />
-	  <LinearLayout width="200" text="mdr-7" id="test_parent_key7" inherit="template_test" backgroundColor="0xFF0000FF" />
-	  <LinearLayout width="200" text="mdr-8" id="test_parent_key8" inherit="template_test" backgroundColor="0xFF000000" />
- -->
-  <LinearLayout
-  	  direction="horizontal"
-	  id="panes-holder"
-	  align="CENTER"
-	  marginTop="50"
-	  >
-	<!--
-		TODO $parent dans les attributs
-		parentKey in child
-	-->
-	<ScrollableLayout
-		id="left_holder"
-		width="200"
-		height="400"
-		direction="vertical"
-		backgroundColor="0x60BB0000" alpha="0.6"
-		>
-
-	  <LinearLayout
-		  id="algo_holder"
-		  marginTop="5" marginLeft="5" marginRight="5"
-		  direction="vertical"
-		  backgroundColor="0xFF000000"
-		  >
-		<SolidView  width="190" height="1"/>
-		<TextView
-			textColor="0xffffffff"
-			textSize="14"
-			text="Algorithms"
-			marginTop="5"
-			marginLeft="15"
-			marginBottom="10"
-			/>
-	  </LinearLayout>
-
-	  <LinearLayout
-		  id="heu_holder"
-		  marginTop="5" marginLeft="5" marginRight="5"
-		  direction="vertical"
-		  backgroundColor="0xFF000000"
-		  >
-		<SolidView  width="190" height="1"/>
-		<TextView
-			textColor="0xffffffff"
-			textSize="14"
-			text="Heuristics"
-			marginTop="5"
-			marginLeft="15"
-			marginBottom="10"
-			/>
-	  </LinearLayout>
-
-	  <LinearLayout
-		  id="cost_holder"
-		  marginTop="5" marginLeft="5" marginRight="5"
-		  direction="vertical"
-		  backgroundColor="0xFF000000"
-		  >
-		<SolidView  width="190" height="1"/>
-		<TextView
-			textColor="0xffffffff"
-			textSize="14"
-			text="Cost"
-			marginTop="5"
-			marginLeft="15"
-			marginBottom="10"
-			/>
-		<SliderView
-			id="cost_slider"
-			marginLeft="5"
-			width="180"
-			height="30"
-			backgroundColor="0xFF555555"
-			minValue="-1"
-			maxValue="1"
-			steps="2"
-			value="1"
-			/>
-		<TextView
-			align="CENTER"
-			id="cost_text"
-			textColor="0xffffffff"
-			textSize="12"
-			text="1"
-			marginTop="1"
-			marginBottom="5"
-			/>
-	  </LinearLayout>
-	</ScrollableLayout>
-
 	<LinearLayout
-		direction="vertical"
-		id="mid-holder"
-		align="TOP"
-		backgroundColor="0xFFFF0000" alpha="0.66"
+		id="panes-holder"
+		direction="horizontal"
+		align="CENTER"
+		marginTop="50"
+	>
+		<ScrollableLayout
+			id="left_holder"
+			width="200"
+			height="400"
+			direction="vertical"
+			backgroundColor="0x60BB0000"
+			alpha="0.6"
 		>
-	  <SolidView
-		  id="puzzleFrame"
-		  marginTop="35"
-		  align="CENTER"
-		  width="500" height="500"
-		  backgroundColor="0x30FFFFFF" alpha="0.66"
-		  />
-	  <LinearLayout
-	  	  direction="horizontal"
-		  id="mid-bot-holder"
-		  backgroundColor="0xE0FFFF00"
-		  >
-
+			<LinearLayout id="algo_holder" text="Algorithms" inherit="config-holder" />
+			<LinearLayout id="heu_holder" text="Heuristics" inherit="config-holder" />
+			<LinearLayout id="cost_holder" text="Cost" inherit="config-holder">
+				<SliderView
+					id="cost_slider"
+					marginLeft="5"
+					width="180"
+					height="30"
+					backgroundColor="0xFF555555"
+					minValue="-1"
+					maxValue="1"
+					steps="2"
+					value="1"
+				/>
+				<TextView
+					align="CENTER"
+					id="cost_text"
+					textColor="0xffffffff"
+					textSize="12"
+					text="1"
+					marginTop="1"
+					marginBottom="5"
+				/>
+			</LinearLayout>
+		</ScrollableLayout>
 
 		<LinearLayout
-			id="genslider_holder"
-			marginTop="5" marginLeft="5" marginBottom="5"
+			id="mid-holder"
 			direction="vertical"
-			backgroundColor="0x40000000"
-			>
-		  <SolidView  width="184" height="1"/>
-		  <TextView
-			  textColor="0xffffffff"
-			  align="CENTER"
-			  textSize="12"
-			  text="Size"
-			  marginTop="2"
-			  marginBottom="2"
-			  />
-		  <SliderView
-			  id="gensize_slider"
-			  marginTop="3" marginLeft="2" marginRight="2"
-			  width="180"
-			  height="35"
-			  backgroundColor="0xFF555555"
-			  minValue="3"
-			  maxValue="20"
-			  steps="17"
-			  value="4"
-			  />
-		  <TextView
-			  align="CENTER"
-			  id="gensize_slider_text"
-			  textColor="0xffffffff"
-			  textSize="12"
-			  text="1"
-			  marginTop="1"
-			  marginBottom="3"
-			  />
-		</LinearLayout>
-
-
-		<LinearLayout
-			id="gencheckbox_holder"
-			marginTop="5" marginLeft="5" marginBottom="5"
-			direction="vertical"
-			backgroundColor="0x40000000"
-			>
-		  <SolidView  width="100" height="1"/>
-		  <TextView
-			  textColor="0xffffffff"
-			  align="CENTER"
-			  textSize="12"
-			  text="Solvable"
-			  marginTop="2"
-			  marginBottom="2"
-			  />
-		  <LinearLayout
-			  marginTop="3"
-			  marginLeft="3"
-			  id="gencheckboxyes_holder"
-			  direction="horizontal"
-			  >
-			<CheckBox
-				id="gencheckbox_yes"
-				alpha="0.75"
-				width="20"
-				height="20"
-				checked="true"
-				normalFillColor="0xFFFF0000"
-				normalStrokeColor="0xFF00AA00"
-				normalBorderWidth="3"
-				checkedFillColor="0xB0FFFF00"
-				checkedStrokeColor="0x01000000"
-				checkedBorderWidth="6"
-				/>
-			<TextView
-				text="yes"
-				textSize="12"
-				marginLeft="3"
-				textColor="0x99ffffff"
-				/>
-		  </LinearLayout>
-		  <LinearLayout
-			  marginTop="3"
-			  marginLeft="3"
-			  id="gencheckboxno_holder"
-			  direction="horizontal"
-			  >
-			<CheckBox
-				id="gencheckbox_no"
-				alpha="0.75"
-				width="20"
-				height="20"
-				normalFillColor="0xFFFF0000"
-				normalStrokeColor="0xFF00AA00"
-				normalBorderWidth="3"
-				checkedFillColor="0xB0FFFF00"
-				checkedStrokeColor="0x01000000"
-				checkedBorderWidth="6"
-				/>
-			<TextView
-				text="no"
-				textSize="12"
-				marginLeft="3"
-				textColor="0x99ffffff"
-				/>
-		  </LinearLayout>
-
-		</LinearLayout>
-
-
-		<Button
-			id="randomPuzzleButton"
-			marginTop="10" marginBottom="10" marginLeft="10"
-			align="CENTER"
-			width="50"
-			height="50"
+			align="TOP"
+			backgroundColor="0xFFFF0000"
 			alpha="0.66"
-			/>
-		<!-- <Button -->
-		<!-- 	id="filePuzzleButton" -->
-		<!-- 	marginTop="10" marginBottom="10" -->
-		<!-- 	align="CENTER" -->
-		<!-- 	width="20" -->
-		<!-- 	height="60" -->
-		<!-- 	alpha="0.66" -->
-		<!-- 	/> -->
-		<!-- <Button -->
-		<!-- 	id="defaultPuzzleButton" -->
-		<!-- 	marginTop="10" marginBottom="10" -->
-		<!-- 	align="CENTER" -->
-		<!-- 	width="20" -->
-		<!-- 	height="60" -->
-		<!-- 	alpha="0.66" -->
-		<!-- 	/> -->
-		<Button
-			id="solveLaunchButton"
-			marginTop="10" marginBottom="10" marginLeft="10"
-			align="CENTER"
-			width="50"
-			height="50"
-			alpha="0.66"
-			/>
-	  </LinearLayout>
-	  <TextView
-		  textColor="0xffffffff"
-		  align="CENTER"
-		  textSize="13"
-		  text="Swaps"
-		  marginTop="1"
-		  marginBottom="1"
-		  />
-	  <SliderView
-		  id="genloops_slider"
-		  marginTop="0" marginLeft="10" marginRight="10"
-		  width="480"
-		  height="30"
-		  backgroundColor="0xFF555555"
-		  minValue="0"
-		  maxValue="12"
-		  steps="480"
-		  value="1"
-		  />
-	  <TextView
-		  align="CENTER"
-		  id="genloops_slider_text"
-		  textColor="0xffffffff"
-		  textSize="12"
-		  text="1"
-		  marginTop="1"
-		  marginBottom="5"
-		  />
-
-
-	</LinearLayout>
-	<LinearLayout
-		direction="vertical"
-		id="right-holder"
-		backgroundColor="0x20BB0000" alpha="0.75"
-		align="TOP"
 		>
-	  <SolidView
-		  id="right-holder-dummy"
-		  marginTop="5" marginBottom="5" marginLeft="10" marginRight="10"
-		  width="230" height="25"
-		  backgroundColor="0xFFBB0000" alpha="0.75"
-		  />
-	  <LinearLayout
-		  direction="horizontal"
-		  >
-		<TextView
-			text="-"
-			id="lol_slider_right"
-			textColor="0xFFFFFFFF"
-			mouse_click_target="true"
+			<SolidView
+				id="puzzleFrame"
+				marginTop="35"
+				align="CENTER"
+				width="500" height="500"
+				backgroundColor="0x30FFFFFF"
+				alpha="0.66"
 			/>
-		<SliderView
-			id="lol_slider"
-			width="150"
-			height="30"
-			backgroundColor="0xFF555555"
-			minValue="-5"
-			maxValue="5"
-			steps="5"
-			value="3.5"
-			disabled="true"
+			<LinearLayout
+				id="mid-bot-holder"
+				direction="horizontal"
+				backgroundColor="0xE0FFFF00"
+			>
+				<LinearLayout
+					id="genslider_holder"
+					text="Size"
+					inherit="gen-holder"
+				>
+					<SliderView
+						id="gensize_slider"
+						marginLeft="2"
+						marginRight="2"
+						width="180"
+						height="35"
+						backgroundColor="0xFF555555"
+						minValue="3"
+						maxValue="20"
+						steps="17"
+						value="4"
+					/>
+					<TextView
+						align="CENTER"
+						id="gensize_slider_text"
+						textColor="0xffffffff"
+						textSize="12"
+						text="1"
+						marginTop="1"
+						marginBottom="3"
+					/>
+				</LinearLayout>
+
+				<LinearLayout
+					id="gencheckbox_holder"
+					text="Solvable"
+					inherit="gen-holder"
+				>
+					<LinearLayout
+						id="gencheckboxyes_holder"
+						marginLeft="3"
+						direction="horizontal"
+					>
+						<CheckBox id="gencheckbox_yes" inherit="gen-checkbox" checked="true" />
+						<TextView
+							text="yes"
+							textSize="12"
+							marginLeft="3"
+							textColor="0x99ffffff"
+						/>
+					</LinearLayout>
+					<LinearLayout
+						marginTop="3"
+						marginLeft="3"
+						id="gencheckboxno_holder"
+						direction="horizontal"
+					>
+						<CheckBox id="gencheckbox_no" inherit="gen-checkbox" />
+						<TextView
+							text="no"
+							textSize="12"
+							marginLeft="3"
+							textColor="0x99ffffff"
+						/>
+					</LinearLayout>
+				</LinearLayout> <!-- #gencheckbox_holder -->
+
+				<Button id="randomPuzzleButton" inherit="puzzle-button" />
+				<Button id="solveLaunchButton" inherit="puzzle-button" />
+
+			</LinearLayout> <!-- mid-bot-holder -->
+			<LinearLayout
+				text="Swaps"
+				inherit="gen-holder"
+			>
+				<SliderView
+					id="genloops_slider"
+					marginLeft="10"
+					marginRight="10"
+					width="480"
+					height="30"
+					backgroundColor="0xFF555555"
+					minValue="0"
+					maxValue="12"
+					steps="480"
+					value="1"
+				/>
+				<TextView
+					align="CENTER"
+					id="genloops_slider_text"
+					textColor="0xffffffff"
+					textSize="12"
+					text="1"
+					marginTop="1"
+					marginBottom="5"
+				/>
+			</LinearLayout>
+		</LinearLayout> <!-- mid-holder -->
+		<LinearLayout
+			id="right-holder"
+			direction="vertical"
+			backgroundColor="0x20BB0000"
+			alpha="0.75"
+			align="TOP"
+		>
+			<SolidView
+				id="right-holder-dummy"
+				marginTop="5"
+				marginBottom="5"
+				marginLeft="10"
+				marginRight="10"
+				width="230"
+				height="25"
+				backgroundColor="0xFFBB0000"
+				alpha="0.75"
 			/>
-		<TextView
-			text="+"
-			id="lol_slider_left"
-			textColor="0xFFFFFFFF"
-			mouse_click_target="true"
+			<LinearLayout
+				direction="vertical"
+				id="bookmark-holder"
+				marginTop="10"
+				marginRight="10"
+				align="LEFT"
 			/>
-	  </LinearLayout>
-	  <LinearLayout
-	  	  direction="vertical"
-		  id="bookmark-holder"
-	  	  marginTop="10" marginRight="10"
-		  align="LEFT"
-		  >
-
-	  </LinearLayout>
-	</LinearLayout>
-
-
-
-  </LinearLayout>
+		</LinearLayout> <!-- right-holder -->
+	</LinearLayout> <!-- panes-holder -->
 </LinearLayout>
