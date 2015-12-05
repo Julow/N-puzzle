@@ -524,8 +524,8 @@ $(O_DIR)/gl_canvas/GlCanvas.o: gl_canvas/GlCanvas.cpp ft/public/Color.hpp \
 	ft/public/templates/Vec3.tpp ft/public/templates/Vec4.tpp \
 	ft/public/type_traits.hpp ft/public/utils.hpp ftlua/public/KeysWrapper.hpp \
 	ftlua/public/conversions.hpp ftlua/public/light.hpp ftlua/public/push.hpp \
-	ftlua/public/stackassert.hpp ftlua/public/types.hpp ftlua/public/utils.hpp \
-	ftui/public/ACanvas.hpp ftui/public/libftui.hpp \
+	ftlua/public/size.hpp ftlua/public/stackassert.hpp ftlua/public/types.hpp \
+	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/libftui.hpp \
 	gl_canvas/public/GlCanvas.hpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
@@ -535,12 +535,13 @@ $(O_DIR)/gl_canvas/GlCanvasHolder.o: gl_canvas/GlCanvasHolder.cpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
 	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
 	ftlua/public/KeysWrapper.hpp ftlua/public/conversions.hpp \
-	ftlua/public/light.hpp ftlua/public/push.hpp ftlua/public/stackassert.hpp \
-	ftlua/public/types.hpp ftlua/public/utils.hpp ftui/public/ACanvas.hpp \
-	ftui/public/libftui.hpp gl/gl.h gl/gl.hpp gl_canvas/public/GlCanvas.hpp \
-	gl_canvas/public/GlCanvasHolder.hpp liblua/lua-5.3.1/src/lauxlib.h \
-	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
-	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
+	ftlua/public/light.hpp ftlua/public/push.hpp ftlua/public/size.hpp \
+	ftlua/public/stackassert.hpp ftlua/public/types.hpp ftlua/public/utils.hpp \
+	ftui/public/ACanvas.hpp ftui/public/libftui.hpp gl/gl.h gl/gl.hpp \
+	gl_canvas/public/GlCanvas.hpp gl_canvas/public/GlCanvasHolder.hpp \
+	liblua/lua-5.3.1/src/lauxlib.h liblua/lua-5.3.1/src/lua.h \
+	liblua/lua-5.3.1/src/lua.hpp liblua/lua-5.3.1/src/luaconf.h \
+	liblua/lua-5.3.1/src/lualib.h
 
 # module liblua::liblua
 LIBLUA_DIR		:= liblua/lua-5.3.1

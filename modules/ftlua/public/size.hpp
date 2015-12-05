@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/12/02 18:23:45 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 13:08:15 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 13:17:24 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -88,6 +88,7 @@ constexpr unsigned int			_sizeLoop() {
 
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE INTERNAL //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
 
 template <typename ...Args>
 constexpr unsigned int		multiSize(void)

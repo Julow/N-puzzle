@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 13:11:03 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 13:31:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -72,7 +72,7 @@ template <bool LuaErr = false>
 void		push(lua_State *l, newtab_t) { lua_createtable(l, 0, 0);
 }
 template <bool LuaErr = false>
-void		push(lua_State *l, dup_t i) //panic
+void		push(lua_State *l, dup_t i)
 {
 	int const	index = i.i < 0 ? -i.i : i.i;
 
@@ -85,8 +85,7 @@ void		push(lua_State *l, dup_t i) //panic
 	return ;
 }
 template <bool LuaErr = false>
-void		push(lua_State *l, dup_t i
-				 , std::function<void(std::string)> panic) //panic
+void		push(lua_State *l, dup_t i, std::function<void(std::string)> panic)
 {
 	int const	index = i.i < 0 ? -i.i : i.i;
 
@@ -228,13 +227,14 @@ template <bool LuaErr = false, typename T
 		  , OK_IF(ftlua::has_size<T>::value)
 		  , OK_IF(ftlua::has_push<T>::value)
 		  >
-void		push(lua_State *l, T &v)//panic
+void		push(lua_State *l, T &v)
 {
 	std::function<void(std::string)>	panic =
-		[l, &v](std::string const &str) {
-		FTLUA_ERR(l, LuaErr, ft::f("ftlua::push(%) failed from:\n%"
-								   , ft::valToString(v), str));
-	};
+		[l, &v](std::string const &str)
+		{
+			FTLUA_ERR(l, LuaErr, ft::f("ftlua::push(%) failed from:\n%"
+									   , ft::valToString(v), str));
+		};
 	v.ftlua_push(l, panic);
 	return ;
 }
@@ -245,12 +245,14 @@ template <bool LuaErr = false, typename T
 		  , OK_IF(ftlua::has_size<T>::value)
 		  , OK_IF(ftlua::has_push<T>::value)
 		  >
-void		push(lua_State *l, T &v, std::function<void(std::string)> ppanic)//panic
+void		push(lua_State *l, T &v, std::function<void(std::string)> ppanic)
 {
 	std::function<void(std::string)>	panic =
-		[ppanic, &v](std::string const &str) {
-		ppanic("ftlua::push(%) failed from:\n%", ft::valToString(v), str);
-	};
+		[ppanic, &v](std::string const &str)
+		{
+			ppanic(ft::f("ftlua::push(%) failed from:\n%"
+						 , ft::valToString(v), str));
+		};
 	v.ftlua_push(l, panic);
 	return ;
 }
@@ -260,13 +262,14 @@ template <bool LuaErr = false, typename T
 		  , OK_IF(ftlua::has_size<T>::value)
 		  , OK_IF(ftlua::has_constpush<T>::value)
 		  >
-void		push(lua_State *l, T const &v) //panic
+void		push(lua_State *l, T const &v)
 {
 	std::function<void(std::string)>	panic =
-		[l, &v](std::string const &str) {
-		FTLUA_ERR(l, LuaErr, ft::f("ftlua::push(%) failed from:\n%"
-								   , ft::valToString(v), str));
-	};
+		[l, &v](std::string const &str)
+		{
+			FTLUA_ERR(l, LuaErr, ft::f("ftlua::push(%) failed from:\n%"
+									   , ft::valToString(v), str));
+		};
 	v.ftlua_push(l, panic);
 	return ;
 }
@@ -277,12 +280,14 @@ template <bool LuaErr = false, typename T
 		  , OK_IF(ftlua::has_constpush<T>::value)
 		  >
 void		push(lua_State *l, T const &v
-				 , std::function<void(std::string)> ppanic) //panic
+				 , std::function<void(std::string)> ppanic)
 {
 	std::function<void(std::string)>	panic =
-		[ppanic, &v](std::string const &str) {
-		ppanic("ftlua::push(%) failed from:\n%", ft::valToString(v), str);
-	};
+		[ppanic, &v](std::string const &str)
+		{
+			ppanic(ft::f("ftlua::push(%) failed from:\n%"
+						 , ft::valToString(v), str));
+		};
 	v.ftlua_push(l, panic);
 	return ;
 }
@@ -295,7 +300,7 @@ template <bool LuaErr = false, typename T
 		  , OK_IF(ftlua::has_push<NOPTR>::value
 				  || ftlua::has_constpush<NOPTR>::value)
 		  >
-void		push(lua_State *l, T v) //panic
+void		push(lua_State *l, T v)
 {
 	if (v == nullptr)
 		push<LuaErr>(l, nil);
@@ -313,7 +318,7 @@ template <bool LuaErr = false, typename T
 				  || ftlua::has_constpush<NOPTR>::value)
 		  >
 void		push(lua_State *l, T v
-				 , std::function<void(std::string)> panic) //panic
+				 , std::function<void(std::string)> panic)
 {
 	if (v == nullptr)
 		push<LuaErr>(l, nil);

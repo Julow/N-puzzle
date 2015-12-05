@@ -21,7 +21,7 @@ o/srcs/Grid.o: srcs/Grid.cpp modules/_objs/_public/ft/assert.hpp \
 	modules/_objs/_public/ft/utils.hpp include/Grid.hpp \
 	modules/_objs/_public/ftlua/KeysWrapper.hpp \
 	modules/_objs/_public/ftlua/conversions.hpp \
-	modules/_objs/_public/ftlua/push.hpp \
+	modules/_objs/_public/ftlua/push.hpp modules/_objs/_public/ftlua/size.hpp \
 	modules/_objs/_public/ftlua/stackassert.hpp \
 	modules/_objs/_public/ftlua/types.hpp \
 	modules/_objs/_public/ftlua/utils.hpp modules/_objs/_public/liblua/lua.hpp \
@@ -87,7 +87,7 @@ o/srcs/OCamlBinding.o: srcs/OCamlBinding.cpp include/Grid.hpp \
 	modules/_objs/_public/ft/utils.hpp \
 	modules/_objs/_public/ftlua/KeysWrapper.hpp \
 	modules/_objs/_public/ftlua/conversions.hpp \
-	modules/_objs/_public/ftlua/push.hpp \
+	modules/_objs/_public/ftlua/push.hpp modules/_objs/_public/ftlua/size.hpp \
 	modules/_objs/_public/ftlua/stackassert.hpp \
 	modules/_objs/_public/ftlua/types.hpp \
 	modules/_objs/_public/ftlua/utils.hpp modules/_objs/_public/liblua/lua.hpp \
