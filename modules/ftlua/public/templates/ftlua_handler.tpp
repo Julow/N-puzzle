@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 18:26:58 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 10:22:13 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -73,13 +73,29 @@ BASICPOPSTACK(double, luaL_checknumber)
 
 #undef BASICPOPSTACK
 
+// * STEP 5 *** Push return value on stack ********************************** //
+template <class T>
+void	stackPush(lua_State *l, T &val)
+{
+	ftlua::push<true>(l, val);
+	return ;
+}
+
+template <class T>
+void	stackPush(lua_State *l, T const &val)
+{
+	ftlua::push<true>(l, val);
+	return ;
+}
+
 // * STEP 4 *** Call the function ******************************************* //
 // * Function *** //
 template <int NumOut, typename Ret, typename... Params>
 void	helperCall(lua_State *l, Ret (*f)(Params...), Params ...p)
 {
-	int const	npushed = ftlua::push<true>(l, f(p...));
+	int const	npushed = NumOut; // tmp
 
+	stackPush(l, f(p...));
 	FTLUA_STACKASSERT(
 		l, npushed == NumOut, true
 		, ft::f("ftlua::handle(% (*)(%))."
@@ -102,8 +118,9 @@ void	helperCall(lua_State *, void (*f)(Params...), Params ...p)
 template <int NumOut, typename Ret, class C, typename... Params>
 void	helperCall(lua_State *l, C *i, Ret (C::*f)(Params...), Params ...p)
 {
-	int const	npushed = ftlua::push<true>(l, (i->*f)(p...));
+	int const	npushed = NumOut; // tmp
 
+	stackPush(l, (i->*f)(p...));
 	FTLUA_STACKASSERT(
 		l, npushed == NumOut, true
 		, ft::f("ftlua::handle(% (%::*)(%))."

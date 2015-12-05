@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 10:11:06 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 11:07:54 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -53,24 +53,24 @@ namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 // IMPLICIT CASTS DISABLED ========== //
 template <bool LuaErr = false, typename T, OK_IF(ISSAME(T, bool))>
-	int			push(lua_State *l, T const &v)
+	int			push(lua_State *l, T v)
 { lua_pushboolean(l, v); return 1; }
 // ftlua::push<void*>	No const accepted here, const_cast yourself before call.
 template <bool LuaErr = false, typename T, OK_IF(ISSAME(T, void*))>
-int			push(lua_State *l, T const &v) {
+int			push(lua_State *l, T v) {
 	if (v == nullptr) lua_pushnil(l);
 	else lua_pushlightuserdata(l, v); return 1; }
 
 
 // LUA SPECIFIC ===================== //
 template <bool LuaErr = false>
-int			push(lua_State *l, nil_t const &)
+int			push(lua_State *l, nil_t)
 { lua_pushnil(l); return 1; }
 template <bool LuaErr = false>
-int			push(lua_State *l, newtab_t const &)
+int			push(lua_State *l, newtab_t)
 { lua_createtable(l, 0, 0); return 1; }
 template <bool LuaErr = false>
-int			push(lua_State *l, dup_t const &i) //panic
+int			push(lua_State *l, dup_t i) //panic
 {
 	int const	index = i.i < 0 ? -i.i : i.i;
 
@@ -83,7 +83,7 @@ int			push(lua_State *l, dup_t const &i) //panic
 	return 1;
 }
 template <bool LuaErr = false>
-int			push(lua_State *l, dup_t const &i
+int			push(lua_State *l, dup_t i
 				 , std::function<void(std::string)> panic) //panic
 {
 	int const	index = i.i < 0 ? -i.i : i.i;
@@ -97,7 +97,7 @@ int			push(lua_State *l, dup_t const &i
 	return 1;
 }
 template <bool LuaErr = false>
-int			push(lua_State *l, lua_CFunction const &v) {
+int			push(lua_State *l, lua_CFunction v) {
 	if (v == NULL) lua_pushnil(l);
 	else lua_pushcfunction(l, v); return 1; }
 
@@ -109,7 +109,7 @@ template <bool LuaErr = false, class T
 		  , OK_IF(!std::is_floating_point<T>::value)
 		  , OK_IF(ISCONV(T, lua_Integer))
 		  >
-int			push(lua_State *l, T const &v)
+int			push(lua_State *l, T v)
 {
 	lua_pushinteger(l, static_cast<lua_Integer>(v));
 	return 1;
@@ -119,7 +119,7 @@ template <bool LuaErr = false, class T
 		  , OK_IF(std::is_floating_point<T>::value)
 		  , OK_IF(ISCONV(T, lua_Number))
 		  >
-int			push(lua_State *l, T const &v)
+int			push(lua_State *l, T v)
 {
 	lua_pushnumber(l, static_cast<lua_Number>(v));
 	return 1;
@@ -168,7 +168,7 @@ int			push(lua_State *l, T v)
 }
 
 template <bool LuaErr = false>
-int			push(lua_State *l, std::string const *const &v)
+int			push(lua_State *l, std::string const *v)
 {
 	if (v == nullptr)
 		lua_pushnil(l);
@@ -227,6 +227,22 @@ template <bool LuaErr = false, typename T
 		  , OK_IF(ftlua::has_push<T>::value)
 		  >
 int			push(lua_State *l, T &v)//panic
+{
+	std::function<void(std::string)>	panic =
+		[l, &v](std::string const &str) {
+		FTLUA_ERR(l, LuaErr, ft::f("ftlua::push(%) failed from:\n%"
+								   , ft::valToString(v), str));
+	};
+	v.ftlua_push(l, panic);
+	return T::ftlua_size::value;
+}
+
+template <bool LuaErr = false, typename T
+		  , OK_IF(!ISCONST(T))
+		  , OK_IF(ftlua::has_size<T>::value)
+		  , OK_IF(ftlua::has_push<T>::value)
+		  >
+int			push(lua_State *l, T &v, std::function<void(std::string)>)//panic
 {
 	std::function<void(std::string)>	panic =
 		[l, &v](std::string const &str) {
@@ -438,6 +454,19 @@ int			multiPush(lua_State *l, ARGS const & ...args)
 {
 	return internal::_pushLoop<LuaErr>(l, args...);
 }
+
+
+// ========================================================================== //
+// ========================================================================== //
+// TYPE-TRAITS
+//
+
+
+FT_DEFINE_TYPETRAIT_TEST(
+	    has_panicpush
+		, class Test = decltype(
+			ftlua::push(nullptr, *(C*)(0x0), std::function<void(std::string)>{}))
+	);
 
 
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //

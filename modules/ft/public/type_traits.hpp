@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 14:36:46 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 18:01:21 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 10:45:15 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -108,6 +108,27 @@ struct return_type<Ret (*)(Args..., ...)>
 {
 	typedef Ret type;
 };
+
+template <class F>
+struct nfun_args;
+
+template <class Ret, class Head, class ...Args>
+struct nfun_args<Ret (*)(Head, Args...)>
+	: public std::integral_constant<
+	size_t, std::tuple_size<std::tuple<Head, Args...> >::value>
+{};
+
+template <size_t I, class F>
+struct fun_arg;
+
+template <size_t I, class Ret, class Head, class ...Args>
+struct fun_arg<I, Ret (*)(Head, Args...)>
+{
+	typedef typename std::tuple_element<I, std::tuple<Head, Args...> >::type type;
+};
+
+
+
 
 
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FT //

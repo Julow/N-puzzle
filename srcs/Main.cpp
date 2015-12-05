@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 20:02:35 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 11:07:30 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -492,6 +492,33 @@ int				main(void)
 	TEST1(ftui::AView);
 	TEST1(ftui::ALayout);
 	std::cout << std::endl;
+
+
+	// std::cout <<
+	// 	ftlua::is_panicfun< decltype(ftlua::push<true, int>) >::value
+	// 		  << std::endl;
+
+	// std::cout <<
+	// 	ftlua::is_panicfun< decltype(ftlua::push(nullptr, ftlua::dup_t{1})) >::value
+	// 		  << std::endl;
+
+	// using F = decltype( ftlua::push<true>  );
+	// using F = decltype(&ftlua::push(nullptr, ftlua::dup_t{1}, {}));
+	// using F = decltype(&ftlua::push(nullptr, ftlua::dup_t{1}, {}));
+
+	std::cout <<
+		ftlua::has_panicpush< int >::value
+			  << std::endl;
+
+	std::cout <<
+		ftlua::has_panicpush< ftlua::dup_t >::value
+			  << std::endl;
+
+	std::cout <<
+		ftlua::has_panicpush< ftui::AView >::value
+			  << std::endl;
+
+	// std::cout << ft::nfun_args<F>::value << std::endl;
 
 
 

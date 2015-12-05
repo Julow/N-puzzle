@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/12/02 17:43:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 10:08:07 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 11:04:50 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -50,7 +50,6 @@ FT_DEFINE_TYPETRAIT_TEST(
 	, OK_IF(ISSAME(Fun, WishedFun))
 	);
 
-
 FT_DEFINE_TYPETRAIT_TEST(
 	has_pop
 	, class WishedFun = C (*)(lua_State*, int, std::function<void(std::string)>)
@@ -67,6 +66,38 @@ FT_DEFINE_TYPETRAIT_TEST(
 	, class WishedFun = Ret (*)(lua_State*, int, std::function<void(std::string)>)
 	, OK_IF(ISSAME(Fun, WishedFun))
 	);
+
+FT_DEFINE_TYPETRAIT_TEST(
+	is_panicfun
+	, size_t N = ft::nfun_args<C>::value
+	, OK_IF(N == 3)
+	, class Last = typename ft::fun_arg<2, C>::type
+	, OK_IF(ISSAME(Last, std::function<void(std::string)>))
+	// , class ArgsTup = typename ft::args_tup<C>::type
+	// , size_t TupSize = std::tuple_size<ArgsTup>::value
+	// , class LastArg = typename std::tuple_element<TupSize - 1, ArgsTup>::type
+	// , OK_IF(IS_SAME)
+	);
+
+// template <typename T>
+// class has_panicpush
+// {
+// 	typedef char            yes_t[1];
+// 	typedef char            no_t[2];
+
+// 	template<typename C, __VA_ARGS__>
+// 		static yes_t        &test(void *);
+// 	template<typename C>
+// 		static no_t         &test(...);
+
+// 	using TestRetType = decltype(test<T>(nullptr));
+// public:
+
+// 	template <typename U>
+// 	static constexpr bool	tester()
+
+// 	static constexpr bool   value = ISSAME(TestRetType, yes_t&);
+// }
 
 }; // ================================================ END OF NAMESPACE FTLUA //
 
