@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 11:07:30 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 11:49:36 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -516,6 +516,18 @@ int				main(void)
 
 	std::cout <<
 		ftlua::has_panicpush< ftui::AView >::value
+			  << std::endl;
+
+	std::cout <<
+		ftlua::has_panicpush< ftui::AView const >::value
+			  << std::endl;
+
+	std::cout <<
+		ftlua::has_panicpush< ftui::AView *>::value
+			  << std::endl;
+
+	std::cout <<
+		ftlua::has_panicpush< ftui::AView const *>::value
 			  << std::endl;
 
 	// std::cout << ft::nfun_args<F>::value << std::endl;

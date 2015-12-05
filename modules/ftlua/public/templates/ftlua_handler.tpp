@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 10:22:13 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 11:44:54 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -20,6 +20,15 @@
 #include "ftlua/push.hpp"
 #include "ftlua/size.hpp"
 
+
+# define DELPTR(T) typename std::remove_pointer<T>::type
+# define DELCONST(T) typename std::remove_const<T>::type
+# define OK_IFNODEF(PRED) typename std::enable_if<PRED>::type*
+# define OK_IF(PRED) typename std::enable_if<PRED>::type* = nullptr
+# define ISPTR(A) std::is_pointer<A>::value
+# define ISCONST(A) std::is_const<A>::value
+# define ISCONV(A, B) std::is_convertible<A, B>::value
+# define ISSAME(A, B) std::is_same<A, B>::value
 
 namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -74,14 +83,35 @@ BASICPOPSTACK(double, luaL_checknumber)
 #undef BASICPOPSTACK
 
 // * STEP 5 *** Push return value on stack ********************************** //
-template <class T>
+// template <class T>
+template <class T, OK_IF(!has_panicpush<T>::value)>
 void	stackPush(lua_State *l, T &val)
 {
 	ftlua::push<true>(l, val);
 	return ;
 }
 
-template <class T>
+// template <class T>
+template <class T, OK_IF(!has_panicpush<T>::value)>
+void	stackPush(lua_State *l, T const &val)
+{
+	ftlua::push<true>(l, val);
+	return ;
+}
+
+template <class T, OK_IF(has_panicpush<T>::value)>
+void	stackPush(lua_State *l, T &v)
+{
+	std::function<void(std::string)>    panic =
+		[l, &v](std::string const &str) {
+		FTLUA_ERR(l, true, ft::f("ftlua::handle(%) failed from:\n%"
+								   , ft::valToString(v), str));
+	};
+	ftlua::push<true>(l, v, panic);
+	return ;
+}
+
+template <class T, OK_IF(has_panicpush<T>::value)>
 void	stackPush(lua_State *l, T const &val)
 {
 	ftlua::push<true>(l, val);
@@ -91,7 +121,7 @@ void	stackPush(lua_State *l, T const &val)
 // * STEP 4 *** Call the function ******************************************* //
 // * Function *** //
 template <int NumOut, typename Ret, typename... Params>
-void	helperCall(lua_State *l, Ret (*f)(Params...), Params ...p)
+void	helperCall(lua_State *l, Ret (*f)(Params...), Params &&...p)
 {
 	int const	npushed = NumOut; // tmp
 
@@ -106,7 +136,7 @@ void	helperCall(lua_State *l, Ret (*f)(Params...), Params ...p)
 	return ;
 }
 template <int NumOut, typename... Params>
-void	helperCall(lua_State *, void (*f)(Params...), Params ...p)
+void	helperCall(lua_State *, void (*f)(Params...), Params &&...p)
 {
 	static_assert(NumOut == 0, "Wrong number of arguments for return value");
 
@@ -116,7 +146,7 @@ void	helperCall(lua_State *, void (*f)(Params...), Params ...p)
 
 // * MemFun ***** //
 template <int NumOut, typename Ret, class C, typename... Params>
-void	helperCall(lua_State *l, C *i, Ret (C::*f)(Params...), Params ...p)
+void	helperCall(lua_State *l, C *i, Ret (C::*f)(Params...), Params &&...p)
 {
 	int const	npushed = NumOut; // tmp
 
@@ -132,7 +162,7 @@ void	helperCall(lua_State *l, C *i, Ret (C::*f)(Params...), Params ...p)
 	return ;
 }
 template <int NumOut, class C, typename... Params>
-void	helperCall(lua_State *, C *i, void (C::*f)(Params...), Params ...p)
+void	helperCall(lua_State *, C *i, void (C::*f)(Params...), Params &&...p)
 {
 	static_assert(NumOut == 0, "Wrong number of arguments for return value");
 
@@ -145,11 +175,12 @@ void	helperCall(lua_State *, C *i, void (C::*f)(Params...), Params ...p)
 template <int NumIn, int NumOut
 		  , typename Ret, typename... Retreived>
 void		helperLoop(
-	lua_State *l, Ret (*f)(), Retreived const &&...r)
+	lua_State *l, Ret (*f)(), Retreived &&...r)
 {
 	static_assert(NumIn == 0, "Wrong number of arguments provided");
 
-	helperCall<NumOut>(l, reinterpret_cast<Ret (*)(Retreived...)>(f), r...);
+	helperCall<NumOut>(l, reinterpret_cast<Ret (*)(Retreived...)>(f)
+					   , std::forward<Retreived>(r)...);
 	return ;
 }
 
@@ -157,12 +188,13 @@ void		helperLoop(
 template <int NumIn, int NumOut
 		  , typename Ret, class C, typename... Retreived>
 void		helperLoop(
-	lua_State *l, C *i, Ret (C::*f)(), Retreived const &&...r)
+	lua_State *l, C *i, Ret (C::*f)(), Retreived &&...r)
 {
 	static_assert(NumIn == 0, "Wrong number of arguments provided");
 
 	helperCall<NumOut>(l, i
-		, reinterpret_cast<Ret (C::*)(Retreived...)>(f), r...);
+					   , reinterpret_cast<Ret (C::*)(Retreived...)>(f)
+					   , std::forward<Retreived>(r)...);
 	return ;
 }
 
@@ -285,3 +317,12 @@ T		*retrieveSelf(lua_State *l, int index, bool pop)
 
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
+# undef DELPTR
+# undef DELCONST
+# undef ISCONV
+# undef ISPTR
+# undef ISCONST
+# undef OK_IF
+# undef OK_IFNODEF
+# undef ISSAME

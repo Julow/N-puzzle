@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 11:07:54 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 11:50:51 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -237,17 +237,17 @@ int			push(lua_State *l, T &v)//panic
 	return T::ftlua_size::value;
 }
 
+// (T -> T::ftlua_push()) +panic
 template <bool LuaErr = false, typename T
 		  , OK_IF(!ISCONST(T))
 		  , OK_IF(ftlua::has_size<T>::value)
 		  , OK_IF(ftlua::has_push<T>::value)
 		  >
-int			push(lua_State *l, T &v, std::function<void(std::string)>)//panic
+int			push(lua_State *l, T &v, std::function<void(std::string)> ppanic)//panic
 {
 	std::function<void(std::string)>	panic =
-		[l, &v](std::string const &str) {
-		FTLUA_ERR(l, LuaErr, ft::f("ftlua::push(%) failed from:\n%"
-								   , ft::valToString(v), str));
+		[ppanic, &v](std::string const &str) {
+		ppanic("ftlua::push(%) failed from:\n%", ft::valToString(v), str);
 	};
 	v.ftlua_push(l, panic);
 	return T::ftlua_size::value;
@@ -269,6 +269,22 @@ int			push(lua_State *l, T const &v) //panic
 	return T::ftlua_size::value;
 }
 
+// (T -> T::ftlua_push() const) OR (T const -> T::ftlua_push() const) +panic
+template <bool LuaErr = false, typename T
+		  , OK_IF(ftlua::has_size<T>::value)
+		  , OK_IF(ftlua::has_constpush<T>::value)
+		  >
+int			push(lua_State *l, T const &v
+				 , std::function<void(std::string)> ppanic) //panic
+{
+	std::function<void(std::string)>	panic =
+		[ppanic, &v](std::string const &str) {
+		ppanic("ftlua::push(%) failed from:\n%", ft::valToString(v), str);
+	};
+	v.ftlua_push(l, panic);
+	return T::ftlua_size::value;
+}
+
 // Pointers tmp function
 template <bool LuaErr = false, typename T
 		  , OK_IF(ISPTR(T))
@@ -283,6 +299,23 @@ int			push(lua_State *l, T v) //panic
 		return push<LuaErr>(l, nil);
 	else
 		return push<LuaErr>(l, *v);
+}
+
+// Pointers tmp function +panic
+template <bool LuaErr = false, typename T
+		  , OK_IF(ISPTR(T))
+		  , class NOPTR = DELPTR(T)
+		  , OK_IF(ftlua::has_size<NOPTR>::value)
+		  , OK_IF(ftlua::has_push<NOPTR>::value
+				  || ftlua::has_constpush<NOPTR>::value)
+		  >
+int			push(lua_State *l, T v
+				 , std::function<void(std::string)> panic) //panic
+{
+	if (v == nullptr)
+		return push<LuaErr>(l, nil);
+	else
+		return push<LuaErr>(l, *v, panic);
 }
 
 
@@ -461,11 +494,10 @@ int			multiPush(lua_State *l, ARGS const & ...args)
 // TYPE-TRAITS
 //
 
-
 FT_DEFINE_TYPETRAIT_TEST(
 	    has_panicpush
-		, class Test = decltype(
-			ftlua::push(nullptr, *(C*)(0x0), std::function<void(std::string)>{}))
+		, class = decltype(ftlua::push(nullptr, *(C*)(0x0)
+									   , std::function<void(std::string)>{}))
 	);
 
 
