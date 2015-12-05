@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 13:27:49 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/01 18:58:06 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/05 12:57:44 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -270,7 +270,8 @@ int					SliderView::getValueG(lua_State *l)
 {
 	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
 
-	return (ftlua::push(l, self->getValue()));
+	ftlua::push(l, self->getValue());
+	return 1;
 }
 
 int					SliderView::setValueG(lua_State *l)
@@ -286,7 +287,8 @@ int					SliderView::getStepValueG(lua_State *l)
 {
 	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
 
-	return (ftlua::push(l, self->getStepValue()));
+	ftlua::push(l, self->getStepValue());
+	return 1;
 }
 
 int					SliderView::setStepValueG(lua_State *l)
@@ -302,7 +304,8 @@ int					SliderView::getBoundsG(lua_State *l)
 {
 	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
 
-	return (ftlua::push(l, self->getBounds()));
+	ftlua::push(l, self->getBounds());
+	return 2;
 }
 
 int					SliderView::setBoundsG(lua_State *l)
@@ -321,7 +324,8 @@ int					SliderView::getStepsG(lua_State *l)
 {
 	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
 
-	return (ftlua::push(l, self->getSteps()));
+	ftlua::push(l, self->getSteps());
+	return 1;
 }
 
 int					SliderView::setStepsG(lua_State *l)

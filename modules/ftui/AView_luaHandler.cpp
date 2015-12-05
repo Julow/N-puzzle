@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/04 11:52:25 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 17:51:53 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 12:46:31 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -48,7 +48,8 @@ int			TextView::getTextG(lua_State *l)
 {
 	TextView *const				i = ftlua::retrieveSelf<TextView>(l, -1);
 
-	return ftlua::push(l, i->getText());
+	ftlua::push(l, i->getText());
+	return 1;
 }
 
 /*
@@ -99,7 +100,7 @@ int			AView::setCallbackG(lua_State *l)
 	AView *const		i = ftlua::retrieveSelf<AView>(l, -3, false);
 
 	i->setLuaCallback(l);
-	return (0);
+	return 0;
 }
 
 DEF_LUACFUN_GSUFFIX(AView, getId,					1,	1)
@@ -109,21 +110,24 @@ int			AView::getRequestedSizeG(lua_State *l)
 {
 	IViewHolder *const	h = ftlua::retrieveSelf<AView>(l, -1)->getViewHolder();
 
-	return ftlua::push(l, h->getRequestedSize());
+	ftlua::push(l, h->getRequestedSize());
+	return 2;
 }
 
 int			AView::getPosG(lua_State *l)
 {
 	IViewHolder *const	h = ftlua::retrieveSelf<AView>(l, -1)->getViewHolder();
 
-	return ftlua::push(l, h->getPos());
+	ftlua::push(l, h->getPos());
+	return 2;
 }
 
 int			AView::getSizeG(lua_State *l)
 {
 	IViewHolder *const	h = ftlua::retrieveSelf<AView>(l, -1)->getViewHolder();
 
-	return ftlua::push(l, h->getSize());
+	ftlua::push(l, h->getSize());
+	return 2;
 }
 
 int			AView::setRequestedSizeG(lua_State *l)

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 11:44:54 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 13:04:19 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -249,6 +249,10 @@ void		helperLoop(
 template <int NumIn, int NumOut, typename Ret, typename... Args>
 int		handle(lua_State *l, Ret (*f)(Args...))
 {
+	static_assert(NumIn == ftlua::multiSize<Args...>()
+				  , "Wrong number of poped arguments.");
+	static_assert(NumOut == ftlua::size<Ret>::value
+				  , "Wrong number of pushed arguments.");
 	internal::helperLoop<NumIn, NumOut>(l, f);
 	return (NumOut);
 }
@@ -257,12 +261,20 @@ int		handle(lua_State *l, Ret (*f)(Args...))
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
 int		handle(lua_State *l, C *i, Ret (C::*f)(Args...))
 {
+	static_assert(NumIn == ftlua::multiSize<C, Args...>()
+				  , "Wrong number of poped arguments.");
+	static_assert(NumOut == ftlua::size<Ret>::value
+				  , "Wrong number of pushed arguments.");
 	internal::helperLoop<NumIn, NumOut>(l, i, f);
 	return (NumOut);
 }
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
 int		handle(lua_State *l, C const *i, Ret (C::*f)(Args...) const)
 {
+	static_assert(NumIn == ftlua::multiSize<C, Args...>()
+				  , "Wrong number of poped arguments.");
+	static_assert(NumOut == ftlua::size<Ret>::value
+				  , "Wrong number of pushed arguments.");
 	using FClean = Ret (C::*)(Args...);
 	using CClean = C*;
 
@@ -274,6 +286,10 @@ int		handle(lua_State *l, C const *i, Ret (C::*f)(Args...) const)
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
 int		handle(lua_State *l, Ret (C::*f)(Args...))
 {
+	static_assert(NumIn == ftlua::multiSize<C, Args...>()
+				  , "Wrong number of poped arguments.");
+	static_assert(NumOut == ftlua::size<Ret>::value
+				  , "Wrong number of pushed arguments.");
 	internal::helperLoop<NumIn - 1, NumOut>(
 		l, retrieveSelf<C>(l, -NumIn), f);
 	return (NumOut);

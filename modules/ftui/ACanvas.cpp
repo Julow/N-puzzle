@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/05 09:12:37 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 13:16:27 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -134,7 +134,8 @@ int				ACanvas::measureTextG(lua_State *l)
 	params.lineWidth = luaL_checkinteger(l, 2);
 	params.font = self->_luaFont;
 	lua_pop(l, lua_gettop(l));
-	return ftlua::push(l, self->measureText(text, params));
+	ftlua::push(l, self->measureText(text, params));
+	return 2;
 }
 
 void			ACanvas::pushTemplate(lua_State *l)

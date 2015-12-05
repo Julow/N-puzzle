@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/25 13:23:56 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/01 19:24:36 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/05 12:55:59 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -339,7 +339,8 @@ int				LinearLayout::getDirectionG(lua_State *l)
 {
 	LinearLayout *const	self = ftlua::retrieveSelf<LinearLayout>(l, 1);
 
-	return (ftlua::push(l, static_cast<int>(self->getDirection())));
+	ftlua::push(l, static_cast<int>(self->getDirection()));
+	return 1;
 }
 
 int				LinearLayout::setDirectionG(lua_State *l)

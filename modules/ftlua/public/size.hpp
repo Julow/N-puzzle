@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/12/02 18:23:45 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 12:29:37 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 13:08:15 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -48,6 +48,10 @@ template <class T1>
 struct size<ft::Vec4<T1>, false> : std::integral_constant<unsigned int, 4>
 {};
 
+template <>
+struct size<void, false> : std::integral_constant<unsigned int, 0>
+{};
+
 
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE INTERNAL //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -57,6 +61,39 @@ template <class T>
 struct size : std::integral_constant<
 	unsigned int, internal::size<T, ftlua::has_size<T>::value >::value >
 {};
+
+
+namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
+
+template <typename ...Args>
+constexpr unsigned int			_sizeLoop();
+
+
+template <typename Head, typename ...Tail>
+constexpr unsigned int			_sizeLoopHelper() {
+	return ftlua::size<Head>::value + _sizeLoop<Tail...>();
+}
+
+template <typename ...Args>
+constexpr unsigned int			_sizeLoop() {
+	return _sizeLoopHelper<Args...>();
+}
+
+template <>
+constexpr unsigned int			_sizeLoop() {
+	return 0;
+}
+
+}; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE INTERNAL //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
+template <typename ...Args>
+constexpr unsigned int		multiSize(void)
+{
+	return internal::_sizeLoop<Args...>();
+}
 
 
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //

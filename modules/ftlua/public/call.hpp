@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 17:09:57 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/30 19:18:05 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 12:42:47 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,6 +15,7 @@
 
 # include "ftlua/types.hpp"
 # include "ftlua/push.hpp"
+# include "ftlua/size.hpp"
 
 namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -31,7 +32,8 @@ int					pcall(
 				, nRet, nArgsStack, ft::variadicToString(args...))
 		, ft::f("Function was expected at index.")
 		);
-	return lua_pcall(l, multiPush(l, args...) + nArgsStack, nRet, 0);
+	multiPush(l, args...);
+	return lua_pcall(l, multiSize<ARGS...>() + nArgsStack, nRet, 0);
 }
 
 // Consumes the table
@@ -53,7 +55,8 @@ int					pcallMethod(
 		);
 	lua_pushvalue(l, -2);					//	[]	f	[]
 	lua_remove(l, -3);						//	[]	f
-	return lua_pcall(l, multiPush(l, args...) + 1, nRet, 0);
+	multiPush(l, args...);
+	return lua_pcall(l, multiSize<ARGS...>() + 1, nRet, 0);
 }
 
 

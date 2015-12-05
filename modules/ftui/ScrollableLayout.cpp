@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/26 16:08:13 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/01 19:22:47 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/05 12:56:50 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -149,7 +149,8 @@ int					ScrollableLayout::getScrollG(lua_State *l)
 {
 	ScrollableLayout *const	self = ftlua::retrieveSelf<ScrollableLayout>(l, -1);
 
-	return (ftlua::push(l, self->getScroll()));
+	ftlua::push(l, self->getScroll());
+	return 1;
 }
 
 int					ScrollableLayout::setScrollG(lua_State *l)
@@ -165,7 +166,8 @@ int					ScrollableLayout::getMaxScrollG(lua_State *l)
 {
 	ScrollableLayout *const	self = ftlua::retrieveSelf<ScrollableLayout>(l, -1);
 
-	return (ftlua::push(l, self->getMaxScroll()));
+	ftlua::push(l, self->getMaxScroll());
+	return 1;
 }
 
 };

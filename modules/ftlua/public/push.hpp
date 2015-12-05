@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 11:50:51 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 13:11:03 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -27,6 +27,7 @@
 # include "ftlua/conversions.hpp"
 # include "ftlua/stackassert.hpp"
 # include "ftlua/utils.hpp"
+# include "ftlua/size.hpp"
 
 
 namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -53,24 +54,25 @@ namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 // IMPLICIT CASTS DISABLED ========== //
 template <bool LuaErr = false, typename T, OK_IF(ISSAME(T, bool))>
-	int			push(lua_State *l, T v)
-{ lua_pushboolean(l, v); return 1; }
+void		push(lua_State *l, T v) {
+	lua_pushboolean(l, v);
+}
 // ftlua::push<void*>	No const accepted here, const_cast yourself before call.
 template <bool LuaErr = false, typename T, OK_IF(ISSAME(T, void*))>
-int			push(lua_State *l, T v) {
+void		push(lua_State *l, T v) {
 	if (v == nullptr) lua_pushnil(l);
-	else lua_pushlightuserdata(l, v); return 1; }
-
+	else lua_pushlightuserdata(l, v);
+}
 
 // LUA SPECIFIC ===================== //
 template <bool LuaErr = false>
-int			push(lua_State *l, nil_t)
-{ lua_pushnil(l); return 1; }
+void		push(lua_State *l, nil_t) { lua_pushnil(l);
+}
 template <bool LuaErr = false>
-int			push(lua_State *l, newtab_t)
-{ lua_createtable(l, 0, 0); return 1; }
+void		push(lua_State *l, newtab_t) { lua_createtable(l, 0, 0);
+}
 template <bool LuaErr = false>
-int			push(lua_State *l, dup_t i) //panic
+void		push(lua_State *l, dup_t i) //panic
 {
 	int const	index = i.i < 0 ? -i.i : i.i;
 
@@ -80,10 +82,10 @@ int			push(lua_State *l, dup_t i) //panic
 		, ft::f("Stack index does not exist.")
 		);
 	lua_pushvalue(l, i.i);
-	return 1;
+	return ;
 }
 template <bool LuaErr = false>
-int			push(lua_State *l, dup_t i
+void		push(lua_State *l, dup_t i
 				 , std::function<void(std::string)> panic) //panic
 {
 	int const	index = i.i < 0 ? -i.i : i.i;
@@ -94,13 +96,13 @@ int			push(lua_State *l, dup_t i
 		, ft::f("Stack index does not exist.")
 		);
 	lua_pushvalue(l, i.i);
-	return 1;
+	return ;
 }
 template <bool LuaErr = false>
-int			push(lua_State *l, lua_CFunction v) {
+void		push(lua_State *l, lua_CFunction v) {
 	if (v == NULL) lua_pushnil(l);
-	else lua_pushcfunction(l, v); return 1; }
-
+	else lua_pushcfunction(l, v);
+}
 
 // NUMBERS/STRING =================== //
 template <bool LuaErr = false, class T
@@ -109,27 +111,27 @@ template <bool LuaErr = false, class T
 		  , OK_IF(!std::is_floating_point<T>::value)
 		  , OK_IF(ISCONV(T, lua_Integer))
 		  >
-int			push(lua_State *l, T v)
+void		push(lua_State *l, T v)
 {
 	lua_pushinteger(l, static_cast<lua_Integer>(v));
-	return 1;
+	return ;
 }
 
 template <bool LuaErr = false, class T
 		  , OK_IF(std::is_floating_point<T>::value)
 		  , OK_IF(ISCONV(T, lua_Number))
 		  >
-int			push(lua_State *l, T v)
+void		push(lua_State *l, T v)
 {
 	lua_pushnumber(l, static_cast<lua_Number>(v));
-	return 1;
+	return ;
 }
 
 template <bool LuaErr = false>
-int			push(lua_State *l, std::string const &v)
+void		push(lua_State *l, std::string const &v)
 {
 	lua_pushstring(l, v.c_str());
-	return 1;
+	return ;
 }
 
 
@@ -142,13 +144,13 @@ template <bool LuaErr = false, class T
 		  , OK_IF(!std::is_floating_point<NOPTR>::value)
 		  , OK_IF(ISCONV(NOPTR, lua_Integer))
 		  >
-int			push(lua_State *l, T v)
+void		push(lua_State *l, T v)
 {
 	if (v == nullptr)
 		lua_pushnil(l);
 	else
 		lua_pushinteger(l, static_cast<lua_Integer>(*v));
-	return 1;
+	return ;
 }
 
 template <bool LuaErr = false, class T
@@ -158,59 +160,59 @@ template <bool LuaErr = false, class T
 		  , OK_IF(std::is_floating_point<NOPTR>::value)
 		  , OK_IF(ISCONV(NOPTR, lua_Number))
 		  >
-int			push(lua_State *l, T v)
+void		push(lua_State *l, T v)
 {
 	if (v == nullptr)
 		lua_pushnil(l);
 	else
 		lua_pushinteger(l, static_cast<lua_Integer>(*v));
-	return 1;
+	return ;
 }
 
 template <bool LuaErr = false>
-int			push(lua_State *l, std::string const *v)
+void		push(lua_State *l, std::string const *v)
 {
 	if (v == nullptr)
 		lua_pushnil(l);
 	else
 		lua_pushstring(l, v->c_str());
-	return 1;
+	return ;
 }
 
 template <bool LuaErr = false>
-int			push(lua_State *l, char const *v)
+void		push(lua_State *l, char const *v)
 {
 	if (v == NULL)
 		lua_pushnil(l);
 	else
 		lua_pushstring(l, v);
-	return 1;
+	return ;
 }
 
 // 'ft::' COMPOUND TYPES ============ //
 template <bool LuaErr = false, typename T>
-int	push(lua_State *l, ft::Vec2<T> const &v)
+void		push(lua_State *l, ft::Vec2<T> const &v)
 {
 	push(l, v.x); push(l, v.y);
-	return 2;
+	return ;
 }
 template <bool LuaErr = false, typename T>
-int	push(lua_State *l, ft::Vec3<T> const &v)
+void		push(lua_State *l, ft::Vec3<T> const &v)
 {
 	push(l, v.x); push(l, v.y); push(l, v.z);
-	return 3;
+	return ;
 }
 template <bool LuaErr = false, typename T>
-int	push(lua_State *l, ft::Vec4<T> const &v)
+void		push(lua_State *l, ft::Vec4<T> const &v)
 {
 	push(l, v.x); push(l, v.y); push(l, v.z); push(l, v.w);
-	return 4;
+	return ;
 }
 template <bool LuaErr = false, typename T>
-int	push(lua_State *l, ft::Rect<T> const &v)
+void		push(lua_State *l, ft::Rect<T> const &v)
 {
 	push(l, v.left); push(l, v.top); push(l, v.right); push(l, v.bottom);
-	return 4;
+	return ;
 }
 
 
@@ -226,7 +228,7 @@ template <bool LuaErr = false, typename T
 		  , OK_IF(ftlua::has_size<T>::value)
 		  , OK_IF(ftlua::has_push<T>::value)
 		  >
-int			push(lua_State *l, T &v)//panic
+void		push(lua_State *l, T &v)//panic
 {
 	std::function<void(std::string)>	panic =
 		[l, &v](std::string const &str) {
@@ -234,7 +236,7 @@ int			push(lua_State *l, T &v)//panic
 								   , ft::valToString(v), str));
 	};
 	v.ftlua_push(l, panic);
-	return T::ftlua_size::value;
+	return ;
 }
 
 // (T -> T::ftlua_push()) +panic
@@ -243,14 +245,14 @@ template <bool LuaErr = false, typename T
 		  , OK_IF(ftlua::has_size<T>::value)
 		  , OK_IF(ftlua::has_push<T>::value)
 		  >
-int			push(lua_State *l, T &v, std::function<void(std::string)> ppanic)//panic
+void		push(lua_State *l, T &v, std::function<void(std::string)> ppanic)//panic
 {
 	std::function<void(std::string)>	panic =
 		[ppanic, &v](std::string const &str) {
 		ppanic("ftlua::push(%) failed from:\n%", ft::valToString(v), str);
 	};
 	v.ftlua_push(l, panic);
-	return T::ftlua_size::value;
+	return ;
 }
 
 // (T -> T::ftlua_push() const) OR (T const -> T::ftlua_push() const)
@@ -258,7 +260,7 @@ template <bool LuaErr = false, typename T
 		  , OK_IF(ftlua::has_size<T>::value)
 		  , OK_IF(ftlua::has_constpush<T>::value)
 		  >
-int			push(lua_State *l, T const &v) //panic
+void		push(lua_State *l, T const &v) //panic
 {
 	std::function<void(std::string)>	panic =
 		[l, &v](std::string const &str) {
@@ -266,7 +268,7 @@ int			push(lua_State *l, T const &v) //panic
 								   , ft::valToString(v), str));
 	};
 	v.ftlua_push(l, panic);
-	return T::ftlua_size::value;
+	return ;
 }
 
 // (T -> T::ftlua_push() const) OR (T const -> T::ftlua_push() const) +panic
@@ -274,7 +276,7 @@ template <bool LuaErr = false, typename T
 		  , OK_IF(ftlua::has_size<T>::value)
 		  , OK_IF(ftlua::has_constpush<T>::value)
 		  >
-int			push(lua_State *l, T const &v
+void		push(lua_State *l, T const &v
 				 , std::function<void(std::string)> ppanic) //panic
 {
 	std::function<void(std::string)>	panic =
@@ -282,7 +284,7 @@ int			push(lua_State *l, T const &v
 		ppanic("ftlua::push(%) failed from:\n%", ft::valToString(v), str);
 	};
 	v.ftlua_push(l, panic);
-	return T::ftlua_size::value;
+	return ;
 }
 
 // Pointers tmp function
@@ -293,12 +295,13 @@ template <bool LuaErr = false, typename T
 		  , OK_IF(ftlua::has_push<NOPTR>::value
 				  || ftlua::has_constpush<NOPTR>::value)
 		  >
-int			push(lua_State *l, T v) //panic
+void		push(lua_State *l, T v) //panic
 {
 	if (v == nullptr)
-		return push<LuaErr>(l, nil);
+		push<LuaErr>(l, nil);
 	else
-		return push<LuaErr>(l, *v);
+		push<LuaErr>(l, *v);
+	return ;
 }
 
 // Pointers tmp function +panic
@@ -309,13 +312,14 @@ template <bool LuaErr = false, typename T
 		  , OK_IF(ftlua::has_push<NOPTR>::value
 				  || ftlua::has_constpush<NOPTR>::value)
 		  >
-int			push(lua_State *l, T v
+void		push(lua_State *l, T v
 				 , std::function<void(std::string)> panic) //panic
 {
 	if (v == nullptr)
-		return push<LuaErr>(l, nil);
+		push<LuaErr>(l, nil);
 	else
-		return push<LuaErr>(l, *v, panic);
+		push<LuaErr>(l, *v, panic);
+	return ;
 }
 
 
@@ -377,7 +381,7 @@ void		_loopKey(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 template <bool LuaErr = false
 		  , int Relative
 		  , typename ...ARGS>
-int			push(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap) //panic
+void		push(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap) //panic
 {
 	if (Relative == 0)
 		lua_pushglobaltable(l);
@@ -392,7 +396,7 @@ int			push(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap) //panic
 		lua_pushvalue(l, Relative);
 	}
 	internal::_loopKey<0, LuaErr>(l, wrap);
-	return 1;
+	return ;
 }
 
 
@@ -406,7 +410,7 @@ template <bool LuaErr = false
 		  , class T
 		  , OK_IF(ft::is_container<T>::value)
 		  >
-int			push(lua_State *l, T &cont)
+void		push(lua_State *l, T &cont)
 {
 	int			i(0);
 	int			inc;
@@ -416,7 +420,8 @@ int			push(lua_State *l, T &cont)
 	push(l, newtab);				// []
 	for (auto &elt : cont)
 	{
-		inc = push(l, elt);			// vn, v1, []
+		push(l, elt);				// vn, v1, []
+		inc = ftlua::size<typename T::value_type>::value;
 		while (inc-- > 0)
 		{
 			push(l, i);				// 1, vn, v1, []
@@ -426,14 +431,14 @@ int			push(lua_State *l, T &cont)
 			i++;
 		}
 	}
-	return 1;
+	return ;
 }
 
 template <bool LuaErr = false
 		  , class T
 		  , OK_IF(ft::is_container<T>::value)
 		  >
-int			push(lua_State *l, T const &cont)
+void		push(lua_State *l, T const &cont)
 {
 	int			i(0);
 	int			inc;
@@ -443,7 +448,8 @@ int			push(lua_State *l, T const &cont)
 	push(l, newtab);				// []
 	for (auto const &elt : cont)
 	{
-		inc = push(l, elt);			// vn, v1, []
+		push(l, elt);				// vn, v1, []
+		inc = ftlua::size<typename T::value_type>::value;
 		while (inc-- > 0)
 		{
 			push(l, i);				// 1, vn, v1, []
@@ -453,7 +459,7 @@ int			push(lua_State *l, T const &cont)
 			i++;
 		}
 	}
-	return 1;
+	return ;
 }
 
 
@@ -466,15 +472,17 @@ namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 
 template <bool LuaErr>
-int			_pushLoop(lua_State *)
+void		_pushLoop(lua_State *)
 {
-	return 0;
+	return ;
 }
 
 template <bool LuaErr, typename HEAD, typename ...TAIL>
-int			_pushLoop(lua_State *l, HEAD const &h, TAIL const &...t)
+void		_pushLoop(lua_State *l, HEAD const &h, TAIL const &...t)
 {
-	return push<LuaErr>(l, h) + _pushLoop<LuaErr>(l, t...);
+	push<LuaErr>(l, h);
+	_pushLoop<LuaErr>(l, t...);
+	return ;
 }
 
 
@@ -483,9 +491,10 @@ int			_pushLoop(lua_State *l, HEAD const &h, TAIL const &...t)
 
 
 template <bool LuaErr = false, typename ...ARGS>
-int			multiPush(lua_State *l, ARGS const & ...args)
+void		multiPush(lua_State *l, ARGS const & ...args)
 {
-	return internal::_pushLoop<LuaErr>(l, args...);
+	internal::_pushLoop<LuaErr>(l, args...);
+	return ;
 }
 
 
