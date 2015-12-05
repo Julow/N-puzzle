@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:16:24 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 15:12:26 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 15:43:06 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -77,10 +77,9 @@ T			pop(lua_State *l, int index)
 	return v;
 }
 
-//NO nil_t newtab_t dup_t dup_t-panic lua_CFunction
-
+// NO nil_t newtab_t dup_t dup_t-panic lua_CFunction
 // NUMBERS/STRING =================== //
-template <bool LuaErr = false, class T
+template <class T, bool LuaErr = false
 		  , OK_IF(!ISPTR(T))
 		  , OK_IF(!ISSAME(bool, DELCONST(T)))
 		  , OK_IF(!std::is_floating_point<T>::value)
@@ -100,7 +99,7 @@ T			pop(lua_State *l, int index)
 	return v;
 }
 
-template <bool LuaErr = false, class T
+template <class T, bool LuaErr = false
 		  , OK_IF(std::is_floating_point<T>::value)
 		  , OK_IF(ISCONV(T, lua_Number))
 		  >
@@ -203,6 +202,47 @@ TT			pop(lua_State *l, int index)
 // ========================================================================== //
 // CUSTOM::ftlua_pop() PUSH-OVERLOADS
 //
+
+// (T::ftlua_pop() -> T)
+template <typename T, bool LuaErr = false
+		  , OK_IF(ftlua::has_size<T>::value)
+		  , OK_IF(ftlua::has_pop<T>::value)
+		  >
+T			pop(lua_State *l, int index)
+{
+	std::function<void(std::string)>    panic =
+		[=](std::string const &str)
+		{
+			FTLUA_ERR(l, LuaErr, ft::f("ftlua::pop<%>(%) failed from:\n%"
+									   , ft::typesToString<T>(), index, str));
+		};
+	return T::ftlua_pop(l, index, panic);
+}
+
+// (T::ftlua_pop() -> T*)
+//		ftlua::has_ptrpop checks that [T] is base of [ftlua_pop return type]
+//	hence the reinterpret_cast.
+template <typename T, bool LuaErr = false
+		  , OK_IF(ISPTR(T))
+		  , class NoPtr = DELPTR(T)
+		  , OK_IF(ftlua::has_size<NoPtr>::value)
+		  , OK_IF(ftlua::has_ptrpop<NoPtr>::value)
+		  >
+T			pop(lua_State *l, int index)
+{
+	std::function<void(std::string)>    panic =
+		[=](std::string const &str)
+		{
+			FTLUA_ERR(l, LuaErr, ft::f("ftlua::pop<%>(%) failed from:\n%"
+									   , ft::typesToString<T>(), index, str));
+		};
+	return reinterpret_cast<T>(NoPtr::ftlua_pop(l, index, panic));
+}
+
+//NO Keywrappers
+
+// TODO: CONTAINERS :(
+
 
 
 

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 12:18:25 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 15:43:15 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -543,6 +543,25 @@ int				main(void)
 			  << std::endl;
 
 	// std::cout << ft::nfun_args<F>::value << std::endl;
+
+
+
+	// ftlua::pop<int>(nullptr, -1);
+	// ftlua::pop<size_t>(nullptr, -1);
+	// ftlua::pop<float>(nullptr, -1);
+	// ftlua::pop<std::string>(nullptr, -1);
+	// ftlua::pop<void*>(nullptr, -1);
+	// ftlua::pop<void const*>(nullptr, -1);
+	// ftlua::pop<bool>(nullptr, -1);
+	// ftlua::pop<char const *>(nullptr, -1);
+	// ftlua::pop<ft::Vec2<int>>(nullptr, -1);
+	// ftlua::pop<ft::Vec4<float>>(nullptr, -1);
+	// ftlua::pop<Grid>(nullptr, -1);
+	// ftlua::pop<ftui::AView*>(nullptr, -1);
+	// ftlua::pop<ftui::ALayout*>(nullptr, -1);
+	// ftlua::pop<Bookmark const*>(nullptr, -1);
+
+
 
 
 
