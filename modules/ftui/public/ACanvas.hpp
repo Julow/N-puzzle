@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/02 17:42:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 10:13:09 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -166,12 +166,13 @@ public:
 ** Lua interactions
 */
 	typedef std::integral_constant<unsigned int, 1> ftlua_size;
-	bool			ftlua_push(lua_State *l)
+	void				ftlua_push(lua_State *l, std::function<void(std::string)> panic)
 		{
 			ftlua::pushLightKey(l, this);
-			if (!lua_istable(l, -1))
-				return false;
-			return true;
+			FTLUA_STACKASSERT_PANIC(
+				l, lua_istable(l, -1), panic
+				, ft::f("ACanvas::ftlua_push()"), ft::f("_G[this] not found."));
+			return ;
 		}
 
 	static void			pushTemplate(lua_State *l);

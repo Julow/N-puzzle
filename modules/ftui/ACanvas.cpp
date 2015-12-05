@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/02 17:40:25 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 09:12:37 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -162,7 +162,7 @@ void			ACanvas::pushLua(lua_State *l)
 
 bool			ACanvas::isInLua(lua_State *l)
 {
-	ftlua::push(l, this);
+	ftlua::pushLightKey(l, this);
 	if (!lua_istable(l, -1))
 	{
 		lua_pop(l, 1);

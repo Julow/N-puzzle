@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 19:57:04 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 10:11:06 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -70,12 +70,26 @@ template <bool LuaErr = false>
 int			push(lua_State *l, newtab_t const &)
 { lua_createtable(l, 0, 0); return 1; }
 template <bool LuaErr = false>
-int			push(lua_State *l, dup_t const &i)
+int			push(lua_State *l, dup_t const &i) //panic
 {
 	int const	index = i.i < 0 ? -i.i : i.i;
 
 	FTLUA_STACKASSERT(
 		l, index <= lua_gettop(l), LuaErr
+		, ft::f("ftlua::push(dup(%)).", i.i)
+		, ft::f("Stack index does not exist.")
+		);
+	lua_pushvalue(l, i.i);
+	return 1;
+}
+template <bool LuaErr = false>
+int			push(lua_State *l, dup_t const &i
+				 , std::function<void(std::string)> panic) //panic
+{
+	int const	index = i.i < 0 ? -i.i : i.i;
+
+	FTLUA_STACKASSERT_PANIC(
+		l, index <= lua_gettop(l), panic
 		, ft::f("ftlua::push(dup(%)).", i.i)
 		, ft::f("Stack index does not exist.")
 		);
@@ -121,13 +135,13 @@ int			push(lua_State *l, std::string const &v)
 
 // BOOL/NUMBERS/STRING/ ==== POINTERS //
 template <bool LuaErr = false, class T
-			, OK_IF(ISPTR(T))
-			, class NOPTR = DELPTR(T)
-			, OK_IF(!ISPTR(NOPTR))
-			, OK_IF(!ISSAME(char, DELCONST(NOPTR)))
-			, OK_IF(!std::is_floating_point<NOPTR>::value)
-			, OK_IF(ISCONV(NOPTR, lua_Integer))
-			>
+		  , OK_IF(ISPTR(T))
+		  , class NOPTR = DELPTR(T)
+		  , OK_IF(!ISPTR(NOPTR))
+		  , OK_IF(!ISSAME(char, DELCONST(NOPTR)))
+		  , OK_IF(!std::is_floating_point<NOPTR>::value)
+		  , OK_IF(ISCONV(NOPTR, lua_Integer))
+		  >
 int			push(lua_State *l, T v)
 {
 	if (v == nullptr)
@@ -138,12 +152,12 @@ int			push(lua_State *l, T v)
 }
 
 template <bool LuaErr = false, class T
-			, OK_IF(ISPTR(T))
-			, class NOPTR = DELPTR(T)
-			, OK_IF(!ISPTR(NOPTR))
-			, OK_IF(std::is_floating_point<NOPTR>::value)
-			, OK_IF(ISCONV(NOPTR, lua_Number))
-			>
+		  , OK_IF(ISPTR(T))
+		  , class NOPTR = DELPTR(T)
+		  , OK_IF(!ISPTR(NOPTR))
+		  , OK_IF(std::is_floating_point<NOPTR>::value)
+		  , OK_IF(ISCONV(NOPTR, lua_Number))
+		  >
 int			push(lua_State *l, T v)
 {
 	if (v == nullptr)
@@ -166,7 +180,6 @@ int			push(lua_State *l, std::string const *const &v)
 template <bool LuaErr = false>
 int			push(lua_State *l, char const *v)
 {
-	FTASSERT(false);
 	if (v == NULL)
 		lua_pushnil(l);
 	else
@@ -209,41 +222,46 @@ int	push(lua_State *l, ft::Rect<T> const &v)
 
 // (T -> T::ftlua_push())
 template <bool LuaErr = false, typename T
-			// , OK_IF(ft::is_complete<T>::value) // TODO: in_complete works?
-			, OK_IF(!ISCONST(T))
-			, OK_IF(ftlua::has_size<T>::value)
-			, OK_IF(ftlua::has_push<T>::value)
-			>
-int			push(lua_State *l, T &v)
+		  , OK_IF(!ISCONST(T))
+		  , OK_IF(ftlua::has_size<T>::value)
+		  , OK_IF(ftlua::has_push<T>::value)
+		  >
+int			push(lua_State *l, T &v)//panic
 {
-	bool const	err = v.ftlua_push(l);
-
-	FTASSERT(err == true); //TODO FTLUA_STACKASSERT
+	std::function<void(std::string)>	panic =
+		[l, &v](std::string const &str) {
+		FTLUA_ERR(l, LuaErr, ft::f("ftlua::push(%) failed from:\n%"
+								   , ft::valToString(v), str));
+	};
+	v.ftlua_push(l, panic);
 	return T::ftlua_size::value;
 }
 
 // (T -> T::ftlua_push() const) OR (T const -> T::ftlua_push() const)
 template <bool LuaErr = false, typename T
-			, OK_IF(ftlua::has_size<T>::value)
-			, OK_IF(ftlua::has_constpush<T>::value)
-			>
-int			push(lua_State *l, T const &v)
+		  , OK_IF(ftlua::has_size<T>::value)
+		  , OK_IF(ftlua::has_constpush<T>::value)
+		  >
+int			push(lua_State *l, T const &v) //panic
 {
-	bool const	err = v.ftlua_push(l);
-
-	FTASSERT(err == true); //TODO FTLUA_STACKASSERT
+	std::function<void(std::string)>	panic =
+		[l, &v](std::string const &str) {
+		FTLUA_ERR(l, LuaErr, ft::f("ftlua::push(%) failed from:\n%"
+								   , ft::valToString(v), str));
+	};
+	v.ftlua_push(l, panic);
 	return T::ftlua_size::value;
 }
 
 // Pointers tmp function
 template <bool LuaErr = false, typename T
-			, OK_IF(ISPTR(T))
-			, class NOPTR = DELPTR(T)
-			, OK_IF(ftlua::has_size<NOPTR>::value)
-			, OK_IF(ftlua::has_push<NOPTR>::value
-					|| ftlua::has_constpush<NOPTR>::value)
-			>
-int			push(lua_State *l, T v)
+		  , OK_IF(ISPTR(T))
+		  , class NOPTR = DELPTR(T)
+		  , OK_IF(ftlua::has_size<NOPTR>::value)
+		  , OK_IF(ftlua::has_push<NOPTR>::value
+				  || ftlua::has_constpush<NOPTR>::value)
+		  >
+int			push(lua_State *l, T v) //panic
 {
 	if (v == nullptr)
 		return push<LuaErr>(l, nil);
@@ -261,9 +279,9 @@ namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 
 template <size_t I, bool LuaErr
-			, int Relative
-			, typename... ARGS
-			>
+		  , int Relative
+		  , typename... ARGS
+		  >
 void		_dereference(
 	lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 {
@@ -280,10 +298,10 @@ void		_dereference(
 }
 
 template <size_t I, bool LuaErr
-			, int Relative
-			, typename... ARGS
-			, OK_IF((sizeof...(ARGS) - I == 1))
-			>
+		  , int Relative
+		  , typename... ARGS
+		  , OK_IF((sizeof...(ARGS) - I == 1))
+		  >
 void		_loopKey(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 {
 	_dereference<I, LuaErr>(l, wrap);
@@ -291,10 +309,10 @@ void		_loopKey(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 }
 
 template <size_t I, bool LuaErr
-			, int Relative
-			, typename... ARGS
-			, OK_IF((sizeof...(ARGS) - I != 1))
-			>
+		  , int Relative
+		  , typename... ARGS
+		  , OK_IF((sizeof...(ARGS) - I != 1))
+		  >
 void		_loopKey(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 {
 	_dereference<I, LuaErr>(l, wrap);
@@ -308,9 +326,9 @@ void		_loopKey(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 
 
 template <bool LuaErr = false
-			, int Relative
-			, typename ...ARGS>
-int			push(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
+		  , int Relative
+		  , typename ...ARGS>
+int			push(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap) //panic
 {
 	if (Relative == 0)
 		lua_pushglobaltable(l);
@@ -336,9 +354,9 @@ int			push(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 
 
 template <bool LuaErr = false
-			, class T
-			, OK_IF(ft::is_container<T>::value)
-			>
+		  , class T
+		  , OK_IF(ft::is_container<T>::value)
+		  >
 int			push(lua_State *l, T &cont)
 {
 	int			i(0);
@@ -363,9 +381,9 @@ int			push(lua_State *l, T &cont)
 }
 
 template <bool LuaErr = false
-			, class T
-			, OK_IF(ft::is_container<T>::value)
-			>
+		  , class T
+		  , OK_IF(ft::is_container<T>::value)
+		  >
 int			push(lua_State *l, T const &cont)
 {
 	int			i(0);

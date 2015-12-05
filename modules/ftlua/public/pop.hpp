@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:16:24 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 17:46:30 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 09:20:57 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -58,7 +58,7 @@ namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 	{																	\
 		FTLUA_STACKASSERT(												\
 			l, lua_is##FUNCSUFFIX(l, index), LuaErr						\
-			, ft::f("ftlua::pop<%>(%).", index, #TYPE)					\
+			, ft::f("ftlua::pop<%>(%).", #TYPE, index)					\
 			, ft::f("Index % should have been an %.", index, #FUNCSUFFIX) \
 			);															\
 		return lua_to##FUNCSUFFIX(l, index);							\

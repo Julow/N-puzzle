@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/29 14:06:13 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/30 11:33:43 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/05 09:49:18 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -39,11 +39,11 @@ SS::Bundle		*SS::loadBundle(Main &main, OCamlBinding &ocaml) /*static*/
 }
 
 // static void		launch(OCamlBinding *ocaml)
-static void		launch(OCamlBinding *ocaml, Grid const *gr)
-{
-	std::cout << "from thread" << std::endl;
-	ocaml->solve(*gr);
-}
+// static void		launch(OCamlBinding *ocaml, Grid const *gr)
+// {
+// 	std::cout << "from thread" << std::endl;
+// 	ocaml->solve(*gr);
+// }
 
 SS::SolvingState(Main &main, OCamlBinding &ocaml)
 	: _main(main)
@@ -52,8 +52,8 @@ SS::SolvingState(Main &main, OCamlBinding &ocaml)
 	, _abortSolvingState(false)
 {
 	lua_State	*l = this->_b->act.getLuaState();
-	auto		*bun = this->_b;
-	auto		&act = bun->act;
+	// auto		*bun = this->_b;
+	// auto		&act = bun->act;
 	int			ret;
 // TODO: ftlua
 	ret = lua_getglobal(l, "SolvingState");
@@ -146,16 +146,16 @@ static Tiles	make_tiles(void)
 	return t;
 }
 
-SS::Bundle::Bundle(Main &main, OCamlBinding &ocaml)
+SS::Bundle::Bundle(Main &main, OCamlBinding &)
 	: tiles(make_tiles())
 	, act(WIN_SIZEVI)
 {
 	ftui::Activity			&act = this->act;
-	auto					pushFun =
-		[&](std::string const &fname, lua_CFunction f)
-		{ act.registerLuaCFun_table("SolvingState", fname, f); };
+	// auto					pushFun =
+	// 	[&](std::string const &fname, lua_CFunction f)
+	// 	{ act.registerLuaCFun_table("SolvingState", fname, f); };
 	std::ifstream			is("res/layout/solving_state.xml");
-	Grid					*gr;
+	// Grid					*gr;
 
 
 	act.inflate(is);

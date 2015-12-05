@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/12/02 17:43:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 17:43:23 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 10:08:07 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -38,21 +38,22 @@ FT_DEFINE_TYPETRAIT_TEST(
 
 FT_DEFINE_TYPETRAIT_TEST(
 	has_push
-	, class WishedFun = bool (C::*)(lua_State*)
+	, class WishedFun = void (C::*)(lua_State*, std::function<void(std::string)>)
 	, class Fun = decltype(static_cast<WishedFun>(&C::ftlua_push))
 	, OK_IF(ISSAME(Fun, WishedFun))
 	);
 
 FT_DEFINE_TYPETRAIT_TEST(
 	has_constpush
-	, class WishedFun = bool (C::*)(lua_State*) const
+	, class WishedFun = void (C::*)(lua_State*, std::function<void(std::string)>) const
 	, class Fun = decltype(static_cast<WishedFun>(&C::ftlua_push))
 	, OK_IF(ISSAME(Fun, WishedFun))
 	);
 
+
 FT_DEFINE_TYPETRAIT_TEST(
 	has_pop
-	, class WishedFun = C (*)(lua_State*, int, bool &)
+	, class WishedFun = C (*)(lua_State*, int, std::function<void(std::string)>)
 	, class Fun = decltype(static_cast<WishedFun>(&C::ftlua_pop))
 	, OK_IF(ISSAME(Fun, WishedFun))
 	);
@@ -63,7 +64,7 @@ FT_DEFINE_TYPETRAIT_TEST(
 	, class Ret = typename ft::return_type<Fun>::type
 	, OK_IF(ISPTR(Ret))
 	, OK_IF(ISBASE(DELPTR(Ret), C))
-	, class WishedFun = Ret (*)(lua_State*, int, bool &)
+	, class WishedFun = Ret (*)(lua_State*, int, std::function<void(std::string)>)
 	, OK_IF(ISSAME(Fun, WishedFun))
 	);
 

@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/02 17:53:47 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 10:13:33 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -40,7 +40,7 @@ public:
 	~Grid(void);
 
 	typedef std::integral_constant<unsigned int, 1>	ftlua_size;
-	bool				ftlua_push(lua_State *l) const
+	void				ftlua_push(lua_State *l, std::function<void(std::string)>) const
 		{
 			int const	w = this->_size;
 
@@ -51,11 +51,11 @@ public:
 				lua_pushinteger(l, this->_data[i / w][i % w]);
 				lua_settable(l, -3);
 			}
-			return true;
+			return ;
 		}
 
 
-	static Grid			helper(lua_State *l, bool &err, int tabindex2, int w)
+	static Grid			helper(lua_State *l, std::function<void(std::string)> panic, int tabindex2, int w)
 		{
 			Grid		gr = Grid(w, "From_lua");
 
@@ -65,28 +65,22 @@ public:
 				{
 					ftlua::push(l, y * w + x);
 					if (lua_gettable(l, tabindex2) != LUA_TNUMBER)
-					{
-						err = true;
-						return Grid(0);
-					}
+						panic("Grid::ftlua_pop #4");
 					gr.set(x, y, lua_tointeger(l, -1));
 					lua_pop(l, 1);
 				}
 			}
 			return gr;
 		}
-	static Grid			ftlua_pop(lua_State *l, int i, bool &err)
+	static Grid			ftlua_pop(lua_State *l, int i, std::function<void(std::string)> panic)
 		{
-			int			len;
+			int			len(0);
 			int const	tabindex2 = i < 0 ? i - 1 : i;
 			int			type;
 			int			w;
 // TODO: test ftlua_pop
 			if (!lua_istable(l, i))
-			{
-				err = true;
-				return Grid(0);
-			}
+				panic("Grid::ftlua_pop #1");
 			ftlua::push(l, 0);
 			type = lua_gettable(l, tabindex2);
 			if (type == LUA_TNIL)
@@ -96,17 +90,13 @@ public:
 			else
 			{
 				lua_pop(l, 1);
-				err = true;
-				return Grid(0);
+				panic("Grid::ftlua_pop #2");
 			}
 			lua_pop(l, 1);
 			w = static_cast<int>(sqrt(static_cast<float>(len)));
 			if (w * w != len)
-			{
-				err = true;
-				return Grid(0);
-			}
-			return helper(l, err, tabindex2, w);
+				panic("Grid::ftlua_pop #3");
+			return helper(l, panic, tabindex2, w);
 		}
 
 

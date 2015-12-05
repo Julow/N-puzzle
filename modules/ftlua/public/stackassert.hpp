@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 13:14:16 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 10:47:42 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 09:57:08 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -54,6 +54,21 @@ private:
 		}																\
 	} while(0)
 
+# define FTLUA_STACKASSERT_PANIC(L, PRED, PANIC, WHERE, WHY)	\
+	do															\
+	{															\
+		if (!(PRED))											\
+			(PANIC)(FTLUA_SE_MSG(L, #PRED, WHERE, WHY));		\
+	} while(0)
+
+# define FTLUA_ERR(L, LUAERR, MSG)										\
+	do																	\
+	{																	\
+		if (LUAERR)														\
+			luaL_error(L, (MSG).c_str());								\
+		else															\
+			throw ftlua::StackError(MSG);								\
+	} while(0)
 
 
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //
