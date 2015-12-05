@@ -63,7 +63,6 @@ o/srcs/Main.o: srcs/Main.cpp modules/_objs/_public/ft/Rect.hpp \
 	modules/_objs/_public/ftui/templates/AView_callLuaCallback.tpp \
 	modules/_objs/_public/liblua/lua.hpp include/libftui_extend/Bookmark.hpp \
 	modules/_objs/_public/ft/Color.hpp modules/_objs/_public/ft/TupleRef.hpp \
-	modules/_objs/_public/ftui/ACanvas.hpp \
 	modules/_objs/_public/ftui/ALayout.hpp \
 	modules/_objs/_public/ftui/ASolidView.hpp \
 	modules/_objs/_public/ftui/Activity.hpp \
@@ -72,7 +71,8 @@ o/srcs/Main.o: srcs/Main.cpp modules/_objs/_public/ft/Rect.hpp \
 	modules/_objs/_public/ftui/IViewHolder.hpp \
 	modules/_objs/_public/ftui/templates/Activity.tpp include/Grid.hpp \
 	include/IBundle.hpp include/ISolverListener.hpp include/IState.hpp \
-	include/Main.hpp include/OCamlBinding.hpp modules/_objs/_public/gl/gl.hpp \
+	include/Main.hpp include/OCamlBinding.hpp \
+	modules/_objs/_public/ftui/ACanvas.hpp modules/_objs/_public/gl/gl.hpp \
 	modules/_objs/_public/gl_canvas/GlCanvasHolder.hpp \
 	include/config_window.hpp modules/_objs/_public/ftce/math.hpp \
 	include/PickState.hpp modules/_objs/_public/tiles/Tiles.hpp \
@@ -206,7 +206,6 @@ o/srcs/libftui_extend/Bookmark.o: srcs/libftui_extend/Bookmark.cpp \
 	modules/_objs/_public/ftlua/templates/ftlua_handler.tpp \
 	modules/_objs/_public/ftlua/types.hpp \
 	modules/_objs/_public/ftlua/utils.hpp \
-	modules/_objs/_public/ftui/ACanvas.hpp \
 	modules/_objs/_public/ftui/ALayout.hpp \
 	modules/_objs/_public/ftui/ASolidView.hpp \
 	modules/_objs/_public/ftui/AView.hpp \
@@ -218,5 +217,6 @@ o/srcs/libftui_extend/Bookmark.o: srcs/libftui_extend/Bookmark.cpp \
 	modules/_objs/_public/ftui/libftui.hpp \
 	modules/_objs/_public/ftui/templates/AView_callLuaCallback.tpp \
 	modules/_objs/_public/ftui/templates/Activity.tpp \
-	modules/_objs/_public/liblua/lua.hpp modules/_objs/_public/ftui/Button.hpp \
-	| o/srcs/libftui_extend/
+	modules/_objs/_public/liblua/lua.hpp \
+	modules/_objs/_public/ftui/ACanvas.hpp \
+	modules/_objs/_public/ftui/Button.hpp | o/srcs/libftui_extend/

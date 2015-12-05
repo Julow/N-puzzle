@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:22 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/05 13:16:27 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 17:27:27 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -70,7 +70,8 @@ ACanvas::~ACanvas(void)
 
 int				ACanvas::drawRectG(lua_State *l)
 {
-	ACanvas *const		self = ftlua::retrieveSelf<ACanvas>(l, 1);
+	ACanvas *const		self = ftlua::pop<ACanvas*>(l, 1);
+	// ACanvas *const		self = ftlua::retrieveSelf<ACanvas>(l, 1);
 	ACanvas::Params		p;
 	ft::Rect<float>		r;
 	int const			top = lua_gettop(l);
@@ -97,7 +98,8 @@ int				ACanvas::drawRectG(lua_State *l)
 
 int				ACanvas::drawTextG(lua_State *l)
 {
-	ACanvas *const		self = ftlua::retrieveSelf<ACanvas>(l, 1);
+	ACanvas *const		self = ftlua::pop<ACanvas*>(l, 1);
+	// ACanvas *const		self = ftlua::retrieveSelf<ACanvas>(l, 1);
 	ACanvas::Params		params;
 	ft::Vec2<float>		pos;
 	std::string			text;
@@ -118,7 +120,8 @@ int				ACanvas::drawTextG(lua_State *l)
 
 int				ACanvas::setFontG(lua_State *l)
 {
-	ACanvas *const		self = ftlua::retrieveSelf<ACanvas>(l, 1);
+	ACanvas *const		self = ftlua::pop<ACanvas*>(l, 1);
+	// ACanvas *const		self = ftlua::retrieveSelf<ACanvas>(l, 1);
 
 	self->_luaFont = ACanvas::getFont(luaL_checkstring(l, 1));
 	return (0);
@@ -126,7 +129,8 @@ int				ACanvas::setFontG(lua_State *l)
 
 int				ACanvas::measureTextG(lua_State *l)
 {
-	ACanvas *const		self = ftlua::retrieveSelf<ACanvas>(l, 1);
+	ACanvas *const		self = ftlua::pop<ACanvas*>(l, 1);
+	// ACanvas *const		self = ftlua::retrieveSelf<ACanvas>(l, 1);
 	std::string			text;
 	ACanvas::Params		params;
 

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/13 07:39:43 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/01 17:04:31 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 17:27:42 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,7 +19,7 @@
 
 # include "ftlua/types.hpp"
 # include "ftlua/push.hpp"
-// # include "ftlua/pop.hpp"
+# include "ftlua/pop.hpp"
 # include "ftlua/utils.hpp"
 # include "ftlua/call.hpp"
 # include "ftlua/set.hpp"
@@ -66,24 +66,11 @@ int			handle(lua_State *l, Ret (*f)(Args...));
 
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
 int			handle(lua_State *l, C *i, Ret (C::*f)(Args...));
-template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
-int			handle(lua_State *l, C const *i, Ret (C::*f)(Args...) const);
 
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
 int			handle(lua_State *l, Ret (C::*f)(Args...));
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
 int			handle(lua_State *l, Ret (C::*f)(Args...) const);
-
-/*
-** 'retrieveSelf'				1. Looks for a table at index.		(may throw)
-**								2. Looks for a userdata at tab[0]	(may throw)
-**								3. Pops it from the stack
-**								4. Returns it
-*/
-
-template <typename T>
-T					*retrieveSelf(lua_State *l, int index, bool pop = true);
-
 
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //

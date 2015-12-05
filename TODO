@@ -6,6 +6,7 @@ TODO LIST
 		-> debug layouts
 	ftlua::handle rewrite
 	ftlua clean Keys
+	fix glitch when spam clicking on bookmarks delete/select
 	ocaml bindings
 	multithread canvas
 	AbsoluteLayout, RelativeLayout

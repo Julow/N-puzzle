@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:16:24 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 15:44:05 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 18:13:22 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -79,7 +79,7 @@ T			pop(lua_State *l, int index)
 
 // NO nil_t newtab_t dup_t dup_t-panic lua_CFunction
 // NUMBERS/STRING =================== //
-template <class T, bool LuaErr = false
+template <class T, bool LuaErr = true
 		  , OK_IF(!ISPTR(T))
 		  , OK_IF(!ISSAME(bool, DELCONST(T)))
 		  , OK_IF(!std::is_floating_point<T>::value)
@@ -99,7 +99,7 @@ T			pop(lua_State *l, int index)
 	return v;
 }
 
-template <class T, bool LuaErr = false
+template <class T, bool LuaErr = true
 		  , OK_IF(std::is_floating_point<T>::value)
 		  , OK_IF(ISCONV(T, lua_Number))
 		  >
@@ -204,7 +204,7 @@ TT			pop(lua_State *l, int index)
 //
 
 // (T::ftlua_pop() -> T)
-template <typename T, bool LuaErr = false
+template <typename T, bool LuaErr = true
 		  , OK_IF(ftlua::has_size<T>::value)
 		  , OK_IF(ftlua::has_pop<T>::value)
 		  >
@@ -222,7 +222,7 @@ T			pop(lua_State *l, int index)
 // (T::ftlua_pop() -> T*)
 //		ftlua::has_ptrpop checks that [T] is base of [ftlua_pop return type]
 //	hence the reinterpret_cast.
-template <typename T, bool LuaErr = false
+template <typename T, bool LuaErr = true
 		  , OK_IF(ISPTR(T))
 		  , class NoPtr = DELPTR(T)
 		  , OK_IF(ftlua::has_size<NoPtr>::value)

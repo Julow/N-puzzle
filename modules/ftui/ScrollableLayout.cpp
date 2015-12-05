@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/26 16:08:13 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/05 12:56:50 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 17:33:32 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -147,7 +147,8 @@ void				ScrollableLayout::onDetach(void)
 
 int					ScrollableLayout::getScrollG(lua_State *l)
 {
-	ScrollableLayout *const	self = ftlua::retrieveSelf<ScrollableLayout>(l, -1);
+	ScrollableLayout *const	self = ftlua::pop<ScrollableLayout*>(l, -1);
+	// ScrollableLayout *const	self = ftlua::retrieveSelf<ScrollableLayout>(l, -1);
 
 	ftlua::push(l, self->getScroll());
 	return 1;
@@ -155,7 +156,8 @@ int					ScrollableLayout::getScrollG(lua_State *l)
 
 int					ScrollableLayout::setScrollG(lua_State *l)
 {
-	ScrollableLayout *const	self = ftlua::retrieveSelf<ScrollableLayout>(l, -1);
+	ScrollableLayout *const	self = ftlua::pop<ScrollableLayout*>(l, -1);
+	// ScrollableLayout *const	self = ftlua::retrieveSelf<ScrollableLayout>(l, -1);
 
 	self->setScroll(luaL_checkinteger(l, 1));
 	lua_pop(l, 1);
@@ -164,7 +166,8 @@ int					ScrollableLayout::setScrollG(lua_State *l)
 
 int					ScrollableLayout::getMaxScrollG(lua_State *l)
 {
-	ScrollableLayout *const	self = ftlua::retrieveSelf<ScrollableLayout>(l, -1);
+	ScrollableLayout *const	self = ftlua::pop<ScrollableLayout*>(l, -1);
+	// ScrollableLayout *const	self = ftlua::retrieveSelf<ScrollableLayout>(l, -1);
 
 	ftlua::push(l, self->getMaxScroll());
 	return 1;

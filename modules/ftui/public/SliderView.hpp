@@ -6,16 +6,16 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 13:27:39 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/01 19:01:25 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/05 18:09:38 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef SLIDERVIEW_HPP
 # define SLIDERVIEW_HPP
 
-# include "ftui/Activity.hpp"
+// # include "ftui/Activity.hpp"
 # include "ftui/ASolidView.hpp"
-# include "ftui/AView.hpp"
+// # include "ftui/AView.hpp"
 
 namespace ftui
 {
@@ -40,7 +40,7 @@ namespace ftui
 ** 	onValueChange		float value
 ** 				Called when the value change (by user interation or setValue())
 */
-class	SliderView : ASolidView
+class	SliderView : public ASolidView
 {
 public:
 	enum class	LuaCallback : uint32_t

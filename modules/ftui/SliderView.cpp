@@ -6,11 +6,15 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/23 13:27:49 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/05 12:57:44 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 18:03:53 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
+#include "ftui/AView.hpp"
+#include "ftui/ASolidView.hpp"
 #include "ftui/SliderView.hpp"
+#include "ftui/Activity.hpp"
+
 
 namespace ftui
 {
@@ -268,73 +272,89 @@ void				SliderView::setValueWidth(int x)
 
 int					SliderView::getValueG(lua_State *l)
 {
-	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
+	// SliderView *const	self = ftlua::pop<SliderView*>(l, 1);
+	// // SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
 
-	ftlua::push(l, self->getValue());
-	return 1;
+	// ftlua::push(l, self->getValue());
+	// return 1;
+	return ftlua::handle<1, 1>(l, &SliderView::getValue);
 }
 
 int					SliderView::setValueG(lua_State *l)
 {
-	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
+	// SliderView *const	self = ftlua::pop<SliderView*>(l, 1);
+	// // SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
 
-	self->setValue(luaL_checknumber(l, 1));
-	lua_pop(l, 1);
-	return (0);
+	// self->setValue(luaL_checknumber(l, 1));
+	// lua_pop(l, 1);
+	// return (0);
+	return ftlua::handle<2, 0>(l, &SliderView::setValue);
 }
 
 int					SliderView::getStepValueG(lua_State *l)
 {
-	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
+	// SliderView *const	self = ftlua::pop<SliderView*>(l, 1);
+	// // SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
 
-	ftlua::push(l, self->getStepValue());
-	return 1;
+	// ftlua::push(l, self->getStepValue());
+	// return 1;
+	return ftlua::handle<1, 1>(l, &SliderView::getStepValue);
 }
 
 int					SliderView::setStepValueG(lua_State *l)
 {
-	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
+	// SliderView *const	self = ftlua::pop<SliderView*>(l, 1);
+	// // SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
 
-	self->setStepValue(luaL_checkinteger(l, 1));
-	lua_pop(l, 1);
-	return (0);
+	// self->setStepValue(luaL_checkinteger(l, 1));
+	// lua_pop(l, 1);
+	// return (0);
+	return ftlua::handle<2, 0>(l, &SliderView::setStepValue);
 }
 
 int					SliderView::getBoundsG(lua_State *l)
 {
-	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
+	// SliderView *const	self = ftlua::pop<SliderView*>(l, 1);
+	// // SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
 
-	ftlua::push(l, self->getBounds());
-	return 2;
+	// ftlua::push(l, self->getBounds());
+	// return 2;
+	return ftlua::handle<1, 2>(l, &SliderView::getBounds);
 }
 
 int					SliderView::setBoundsG(lua_State *l)
 {
-	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
-	ft::Vec2<float>		bounds;
+	// SliderView *const	self = ftlua::pop<SliderView*>(l, 1);
+	// // SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
+	// ft::Vec2<float>		bounds;
 
-	bounds.x = luaL_checknumber(l, 1);
-	bounds.y = luaL_checknumber(l, 2);
-	lua_pop(l, 2);
-	self->setBounds(bounds);
-	return (0);
+	// bounds.x = luaL_checknumber(l, 1);
+	// bounds.y = luaL_checknumber(l, 2);
+	// lua_pop(l, 2);
+	// self->setBounds(bounds);
+	// return (0);
+	return ftlua::handle<3, 0>(l, &SliderView::setBounds);
 }
 
 int					SliderView::getStepsG(lua_State *l)
 {
-	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
+	// SliderView *const	self = ftlua::pop<SliderView*>(l, 1);
+	// // SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
 
-	ftlua::push(l, self->getSteps());
-	return 1;
+	// ftlua::push(l, self->getSteps());
+	// return 1;
+	return ftlua::handle<1, 1>(l, &SliderView::getSteps);
 }
 
 int					SliderView::setStepsG(lua_State *l)
 {
-	SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
+	// SliderView *const	self = ftlua::pop<SliderView*>(l, 1);
+	// // SliderView *const	self = ftlua::retrieveSelf<SliderView>(l, 1);
 
-	self->setSteps(luaL_checkinteger(l, 1));
-	lua_pop(l, 1);
-	return (0);
+	// self->setSteps(luaL_checkinteger(l, 1));
+	// lua_pop(l, 1);
+	// return (0);
+	return ftlua::handle<2, 0>(l, &SliderView::setSteps);
 }
 
 };

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/28 12:40:52 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/01 19:24:27 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/05 17:33:06 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -103,7 +103,8 @@ void					CheckBox::setCheckedParams(ACanvas::Params const &p)
 { this->_checked = p; }
 int                     CheckBox::setCheckedParamsG(lua_State *l)
 {
-	CheckBox  *v = ftlua::retrieveSelf<CheckBox>(l, 1);
+	CheckBox  *v = ftlua::pop<CheckBox*>(l, 1);
+	// CheckBox  *v = ftlua::retrieveSelf<CheckBox>(l, 1);
 
 	v->setCheckedParams(CheckBox::retrieveParams(l));
 	return 0;
@@ -118,7 +119,8 @@ void				CheckBox::setDisabledCheckedParams(ACanvas::Params const &p)
 
 int                     CheckBox::setDisabledCheckedParamsG(lua_State *l)
 {
-	CheckBox  *v = ftlua::retrieveSelf<CheckBox>(l, 1);
+	CheckBox  *v = ftlua::pop<CheckBox*>(l, 1);
+	// CheckBox  *v = ftlua::retrieveSelf<CheckBox>(l, 1);
 
 	v->setDisabledCheckedParams(CheckBox::retrieveParams(l));
 	return 0;

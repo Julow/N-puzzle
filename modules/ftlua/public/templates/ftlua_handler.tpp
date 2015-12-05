@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 17:22:23 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 18:11:07 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -229,31 +229,6 @@ int		handle(lua_State *l, Ret (C::*f)(Args...) const)
 	using FClean = typename std::remove_cv<F>::type;
 
 	return (handle<NumIn, NumOut>(l, reinterpret_cast<FClean>(f)));
-}
-
-template <typename T> //TODO: get rid of this
-T		*retrieveSelf(lua_State *l, int index, bool pop)
-{
-	void		*i;
-
-	if (!lua_istable(l, index))
-		luaL_error(l, "Lua stack: bad argument at index %d", index);
-	lua_pushinteger(l, 0);
-	if (index < 0)
-	{
-		if (lua_gettable(l, index - 1) != LUA_TLIGHTUSERDATA)
-			luaL_error(l, "Missing luserdata at self[0] in table");
-	}
-	else
-	{
-		if (lua_gettable(l, index) != LUA_TLIGHTUSERDATA)
-			luaL_error(l, "Missing luserdata at self[0] in table");
-	}
-	i = lua_touserdata(l, -1);
-	lua_pop(l, 1);
-	if (pop)
-		lua_remove(l, index);
-	return (reinterpret_cast<T*>(i));
 }
 
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //
