@@ -50,8 +50,9 @@ o/srcs/Main.o: srcs/Main.cpp modules/_objs/_public/ft/Rect.hpp \
 	modules/_objs/_public/ftlua/call.hpp \
 	modules/_objs/_public/ftlua/conversions.hpp \
 	modules/_objs/_public/ftlua/ftlua.hpp \
-	modules/_objs/_public/ftlua/light.hpp modules/_objs/_public/ftlua/push.hpp \
-	modules/_objs/_public/ftlua/set.hpp modules/_objs/_public/ftlua/size.hpp \
+	modules/_objs/_public/ftlua/light.hpp modules/_objs/_public/ftlua/pop.hpp \
+	modules/_objs/_public/ftlua/push.hpp modules/_objs/_public/ftlua/set.hpp \
+	modules/_objs/_public/ftlua/size.hpp \
 	modules/_objs/_public/ftlua/stackassert.hpp \
 	modules/_objs/_public/ftlua/templates/ftlua_caller.tpp \
 	modules/_objs/_public/ftlua/templates/ftlua_handler.tpp \
@@ -75,7 +76,7 @@ o/srcs/Main.o: srcs/Main.cpp modules/_objs/_public/ft/Rect.hpp \
 	modules/_objs/_public/gl_canvas/GlCanvasHolder.hpp \
 	include/config_window.hpp modules/_objs/_public/ftce/math.hpp \
 	include/PickState.hpp modules/_objs/_public/tiles/Tiles.hpp \
-	include/SolvingState.hpp modules/_objs/_public/ftlua/pop.hpp | o/srcs/
+	include/SolvingState.hpp | o/srcs/
 o/srcs/OCamlBinding.o: srcs/OCamlBinding.cpp include/Grid.hpp \
 	include/ISolverListener.hpp include/OCamlBinding.hpp \
 	modules/_objs/_public/ft/Rect.hpp modules/_objs/_public/ft/Vec.hpp \
@@ -110,8 +111,9 @@ o/srcs/PickState.o: srcs/PickState.cpp include/Grid.hpp include/IBundle.hpp \
 	modules/_objs/_public/ftlua/call.hpp \
 	modules/_objs/_public/ftlua/conversions.hpp \
 	modules/_objs/_public/ftlua/ftlua.hpp \
-	modules/_objs/_public/ftlua/light.hpp modules/_objs/_public/ftlua/push.hpp \
-	modules/_objs/_public/ftlua/set.hpp modules/_objs/_public/ftlua/size.hpp \
+	modules/_objs/_public/ftlua/light.hpp modules/_objs/_public/ftlua/pop.hpp \
+	modules/_objs/_public/ftlua/push.hpp modules/_objs/_public/ftlua/set.hpp \
+	modules/_objs/_public/ftlua/size.hpp \
 	modules/_objs/_public/ftlua/stackassert.hpp \
 	modules/_objs/_public/ftlua/templates/ftlua_caller.tpp \
 	modules/_objs/_public/ftlua/templates/ftlua_handler.tpp \
@@ -150,8 +152,9 @@ o/srcs/SolvingState.o: srcs/SolvingState.cpp include/Grid.hpp \
 	modules/_objs/_public/ftlua/call.hpp \
 	modules/_objs/_public/ftlua/conversions.hpp \
 	modules/_objs/_public/ftlua/ftlua.hpp \
-	modules/_objs/_public/ftlua/light.hpp modules/_objs/_public/ftlua/push.hpp \
-	modules/_objs/_public/ftlua/set.hpp modules/_objs/_public/ftlua/size.hpp \
+	modules/_objs/_public/ftlua/light.hpp modules/_objs/_public/ftlua/pop.hpp \
+	modules/_objs/_public/ftlua/push.hpp modules/_objs/_public/ftlua/set.hpp \
+	modules/_objs/_public/ftlua/size.hpp \
 	modules/_objs/_public/ftlua/stackassert.hpp \
 	modules/_objs/_public/ftlua/templates/ftlua_caller.tpp \
 	modules/_objs/_public/ftlua/templates/ftlua_handler.tpp \
@@ -195,8 +198,9 @@ o/srcs/libftui_extend/Bookmark.o: srcs/libftui_extend/Bookmark.cpp \
 	modules/_objs/_public/ftlua/call.hpp \
 	modules/_objs/_public/ftlua/conversions.hpp \
 	modules/_objs/_public/ftlua/ftlua.hpp \
-	modules/_objs/_public/ftlua/light.hpp modules/_objs/_public/ftlua/push.hpp \
-	modules/_objs/_public/ftlua/set.hpp modules/_objs/_public/ftlua/size.hpp \
+	modules/_objs/_public/ftlua/light.hpp modules/_objs/_public/ftlua/pop.hpp \
+	modules/_objs/_public/ftlua/push.hpp modules/_objs/_public/ftlua/set.hpp \
+	modules/_objs/_public/ftlua/size.hpp \
 	modules/_objs/_public/ftlua/stackassert.hpp \
 	modules/_objs/_public/ftlua/templates/ftlua_caller.tpp \
 	modules/_objs/_public/ftlua/templates/ftlua_handler.tpp \

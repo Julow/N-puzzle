@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:16:24 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 09:20:57 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 15:12:26 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -31,6 +31,8 @@ namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 # define DELPTR(T) typename std::remove_pointer<T>::type
 # define DELCONST(T) typename std::remove_const<T>::type
+# define ADDPTR(T) typename std::add_pointer<T>::type
+# define DELCONSTPTR(T) ADDPTR(DELCONST(DELPTR(T)))
 # define OK_IFNODEF(PRED) typename std::enable_if<PRED>::type*
 # define OK_IF(PRED) typename std::enable_if<PRED>::type* = nullptr
 # define ISPTR(A) std::is_pointer<A>::value
@@ -39,82 +41,168 @@ namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 # define ISSAME(A, B) std::is_same<A, B>::value
 # define OK_IFSAME(A, B) OK_IF(ISSAME(A, B))
 
+// ========================================================================== //
+// ========================================================================== //
+// STRAIGHTFORWARD PUSH-OVERLOADS
+//
 
-// template <class T, bool LuaErr = true, OK_IFSAME(T, int)>
-// T	pop(lua_State *l, int index, bool &noErr, unsigned int &nret)
-// {
-// 	if (!lua_isinteger(l, index))
-// 	{
-// 		if (info != nullptr && info->first == true)
-// 			}
-// 	else if (info != nullptr)
-// 		info->second = 1;
-// 	return {};
-// }
-
-# define DEFINE_POP(TYPE, FUNCSUFFIX)									\
-	template <class T, bool LuaErr = true, OK_IFSAME(T, TYPE)>			\
-	T	pop(lua_State *l, TYPE index)									\
-	{																	\
-		FTLUA_STACKASSERT(												\
-			l, lua_is##FUNCSUFFIX(l, index), LuaErr						\
-			, ft::f("ftlua::pop<%>(%).", #TYPE, index)					\
-			, ft::f("Index % should have been an %.", index, #FUNCSUFFIX) \
-			);															\
-		return lua_to##FUNCSUFFIX(l, index);							\
-	}
-
-DEFINE_POP(int8_t, integer)
-DEFINE_POP(int, integer)
-
-# undef DEFINE_POP
-
-template <class T, bool LuaErr = true, OK_IFSAME(T, std::string*)>
-T	pop(lua_State *l, int index, std::pair<bool, unsigned int> *info = nullptr)
+// IMPLICIT CASTS DISABLED ========== //
+template <class T, bool LuaErr = true, OK_IFSAME(DELCONST(T), bool) >
+T			pop(lua_State *l, int index)
 {
-	(void)l;
-	(void)info;
-	(void)index;
-	return {};
+	bool		v;
+
+	FTLUA_STACKASSERT(
+		l, lua_isboolean(l, index), LuaErr
+		, ft::f("ftlua::pop<%>.", ft::typesToString<T>(), index)
+		, ft::f("Wrong type at index %.", index)
+		);
+	v = lua_toboolean(l, index);
+	lua_remove(l, index);
+	return v;
 }
 
-template <class TT, bool LuaErr = true, class T1 = typename TT::value_type
-		  , OK_IFSAME(TT, ft::Vec2<T1>)>
-TT	pop(lua_State *l, int index, std::pair<bool, unsigned int> *info = nullptr)
+template <class T, bool LuaErr = true, OK_IFSAME(DELCONSTPTR(T), void*) >
+T			pop(lua_State *l, int index)
 {
-	(void)l;
-	(void)info;
-	(void)index;
-	return {};
+	void		*v;
+
+	FTLUA_STACKASSERT(
+		l, lua_islightuserdata(l, index), LuaErr
+		, ft::f("ftlua::pop<%>.", ft::typesToString<T>(), index)
+		, ft::f("Wrong type at index %.", index)
+		);
+	v = lua_touserdata(l, index);
+	lua_remove(l, index);
+	return v;
 }
 
+//NO nil_t newtab_t dup_t dup_t-panic lua_CFunction
 
-// template <class T, bool LuaErr = true
-// 		  , OK_IF(ft::is_complete<T>::value)
-// 		  , OK_IF(ISCONV(T, Converter<T>))
-// 		  , OK_IF(std::is_default_constructible<T>::value)
-// 		  >
-// T	pop(lua_State *l, int index)
-// {
-// 	(void)l;
-// 	(void)index;
-// 	return {};
-// }
+// NUMBERS/STRING =================== //
+template <bool LuaErr = false, class T
+		  , OK_IF(!ISPTR(T))
+		  , OK_IF(!ISSAME(bool, DELCONST(T)))
+		  , OK_IF(!std::is_floating_point<T>::value)
+		  , OK_IF(ISCONV(T, lua_Integer))
+		  >
+T			pop(lua_State *l, int index)
+{
+	T		v;
 
-// template <class T, bool LuaErr = true
-// 		  , OK_IF(ft::is_complete<T>::value)
-// 		  , OK_IF(ISCONV(T, Converter<T>))
-// 		  , OK_IF(!std::is_default_constructible<T>::value)
-// 		  >
-// T	&pop(lua_State *l, int index)
-// {
-// 	Converter<T>	conv = static_cast< Converter<T> >(*(T*)(0x0));
-// 	std::cout << (void*)&conv._v << std::endl;
-// 	std::cout << (void*)conv._p << std::endl;
-// 	(void)l;
-// 	(void)index;
-// 	return *(T*)(0x0);
-// }
+	FTLUA_STACKASSERT(
+		l, lua_isinteger(l, index), LuaErr
+		, ft::f("ftlua::pop<%>.", ft::typesToString<T>(), index)
+		, ft::f("Wrong type at index %.", index)
+		);
+	v = static_cast<T>(lua_tointeger(l, index));
+	lua_remove(l, index);
+	return v;
+}
+
+template <bool LuaErr = false, class T
+		  , OK_IF(std::is_floating_point<T>::value)
+		  , OK_IF(ISCONV(T, lua_Number))
+		  >
+T			pop(lua_State *l, int index)
+{
+	T		v;
+
+	FTLUA_STACKASSERT(
+		l, lua_isnumber(l, index), LuaErr
+		, ft::f("ftlua::pop<%>.", ft::typesToString<T>(), index)
+		, ft::f("Wrong type at index %.", index)
+		);
+	v = static_cast<T>(lua_tonumber(l, index));
+	lua_remove(l, index);
+	return v;
+}
+
+template <class T, bool LuaErr = true, OK_IFSAME(DELCONST(T), std::string) >
+T			pop(lua_State *l, int index)
+{
+	std::string	v;
+
+	FTLUA_STACKASSERT(
+		l, lua_isstring(l, index), LuaErr
+		, ft::f("ftlua::pop<%>.", ft::typesToString<T>(), index)
+		, ft::f("Wrong type at index %.", index)
+		);
+	v = lua_tostring(l, index);
+	lua_remove(l, index);
+	return v;
+}
+
+//NO int-ptr float-ptr std::string-ptr
+
+template <class T, bool LuaErr = true, OK_IFSAME(DELCONST(T), char const *) >
+T			pop(lua_State *l, int index)
+{
+	char const	*v;
+
+	FTLUA_STACKASSERT(
+		l, lua_isstring(l, index), LuaErr
+		, ft::f("ftlua::pop<%>.", ft::typesToString<T>(), index)
+		, ft::f("Wrong type at index %.", index)
+		);
+	v = lua_tostring(l, index);
+	lua_remove(l, index);
+	return v;
+}
+
+// 'ft::' COMPOUND TYPES ============ //
+template <class TT, bool LuaErr = true
+		  , class T1 = typename TT::value_type
+		  , OK_IFSAME(DELCONST(TT), ft::Vec2<T1>) >
+TT			pop(lua_State *l, int index)
+{
+	int const	dt = index < 0 ? 1 : 0;
+	TT			v;
+
+	v.x = ftlua::pop<T1, LuaErr>(l, index);
+	index += dt;
+	v.y = ftlua::pop<T1, LuaErr>(l, index);
+	return v;
+}
+
+template <class TT, bool LuaErr = true
+		  , class T1 = typename TT::value_type
+		  , OK_IFSAME(DELCONST(TT), ft::Vec3<T1>) >
+TT			pop(lua_State *l, int index)
+{
+	int const	dt = index < 0 ? 1 : 0;
+	TT			v;
+
+	v.x = ftlua::pop<T1, LuaErr>(l, index);
+	index += dt;
+	v.y = ftlua::pop<T1, LuaErr>(l, index);
+	index += dt;
+	v.z = ftlua::pop<T1, LuaErr>(l, index);
+	return v;
+}
+
+template <class TT, bool LuaErr = true
+		  , class T1 = typename TT::value_type
+		  , OK_IFSAME(DELCONST(TT), ft::Vec4<T1>) >
+TT			pop(lua_State *l, int index)
+{
+	int const	dt = index < 0 ? 1 : 0;
+	TT			v;
+
+	v.x = ftlua::pop<T1, LuaErr>(l, index);
+	index += dt;
+	v.y = ftlua::pop<T1, LuaErr>(l, index);
+	index += dt;
+	v.z = ftlua::pop<T1, LuaErr>(l, index);
+	index += dt;
+	v.w = ftlua::pop<T1, LuaErr>(l, index);
+	return v;
+}
+
+// ========================================================================== //
+// ========================================================================== //
+// CUSTOM::ftlua_pop() PUSH-OVERLOADS
+//
 
 
 
@@ -127,6 +215,8 @@ TT	pop(lua_State *l, int index, std::pair<bool, unsigned int> *info = nullptr)
 # undef OK_IFNODEF
 # undef ISSAME
 # undef OK_IFISSAME
+# undef ADDPTR
+# undef DELCONSTPTR
 
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
