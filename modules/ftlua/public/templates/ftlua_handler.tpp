@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 14:54:47 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 17:22:23 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,8 +21,8 @@
 #include "ftlua/pop.hpp"
 #include "ftlua/size.hpp"
 
-
 # define DELPTR(T) typename std::remove_pointer<T>::type
+# define DELREF(T) typename std::remove_reference<T>::type
 # define DELCONST(T) typename std::remove_const<T>::type
 # define OK_IFNODEF(PRED) typename std::enable_if<PRED>::type*
 # define OK_IF(PRED) typename std::enable_if<PRED>::type* = nullptr
@@ -31,57 +31,12 @@
 # define ISCONV(A, B) std::is_convertible<A, B>::value
 # define ISSAME(A, B) std::is_same<A, B>::value
 
+
 namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-
-// * STEP 2 HELPERS ********************************************************* //
-template <typename T>
-constexpr inline int	decay(void){ return 1; }
-
-template <>
-constexpr inline int	decay<ft::Vec2<int>>(void){ return 2; }
-
-template <typename T>
-inline T				popStack(lua_State *, int)
-{
-	static_assert(!std::is_same<T, T>::value
-				  , "This type is not handled by LOLhelper function.");
-	return T();
-}
-
-template <>
-inline ft::Vec2<int>	popStack<ft::Vec2<int>>(lua_State *l, int numIn)
-{
-	ft::Vec2<int>		v(
-		luaL_checkinteger(l, -numIn), luaL_checkinteger(l, -numIn + 1));
-
-	lua_remove(l, -numIn + 1);
-	lua_remove(l, -numIn + 1);
-	return v;
-}
-
-#define BASICPOPSTACK(TYPE, FUNCTION)							\
-template <>														\
-inline TYPE				popStack<TYPE>(lua_State *l, int numIn)	\
-{																\
-	TYPE				v(FUNCTION(l, -numIn));					\
-																\
-	lua_remove(l, -numIn);										\
-	return v;													\
-}
-
-BASICPOPSTACK(std::string, luaL_checkstring)
-BASICPOPSTACK(int, luaL_checkinteger)
-BASICPOPSTACK(unsigned int, luaL_checkinteger)
-// BASICPOPSTACK(uint32_t, luaL_checkinteger)
-BASICPOPSTACK(bool, luaL_checkinteger)
-BASICPOPSTACK(float, luaL_checknumber)
-BASICPOPSTACK(double, luaL_checknumber)
-
-#undef BASICPOPSTACK
 
 // * STEP 5 *** Push return value on stack ********************************** //
 // template <class T>
@@ -92,7 +47,6 @@ void	stackPush(lua_State *l, T &val)
 	return ;
 }
 
-// template <class T>
 template <class T, OK_IF(!has_panicpush<T>::value)>
 void	stackPush(lua_State *l, T const &val)
 {
@@ -120,7 +74,6 @@ void	stackPush(lua_State *l, T const &v)
 		FTLUA_ERR(l, true, ft::f("ftlua::handle(%) failed from:\n%"
 								   , ft::valToString(v), str));
 	};
-	// ftlua::push<true>(l, v);
 	ftlua::push<true>(l, v, panic);
 	return ;
 }
@@ -156,22 +109,26 @@ void	helperCall(lua_State *, C *i, void (C::*f)(Params...), Params &&...p)
 
 // * STEP 3 *** Restore the function pointer and check NumIn **************** //
 // * Function *** //
-template <int NumIn
+template <int NextIndex
 		  , typename Ret, typename... Retreived>
 void		helperLoop(
 	lua_State *l, Ret (*f)(), Retreived &&...r)
 {
+	static_assert(NextIndex == 0, "Debug, can't be triggered");
+
 	helperCall(l, reinterpret_cast<Ret (*)(Retreived...)>(f)
 			   , std::forward<Retreived>(r)...);
 	return ;
 }
 
 // * MemFun ***** //
-template <int NumIn
+template <int NextIndex
 		  , typename Ret, class C, typename... Retreived>
 void		helperLoop(
 	lua_State *l, C *i, Ret (C::*f)(), Retreived &&...r)
 {
+	static_assert(NextIndex == 0, "Debug, can't be triggered");
+
 	helperCall(l, i
 			   , reinterpret_cast<Ret (C::*)(Retreived...)>(f)
 			   , std::forward<Retreived>(r)...);
@@ -180,42 +137,38 @@ void		helperLoop(
 
 // * STEP 2 *** Loop through arguments to retreive them from the lua Stack ** //
 // * Function *** //
-template <int NumIn
+template <int NextIndex
 		  , typename Ret, typename Head, typename... ArgsLeft
 		  , typename... Retreived>
 void		helperLoop(
 	lua_State *l, Ret (*f)(Head, ArgsLeft...), Retreived&&...r)
 {
-	using HeadCleanRef = typename std::remove_reference<Head>::type;
-	using HeadCleanAll = typename std::remove_cv<HeadCleanRef>::type;
+	using HeadClean = DELCONST(DELREF(Head));
 
-	HeadCleanAll	p{popStack<HeadCleanAll>(l, NumIn)};
+	HeadClean	v{ftlua::pop<HeadClean, true>(l, NextIndex)};
 
-	helperLoop<NumIn - decay<HeadCleanAll>()>(
-		l, reinterpret_cast<Ret (*)(ArgsLeft...)>(f)
-		, std::forward<Retreived>(r)...
-		, std::forward<HeadCleanAll>(p)
-		);
+	helperLoop
+		<NextIndex + static_cast<int>(ftlua::size<HeadClean>::value)>
+		(l, reinterpret_cast<Ret (*)(ArgsLeft...)>(f)
+		 , std::forward<Retreived>(r)..., std::forward<HeadClean>(v));
 	return ;
 }
 
 // * MemFun ***** //
-template <int NumIn
+template <int NextIndex
 		  , typename Ret, class C, typename Head, typename... ArgsLeft
 		  , typename... Retreived>
 void		helperLoop(
-	lua_State *l, C *i, Ret (C::*f)(Head, ArgsLeft...), Retreived&&...r)
+	lua_State *l, C *inst, Ret (C::*f)(Head, ArgsLeft...), Retreived&&...r)
 {
-	using HeadCleanRef = typename std::remove_reference<Head>::type;
-	using HeadCleanAll = typename std::remove_cv<HeadCleanRef>::type;
+	using HeadClean = DELCONST(DELREF(Head));
 
-	HeadCleanAll	p{popStack<HeadCleanAll>(l, NumIn)};
+	HeadClean	v{ftlua::pop<HeadClean, true>(l, NextIndex)};
 
-	helperLoop<NumIn - decay<HeadCleanAll>()>(
-		l, i, reinterpret_cast<Ret (C::*)(ArgsLeft...)>(f)
-		, std::forward<Retreived>(r)...
-		, std::forward<HeadCleanAll>(p)
-		);
+	helperLoop
+		<NextIndex + static_cast<int>(ftlua::size<HeadClean>::value)>
+		(l, inst, reinterpret_cast<Ret (C::*)(ArgsLeft...)>(f)
+		 , std::forward<Retreived>(r)..., std::forward<HeadClean>(v));
 	return ;
 }
 
@@ -233,7 +186,8 @@ int		handle(lua_State *l, Ret (*f)(Args...))
 				  , "Wrong number of poped arguments.");
 	static_assert(NumOut == ftlua::size<Ret>::value
 				  , "Wrong number of pushed arguments.");
-	internal::helperLoop<NumIn>(l, f);
+
+	internal::helperLoop<-NumIn>(l, f);
 	return (NumOut);
 }
 
@@ -245,37 +199,31 @@ int		handle(lua_State *l, C *i, Ret (C::*f)(Args...))
 				  , "Wrong number of poped arguments.");
 	static_assert(NumOut == ftlua::size<Ret>::value
 				  , "Wrong number of pushed arguments.");
-	internal::helperLoop<NumIn>(l, i, f);
-	return (NumOut);
-}
-template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
-int		handle(lua_State *l, C const *i, Ret (C::*f)(Args...) const)
-{
-	static_assert(NumIn == ftlua::multiSize<C, Args...>()
-				  , "Wrong number of poped arguments.");
-	static_assert(NumOut == ftlua::size<Ret>::value
-				  , "Wrong number of pushed arguments.");
-	using FClean = Ret (C::*)(Args...);
-	using CClean = C*;
 
-	internal::helperLoop<NumIn>(
-		l, const_cast<CClean>(i), reinterpret_cast<FClean>(f));
-	// TODO: sorry world this is a const_cast :( TODO: fix_later
+	internal::helperLoop<-NumIn>(l, i, f);
 	return (NumOut);
 }
+
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
 int		handle(lua_State *l, Ret (C::*f)(Args...))
+// TODO: split for popable/not popable
 {
 	static_assert(NumIn == ftlua::multiSize<C, Args...>()
 				  , "Wrong number of poped arguments.");
 	static_assert(NumOut == ftlua::size<Ret>::value
 				  , "Wrong number of pushed arguments.");
-	internal::helperLoop<NumIn - 1>(
-		l, retrieveSelf<C>(l, -NumIn), f);
+
+	C		*inst = ftlua::pop<C*, true>(l, -NumIn);
+
+	internal::helperLoop
+		<-NumIn + static_cast<int>(ftlua::size<C>::value)>
+		(l, inst, f);
 	return (NumOut);
 }
+
 template <int NumIn, int NumOut, typename Ret, class C, typename... Args>
 int		handle(lua_State *l, Ret (C::*f)(Args...) const)
+// TODO: improve this function
 {
 	using F = Ret (C::*)(Args...);
 	using FClean = typename std::remove_cv<F>::type;
@@ -312,6 +260,7 @@ T		*retrieveSelf(lua_State *l, int index, bool pop)
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 # undef DELPTR
+# undef DELREF
 # undef DELCONST
 # undef ISCONV
 # undef ISPTR

@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/16 15:14:38 by ngoguey           #+#    #+#             --
---   Updated: 2015/12/01 19:36:05 by jaguillo         ###   ########.fr       --
+--   Updated: 2015/12/05 17:21:05 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -20,13 +20,13 @@ function f_frame.refreshOneBookmark(i)
   local b1;
 
   bm:setText(f_names[i]);
-  bm:setVisibility(1);
+  bm:setVisibility(true);
   if f_curHighlight ~= nil then
 	b1 = bm:at(0);
 	if f_curHighlight == i then
-	  b1:lockHighlight(1);
+	  b1:lockHighlight(true);
 	else
-	  b1:lockHighlight(0);
+	  b1:lockHighlight(false);
 	end
   end
 end
@@ -41,7 +41,7 @@ function f_frame.refreshAllBookmarks()
   end
   while (i < nbm) do
 	local v = f_frame:rawat(i);
-	v:setVisibility(0);
+	v:setVisibility(false);
 	i = i + 1;
   end
 end
@@ -55,7 +55,7 @@ function f_frame.createbookmark(i)
   b1 = v:at(0);
   b2 = v:at(1);
   f_frame:addView(v);
-  v:setVisibility(0);
+  v:setVisibility(false);
   b1:setCallback("onClick",
 				 function ()
 				   PickState:selectGrid(v.i);

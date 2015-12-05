@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 13:01:05 by ngoguey           #+#    #+#             --
---   Updated: 2015/12/01 19:39:14 by jaguillo         ###   ########.fr       --
+--   Updated: 2015/12/05 17:18:38 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -99,6 +99,7 @@ f_frame:registerEvent('SELECTED_GRID_CHANGED');
 f_transpTables = {
   __index = function(t, key)
 	local ttab = rawget(t, key);
+	key = math.tointeger(key);
 
 	if ttab ~= nil then
 	  return ttab;

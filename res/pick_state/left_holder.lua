@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/28 14:05:17 by ngoguey           #+#    #+#             --
---   Updated: 2015/12/01 19:35:46 by jaguillo         ###   ########.fr       --
+--   Updated: 2015/12/05 17:19:22 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -30,12 +30,12 @@ assert(f_costFrame ~= nil);
 local function onCheckBoxClick(self)
   local i;
   if self:isChecked() == false then
-	self:setChecked(1);
+	self:setChecked(true);
   else
 	i = self.i;
 	for k , v in pairs(self.group) do
 	  if k ~= self.i then
-		self.group[k].check:setChecked(0);
+		self.group[k].check:setChecked(false);
 	  end
 	end
 	self.onChange(i);
@@ -87,7 +87,7 @@ local function f_algInit()
 							PickState:setAlgorithmId(i);
 						  end
   );
-  f_algFrames[Main:getAlgorithmId()].check:setChecked(1);
+  f_algFrames[Main:getAlgorithmId()].check:setChecked(true);
 end
 
 -- HEURISTICS ------------------------------------------------------------------
@@ -101,12 +101,13 @@ local function f_heuInit()
 							PickState:setHeuristicId(i);
 						  end
   );
-  f_heuFrames[Main:getHeuristicId()].check:setChecked(1);
+  f_heuFrames[Main:getHeuristicId()].check:setChecked(true);
 
 end
 
 -- COST ------------------------------------------------------------------------
 function f_costFrame:onValueChange(v)
+  v = math.tointeger(v);
   PickState:setCost(v);
   f_costText:setText(tostring(v));
 end

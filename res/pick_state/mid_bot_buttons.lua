@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 16:41:33 by ngoguey           #+#    #+#             --
---   Updated: 2015/11/29 12:03:38 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/12/05 17:20:46 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -74,10 +74,10 @@ gencheckbox_yes:setCallback(
   'onClick',
 	function (self)
 	  if self:isChecked() == false then
-		self:setChecked(1);
+		self:setChecked(true);
 	  else
-		gencheckbox_no:setChecked(0);
-		f_gensolvable = 1;
+		gencheckbox_no:setChecked(false);
+		f_gensolvable = true;
 	  end
 	end
 );
@@ -86,14 +86,14 @@ gencheckbox_no:setCallback(
   'onClick',
 	function (self)
 	  if self:isChecked() == false then
-		self:setChecked(1);
+		self:setChecked(true);
 	  else
-		gencheckbox_yes:setChecked(0);
-		f_gensolvable = 0;
+		gencheckbox_yes:setChecked(false);
+		f_gensolvable = false;
 	  end
 	end
 );
-f_gensolvable = 1;
+f_gensolvable = true;
 
 -- ************************************************************************** --
 -- local fileButton = filePuzzleButton

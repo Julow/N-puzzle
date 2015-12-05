@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 15:43:15 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 16:05:41 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -560,7 +560,6 @@ int				main(void)
 	// ftlua::pop<ftui::AView*>(nullptr, -1);
 	// ftlua::pop<ftui::ALayout*>(nullptr, -1);
 	// ftlua::pop<Bookmark const*>(nullptr, -1);
-
 
 
 
