@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/12/02 18:23:45 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 11:46:20 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 12:29:37 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -17,25 +17,48 @@
 
 # include "ftlua/types.hpp"
 
-# define OK_IF(PRED) typename std::enable_if<PRED>::type* = nullptr
-# define DELPTR(T) typename std::remove_pointer<T>::type
-# define DELREF(T) typename std::remove_reference<T>::type
-# define DELCONST(T) typename std::remove_const<T>::type
-
-# define ISSAME(A, B) std::is_same<A, B>::value
-# define ISPTR(A) std::is_pointer<A>::value
-# define ISREF(A) std::is_reference<A>::value
 namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
+
+template <class, bool>
+struct size;
+
+template <class T>
+struct size<T, false> : std::integral_constant<unsigned int, 1>
+{};
+
+template <class T>
+struct size<T, true>
+{
+	static constexpr unsigned int	value = typename T::ftlua_size();
+};
+
+template <class T1>
+struct size<ft::Vec2<T1>, false> : std::integral_constant<unsigned int, 2>
+{};
+
+template <class T1>
+struct size<ft::Vec3<T1>, false> : std::integral_constant<unsigned int, 3>
+{};
+
+template <class T1>
+struct size<ft::Vec4<T1>, false> : std::integral_constant<unsigned int, 4>
+{};
+
+
+}; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE INTERNAL //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
+
+template <class T>
+struct size : std::integral_constant<
+	unsigned int, internal::size<T, ftlua::has_size<T>::value >::value >
+{};
 
 
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-# undef OK_IF
-# undef DELPTR
-# undef DELREF
-# undef DELCONST
-# undef ISSAME
-# undef ISPTR
-# undef ISREF
 #endif /* ********************************************************** SIZE_HPP */

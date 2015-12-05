@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 11:49:36 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/05 12:18:25 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -507,27 +507,39 @@ int				main(void)
 	// using F = decltype(&ftlua::push(nullptr, ftlua::dup_t{1}, {}));
 
 	std::cout <<
-		ftlua::has_panicpush< int >::value
+		ftlua::size< int >::value
 			  << std::endl;
 
 	std::cout <<
-		ftlua::has_panicpush< ftlua::dup_t >::value
+		ftlua::size< ftlua::dup_t >::value
 			  << std::endl;
 
 	std::cout <<
-		ftlua::has_panicpush< ftui::AView >::value
+		ftlua::size< ftui::AView >::value
 			  << std::endl;
 
 	std::cout <<
-		ftlua::has_panicpush< ftui::AView const >::value
+		ftlua::size< ftui::AView const >::value
 			  << std::endl;
 
 	std::cout <<
-		ftlua::has_panicpush< ftui::AView *>::value
+		ftlua::size< ftui::AView *>::value
 			  << std::endl;
 
 	std::cout <<
-		ftlua::has_panicpush< ftui::AView const *>::value
+		ftlua::size< ftui::AView const *>::value
+			  << std::endl;
+
+	std::cout <<
+		ftlua::size< ft::Vec2<int> >::value
+			  << std::endl;
+
+	std::cout <<
+		ftlua::size< ft::Vec3<int> >::value
+			  << std::endl;
+
+	std::cout <<
+		ftlua::size< ft::Vec4<int> >::value
 			  << std::endl;
 
 	// std::cout << ft::nfun_args<F>::value << std::endl;
