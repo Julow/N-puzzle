@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/06 11:05:37 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/06 13:01:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -29,11 +29,6 @@
 # include "ftlua/utils.hpp"
 # include "ftlua/size.hpp"
 
-
-namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-
-
 # define DELPTR(T) typename std::remove_pointer<T>::type
 # define DELCONST(T) typename std::remove_const<T>::type
 # define OK_IFNODEF(PRED) typename std::enable_if<PRED>::type*
@@ -43,21 +38,25 @@ namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 # define ISCONV(A, B) std::is_convertible<A, B>::value
 # define ISSAME(A, B) std::is_same<A, B>::value
 
-// Some prototypes ========================================================== //
 
-// TODO: Split hpp/cpp (ps: NO DEFAULT PARAMETERS IN PROTOTYPE)
+namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
 
 // ========================================================================== //
 // ========================================================================== //
-// STRAIGHTFORWARD PUSH-OVERLOADS
+// PUSH
 //
-
 // IMPLICIT CASTS DISABLED ========== //
+// Function:		ftlua::push
+// Overload:		bool
 template <bool LuaErr = false, typename T, OK_IF(ISSAME(T, bool))>
 void		push(lua_State *l, T v) {
 	lua_pushboolean(l, v);
 }
-// ftlua::push<void*>	No const accepted here, const_cast yourself before call.
+
+// Function:		ftlua::push
+// Overload:		void*
 template <bool LuaErr = false, typename T, OK_IF(ISSAME(T, void*))>
 void		push(lua_State *l, T v) {
 	if (v == nullptr) lua_pushnil(l);
@@ -65,12 +64,20 @@ void		push(lua_State *l, T v) {
 }
 
 // LUA SPECIFIC ===================== //
+// Function:		ftlua::push
+// Overload:		ftlua::nil_t
 template <bool LuaErr = false>
 void		push(lua_State *l, nil_t) { lua_pushnil(l);
 }
+
+// Function:		ftlua::push
+// Overload:		ftlua::newtab_t
 template <bool LuaErr = false>
 void		push(lua_State *l, newtab_t) { lua_createtable(l, 0, 0);
 }
+
+// Function:		ftlua::push
+// Overload:		ftlua::dup_t
 template <bool LuaErr = false>
 void		push(lua_State *l, dup_t i)
 {
@@ -84,6 +91,9 @@ void		push(lua_State *l, dup_t i)
 	lua_pushvalue(l, i.i);
 	return ;
 }
+
+// Function:		ftlua::push
+// Overload:		ftlua::dup_t with panic
 template <bool LuaErr = false>
 void		push(lua_State *l, dup_t i, std::function<void(std::string)> panic)
 {
@@ -104,6 +114,8 @@ void		push(lua_State *l, lua_CFunction v) {
 }
 
 // NUMBERS/STRING =================== //
+// Function:		ftlua::push
+// Overload:		integer
 template <bool LuaErr = false, class T
 		  , OK_IF(!ISPTR(T))
 		  , OK_IF(!ISSAME(bool, DELCONST(T)))
@@ -116,6 +128,8 @@ void		push(lua_State *l, T v)
 	return ;
 }
 
+// Function:		ftlua::push
+// Overload:		floating point
 template <bool LuaErr = false, class T
 		  , OK_IF(std::is_floating_point<T>::value)
 		  , OK_IF(ISCONV(T, lua_Number))
@@ -126,6 +140,8 @@ void		push(lua_State *l, T v)
 	return ;
 }
 
+// Function:		ftlua::push
+// Overload:		std::string const&
 template <bool LuaErr = false>
 void		push(lua_State *l, std::string const &v)
 {
@@ -134,7 +150,9 @@ void		push(lua_State *l, std::string const &v)
 }
 
 
-// BOOL/NUMBERS/STRING/ ==== POINTERS //
+// BOOL/NUMBERS/STRING ===== POINTERS //
+// Function:		ftlua::push
+// Overload:		integer*
 template <bool LuaErr = false, class T
 		  , OK_IF(ISPTR(T))
 		  , class NOPTR = DELPTR(T)
@@ -152,6 +170,8 @@ void		push(lua_State *l, T v)
 	return ;
 }
 
+// Function:		ftlua::push
+// Overload:		floating point*
 template <bool LuaErr = false, class T
 		  , OK_IF(ISPTR(T))
 		  , class NOPTR = DELPTR(T)
@@ -168,6 +188,8 @@ void		push(lua_State *l, T v)
 	return ;
 }
 
+// Function:		ftlua::push
+// Overload:		std::string *
 template <bool LuaErr = false>
 void		push(lua_State *l, std::string const *v)
 {
@@ -178,6 +200,8 @@ void		push(lua_State *l, std::string const *v)
 	return ;
 }
 
+// Function:		ftlua::push
+// Overload:		char const*
 template <bool LuaErr = false>
 void		push(lua_State *l, char const *v)
 {
@@ -189,24 +213,35 @@ void		push(lua_State *l, char const *v)
 }
 
 // 'ft::' COMPOUND TYPES ============ //
+// Function:		ftlua::push
+// Overload:		ft::Vec2<T> const&
 template <bool LuaErr = false, typename T>
 void		push(lua_State *l, ft::Vec2<T> const &v)
 {
 	push(l, v.x); push(l, v.y);
 	return ;
 }
+
+// Function:		ftlua::push
+// Overload:		ft::Vec3<T> const&
 template <bool LuaErr = false, typename T>
 void		push(lua_State *l, ft::Vec3<T> const &v)
 {
 	push(l, v.x); push(l, v.y); push(l, v.z);
 	return ;
 }
+
+// Function:		ftlua::push
+// Overload:		ft::Vec4<T> const&
 template <bool LuaErr = false, typename T>
 void		push(lua_State *l, ft::Vec4<T> const &v)
 {
 	push(l, v.x); push(l, v.y); push(l, v.z); push(l, v.w);
 	return ;
 }
+
+// Function:		ftlua::push
+// Overload:		ft::Rect<T> const&
 template <bool LuaErr = false, typename T>
 void		push(lua_State *l, ft::Rect<T> const &v)
 {
@@ -214,14 +249,9 @@ void		push(lua_State *l, ft::Rect<T> const &v)
 	return ;
 }
 
-
-// ========================================================================== //
-// ========================================================================== //
-// CUSTOM::ftlua_push() PUSH-OVERLOADS
-//
-
-
-// (T -> T::ftlua_push())
+// CUSTOM::ftlua_push() ============= //
+// Function:		ftlua::push
+// Overload:		Custom& -> Custom::ftlua_push()
 template <bool LuaErr = false, typename T
 		  , OK_IF(!ISCONST(T))
 		  , OK_IF(ftlua::has_size<T>::value)
@@ -239,7 +269,8 @@ void		push(lua_State *l, T &v)
 	return ;
 }
 
-// (T -> T::ftlua_push()) +panic
+// Function:		ftlua::push
+// Overload:		Custom& -> Custom::ftlua_push() with panic
 template <bool LuaErr = false, typename T
 		  , OK_IF(!ISCONST(T))
 		  , OK_IF(ftlua::has_size<T>::value)
@@ -257,7 +288,9 @@ void		push(lua_State *l, T &v, std::function<void(std::string)> ppanic)
 	return ;
 }
 
-// (T -> T::ftlua_push() const) OR (T const -> T::ftlua_push() const)
+// Function:		ftlua::push
+// Overload:		Custom&			-> Custom::ftlua_push() const
+// Overload:		Custom const&	-> Custom::ftlua_push() const
 template <bool LuaErr = false, typename T
 		  , OK_IF(ftlua::has_size<T>::value)
 		  , OK_IF(ftlua::has_constpush<T>::value)
@@ -274,7 +307,9 @@ void		push(lua_State *l, T const &v)
 	return ;
 }
 
-// (T -> T::ftlua_push() const) OR (T const -> T::ftlua_push() const) +panic
+// Function:		ftlua::push
+// Overload:		Custom&			-> Custom::ftlua_push() const with panic
+// Overload:		Custom const&	-> Custom::ftlua_push() const with panic
 template <bool LuaErr = false, typename T
 		  , OK_IF(ftlua::has_size<T>::value)
 		  , OK_IF(ftlua::has_constpush<T>::value)
@@ -292,7 +327,8 @@ void		push(lua_State *l, T const &v
 	return ;
 }
 
-// Pointers tmp function
+// Function:		ftlua::push
+// Overload:		Custom* -> ftlua::nil_t or Custom&
 template <bool LuaErr = false, typename T
 		  , OK_IF(ISPTR(T))
 		  , class NOPTR = DELPTR(T)
@@ -309,7 +345,8 @@ void		push(lua_State *l, T v)
 	return ;
 }
 
-// Pointers tmp function +panic
+// Function:		ftlua::push
+// Overload:		Custom* -> ftlua::nil_t or Custom& with panic
 template <bool LuaErr = false, typename T
 		  , OK_IF(ISPTR(T))
 		  , class NOPTR = DELPTR(T)
@@ -328,14 +365,9 @@ void		push(lua_State *l, T v
 }
 
 
-// ========================================================================== //
-// ========================================================================== //
-// KeysWrapper<...> PUSH-OVERLOADS
-//
-namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-
-// TODO panic
+// KeysWrapper<...> ================= //
+namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~ //
+{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 template <size_t I, bool LuaErr
 		  , int Relative
 		  , typename... ARGS
@@ -377,12 +409,13 @@ void		_loopKey(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 	_loopKey<I + 1, LuaErr>(l, wrap);
 	return ;
 }
+}; // ~~~~~~~~~~~~~~~ END OF NAMESPACE INTERNAL //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-
-}; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE INTERNAL //
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-
-
+// Function:		ftlua::push
+// Overload:		KeyWrapper<...> const&
+// TODO: noconst& ?
+// TODO: panic
 template <bool LuaErr = false
 		  , int Relative
 		  , typename ...ARGS>
@@ -404,13 +437,9 @@ void		push(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap) //panic
 	return ;
 }
 
-
-// ========================================================================== //
-// ========================================================================== //
-// CONTAINERS<...> PUSH-OVERLOADS
-//
-
-
+// Container<...> =================== //
+// Function:		ftlua::push
+// Overload:		Container<...>&
 template <bool LuaErr = false
 		  , class T
 		  , OK_IF(ft::is_container<T>::value)
@@ -439,6 +468,8 @@ void		push(lua_State *l, T &cont)
 	return ;
 }
 
+// Function:		ftlua::push
+// Overload:		const Container<...>&
 template <bool LuaErr = false
 		  , class T
 		  , OK_IF(ft::is_container<T>::value)
@@ -472,10 +503,8 @@ void		push(lua_State *l, T const &cont)
 // ========================================================================== //
 // MULTI-PUSH
 //
-namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-
-
+namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~ //
+{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 template <bool LuaErr>
 void		_pushLoop(lua_State *)
 {
@@ -489,12 +518,11 @@ void		_pushLoop(lua_State *l, HEAD const &h, TAIL const &...t)
 	_pushLoop<LuaErr>(l, t...);
 	return ;
 }
+}; // ~~~~~~~~~~~~~~~ END OF NAMESPACE INTERNAL //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-
-}; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE INTERNAL //
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-
-
+// Function:		ftlua::multiPush
+// Overload:		none
 template <bool LuaErr = false, typename ...ARGS>
 void		multiPush(lua_State *l, ARGS const & ...args)
 {
@@ -508,6 +536,8 @@ void		multiPush(lua_State *l, ARGS const & ...args)
 // TYPE-TRAITS
 //
 
+// Class:			ftlua::has_panicpush
+// Overload:		none
 FT_DEFINE_TYPETRAIT_TEST(
 	    has_panicpush
 		, class = decltype(ftlua::push(nullptr, *(C*)(0x0)
@@ -515,8 +545,10 @@ FT_DEFINE_TYPETRAIT_TEST(
 	);
 
 
-}; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+}; // ~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
+
 # undef DELPTR
 # undef DELCONST
 # undef ISCONV

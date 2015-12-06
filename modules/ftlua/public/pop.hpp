@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:16:24 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/06 11:21:57 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/06 13:03:14 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -38,12 +38,14 @@
 # define ISSAME(A, B) std::is_same<A, B>::value
 # define OK_IFSAME(A, B) OK_IF(ISSAME(A, B))
 
-namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
+namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
 
 // ========================================================================== //
 // ========================================================================== //
-// STRAIGHTFORWARD POP-OVERLOADS
+// POP
 //
 
 // Function:		ftlua::pop
@@ -392,10 +394,51 @@ TT			pop(lua_State *l, int index, std::function<void(std::string)> ppanic)
 	return v;
 }
 
-// ========================================================================== //
-// ========================================================================== //
-// CUSTOM::ftlua_pop() PUSH-OVERLOADS
-//
+// Function:		ftlua::pop
+// Overload:		ft::Rect<T1>
+template <class TT, bool LuaErr = true
+		  , class T1 = typename TT::value_type
+		  , OK_IFSAME(DELCONST(TT), ft::Rect<T1>) >
+TT			pop(lua_State *l, int index)
+{
+	int const	dt = index < 0 ? 1 : 0;
+	TT			v;
+
+	v.left = ftlua::pop<T1, LuaErr>(l, index);
+	index += dt;
+	v.top = ftlua::pop<T1, LuaErr>(l, index);
+	index += dt;
+	v.right = ftlua::pop<T1, LuaErr>(l, index);
+	index += dt;
+	v.bottom = ftlua::pop<T1, LuaErr>(l, index);
+	return v;
+}
+
+// Function:		ftlua::pop
+// Overload:		ft::Rect<T1> with panic
+template <class TT
+		  , class T1 = typename TT::value_type
+		  , OK_IFSAME(DELCONST(TT), ft::Rect<T1>) >
+TT			pop(lua_State *l, int index, std::function<void(std::string)> ppanic)
+{
+	std::function<void(std::string)>    panic =
+		[ppanic](std::string const &str)
+	{
+		ppanic(ft::f("ftlua::pop<%>() failed from:\n%"
+					 , ft::typesToString<TT>(), str));
+	};
+	int const	dt = index < 0 ? 1 : 0;
+	TT			v;
+
+	v.left = ftlua::pop<T1>(l, index, panic);
+	index += dt;
+	v.top = ftlua::pop<T1>(l, index, panic);
+	index += dt;
+	v.right = ftlua::pop<T1>(l, index, panic);
+	index += dt;
+	v.bottom = ftlua::pop<T1>(l, index, panic);
+	return v;
+}
 
 // Function:		ftlua::pop
 // Overload:		Custom::ftlua_pop() -> Custom
@@ -478,8 +521,9 @@ T			pop(lua_State *l, int index, std::function<void(std::string)> ppanic)
 // TODO: CONTAINERS :(
 
 
-}; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+}; // ~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
 
 # undef DELPTR
 # undef DELCONST

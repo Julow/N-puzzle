@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/12/02 17:43:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 11:46:02 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/06 13:06:04 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,8 +16,10 @@
 # include "ft/type_traits.hpp"
 # include "liblua/lua.hpp"
 
-namespace ftlua // ========================================================== //
-{
+
+namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
 
 # define ISSAME(A, B) std::is_same<A, B>::value
 # define OK_IF(PRED) typename std::enable_if<PRED>::type* = nullptr
@@ -67,7 +69,10 @@ FT_DEFINE_TYPETRAIT_TEST(
 	, OK_IF(ISSAME(Fun, WishedFun))
 	);
 
-}; // ================================================ END OF NAMESPACE FTLUA //
+
+}; // ~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
 
 # undef ISSAME
 # undef OK_IF

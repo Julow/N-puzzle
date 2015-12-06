@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:23:28 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/30 18:55:31 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/06 13:06:32 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -19,8 +19,10 @@
 
 # include "liblua/lua.hpp"
 
-namespace ftlua
-{
+
+namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+{ // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
 
 template<int Relative = 0, typename... ARGS>
 struct KeysWrapper
@@ -50,6 +52,8 @@ KeysWrapper<Relative, ARGS...>		makeKeys(ARGS const& ...args)
 }
 
 
-};
+}; // ~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
 
 #endif /* *************************************************** KEYSWRAPPER_HPP */
