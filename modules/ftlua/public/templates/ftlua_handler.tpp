@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/06 10:50:40 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/06 10:55:37 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -60,7 +60,7 @@ void	stackPush(lua_State *l, T &v)
 	std::function<void(std::string)>    panic =
 		[l, &v](std::string const &str) {
 		FTLUA_ERR(l, true, ft::f("from\nftlua::handle(%) failed from:\n%"
-								 , ft::funType<Fun>::toString(), str));
+								 , ft::funTypeToString<Fun>(), str));
 	};
 	ftlua::push<true>(l, v, panic);
 	return ;
@@ -72,7 +72,7 @@ void	stackPush(lua_State *l, T const &v)
 	std::function<void(std::string)>	panic =
 		[l, &v](std::string const &str) {
 		FTLUA_ERR(l, true, ft::f("from:\nftlua::handle(%) failed from:\n%"
-								 , ft::funType<Fun>::toString(), str));
+								 , ft::funTypeToString<Fun>(), str));
 	};
 	ftlua::push<true>(l, v, panic);
 	return ;
