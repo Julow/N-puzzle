@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/06 10:55:37 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/06 11:35:27 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -145,7 +145,15 @@ void		helperLoop(
 {
 	using HeadClean = DELCONST(DELREF(Head));
 
-	HeadClean	v{ftlua::pop<HeadClean, true>(l, NextIndex)};
+	std::function<void(std::string)>	panic =
+		[=](std::string const &str)
+		{
+			using Fun = Ret (*)(Retreived..., Head, ArgsLeft...);
+
+			FTLUA_ERR(l, true, ft::f("from:\nftlua::handle(%) failed from:\n%"
+									 , ft::funTypeToString<Fun>(), str));
+		};
+	HeadClean	v{ftlua::pop<HeadClean>(l, NextIndex, panic)};
 
 	helperLoop
 		<NextIndex + static_cast<int>(ftlua::size<HeadClean>::value)>
@@ -163,7 +171,15 @@ void		helperLoop(
 {
 	using HeadClean = DELCONST(DELREF(Head));
 
-	HeadClean	v{ftlua::pop<HeadClean, true>(l, NextIndex)};
+	std::function<void(std::string)>	panic =
+		[=](std::string const &str)
+		{
+			using Fun = Ret (C::*)(Retreived..., Head, ArgsLeft...);
+
+			FTLUA_ERR(l, true, ft::f("from:\nftlua::handle(%) failed from:\n%"
+									 , ft::funTypeToString<Fun>(), str));
+		};
+	HeadClean	v{ftlua::pop<HeadClean>(l, NextIndex, panic)};
 
 	helperLoop
 		<NextIndex + static_cast<int>(ftlua::size<HeadClean>::value)>
