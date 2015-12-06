@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/29 14:06:13 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 09:49:18 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/06 15:00:49 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -39,11 +39,11 @@ SS::Bundle		*SS::loadBundle(Main &main, OCamlBinding &ocaml) /*static*/
 }
 
 // static void		launch(OCamlBinding *ocaml)
-// static void		launch(OCamlBinding *ocaml, Grid const *gr)
-// {
-// 	std::cout << "from thread" << std::endl;
-// 	ocaml->solve(*gr);
-// }
+static void		launch(OCamlBinding *ocaml, Grid const *gr)
+{
+	std::cout << "from thread" << std::endl;
+	ocaml->solve(*gr);
+}
 
 SS::SolvingState(Main &main, OCamlBinding &ocaml)
 	: _main(main)
@@ -65,11 +65,12 @@ SS::SolvingState(Main &main, OCamlBinding &ocaml)
 
 	lua_pop(l, 1);
 	// act.fireEvent("GRID_LIST_UPDATE", bun->extractGridNames()
-	// 					, bun->grids.size());
+				  // , bun->grids.size());
 	// act.fireEvent("SELECTED_GRID_CHANGED", bun->selectedId);
 
 	// act.fireEvent("Bordel", 42, std::string("caca"));
 
+	launch(&ocaml, &main.grid);
 	// std::thread		th (launch, &ocaml, &main.grid);
 
 	// th.join();

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 11:51:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/29 09:53:58 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/06 14:41:16 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -219,6 +219,7 @@ static std::vector<int>				valToIntVector(value &val)
 
 void		OCamlBinding::solve(Grid const &gr)
 {
+	std::cout << __FUNCTION__ << std::endl;
 	value *const	f = caml_named_value("solve");
 	value			res;
 
@@ -233,6 +234,7 @@ void		OCamlBinding::solve(Grid const &gr)
 
 void		OCamlBinding::poll_event(void)
 {
+	std::cout << __FUNCTION__ << std::endl;
 	value *const	f = caml_named_value("poll_event");
 	value			res;
 
@@ -260,12 +262,14 @@ void		OCamlBinding::poll_event(void)
 
 void        OCamlBinding::abort(void)
 {
+	std::cout << __FUNCTION__ << std::endl;
 //TODO: OCamlBinding::abort
 	return ;
 }
 
 Grid		OCamlBinding::generate_grid(int w, bool solvable, int nloops)
 {
+	std::cout << __FUNCTION__ << std::endl;
 	value *const	f = caml_named_value("generate_grid");
 	value			res;
 
@@ -280,6 +284,7 @@ Grid		OCamlBinding::generate_grid(int w, bool solvable, int nloops)
 
 std::vector<std::string>        OCamlBinding::algorithm_list(void)
 {
+	std::cout << __FUNCTION__ << std::endl;
 	value *const	f = caml_named_value("algorithm_list");
 	value			res;
 
@@ -293,6 +298,7 @@ std::vector<std::string>        OCamlBinding::algorithm_list(void)
 
 std::vector<std::string>        OCamlBinding::heuristic_list(void)
 {
+	std::cout << __FUNCTION__ << std::endl;
 	value *const	f = caml_named_value("heuristic_list");
 	value			res;
 
@@ -306,6 +312,7 @@ std::vector<std::string>        OCamlBinding::heuristic_list(void)
 
 std::vector<int>	OCamlBinding::transposition_toreal(unsigned int w)
 {
+	std::cout << __FUNCTION__ << std::endl;
 	value *const		f = caml_named_value("transposition_toreal");
 	value				res;
 	std::vector<int>	vec;
@@ -322,6 +329,7 @@ std::vector<int>	OCamlBinding::transposition_toreal(unsigned int w)
 
 std::vector<int>	OCamlBinding::transposition_toabstract(unsigned int w)
 {
+	std::cout << __FUNCTION__ << std::endl;
 	value *const		f = caml_named_value("transposition_toabstract");
 	value				res;
 	std::vector<int>	vec;

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/29 14:41:02 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/06 13:35:32 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -38,6 +38,7 @@ PS::Bundle		*PS::loadBundle(Main &main, OCamlBinding &ocaml) /*static*/
 	return b;
 }
 
+
 PS::PickState(Main &main, OCamlBinding &ocaml)
 	: _main(main)
 	, _ocaml(ocaml)
@@ -62,6 +63,7 @@ PS::PickState(Main &main, OCamlBinding &ocaml)
 	act.fireEvent("SELECTED_GRID_CHANGED", bun->selectedId);
 
 	act.fireEvent("Bordel", 42, std::string("caca"));
+
 
 
 	return ;

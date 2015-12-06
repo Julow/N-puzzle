@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/06 13:01:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/06 13:23:34 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -409,17 +409,64 @@ void		_loopKey(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 	_loopKey<I + 1, LuaErr>(l, wrap);
 	return ;
 }
+
+
+template <size_t I, bool LuaErr
+		  , int Relative
+		  , typename... ARGS
+		  // , class Elt = typename std::tuple_element<I, std::tuple<ARGS...> >::type
+		  // , OK_IF()
+		  >
+void		_dereference(
+	lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap
+	, std::function<void(std::string)> panic)
+{
+	ftlua::push<LuaErr>(l, std::get<I>(wrap.tup)); //todo pass panic
+	FTLUA_STACKASSERT_PANIC(
+		l, lua_istable(l, -2), panic
+		, ft::f("ftlua::push(KeysWrapper<%>) at param %/%."
+				, ft::tupleToString(wrap.tup), I + 1, sizeof...(ARGS))
+		, ft::f("Stack[-2] should have been a table.")
+		);
+	lua_gettable(l, -2);
+	lua_remove(l, -2);
+	return ;
+}
+
+template <size_t I, bool LuaErr
+		  , int Relative
+		  , typename... ARGS
+		  , OK_IF((sizeof...(ARGS) - I == 1))
+		  >
+void		_loopKey(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap
+					 , std::function<void(std::string)> panic)
+{
+	_dereference<I, LuaErr>(l, wrap, panic);
+	return ;
+}
+
+template <size_t I, bool LuaErr
+		  , int Relative
+		  , typename... ARGS
+		  , OK_IF((sizeof...(ARGS) - I != 1))
+		  >
+void		_loopKey(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap
+					 , std::function<void(std::string)> panic)
+{
+	_dereference<I, LuaErr>(l, wrap, panic);
+	_loopKey<I + 1, LuaErr>(l, wrap, panic);
+	return ;
+}
 }; // ~~~~~~~~~~~~~~~ END OF NAMESPACE INTERNAL //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 // Function:		ftlua::push
 // Overload:		KeyWrapper<...> const&
 // TODO: noconst& ?
-// TODO: panic
 template <bool LuaErr = false
 		  , int Relative
 		  , typename ...ARGS>
-void		push(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap) //panic
+void		push(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap)
 {
 	if (Relative == 0)
 		lua_pushglobaltable(l);
@@ -434,6 +481,32 @@ void		push(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap) //panic
 		lua_pushvalue(l, Relative);
 	}
 	internal::_loopKey<0, LuaErr>(l, wrap);
+	return ;
+}
+
+// Function:		ftlua::push
+// Overload:		KeyWrapper<...> const& with panic
+// TODO: test panic reference
+// TODO: debug panic for KeyWrapper<...>
+template <bool LuaErr = false
+		  , int Relative
+		  , typename ...ARGS>
+void		push(lua_State *l, KeysWrapper<Relative, ARGS...> const &wrap
+				 , std::function<void(std::string)> panic)
+{
+	if (Relative == 0)
+		lua_pushglobaltable(l);
+	else
+	{
+		FTLUA_STACKASSERT_PANIC(
+			l, lua_istable(l, Relative), panic
+			, ft::f("ftlua::push(KeysWrapper<%, %>)."
+					, Relative, ft::tupleToString(wrap.tup))
+			, ft::f("Table was expected at KeysWrapper's Relative index.")
+			);
+		lua_pushvalue(l, Relative);
+	}
+	internal::_loopKey<0, LuaErr>(l, wrap, panic);
 	return ;
 }
 
