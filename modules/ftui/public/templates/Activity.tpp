@@ -6,7 +6,7 @@
 /*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/09/30 09:01:50 by ngoguey           #+#    #+#             */
-//   Updated: 2015/11/25 19:10:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/06 10:14:06 by ngoguey          ###   ########.fr       //
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ bool		Activity::fireEventInternal(std::string const &event, Args... args)
 				err = ftlua::pcall(_l, 0, 0, ftlua::dup(-2), args...);
 			if (err != LUA_OK)
 				throw std::runtime_error(
-					ft::f("% error ffs", ftlua::stacktostring(_l)));
+					ft::f("Activity::fireEvent(event=%, %) failed from:\n%"
+						  , event, ft::variadicToString(args...), luaL_checkstring(_l, -1)));
 			lua_pop(_l, 1);
 		}
 		else

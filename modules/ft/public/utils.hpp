@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 13:42:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 18:44:34 by juloo            ###   ########.fr       //
+//   Updated: 2015/12/06 10:51:18 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -294,7 +294,6 @@ std::string				_typestostring(void)
 		+ _typestostring<Head2, Args...>();
 }
 
-# undef OK_IF
 
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE INTERNAL //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -311,11 +310,48 @@ std::string				tupleToString(std::tuple<Args...> const &tup)
 	return internal::_tupletostring<0>(tup);
 }
 
-template <class ...Args>
+template <class ...Args, OK_IF((sizeof...(Args) > 0))>
 std::string				typesToString(void)
 {
 	return internal::_typestostring<Args...>();
 }
+
+template <class ...Args, OK_IF((sizeof...(Args) == 0))>
+std::string				typesToString(void)
+{
+	return "";
+}
+
+# undef OK_IF
+
+
+template <class F>
+struct funType;
+
+template <class Ret, class ...Args>
+struct funType<Ret (*)(Args...)>
+{
+	static std::string	toString(void)
+		{
+			return ft::f("% (*)(%)"
+						 , ft::typesToString<Ret>()
+						 , ft::typesToString<Args...>()
+				);
+		}
+};
+
+template <class Ret, class C, class ...Args>
+struct funType<Ret (C::*)(Args...)>
+{
+	static std::string	toString(void)
+		{
+			return ft::f("% (%::*)(%)"
+						 , ft::typesToString<Ret>()
+						 , ft::typesToString<C>()
+						 , ft::typesToString<Args...>()
+				);
+		}
+};
 
 };
 

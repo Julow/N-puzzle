@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/13 07:39:43 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 17:27:42 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/06 09:33:34 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -75,8 +75,6 @@ int			handle(lua_State *l, Ret (C::*f)(Args...) const);
 }; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ END OF NAMESPACE FTLUA //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-
 # include "ftlua/templates/ftlua_handler.tpp"
-# include "ftlua/templates/ftlua_caller.tpp"
 
 #endif

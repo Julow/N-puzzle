@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/22 11:52:23 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/02 13:10:45 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/06 09:50:28 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -20,8 +20,11 @@ namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 
-// ftlua::set in tab, tab's keys provided
-// 		Restores stack as it was before call
+// Function:		ftlua::set
+// Overload:		Table from global
+// Stack effect:	Unchanged
+// Lua effect:		"local t = _G[tabGlobalKeys];
+//					 t[key] = val;"
 template <bool USELUAERR = false
 		  , class ...ARGS, class TK, class TV>
 void        set(
@@ -44,8 +47,10 @@ void        set(
 	return ;
 }
 
-// ftlua::set in _G
-// 		Restores stack as it was before call
+// Function:		ftlua::set
+// Overload:		Global
+// Stack effect:	Unchanged
+// Lua effect:		"_G[key] = val;"
 template <bool USELUAERR = false
 		  , class TK, class TV>
 void        set(
@@ -60,9 +65,11 @@ void        set(
 	return ;
 }
 
-// ftlua::set in tab, tab's stack index provided
-//		'index' corresponds to tab's index before ftlua::set's call
-//		Restores stack as it was before call
+// Function:		ftlua::set
+// Overload:		Table from stack
+// Stack effect:	Unchanged
+// Lua effect:		"local t = {STACK@tabIndex};
+//					 t[key] = val;"
 template <bool USELUAERR = false
 		  , class TK, class TV>
 void        set(

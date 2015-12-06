@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 18:11:07 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/06 10:50:40 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -40,39 +40,39 @@ namespace internal // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 // * STEP 5 *** Push return value on stack ********************************** //
 // template <class T>
-template <class T, OK_IF(!has_panicpush<T>::value)>
+template <class Fun, class T, OK_IF(!has_panicpush<T>::value)>
 void	stackPush(lua_State *l, T &val)
 {
 	ftlua::push<true>(l, val);
 	return ;
 }
 
-template <class T, OK_IF(!has_panicpush<T>::value)>
+template <class Fun, class T, OK_IF(!has_panicpush<T>::value)>
 void	stackPush(lua_State *l, T const &val)
 {
 	ftlua::push<true>(l, val);
 	return ;
 }
 
-template <class T, OK_IF(has_panicpush<T>::value)>
+template <class Fun, class T, OK_IF(has_panicpush<T>::value)>
 void	stackPush(lua_State *l, T &v)
 {
 	std::function<void(std::string)>    panic =
 		[l, &v](std::string const &str) {
-		FTLUA_ERR(l, true, ft::f("ftlua::handle(%) failed from:\n%"
-								   , ft::valToString(v), str));
+		FTLUA_ERR(l, true, ft::f("from\nftlua::handle(%) failed from:\n%"
+								 , ft::funType<Fun>::toString(), str));
 	};
 	ftlua::push<true>(l, v, panic);
 	return ;
 }
 
-template <class T, OK_IF(has_panicpush<T>::value)>
+template <class Fun, class T, OK_IF(has_panicpush<T>::value)>
 void	stackPush(lua_State *l, T const &v)
 {
 	std::function<void(std::string)>	panic =
 		[l, &v](std::string const &str) {
-		FTLUA_ERR(l, true, ft::f("ftlua::handle(%) failed from:\n%"
-								   , ft::valToString(v), str));
+		FTLUA_ERR(l, true, ft::f("from:\nftlua::handle(%) failed from:\n%"
+								 , ft::funType<Fun>::toString(), str));
 	};
 	ftlua::push<true>(l, v, panic);
 	return ;
@@ -83,7 +83,7 @@ void	stackPush(lua_State *l, T const &v)
 template <typename Ret, typename... Params>
 void	helperCall(lua_State *l, Ret (*f)(Params...), Params &&...p)
 {
-	stackPush(l, f(p...));
+	stackPush<Ret(*)(Params...)>(l, f(p...));
 	return ;
 }
 template <typename... Params>
@@ -97,7 +97,7 @@ void	helperCall(lua_State *, void (*f)(Params...), Params &&...p)
 template <typename Ret, class C, typename... Params>
 void	helperCall(lua_State *l, C *i, Ret (C::*f)(Params...), Params &&...p)
 {
-	stackPush(l, (i->*f)(p...));
+	stackPush<Ret(C::*)(Params...)>(l, (i->*f)(p...));
 	return ;
 }
 template <class C, typename... Params>

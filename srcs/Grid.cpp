@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:12 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/02 17:54:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/06 10:09:24 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -250,6 +250,8 @@ std::ostream		&operator<<(std::ostream &o, Grid const &rhs)
 
 	for (int y = 0; y < rhs.getSize(); y++)
 	{
+		if (y != 0)
+			o << '\n';
 		for (int x = 0; x < rhs.getSize(); x++)
 		{
 			v = rhs.get(x, y);
@@ -258,7 +260,6 @@ std::ostream		&operator<<(std::ostream &o, Grid const &rhs)
 			else
 				o << ft::f("% ", v);
 		}
-		o << '\n';
 	}
 	return o;
 }

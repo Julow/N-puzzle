@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 17:09:57 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 12:42:47 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/06 09:48:34 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -20,7 +20,11 @@
 namespace ftlua // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 { // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-// Consumes the function
+
+// Function:		ftlua::pcall
+// Stack effect:	Consumes (1 function) + (nArgsStack)
+// Lua effect:		"local f = {STACK@-nArgsStack-1};
+//					 f(ArgsStack, args...);"
 template <typename ...ARGS>
 int					pcall(
 	lua_State *l, unsigned int nRet, unsigned int nArgsStack
@@ -36,7 +40,11 @@ int					pcall(
 	return lua_pcall(l, multiSize<ARGS...>() + nArgsStack, nRet, 0);
 }
 
-// Consumes the table
+// Function:		ftlua::pcallMethod
+// Stack effect:	Consumes (1 table)
+// Lua effect:		"local t = {STACK@-1};
+//					 local f = t[methodTabKeys];
+//					 f(t, args...);"
 template <typename ...ARGS, typename ...FKEYS>
 int					pcallMethod(
 	lua_State *l, unsigned int nRet

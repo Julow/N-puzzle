@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/05 10:13:33 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/06 10:51:49 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -40,7 +40,7 @@ public:
 	~Grid(void);
 
 	typedef std::integral_constant<unsigned int, 1>	ftlua_size;
-	void				ftlua_push(lua_State *l, std::function<void(std::string)>) const
+	void				ftlua_push(lua_State *l, std::function<void(std::string)> panic) const
 		{
 			int const	w = this->_size;
 
@@ -51,6 +51,8 @@ public:
 				lua_pushinteger(l, this->_data[i / w][i % w]);
 				lua_settable(l, -3);
 			}
+			(void)panic;
+			// panic("lolgrid");
 			return ;
 		}
 
