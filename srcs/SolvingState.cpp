@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/29 14:06:13 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/07 18:25:59 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 19:20:48 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -83,9 +83,9 @@ void            SS::loop(std::unique_ptr<IState> &ptr, ftui::ACanvas &can)
 	_ocaml.poll_event();
 	if (this->_success)
 	{
-		can.clear();
-		ptr.reset(new PickState(_main, _ocaml));
-		return ;
+		// can.clear();
+		// ptr.reset(new PickState(_main, _ocaml));
+		// return ;
 	}
 	this->_b->tiles.render();
 	this->_b->act.render(can);

@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/19 17:34:55 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/25 18:48:20 by jaguillo         ###   ########.fr       *)
+(*   Updated: 2015/12/07 19:52:36 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -92,8 +92,6 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	  		let neig_info = Opened { parent		= Some (cur_gra, info);
 	  								 g			= neig_g;
 	  								 f			= neig_f; } in
-			(* if neig_h <= 0 then *)
-			(*   Candidate.print neig_cdt; *)
 			candidates := BatHeap.insert !candidates neig_cdt;
 			info_insert infos neig_gra neig_info
 		  in (** 4. END *)
@@ -111,13 +109,23 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 	  (** 1.0 - Main loop popping one candidate *)
 	  (** 1.1 - Expanding it if it was not closed in the meantime *)
 	  (** 1.2 - Retreive steps if candidate is goal *)
-	  let rec aux rep =
+	  let rec aux rep ratio =
 		let cdt = BatHeap.find_min !candidates in
 		let cdt_graph = cdt.Candidate.graph in
 		candidates := BatHeap.del_min !candidates;
 		let rep = EventHandler.tick_report
 					rep (cdt.Candidate.f - cdt.Candidate.g)
 					(BatHeap.size !candidates + 1) (Hashtbl.length infos) in
+		let ratio =
+		  let ff = float_of_int cdt.Candidate.f in
+		  let fg = float_of_int cdt.Candidate.g in
+		  let ratio' = fg /. ff in
+		  if ratio' > ratio then (
+			EventHandler.pushq (EventHandler.Progress ratio');
+			ratio')
+		  else
+			ratio
+		in
 		match Hashtbl.find infos cdt_graph with
 		| Opened info when Graph.equal cdt_graph gra_goal
 		  -> EventHandler.finalize_report
@@ -126,20 +134,13 @@ module Make : GenericInterfaces.MAKE_HEPATHFINDER =
 		  -> let as_closed = Closed info in
 			 Hashtbl.replace infos cdt_graph as_closed;
 			 expand cdt info;
-			 aux rep
+			 aux rep ratio
 		| _
-		  -> aux rep
+		  -> aux rep ratio
 	  in  (** 1. END *)
 	  try
-		let rep = aux (EventHandler.new_report he_init) in
-		EventHandler.pushq (EventHandler.Progress 1.);
+		let rep = aux (EventHandler.new_report he_init) 0. in
 		EventHandler.pushq (EventHandler.Success rep);
-		(* EventHandler.dumpq (); *)
-		(* Printf.eprintf "AStar: SOLVED!!!!!!!!\n%!"; *)
-		(* List.iteri (fun i gra -> Printf.eprintf "g(%2d) h(%2d)" i (he gra); *)
-		(* 						 Graph.print gra) sol; *)
-		()
-	  (* | Invalid_argument("find_min") -> *)
 	  with
 	  | Invalid_argument(_) ->
 		 Printf.eprintf "AStar: NOT SOLVED\n%!";
