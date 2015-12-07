@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:58 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/29 10:48:20 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/12/07 11:52:51 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -152,18 +152,25 @@ let is_solvable (mat, piv) =
   in
   let inversions = aux (w * w - 1) !nbrs 0 in
   let get_parity v = match v mod 2 with 0 -> Even | _ -> Odd in
+  (* Printf.eprintf "\n\n\n%!"; *)
+  (* let dumpparity name v = *)
+  (* 	match get_parity v with *)
+  (* 	| Odd	-> Printf.eprintf "'%15s': Odd  (%d)\n%!" name v *)
+  (* 	| Even	-> Printf.eprintf "'%15s': Even (%d)\n%!" name v *)
+  (* in *)
+  (* dumpparity "w" w; *)
+  (* dumpparity "(dstx0 - x0)" (dstx0 - x0); *)
+  (* dumpparity "(dsty0 - y0)" (dsty0 - y0); *)
+  (* dumpparity "inversions" inversions; *)
   match get_parity w
 	  , get_parity (dstx0 - x0)
 	  , get_parity (dsty0 - y0)
 	  , get_parity inversions with
-  | Odd,	_,		_,		Even	-> true
+  | Even,	_,		Even,	Even	-> true
+  | Even,	_,		Odd,	Odd		-> true
+  | Even,	_,		_,		_		-> false
   | Odd,	_,		_,		Odd		-> false
-  | Even,	Even,	Odd,	_		-> assert(false)
-  | Even,	Odd,	Even,	_		-> assert(false)
-  | Even,	Even,	Even,	Even	-> true
-  | Even,	Even,	Even,	Odd		-> false
-  | Even,	Odd,	Odd,	Even	-> false
-  | Even,	Odd,	Odd,	Odd		-> true
+  | Odd,	_,		_,		Even	-> true
 
 (* ************************************************************************** *)
 (* CONVERSIONS *)

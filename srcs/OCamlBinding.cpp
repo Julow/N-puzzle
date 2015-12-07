@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 11:51:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/06 14:41:16 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 10:58:10 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -343,6 +343,24 @@ std::vector<int>	OCamlBinding::transposition_toabstract(unsigned int w)
 	FTASSERT(vec.size() == w * w);
 	return vec;
 }
+
+
+
+void		OCamlBinding::test_solvability(Grid const &gr) //debug remove
+{
+	value *const	f = caml_named_value("test");
+	value			res;
+
+	FTASSERT(f != nullptr);
+	this->_currentGrid = gr;
+	res = caml_callback_exn(*f, (value)this); // TODO: memory leak ?
+	if (Is_exception_result(res))
+		throw std::runtime_error(
+			caml_format_exception(Extract_exception(res)));
+	return ;
+}
+
+
 
 /* ************************************************************************** */
 /* C <- OCaml */

@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/12/06 15:29:24 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/12/07 10:58:39 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -199,6 +199,13 @@ let solve npuzzle =
   solve' npuzzle;
   ()
 
+let test npuzzle =
+  let (abstmat, abstpiv) as abstgr = Grid.of_cgrid npuzzle in
+  Grid.print abstgr;
+  (* let res = Grid.is_solvable abstgr; *)
+  ()
+
+
 let poll_event _ =
   EventHandler.popq ()
 
@@ -232,6 +239,7 @@ let transposition_toabstract : int -> int array = fun w ->
 let () =
   Random.self_init ();
   Callback.register "solve" solve;
+  Callback.register "test" test;
   Callback.register "poll_event" poll_event;
   Callback.register "abort" abort;
   Callback.register "algorithm_list" algorithm_list;

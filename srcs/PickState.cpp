@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/06 13:35:32 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 11:53:15 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -124,6 +124,7 @@ void			PS::selectGrid(int i)
 	_main.grid = grids[i];
 	bun->selectedId = i;
 	bun->act.fireEvent("SELECTED_GRID_CHANGED", i);
+	this->_ocaml.test_solvability(_main.grid);
 	return ;
 }
 
@@ -179,6 +180,7 @@ void			PS::pushRandomGrid(int w, bool solvable, int nloops)
 	bun->selectedId = newIndex;
 	bun->act.fireEvent("GRID_LIST_UPDATE", bun->extractGridNames(), grids.size());
 	bun->act.fireEvent("SELECTED_GRID_CHANGED", newIndex);
+	this->_ocaml.test_solvability(_main.grid);
 	return ;
 }
 
