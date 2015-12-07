@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 10:15:01 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 18:10:25 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 14:32:42 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -350,15 +350,38 @@ int							Main::getHeuristicIdG(lua_State *l) /*static*/
 int							Main::getHeuristicId(void) const
 { return this->heuristicId; }
 
-
-
-
 int				Main::getCostG(lua_State *l) /*static*/
 {
 	return ftlua::handle<1, 1>(l, &Main::getCost);
 }
 int				Main::getCost(void) const
 { return this->cost; }
+
+Main			*Main::ftlua_pop(lua_State *l, int i,
+					std::function<void(std::string)> panic)
+{
+	Main		*v;
+	int			type;
+
+	FTLUA_STACKASSERT_PANIC(
+		l, lua_istable(l, i), panic
+		, ft::f("Main::ftlua_pop(i = %)", i), ft::f("No table at i"));
+	ftlua::push(l, 0);
+	type = lua_gettable(l, i < 0 ? i - 1 : i);
+	FTLUA_STACKASSERT_PANIC(
+		l, type == LUA_TLIGHTUSERDATA, panic
+		, ft::f("Main::ftlua_pop(i = %)", i), ft::f("No pointer at [0]"));
+	v = reinterpret_cast<Main*>(lua_touserdata(l, -1));
+	lua_pop(l, 1);
+	lua_remove(l, i);
+	return v;
+}
+
+
+/*
+** ========================================================================== **
+** Main
+*/
 
 #include "ftlua/pop.hpp"
 #include <type_traits>

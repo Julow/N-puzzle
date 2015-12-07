@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/07 14:00:49 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/07 14:35:39 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -150,33 +150,8 @@ public:
 	virtual ~AView(void);
 
 	typedef std::integral_constant<unsigned int, 1>	ftlua_size;
-	void			ftlua_push(lua_State *l, std::function<void(std::string)> panic)
-		{
-			ftlua::pushLightKey(l, this);
-			FTLUA_STACKASSERT_PANIC(
-				l, lua_istable(l, -1), panic
-				, ft::f("AView::ftlua_push()"), ft::f("_G[this] not found."));
-			return ;
-		}
-	static AView	*ftlua_pop(lua_State *l, int i, std::function<void(std::string)> panic)
-		{
-			AView		*v;
-			int			type;
-
-			FTLUA_STACKASSERT_PANIC(
-				l, lua_istable(l, i), panic
-				, ft::f("AView::ftlua_pop(i = %)", i), ft::f("No table at i"));
-			ftlua::push(l, 0);
-			type = lua_gettable(l, i < 0 ? i - 1 : i);
-			FTLUA_STACKASSERT_PANIC(
-				l, type == LUA_TLIGHTUSERDATA, panic
-				, ft::f("AView::ftlua_pop(i = %)", i), ft::f("No pointer at [0]"));
-			v = reinterpret_cast<AView*>(lua_touserdata(l, -1));
-			lua_pop(l, 1);
-			lua_remove(l, i);
-			return v;
-		}
-
+	void			ftlua_push(lua_State *l, std::function<void(std::string)> panic);
+	static AView	*ftlua_pop(lua_State *l, int i, std::function<void(std::string)> panic);
 
 	/*
 	** Extract the view tree from a xml file

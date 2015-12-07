@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 12:58:38 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 17:00:38 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 14:32:30 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -62,25 +62,8 @@ public:
 	/* LIBFTUI INTERACTIONS ********* */
 	typedef std::integral_constant<unsigned int, 1> ftlua_size;
 	//TODO: Push application's classes too
-	static Main	*ftlua_pop(lua_State *l, int i, std::function<void(std::string)> panic)
-		{
-			Main		*v;
-			int			type;
-
-			FTLUA_STACKASSERT_PANIC(
-				l, lua_istable(l, i), panic
-				, ft::f("Main::ftlua_pop(i = %)", i), ft::f("No table at i"));
-			ftlua::push(l, 0);
-			type = lua_gettable(l, i < 0 ? i - 1 : i);
-			FTLUA_STACKASSERT_PANIC(
-				l, type == LUA_TLIGHTUSERDATA, panic
-				, ft::f("Main::ftlua_pop(i = %)", i), ft::f("No pointer at [0]"));
-			v = reinterpret_cast<Main*>(lua_touserdata(l, -1));
-			lua_pop(l, 1);
-			lua_remove(l, i);
-			return v;
-		}
-
+	static Main				*ftlua_pop(lua_State *l, int i,
+								std::function<void(std::string)> panic);
 
 	static int					getAlgorithmsG(lua_State *l);
 	std::vector<std::string>	getAlgorithms(void);
