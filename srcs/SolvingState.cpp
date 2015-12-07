@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/29 14:06:13 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/07 15:46:30 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 17:45:12 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,6 +15,7 @@
 #include <algorithm>
 
 #include "SolvingState.hpp"
+#include "PickState.hpp"
 #include "config_window.hpp"
 
 using SS = SolvingState;
@@ -42,6 +43,7 @@ SS::SolvingState(Main &main, OCamlBinding &ocaml)
 	, _ocaml(ocaml)
 	, _b(loadBundle(main, ocaml))
 	, _abortSolvingState(false)
+	, _success(false)
 {
 	lua_State	*l = this->_b->act.getLuaState();
 	auto		*bun = this->_b;
@@ -62,6 +64,7 @@ SS::SolvingState(Main &main, OCamlBinding &ocaml)
 
 	// act.fireEvent("Bordel", 42, std::string("caca"));
 
+	act.queryRedrawAll();
 	ocaml.setListener(this);
 	ocaml.solve(main.grid, main.algorithmId, main.heuristicId, main.cost);
 	// std::thread		th (launch, &ocaml, &main.grid);
@@ -72,6 +75,7 @@ SS::SolvingState(Main &main, OCamlBinding &ocaml)
 
 SS::~SolvingState()
 {
+	_ocaml.end_solver();
 	this->_main.pushBundle("SolvingState", this->_b);
 	return ;
 }
@@ -85,20 +89,19 @@ void            SS::loop(std::unique_ptr<IState> &ptr, ftui::ACanvas &can)
 {
 	(void)ptr;
 	_ocaml.poll_event();
+	if (this->_success)
+	{
+		std::cout << "Success!!" << std::endl;
+		can.clear();
+		ptr.reset(new PickState(_main, _ocaml));
+	}
 	this->_b->tiles.render();
 	this->_b->act.render(can);
-	// if (this->_launchSolvingState)
-	// {
-	// 	ft::f(std::cout, "Algo % Heu % Cost % Grid %:\n%\n"
-	// 		  , _main.algorithmId
-	// 		  , _main.heuristicId
-	// 		  , _main.cost
-	// 		  , _b->selectedId
-	// 		  , _main.grid
-	// 		);
-
-	// 	throw std::runtime_error("OK");
-	// }
+	if (this->_abortSolvingState)
+	{
+		can.clear();
+		ptr.reset(new PickState(_main, _ocaml));
+	}
 	return ;
 }
 
@@ -115,12 +118,15 @@ ftui::Activity  &SS::getActivity(void)
 void			SS::onSuccess(report_s rep)
 {
 	std::cout << "onSuccess: " << rep << std::endl;
+	this->_success = true;
 	return ;
 }
 
 void			SS::onProgress(progress_s prog)
 {
 	std::cout << "onProgress: " << prog.str << prog.val << std::endl;
+	this->_b->act.fireEvent("PROGRESS");
+	// this->_bun->act.fireEvent("PROGRESS", std::make_tuple(prog.str, prog.val));
 	return ;
 }
 

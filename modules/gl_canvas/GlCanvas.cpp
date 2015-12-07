@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/24 10:07:06 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 18:48:00 by juloo            ###   ########.fr       //
+//   Updated: 2015/12/07 17:36:43 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -39,6 +39,7 @@ void			GlCanvas::setBitmap(ft::Color::t *bitmap)
 void			GlCanvas::clear(void)
 {
 	std::memset(_bitmap, 0, _width * _height * sizeof(ft::Color::t));
+	this->applyChangedRect(ft::make_rect(0, 0, _width, _height));
 }
 
 void			GlCanvas::clear(ft::Rect<int> const &rect)
@@ -47,6 +48,7 @@ void			GlCanvas::clear(ft::Rect<int> const &rect)
 	int			end;
 	int			offset;
 
+	this->applyChangedRect(rect);
 	offset = rect.top * _width + rect.left;
 	end = rect.getHeight() * _width + offset;
 	while (offset < end)

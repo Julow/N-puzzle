@@ -18,7 +18,7 @@ module EventHandler :
   end
 val solve : Npuzzle.t -> int -> int -> int -> unit
 val poll_event : 'a -> EventHandler.t
-val abort : 'a -> unit
+val end_solver : unit -> unit
 val generate_grid : int -> bool -> int -> Grid.t
 val algorithm_list : 'a -> string list
 val heuristic_list : 'a -> string list

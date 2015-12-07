@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/07 14:39:30 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/07 17:24:54 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -64,7 +64,7 @@ PS::PickState(Main &main, OCamlBinding &ocaml)
 
 	act.fireEvent("Bordel", 42, std::string("caca"));
 
-
+	act.queryRedrawAll();
 
 	return ;
 }

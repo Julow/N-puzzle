@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/12/07 16:11:36 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/12/07 17:12:17 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -130,7 +130,14 @@ let solve : Npuzzle.t -> int -> int -> int -> unit = fun npuzzle aid hid cost ->
 let poll_event _ =
   EventHandler.popq ()
 
-let abort _ =
+let end_solver _ =
+  (match !cpid with
+  | Some p	-> let (p', _) = Unix.waitpid [Unix.WNOHANG] p in
+			   if p' = 0
+			   then (Unix.kill p 9;
+					 ignore(Unix.wait ()))
+  | _		-> failwith "No child to kill");
+  cpid := None;
   EventHandler.killpipe ();
   ()
 
@@ -158,7 +165,7 @@ let () =
   Random.self_init ();
   Callback.register "solve" solve;
   Callback.register "poll_event" poll_event;
-  Callback.register "abort" abort;
+  Callback.register "end_solver" end_solver;
   Callback.register "algorithm_list" algorithm_list;
   Callback.register "heuristic_list" heuristic_list;
   Callback.register "generate_grid" generate_grid;

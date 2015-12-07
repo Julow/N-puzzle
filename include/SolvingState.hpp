@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/29 14:06:17 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/07 15:48:01 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 17:17:23 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -29,6 +29,7 @@ private:
 	OCamlBinding			&_ocaml;
 	Bundle *const			_b;
 	bool					_abortSolvingState;
+	bool					_success;
 
 	/* CONSTRUCTION ***************** */
 public:
@@ -51,7 +52,6 @@ public:
 	void					onSuccess(report_s rep) override;
 	void					onProgress(progress_s prog) override;
 	void					onFail(std::string const &str) override;
-
 
 	/* LIBFTUI INTERACTIONS ********* */
 	static int				tagForAbortG(lua_State *l);

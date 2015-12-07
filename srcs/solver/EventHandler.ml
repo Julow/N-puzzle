@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/11/02 07:50:05 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/12/07 16:21:14 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/12/07 17:16:28 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -96,7 +96,7 @@ module Make =
 		ev
 	  with
 	  | _	->
-		 Printf.eprintf "nothing_read %!";
+		 (* Printf.eprintf "nothing_read %!"; *)
 		 Empty
 
 	(* From MainThread before fork *)
@@ -113,7 +113,8 @@ module Make =
 	let killpipe _ =
 	  match !pipe with
 	  | Some (pipeout, pipein, _, _)	-> Unix.close pipeout;
-										   Unix.close pipein
+										   Unix.close pipein;
+										   pipe := None
 	  | _						-> ()
 
 	(* ********************************************************************** *)

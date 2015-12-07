@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 11:51:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/07 15:53:49 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 17:14:18 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -258,7 +258,6 @@ void		OCamlBinding::solve(Grid const &gr, int aid, int hid, int cost)
 	this->_currentGrid = gr;
 	std::cout << "Calling ocaml solve" << std::endl;
 	res = caml_callbackN_exn(*f, 4, params); // TODO: memory leak ?
-	// res = caml_callback_exn(*f, (value)this); // TODO: memory leak ?
 	if (Is_exception_result(res))
 		throw std::runtime_error(
 			caml_format_exception(Extract_exception(res)));
@@ -292,10 +291,17 @@ void		OCamlBinding::poll_event(void)
 	return ;
 }
 
-void        OCamlBinding::abort(void)
+void        OCamlBinding::end_solver(void)
 {
 	std::cout << __FUNCTION__ << std::endl;
-//TODO: OCamlBinding::abort
+	value *const	f = caml_named_value("end_solver");
+	value			res;
+
+	FTASSERT(f != nullptr);
+	res = caml_callback_exn(*f, Val_unit);
+	if (Is_exception_result(res))
+		throw std::runtime_error(
+			caml_format_exception(Extract_exception(res)));
 	return ;
 }
 
