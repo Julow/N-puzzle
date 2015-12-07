@@ -6,6 +6,9 @@ TODO LIST
 		-> debug layouts
 	fix glitch when spam clicking on bookmarks delete/select
 	ocaml bindings
+	try to remove -thread from linking (ocaml)
+	fix LinearConflict for w >= 10
+
 	multithread canvas
 	AbsoluteLayout, RelativeLayout
 	Gen big databases

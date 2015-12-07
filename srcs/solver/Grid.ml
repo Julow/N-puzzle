@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:58 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/12/07 11:52:51 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/12/07 14:22:43 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -283,6 +283,19 @@ let of_cgrid cgrid =
 				"Invalid grid: '%d' instead of '%d'" ret (w * w));
   let i0 = (fun (x, y) -> x + y * w) (zero_coords w) in
   let gr = mat, pivv (find mat i0) in
+  Printf.eprintf "passage18\n%!";
+  let arr = Array.make 1 (8) in
+
+  Printf.eprintf "passage18.5\n%!";
+
+  let aux i x y v =
+	if x = (w - 1)
+	then Printf.eprintf "%2d\n%!" v
+	else Printf.eprintf "%2d " v
+  in
+  iter_cells mat aux;
+
+  Printf.eprintf "Passage 19\n%!";
   if not (is_solvable gr)
   then failwith "Invalid grid: not solvable"
   else gr

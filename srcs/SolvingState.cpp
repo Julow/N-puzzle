@@ -6,14 +6,13 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/29 14:06:13 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/06 15:00:49 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 14:09:27 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#include <thread>
 
 #include "SolvingState.hpp"
 #include "config_window.hpp"
@@ -38,13 +37,6 @@ SS::Bundle		*SS::loadBundle(Main &main, OCamlBinding &ocaml) /*static*/
 	return b;
 }
 
-// static void		launch(OCamlBinding *ocaml)
-static void		launch(OCamlBinding *ocaml, Grid const *gr)
-{
-	std::cout << "from thread" << std::endl;
-	ocaml->solve(*gr);
-}
-
 SS::SolvingState(Main &main, OCamlBinding &ocaml)
 	: _main(main)
 	, _ocaml(ocaml)
@@ -52,8 +44,8 @@ SS::SolvingState(Main &main, OCamlBinding &ocaml)
 	, _abortSolvingState(false)
 {
 	lua_State	*l = this->_b->act.getLuaState();
-	// auto		*bun = this->_b;
-	// auto		&act = bun->act;
+	auto		*bun = this->_b;
+	auto		&act = bun->act;
 	int			ret;
 // TODO: ftlua
 	ret = lua_getglobal(l, "SolvingState");
@@ -70,13 +62,10 @@ SS::SolvingState(Main &main, OCamlBinding &ocaml)
 
 	// act.fireEvent("Bordel", 42, std::string("caca"));
 
-	launch(&ocaml, &main.grid);
+	ocaml.solve(main.grid, main.algorithmId, main.heuristicId, main.cost);
 	// std::thread		th (launch, &ocaml, &main.grid);
 
 	// th.join();
-	// std::thread		th (launch, ocaml, main.grid);
-	// ocaml.solve(main.grid);
-
 	return ;
 }
 

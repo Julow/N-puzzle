@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/18 15:36:49 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/05 10:50:46 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/12/07 15:22:33 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -53,10 +53,10 @@ module type EVENT_HANDLER =
 	  | Progress of float
 	  | Empty
 
-	val dumpq			: unit -> unit
 	val pushq			: t -> unit
 	val popq			: unit -> t
-	val clearq			: unit -> unit
+	val makepipe		: unit -> unit
+	val killpipe		: unit -> unit
 	val new_report		: int -> report
 	val tick_report		: report -> int -> int -> int -> report
 	val finalize_report	: report -> state list -> report

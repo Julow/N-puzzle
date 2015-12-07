@@ -6,19 +6,9 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/12/07 10:58:39 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/12/07 15:24:50 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
-
-let hashtbl_of_list l =
-  let h = Hashtbl.create (List.length l) in
-  let rec aux = function
-	| (n, f)::tl	-> Hashtbl.add h n f;
-					   aux tl
-	| _				-> ()
-  in
-  aux l;
-  h
 
 (* ************************************************************************** *)
 (* EVENTS HANDLER *)
@@ -39,11 +29,10 @@ module GridGreedySearch : (GenericInterfaces.HEPATHFINDER
   = GreedySearch.Make(Grid)(EventHandler)
 
 let algorithms =
-  hashtbl_of_list
-	[("A*", GridAStar.solve);
-	 ("IDA*", GridIDAStar.solve);
-	 ("Greedy Search", GridGreedySearch.solve);
-	]
+  [|("A*", GridAStar.solve);
+	("IDA*", GridIDAStar.solve);
+	("Greedy Search", GridGreedySearch.solve);
+  |]
 
 (* ************************************************************************** *)
 (* HEURISTICS *)
@@ -64,48 +53,14 @@ let pat555 = [|[| 1; 1; 2; 2|];
   			   [| 3; 3; 3; 3|];|]
 
 let heuristics =
-  hashtbl_of_list
-	[("Manhattan Distance", ManhattanDistanceHeuristic.make);
-	 ("Linear Conflict", LinearConflictHeuristic.make);
-	 ("Disjoint Pattern DB 8", DPatternDBHeuristic.make pat8);
-	 ("Disjoint Pattern DB 7", DPatternDBHeuristic.make pat7);
-	 ("Disjoint Pattern DB 6/6/3", DPatternDBHeuristic.make pat663);
-	 ("Disjoint Pattern DB 5/5/5", DPatternDBHeuristic.make pat555);
-	 ("Uniform Cost", UniformCostHeuristic.make);
-	]
-
-(* ************************************************************************** *)
-(* DOTO: REMOVE LATER *)
-
-let scanGrid chan g s =
-  let rec line y =
-	let rec col x =
-	  if x < s then
-		(let v = (Scanf.fscanf chan " %u " (fun x _ -> x))() in
-		 g.(y).(x) <- v;
-		 col (x + 1))
-	in
-	if y < s then
-	  (col 0;
-	   line (y + 1))
-  in
-  line 0
-
-let mat_from_file fname =
-  let chan = open_in fname in
-  (* Printf.eprintf "opened: %s\n%!" fname; *)
-  ignore (input_line chan);
-  (* Printf.eprintf "%s\n%!" (input_line chan); *)
-  let size = (Scanf.fscanf chan "%d\n" (fun x _ -> x))() in
-  (* Printf.eprintf "size: %d\n%!" size; *)
-  let grid = Array.make_matrix size size 42 in
-  scanGrid chan grid size;
-  close_in chan;
-  grid
-
-let grid_from_file fname =
-  let mat = mat_from_file fname in
-  mat, Grid.pivv (Grid.find mat 0)
+  [|("Manhattan Distance", 0, ManhattanDistanceHeuristic.make);
+	("Linear Conflict", 0, LinearConflictHeuristic.make);
+	("Disjoint Pattern DB 8", 3, DPatternDBHeuristic.make pat8);
+	("Disjoint Pattern DB 7", 3, DPatternDBHeuristic.make pat7);
+	("Disjoint Pattern DB 6/6/3", 4, DPatternDBHeuristic.make pat663);
+	("Disjoint Pattern DB 5/5/5", 4, DPatternDBHeuristic.make pat555);
+	("Uniform Cost", 0, UniformCostHeuristic.make);
+  |]
 
 (* ************************************************************************** *)
 (* SOLVE *)
@@ -117,103 +72,58 @@ let center str =
   Printf.eprintf "%s \027[31m%s\027[0m %s\n%!" (String.make llen '*')
 				 str (String.make rlen '*')
 
-let thread_handle = ref None
-let thread_done = false
-
-let launch (abstgr, goalgr, w, algo, heu_maker) =
+let launch (abstgr, goalgr, w, algo, heu_maker, cost) =
   (* TODO: Catch all errors and send to EventHandler *)
-  Printf.eprintf "Thread begin\n%!";
   let t = Unix.gettimeofday () in
   let heu = heu_maker w in
   center (Printf.sprintf "%f sec to generate heuristic"
 						 (Unix.gettimeofday () -. t));
   let t = Unix.gettimeofday () in
   algo abstgr goalgr heu;
-  center (Printf.sprintf "%f sec to solve (%d steps)" (Unix.gettimeofday () -. t)
-  						 (-42));
+  center (Printf.sprintf "%f sec to solve" (Unix.gettimeofday () -. t));
   ()
 
-let launch_str abstgr goalgr w algo_str heu_maker_str =
-  let algo =
-	try Hashtbl.find algorithms algo_str
-	with
-	| Not_found	->
-	   failwith (Printf.sprintf "'%s' algorithm does not exist" algo_str)
-  in
-  let heu_maker =
-	try Hashtbl.find heuristics heu_maker_str
-	with
-	| Not_found
-	  -> failwith(Printf.sprintf "'%s' heuristic does not exist" heu_maker_str)
-  in
-  center "";
-  center (Printf.sprintf "%s ** %s" algo_str heu_maker_str);
+let solve' npuzzle (aid, hid, cost) =
+  if aid >= Array.length algorithms
+  then failwith "Wrong algorithm id";
+  if hid >= Array.length heuristics
+  then failwith "Wrong heuristic id";
+  if cost > 1 || cost < (-1)
+  then failwith "Wrong cost";
 
-  let packed = (abstgr, goalgr, w, algo, heu_maker) in
-  launch packed;
-  ()
-
-(* TODO Grid.of_cgrid is the only safe entry point here *)
-let solve' npuzzle =
-  (* let solvable = true in *)
-  (* let size = 3 in *)
-  (* let (abstmat, _) as abstgr = Grid.generate size solvable 10000 in *)
-
-  (* let (realmat, realpiv) as realgr = grid_from_file "lol3.np" in *)
   let (abstmat, abstpiv) as abstgr = Grid.of_cgrid npuzzle in
-
-  (* let abstgr = Grid.to_abstract realgr in *)
   let w = Array.length abstmat in
   Grid.init_transp_tables w;
   let goalgr = Grid.goal w in
-  EventHandler.clearq ();
+  EventHandler.makepipe ();
 
-  (* Printf.eprintf "\n%!"; *)
-  (* Grid.print realgr; *)
-  (* Printf.eprintf "\n%!"; *)
   Grid.print abstgr;
   Printf.eprintf "\n%!";
-  Grid.print goalgr;
-  Printf.eprintf "\n%!";
 
+  let (aname, afun) = algorithms.(aid) in
+  let (hname, hsize, hmaker) = heuristics.(hid) in
 
-  (* TODO: retreive algo/heuristic *)
-  (* ------------------------> SOLVING GOES HERE <------------------------ *)
-  (* launch_str abstgr goalgr w "Greedy Search" "Disjoint Pattern DB 6/6/3"; *)
-  (* launch_str abstgr goalgr w "Greedy Search" "Disjoint Pattern DB 5/5/5"; *)
-  launch_str abstgr goalgr w "Greedy Search" "Linear Conflict";
-  (* launch_str abstgr goalgr w "Greedy Search" "Manhattan Distance"; *)
+  if hsize <> 0 && hsize <> w
+  then failwith "Cannot solve grid with heuristic";
 
-  (* launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 6/6/3"; *)
-  (* launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 8"; *)
-  (* launch_str abstgr goalgr w "A*" "Disjoint Pattern DB 5/5/5"; *)
-  (* launch_str abstgr goalgr w "A*" "Linear Conflict"; *)
-  (* launch_str abstgr goalgr w "A*" "Manhattan Distance"; *)
-  (* ------------------------> SOLVING GOES HERE <------------------------ *)
-  EventHandler.dumpq (); (* TODO: REMOVE *)
+  center "";
+  center (Printf.sprintf "%s ** %s" aname hname);
+
+  launch (abstgr, goalgr, w, afun, hmaker, cost);
   ()
 
 (* ************************************************************************** *)
 (* From C api *)
-let solve npuzzle =
-  solve' npuzzle;
+let solve : Npuzzle.t -> int -> int -> int -> unit = fun npuzzle aid hid cost ->
+  Printf.eprintf "solve ocaml\n%!";
+  solve' npuzzle (aid, hid, cost);
   ()
-
-let test npuzzle =
-  let (abstmat, abstpiv) as abstgr = Grid.of_cgrid npuzzle in
-  Grid.print abstgr;
-  (* let res = Grid.is_solvable abstgr; *)
-  ()
-
 
 let poll_event _ =
   EventHandler.popq ()
 
 let abort _ =
-  (match !thread_handle with
-  | None		-> ()
-  | Some th		-> Thread.kill th);
-  EventHandler.clearq ();
+  EventHandler.killpipe ();
   ()
 
 let generate_grid : int -> bool -> int -> Grid.t = fun w solvable nloops ->
@@ -221,10 +131,10 @@ let generate_grid : int -> bool -> int -> Grid.t = fun w solvable nloops ->
   gr
 
 let algorithm_list _ =
-  Hashtbl.fold (fun k _ l -> k::l) algorithms []
+  Array.fold_right (fun (k, _) l -> k::l) algorithms []
 
 let heuristic_list _ =
-  Hashtbl.fold (fun k _ l -> k::l) heuristics []
+  Array.fold_right (fun (k, _, _) l -> k::l) heuristics []
 
 let transposition_toreal : int -> int array = fun w ->
   Grid.init_transp_tables w;
@@ -239,7 +149,6 @@ let transposition_toabstract : int -> int array = fun w ->
 let () =
   Random.self_init ();
   Callback.register "solve" solve;
-  Callback.register "test" test;
   Callback.register "poll_event" poll_event;
   Callback.register "abort" abort;
   Callback.register "algorithm_list" algorithm_list;

@@ -124,7 +124,6 @@ void			PS::selectGrid(int i)
 	_main.grid = grids[i];
 	bun->selectedId = i;
 	bun->act.fireEvent("SELECTED_GRID_CHANGED", i);
-	this->_ocaml.test_solvability(_main.grid);
 	return ;
 }
 
@@ -180,7 +179,6 @@ void			PS::pushRandomGrid(int w, bool solvable, int nloops)
 	bun->selectedId = newIndex;
 	bun->act.fireEvent("GRID_LIST_UPDATE", bun->extractGridNames(), grids.size());
 	bun->act.fireEvent("SELECTED_GRID_CHANGED", newIndex);
-	this->_ocaml.test_solvability(_main.grid);
 	return ;
 }
 

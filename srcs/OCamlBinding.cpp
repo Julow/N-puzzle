@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 11:51:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/07 15:50:36 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/07 15:28:41 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -218,15 +218,47 @@ static std::vector<int>				valToIntVector(value &val)
 /* ************************************************************************** */
 /* C -> OCaml */
 
-void		OCamlBinding::solve(Grid const &gr)
+// value	create_tuple( value a, value b, value c )
+// {
+// 	CAMLparam3( a, b, c );
+// 	CAMLlocal1( abc );
+
+// 	abc = caml_alloc(3, 0);
+
+// 	Store_field( abc, 0, a );
+// 	Store_field( abc, 1, b );
+// 	Store_field( abc, 2, c );
+
+// 	CAMLreturn( abc );
+// }
+
+// extern "C"
+// {
+// value	test()
+// {
+// 	CAMLlocal1( abc );
+// 	abc = caml_alloc_tuple(3);
+// 	// abc = caml_alloc(3, 0);
+
+// 	Store_field( abc, 0, 42 );
+// 	Store_field( abc, 1, 84 );
+// 	Store_field( abc, 2, 126 );
+// }
+
+// }
+
+void		OCamlBinding::solve(Grid const &gr, int aid, int hid, int cost)
 {
 	std::cout << __FUNCTION__ << std::endl;
 	value *const	f = caml_named_value("solve");
 	value			res;
+	value			params[] = {(value)this, Val_int(aid), Val_int(hid), Val_int(cost)};
 
 	FTASSERT(f != nullptr);
 	this->_currentGrid = gr;
-	res = caml_callback_exn(*f, (value)this); // TODO: memory leak ?
+	std::cout << "Calling ocaml solve" << std::endl;
+	res = caml_callbackN_exn(*f, 4, params); // TODO: memory leak ?
+	// res = caml_callback_exn(*f, (value)this); // TODO: memory leak ?
 	if (Is_exception_result(res))
 		throw std::runtime_error(
 			caml_format_exception(Extract_exception(res)));
@@ -344,24 +376,6 @@ std::vector<int>	OCamlBinding::transposition_toabstract(unsigned int w)
 	FTASSERT(vec.size() == w * w);
 	return vec;
 }
-
-
-
-void		OCamlBinding::test_solvability(Grid const &gr) //debug remove
-{
-	value *const	f = caml_named_value("test");
-	value			res;
-
-	FTASSERT(f != nullptr);
-	this->_currentGrid = gr;
-	res = caml_callback_exn(*f, (value)this); // TODO: memory leak ?
-	if (Is_exception_result(res))
-		throw std::runtime_error(
-			caml_format_exception(Extract_exception(res)));
-	return ;
-}
-
-
 
 /* ************************************************************************** */
 /* C <- OCaml */
