@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/29 14:06:13 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/07 14:09:27 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 15:46:30 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -62,6 +62,7 @@ SS::SolvingState(Main &main, OCamlBinding &ocaml)
 
 	// act.fireEvent("Bordel", 42, std::string("caca"));
 
+	ocaml.setListener(this);
 	ocaml.solve(main.grid, main.algorithmId, main.heuristicId, main.cost);
 	// std::thread		th (launch, &ocaml, &main.grid);
 
@@ -83,6 +84,7 @@ SS::~SolvingState()
 void            SS::loop(std::unique_ptr<IState> &ptr, ftui::ACanvas &can)
 {
 	(void)ptr;
+	_ocaml.poll_event();
 	this->_b->tiles.render();
 	this->_b->act.render(can);
 	// if (this->_launchSolvingState)
@@ -103,6 +105,29 @@ void            SS::loop(std::unique_ptr<IState> &ptr, ftui::ACanvas &can)
 ftui::Activity  &SS::getActivity(void)
 {
 	return this->_b->act;
+}
+
+
+/*
+** ************************************************************************** **
+** ISOLVERLISTENER LEGACY
+*/
+void			SS::onSuccess(report_s rep)
+{
+	std::cout << "onSuccess: " << rep << std::endl;
+	return ;
+}
+
+void			SS::onProgress(progress_s prog)
+{
+	std::cout << "onProgress: " << prog.str << prog.val << std::endl;
+	return ;
+}
+
+void			SS::onFail(std::string const &str)
+{
+	std::cout << "onFail: " << str << std::endl;
+	return ;
 }
 
 /*
@@ -127,12 +152,12 @@ static Tiles	make_tiles(void)
 	Tiles		t;
 
 	t.init(WIN_SIZEVI
-		   , /*ft::Vec2<int> const triangleSize =*/ ft::Vec2<int>(95, 95)
-		   , /*int const pointRandomRadius =*/ 30
-		   , /*float const percentGray =*/ 0.33f
-		   , /*ft::Vec3<int> const gray =*/ ft::Vec3<int>(181, 120, 129)
-		   , /*ft::Vec3<int> const pink =*/ ft::Vec3<int>(230, 46, 77)
-		   , /*ft::Vec3<int> const deltaPink =*/ ft::Vec3<int>(50, 10, 77));
+			, /*ft::Vec2<int> const triangleSize =*/ ft::Vec2<int>(95, 95)
+			, /*int const pointRandomRadius =*/ 30
+			, /*float const percentGray =*/ 0.33f
+			, /*ft::Vec3<int> const gray =*/ ft::Vec3<int>(181, 120, 129)
+			, /*ft::Vec3<int> const pink =*/ ft::Vec3<int>(230, 46, 77)
+			, /*ft::Vec3<int> const deltaPink =*/ ft::Vec3<int>(50, 10, 77));
 	return t;
 }
 
@@ -151,7 +176,7 @@ SS::Bundle::Bundle(Main &main, OCamlBinding &)
 	act.inflate(is);
 	main.loadSharedScripts(act);
 	luaL_dostring(act.getLuaState()
-				  , "SolvingState = {}; GridColor = 0x0000FF;");
+					, "SolvingState = {}; GridColor = 0x0000FF;");
 	// pushFun("tagForSolving", &tagForSolvingG);
 	this->act.fireEvent("ON_GAME_LOADED");
 	return ;

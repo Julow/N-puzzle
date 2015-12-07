@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/11/02 07:50:05 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/12/07 15:28:09 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/12/07 16:21:14 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -68,40 +68,52 @@ module Make =
 	  dump_event ev;
 	  Printf.eprintf "........\n%!";
 	  let chanin = match !pipe with
-		| Some (_, pipein)	-> Unix.out_channel_of_descr pipein
-		| _					-> failwith "Error pushq"
+		| Some (_, _, _, chanin)	-> chanin
+		| _							-> failwith "Error pushq"
 	  in
 	  Marshal.to_channel chanin ev [];
+	  flush chanin;
 	  ()
 
 	(* From MainThread after fork *)
 	let popq _ =
-	  Printf.eprintf "...........Reading pipe\n%!";
 	  let chanout = match !pipe with
-		| Some (pipeout, _)	-> Unix.in_channel_of_descr pipeout
-		| _					-> failwith "Error pushq"
+		| Some (_, _, chanout, _)	-> chanout
+		| _							-> failwith "Error popq"
 	  in
 	  try
 		let ev = (Marshal.from_channel chanout : t) in
+		Printf.eprintf "\nRead: %!";
 		dump_event ev;
+		(* Printf.eprintf "Test2:\n%!"; *)
+		(* let ev2 = (Marshal.from_channel chanout : t) in *)
+		(* dump_event ev2; *)
+		(* Printf.eprintf "Test2OK\n%!"; *)
+		(* Printf.eprintf "Test2:\n%!"; *)
+		(* let ev2 = (Marshal.from_channel chanout : t) in *)
+		(* dump_event ev2; *)
+		(* Printf.eprintf "Test2OK\n%!"; *)
 		ev
 	  with
 	  | _	->
-		 Printf.eprintf "failed :(\n.........\n%!";
+		 Printf.eprintf "nothing_read %!";
 		 Empty
 
 	(* From MainThread before fork *)
 	let makepipe _ =
 	  Printf.eprintf "Making pipe\n%!";
-	  let ((pipeout, _) as p) = Unix.pipe () in
+	  let ((pipeout, pipein) as p) = Unix.pipe () in
 	  Unix.set_nonblock pipeout;
-	  pipe := Some p;
+	  pipe := Some (pipeout
+				   , pipein
+				   , (Unix.in_channel_of_descr pipeout)
+				   , (Unix.out_channel_of_descr pipein));
 	  ()
 
 	let killpipe _ =
 	  match !pipe with
-	  | Some (pipeout, pipein)	-> Unix.close pipeout;
-								   Unix.close pipein
+	  | Some (pipeout, pipein, _, _)	-> Unix.close pipeout;
+										   Unix.close pipein
 	  | _						-> ()
 
 	(* ********************************************************************** *)

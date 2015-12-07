@@ -6,17 +6,19 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/29 14:06:17 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/29 14:13:07 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 15:48:01 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef SOLVINGSTATE_HPP
 # define SOLVINGSTATE_HPP
 
-# include "Main.hpp"
 # include "tiles/Tiles.hpp"
 
-class SolvingState : public IState
+# include "Main.hpp"
+# include "ISolverListener.hpp"
+
+class SolvingState : public IState, public ISolverListener
 {
 	/* ATTRIBUTES ******************* */
 private:
@@ -45,6 +47,12 @@ public:
 		, ftui::ACanvas &can) override;
 	ftui::Activity			&getActivity(void) override;
 
+	/* ISOLVERLISTENER LEGACY ******* */
+	void					onSuccess(report_s rep) override;
+	void					onProgress(progress_s prog) override;
+	void					onFail(std::string const &str) override;
+
+
 	/* LIBFTUI INTERACTIONS ********* */
 	static int				tagForAbortG(lua_State *l);
 	void					tagForAbort(void);
@@ -66,8 +74,8 @@ public:
 	Bundle					&operator=(Bundle &&rhs) = delete;
 
 	/* ATTRIBUTES ******************* */
-    Tiles const             tiles;
-	ftui::Activity          act;
+	Tiles const				tiles;
+	ftui::Activity			act;
 
 	/* FUNCTIONALITIES ************** */
 	std::vector<std::string const*>		extractGridNames(void);

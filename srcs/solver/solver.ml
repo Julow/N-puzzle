@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/12/07 15:24:50 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/12/07 16:11:36 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -65,6 +65,8 @@ let heuristics =
 (* ************************************************************************** *)
 (* SOLVE *)
 
+let cpid = ref None
+
 let center str =
   let slen = String.length str + 2 in
   let llen = max ((80 - slen) / 2) 0 in
@@ -95,7 +97,6 @@ let solve' npuzzle (aid, hid, cost) =
   let w = Array.length abstmat in
   Grid.init_transp_tables w;
   let goalgr = Grid.goal w in
-  EventHandler.makepipe ();
 
   Grid.print abstgr;
   Printf.eprintf "\n%!";
@@ -109,8 +110,15 @@ let solve' npuzzle (aid, hid, cost) =
   center "";
   center (Printf.sprintf "%s ** %s" aname hname);
 
-  launch (abstgr, goalgr, w, afun, hmaker, cost);
-  ()
+  EventHandler.makepipe ();
+  let pid = Unix.fork () in
+  if pid == 0
+  then (launch (abstgr, goalgr, w, afun, hmaker, cost);
+		Printf.eprintf "Slave exiting\n%!";
+		Unix.sleep 2;
+		exit 0)
+  else (cpid := Some pid;
+		())
 
 (* ************************************************************************** *)
 (* From C api *)

@@ -17,13 +17,13 @@ module type EVENT_HANDLER =
     type state
     type report
     type t = Success of report | Failed of string | Progress of float | Empty
-    val pushq           : t -> unit
-    val popq            : unit -> t
-	val makepipe        : unit -> unit
-	val killpipe        : unit -> unit
-	val new_report      : int -> report
-	val tick_report     : report -> int -> int -> int -> report
-	val finalize_report : report -> state list -> report
+    val pushq : t -> unit
+    val popq : unit -> t
+    val makepipe : unit -> unit
+    val killpipe : unit -> unit
+    val new_report : int -> report
+    val tick_report : report -> int -> int -> int -> report
+    val finalize_report : report -> state list -> report
   end
 module type MAKE_EVENT_HANDLER =
   functor (State : EVENT_HANDLER_STATE) ->
@@ -35,13 +35,13 @@ module type MAKE_EVENT_HANDLER =
         | Failed of string
         | Progress of float
         | Empty
-	  val pushq           : t -> unit
-	  val popq            : unit -> t
-	  val makepipe        : unit -> unit
-	  val killpipe        : unit -> unit
-	  val new_report      : int -> report
-	  val tick_report     : report -> int -> int -> int -> report
-	  val finalize_report : report -> state list -> report
+      val pushq : t -> unit
+      val popq : unit -> t
+      val makepipe : unit -> unit
+      val killpipe : unit -> unit
+      val new_report : int -> report
+      val tick_report : report -> int -> int -> int -> report
+      val finalize_report : report -> state list -> report
     end
 module type MAKE_HEPATHFINDER =
   functor
@@ -53,13 +53,19 @@ module type MAKE_HEPATHFINDER =
                                                    | Failed of string
                                                    | Progress of float
                                                    | Empty
-												 val pushq           : t -> unit
-												 val popq            : unit -> t
-												 val makepipe        : unit -> unit
-												 val killpipe        : unit -> unit
-												 val new_report      : int -> report
-												 val tick_report     : report -> int -> int -> int -> report
-												 val finalize_report : report -> state list -> report
+                                                 val pushq : t -> unit
+                                                 val popq : unit -> t
+                                                 val makepipe : unit -> unit
+                                                 val killpipe : unit -> unit
+                                                 val new_report :
+                                                   int -> report
+                                                 val tick_report :
+                                                   report ->
+                                                   int ->
+                                                   int -> int -> report
+                                                 val finalize_report :
+                                                   report ->
+                                                   state list -> report
                                                end) ->
     sig
       type graph = Graph.t

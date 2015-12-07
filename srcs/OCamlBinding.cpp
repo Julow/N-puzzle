@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 11:51:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/07 15:28:41 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 15:53:49 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -266,7 +266,6 @@ void		OCamlBinding::solve(Grid const &gr, int aid, int hid, int cost)
 
 void		OCamlBinding::poll_event(void)
 {
-	std::cout << __FUNCTION__ << std::endl;
 	value *const	f = caml_named_value("poll_event");
 	value			res;
 
