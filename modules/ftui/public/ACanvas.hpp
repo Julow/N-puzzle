@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/07 14:01:20 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/07 14:34:10 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -164,32 +164,10 @@ public:
 ** Lua interactions
 */
 	typedef std::integral_constant<unsigned int, 1> ftlua_size;
-	void				ftlua_push(lua_State *l, std::function<void(std::string)> panic)
-		{
-			ftlua::pushLightKey(l, this);
-			FTLUA_STACKASSERT_PANIC(
-				l, lua_istable(l, -1), panic
-				, ft::f("ACanvas::ftlua_push()"), ft::f("_G[this] not found."));
-			return ;
-		}
-	static ACanvas		*ftlua_pop(lua_State *l, int i, std::function<void(std::string)> panic)
-		{
-			ACanvas		*v;
-			int			type;
-
-			FTLUA_STACKASSERT_PANIC(
-				l, lua_istable(l, i), panic
-				, ft::f("ACanvas::ftlua_pop(i = %)", i), ft::f("No table at i"));
-			ftlua::push(l, 0);
-			type = lua_gettable(l, i < 0 ? i - 1 : i);
-			FTLUA_STACKASSERT_PANIC(
-				l, type == LUA_TLIGHTUSERDATA, panic
-				, ft::f("ACanvas::ftlua_pop(i = %)", i), ft::f("No pointer at [0]"));
-			v = reinterpret_cast<ACanvas*>(lua_touserdata(l, -1));
-			lua_pop(l, 1);
-			lua_remove(l, i);
-			return v;
-		}
+	void				ftlua_push(lua_State *l,
+							std::function<void(std::string)> panic);
+	static ACanvas		*ftlua_pop(lua_State *l, int i,
+							std::function<void(std::string)> panic);
 
 	static void			pushTemplate(lua_State *l);
 	static int			drawRectG(lua_State *l);

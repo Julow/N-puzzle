@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 16:56:12 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/06 10:09:24 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 14:38:38 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -262,4 +262,68 @@ std::ostream		&operator<<(std::ostream &o, Grid const &rhs)
 		}
 	}
 	return o;
+}
+void				Grid::ftlua_push(lua_State *l,
+						std::function<void(std::string)> panic) const
+{
+	int const	w = this->_size;
+
+	lua_createtable(l, w * w, 0);
+	for (int i = 0; i < w * w; i++)
+	{
+		lua_pushinteger(l, i);
+		lua_pushinteger(l, this->_data[i / w][i % w]);
+		lua_settable(l, -3);
+	}
+	(void)panic;
+	// panic("lolgrid");
+	return ;
+}
+
+
+Grid				Grid::ftlua_pop_helper(lua_State *l,
+						std::function<void(std::string)> panic,
+						int tabindex2, int w)
+{
+	Grid		gr = Grid(w, "From_lua");
+
+	for (int y = 0; y < w; y++)
+	{
+		for (int x = 0; x < w; x++)
+		{
+			ftlua::push(l, y * w + x);
+			if (lua_gettable(l, tabindex2) != LUA_TNUMBER)
+				panic("Grid::ftlua_pop #4");
+			gr.set(x, y, lua_tointeger(l, -1));
+			lua_pop(l, 1);
+		}
+	}
+	return gr;
+}
+Grid				Grid::ftlua_pop(lua_State *l, int i,
+						std::function<void(std::string)> panic)
+{
+	int			len(0);
+	int const	tabindex2 = i < 0 ? i - 1 : i;
+	int			type;
+	int			w;
+// TODO: test ftlua_pop
+	if (!lua_istable(l, i))
+		panic("Grid::ftlua_pop #1");
+	ftlua::push(l, 0);
+	type = lua_gettable(l, tabindex2);
+	if (type == LUA_TNIL)
+		len = 0;
+	else if (type == LUA_TNUMBER)
+		len = 1 + luaL_len(l, tabindex2);
+	else
+	{
+		lua_pop(l, 1);
+		panic("Grid::ftlua_pop #2");
+	}
+	lua_pop(l, 1);
+	w = static_cast<int>(sqrt(static_cast<float>(len)));
+	if (w * w != len)
+		panic("Grid::ftlua_pop #3");
+	return ftlua_pop_helper(l, panic, tabindex2, w);
 }

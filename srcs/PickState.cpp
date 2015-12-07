@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 16:37:32 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/07 14:18:47 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 14:39:30 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -227,17 +227,6 @@ int				PS::getMainGridId(void)
 	return this->_b->selectedId;
 }
 
-
-
-
-
-
-
-
-
-
-
-
 int				PS::useDefaultGridG(lua_State *l) /*static*/
 {
 	return ftlua::handle<1, 0>(l, &PS::useDefaultGrid);
@@ -274,6 +263,26 @@ int				PS::tagForSolvingG(lua_State *l) /*static*/
 }
 void			PS::tagForSolving(void)
 { _launchSolvingState = true; }
+
+PickState		*PS::ftlua_pop(lua_State *l, int i,
+						std::function<void(std::string)> panic)
+{
+	PickState		*v;
+	int				type;
+
+	FTLUA_STACKASSERT_PANIC(
+		l, lua_istable(l, i), panic
+		, ft::f("PickState::ftlua_pop(i = %)", i), ft::f("No table at i"));
+	ftlua::push(l, 0);
+	type = lua_gettable(l, i < 0 ? i - 1 : i);
+	FTLUA_STACKASSERT_PANIC(
+		l, type == LUA_TLIGHTUSERDATA, panic
+		, ft::f("PickState::ftlua_pop(i = %)", i), ft::f("No pointer at [0]"));
+	v = reinterpret_cast<PickState*>(lua_touserdata(l, -1));
+	lua_pop(l, 1);
+	lua_remove(l, i);
+	return v;
+}
 
 /*
 ** ************************************************************************** **
