@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/17 14:20:58 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/12/07 12:17:31 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/12/07 14:22:43 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -293,8 +293,6 @@ let of_cgrid cgrid =
 	then Printf.eprintf "%2d\n%!" v
 	else Printf.eprintf "%2d " v
   in
-  (* let x0, y0 = pivxy piv in *)
-  (* Printf.eprintf "Pivot (%2d, %2d) solvable:%b\n%!" x0 y0 (is_solvable gr); *)
   iter_cells mat aux;
 
   Printf.eprintf "Passage 19\n%!";

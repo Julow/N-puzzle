@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 11:51:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/07 14:10:07 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 15:28:41 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -376,24 +376,6 @@ std::vector<int>	OCamlBinding::transposition_toabstract(unsigned int w)
 	return vec;
 }
 
-
-
-void		OCamlBinding::test_solvability(Grid const &gr) //debug remove
-{
-	value *const	f = caml_named_value("test");
-	value			res;
-
-	FTASSERT(f != nullptr);
-	this->_currentGrid = gr;
-	res = caml_callback_exn(*f, (value)this); // TODO: memory leak ?
-	if (Is_exception_result(res))
-		throw std::runtime_error(
-			caml_format_exception(Extract_exception(res)));
-	return ;
-}
-
-
-
 /* ************************************************************************** */
 /* C <- OCaml */
 
@@ -401,7 +383,6 @@ extern "C"
 {
 CAMLprim value  solver_hook_get_size(value binding)
 {
-	printf("%s\n", __FUNCTION__);
 	int             size;
 	OCamlBinding	*b;
 
@@ -421,7 +402,6 @@ CAMLprim value  solver_hook_get(value binding, value x, value y)
 	b = reinterpret_cast<OCamlBinding*>(binding);
 	FTASSERT(b != nullptr);
 	v = b->getGrid().get(Int_val(x), Int_val(y));
-	printf("%s %d/%d->%d\n", __FUNCTION__, x, y, v);
 	CAMLreturn(Val_int(v));
 }
 

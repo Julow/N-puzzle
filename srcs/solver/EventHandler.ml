@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/11/02 07:50:05 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/11/05 17:45:04 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/12/07 15:28:09 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -33,61 +33,76 @@ module Make =
 		   | Progress of float (* TODO: * string *)
 		   | Empty
 
-	let q = (Queue.create () : t Queue.t)
-	let m = Mutex.create ()
+	let pipe = ref None
 
 	(* ********************************************************************** *)
 	(* DEBUG *)
-	let dumpq () =
-	  let i = ref 0 in
-	  let aux ev =
-		Printf.eprintf "i(%d) %!" !i;
-		match ev with
-		| Success l
-		  -> let steps = List.length l.states - 1 in
-			 let ma, mb = l.max_both in
-			 let m = ma + mb in
-			 Printf.eprintf "Solved (%d steps) (%d plan) (%.2f avgplan) "
-							steps l.initial_h l.average_h;
-			 Printf.eprintf "(%.2fsec) (%d maxo / %d maxc) (%d max(%d, %d)) "
-							l.time l.max_open l.max_closed m ma mb;
-			 Printf.eprintf "(%d nodes)\n%!"
-							l.nodes;
-			 ()
-		| Failed s
-		  -> Printf.eprintf "Failed of '%s'\n%!" s;
-		| Progress n
-		  -> Printf.eprintf "Progress of %6.2f%%\n%!" (n *. 100.);
-		| _
-		  -> ();
-		i := !i + 1;
-	  in
-	  Printf.eprintf "Events Queue:\n%!";
-	  Queue.iter aux q;
-	  ()
+	let dump_event = function
+	  | Success l
+		-> let steps = List.length l.states - 1 in
+		   let ma, mb = l.max_both in
+		   let m = ma + mb in
+		   Printf.eprintf "Solved (%d steps) (%d plan) (%.2f avgplan) "
+						  steps l.initial_h l.average_h;
+		   Printf.eprintf "(%.2fsec) (%d maxo / %d maxc) (%d max(%d, %d)) "
+						  l.time l.max_open l.max_closed m ma mb;
+		   Printf.eprintf "(%d nodes)\n%!"
+						  l.nodes;
+		   ()
+	  | Failed s
+		-> Printf.eprintf "Failed of '%s'\n%!" s;
+		   ()
+	  | Progress n
+		-> Printf.eprintf "Progress of %6.2f%%\n%!" (n *. 100.);
+		   ()
+	  | _
+		-> Printf.eprintf "Empty\n%!";
+		   ()
 
 	(* ********************************************************************** *)
-	(* QUEUE OPERATIONS *)
-	let pushq t =
-	  Mutex.lock m;
-	  Queue.push t q;
-	  Mutex.unlock m;
-	  ()
+	(* PIPE OPERATIONS *)
 
-	let popq _ =
-	  Mutex.lock m;
-	  let v = if Queue.is_empty q
-			  then Empty
-			  else Queue.pop q
+	(* From SlaveThread after fork *)
+	let pushq ev =
+	  Printf.eprintf "........Writing pipe:\n%!";
+	  dump_event ev;
+	  Printf.eprintf "........\n%!";
+	  let chanin = match !pipe with
+		| Some (_, pipein)	-> Unix.out_channel_of_descr pipein
+		| _					-> failwith "Error pushq"
 	  in
-	  Mutex.unlock m;
-	  v
-
-	let clearq _ =
-	  Mutex.lock m;
-	  Queue.clear q;
-	  Mutex.unlock m;
+	  Marshal.to_channel chanin ev [];
 	  ()
+
+	(* From MainThread after fork *)
+	let popq _ =
+	  Printf.eprintf "...........Reading pipe\n%!";
+	  let chanout = match !pipe with
+		| Some (pipeout, _)	-> Unix.in_channel_of_descr pipeout
+		| _					-> failwith "Error pushq"
+	  in
+	  try
+		let ev = (Marshal.from_channel chanout : t) in
+		dump_event ev;
+		ev
+	  with
+	  | _	->
+		 Printf.eprintf "failed :(\n.........\n%!";
+		 Empty
+
+	(* From MainThread before fork *)
+	let makepipe _ =
+	  Printf.eprintf "Making pipe\n%!";
+	  let ((pipeout, _) as p) = Unix.pipe () in
+	  Unix.set_nonblock pipeout;
+	  pipe := Some p;
+	  ()
+
+	let killpipe _ =
+	  match !pipe with
+	  | Some (pipeout, pipein)	-> Unix.close pipeout;
+								   Unix.close pipein
+	  | _						-> ()
 
 	(* ********************************************************************** *)
 	(* REPORT OPERATIONS *)

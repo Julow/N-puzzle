@@ -6,19 +6,9 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/12/07 14:08:04 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/12/07 15:24:50 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
-
-let hashtbl_of_list l =
-  let h = Hashtbl.create (List.length l) in
-  let rec aux = function
-	| (n, f)::tl	-> Hashtbl.add h n f;
-					   aux tl
-	| _				-> ()
-  in
-  aux l;
-  h
 
 (* ************************************************************************** *)
 (* EVENTS HANDLER *)
@@ -73,39 +63,6 @@ let heuristics =
   |]
 
 (* ************************************************************************** *)
-(* DOTO: REMOVE LATER *)
-
-let scanGrid chan g s =
-  let rec line y =
-	let rec col x =
-	  if x < s then
-		(let v = (Scanf.fscanf chan " %u " (fun x _ -> x))() in
-		 g.(y).(x) <- v;
-		 col (x + 1))
-	in
-	if y < s then
-	  (col 0;
-	   line (y + 1))
-  in
-  line 0
-
-let mat_from_file fname =
-  let chan = open_in fname in
-  (* Printf.eprintf "opened: %s\n%!" fname; *)
-  ignore (input_line chan);
-  (* Printf.eprintf "%s\n%!" (input_line chan); *)
-  let size = (Scanf.fscanf chan "%d\n" (fun x _ -> x))() in
-  (* Printf.eprintf "size: %d\n%!" size; *)
-  let grid = Array.make_matrix size size 42 in
-  scanGrid chan grid size;
-  close_in chan;
-  grid
-
-let grid_from_file fname =
-  let mat = mat_from_file fname in
-  mat, Grid.pivv (Grid.find mat 0)
-
-(* ************************************************************************** *)
 (* SOLVE *)
 
 let center str =
@@ -114,9 +71,6 @@ let center str =
   let rlen = max (80 - slen - llen) 0 in
   Printf.eprintf "%s \027[31m%s\027[0m %s\n%!" (String.make llen '*')
 				 str (String.make rlen '*')
-
-let thread_handle = ref None
-let thread_done = false
 
 let launch (abstgr, goalgr, w, algo, heu_maker, cost) =
   (* TODO: Catch all errors and send to EventHandler *)
@@ -129,7 +83,6 @@ let launch (abstgr, goalgr, w, algo, heu_maker, cost) =
   center (Printf.sprintf "%f sec to solve" (Unix.gettimeofday () -. t));
   ()
 
-(* TODO Grid.of_cgrid is the only safe entry point here *)
 let solve' npuzzle (aid, hid, cost) =
   if aid >= Array.length algorithms
   then failwith "Wrong algorithm id";
@@ -138,18 +91,11 @@ let solve' npuzzle (aid, hid, cost) =
   if cost > 1 || cost < (-1)
   then failwith "Wrong cost";
 
-  (* let solvable = true in *)
-  (* let size = 3 in *)
-  (* let (abstmat, _) as abstgr = Grid.generate size solvable 10000 in *)
-
-  (* let (realmat, realpiv) as realgr = grid_from_file "lol3.np" in *)
-  (* let abstgr = Grid.to_abstract realgr in *)
-
   let (abstmat, abstpiv) as abstgr = Grid.of_cgrid npuzzle in
   let w = Array.length abstmat in
   Grid.init_transp_tables w;
   let goalgr = Grid.goal w in
-  EventHandler.clearq ();
+  EventHandler.makepipe ();
 
   Grid.print abstgr;
   Printf.eprintf "\n%!";
@@ -168,27 +114,16 @@ let solve' npuzzle (aid, hid, cost) =
 
 (* ************************************************************************** *)
 (* From C api *)
-(* let solve : Npuzzle.t -> unit = fun npuzzle -> *)
 let solve : Npuzzle.t -> int -> int -> int -> unit = fun npuzzle aid hid cost ->
   Printf.eprintf "solve ocaml\n%!";
   solve' npuzzle (aid, hid, cost);
   ()
 
-let test npuzzle =
-  let (abstmat, abstpiv) as abstgr = Grid.of_cgrid npuzzle in
-  Grid.print abstgr;
-  (* let res = Grid.is_solvable abstgr; *)
-  ()
-
-
 let poll_event _ =
   EventHandler.popq ()
 
 let abort _ =
-  (match !thread_handle with
-   | None		-> ()
-   | Some th		-> Thread.kill th);
-  EventHandler.clearq ();
+  EventHandler.killpipe ();
   ()
 
 let generate_grid : int -> bool -> int -> Grid.t = fun w solvable nloops ->
@@ -214,7 +149,6 @@ let transposition_toabstract : int -> int array = fun w ->
 let () =
   Random.self_init ();
   Callback.register "solve" solve;
-  Callback.register "test" test;
   Callback.register "poll_event" poll_event;
   Callback.register "abort" abort;
   Callback.register "algorithm_list" algorithm_list;
