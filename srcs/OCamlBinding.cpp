@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 11:51:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/07 10:58:10 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 14:10:07 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -217,15 +217,47 @@ static std::vector<int>				valToIntVector(value &val)
 /* ************************************************************************** */
 /* C -> OCaml */
 
-void		OCamlBinding::solve(Grid const &gr)
+// value	create_tuple( value a, value b, value c )
+// {
+// 	CAMLparam3( a, b, c );
+// 	CAMLlocal1( abc );
+
+// 	abc = caml_alloc(3, 0);
+
+// 	Store_field( abc, 0, a );
+// 	Store_field( abc, 1, b );
+// 	Store_field( abc, 2, c );
+
+// 	CAMLreturn( abc );
+// }
+
+// extern "C"
+// {
+// value	test()
+// {
+// 	CAMLlocal1( abc );
+// 	abc = caml_alloc_tuple(3);
+// 	// abc = caml_alloc(3, 0);
+
+// 	Store_field( abc, 0, 42 );
+// 	Store_field( abc, 1, 84 );
+// 	Store_field( abc, 2, 126 );
+// }
+
+// }
+
+void		OCamlBinding::solve(Grid const &gr, int aid, int hid, int cost)
 {
 	std::cout << __FUNCTION__ << std::endl;
 	value *const	f = caml_named_value("solve");
 	value			res;
+	value			params[] = {(value)this, Val_int(aid), Val_int(hid), Val_int(cost)};
 
 	FTASSERT(f != nullptr);
 	this->_currentGrid = gr;
-	res = caml_callback_exn(*f, (value)this); // TODO: memory leak ?
+	std::cout << "Calling ocaml solve" << std::endl;
+	res = caml_callbackN_exn(*f, 4, params); // TODO: memory leak ?
+	// res = caml_callback_exn(*f, (value)this); // TODO: memory leak ?
 	if (Is_exception_result(res))
 		throw std::runtime_error(
 			caml_format_exception(Extract_exception(res)));
@@ -369,6 +401,7 @@ extern "C"
 {
 CAMLprim value  solver_hook_get_size(value binding)
 {
+	printf("%s\n", __FUNCTION__);
 	int             size;
 	OCamlBinding	*b;
 
@@ -388,6 +421,7 @@ CAMLprim value  solver_hook_get(value binding, value x, value y)
 	b = reinterpret_cast<OCamlBinding*>(binding);
 	FTASSERT(b != nullptr);
 	v = b->getGrid().get(Int_val(x), Int_val(y));
+	printf("%s %d/%d->%d\n", __FUNCTION__, x, y, v);
 	CAMLreturn(Val_int(v));
 }
 
