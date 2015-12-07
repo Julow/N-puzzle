@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:13:00 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/02 17:33:43 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 14:02:57 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -17,7 +17,7 @@
 # include <vector>
 # include <stdint.h>
 
-# include "ftui/libftui.hpp"
+# include "ftui/ACanvas.hpp"
 # include "ftui/ASolidView.hpp"
 
 namespace ftui

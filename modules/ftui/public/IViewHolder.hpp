@@ -1,24 +1,25 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   IViewHolder.hpp                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/24 08:37:05 by jaguillo          #+#    #+#             */
-//   Updated: 2015/11/21 09:04:21 by ngoguey          ###   ########.fr       //
-/*                                                                            */
-/* ************************************************************************** */
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   IViewHolder.hpp                                    :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/09/24 08:37:05 by jaguillo          #+#    #+#             //
+//   Updated: 2015/12/07 13:57:10 by jaguillo         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 #ifndef IVIEWHOLDER_HPP
 # define IVIEWHOLDER_HPP
 
 # include "ft/Vec.hpp"
 
-# include "ftui/libftui.hpp"
-
 namespace ftui
 {
+
+class	ALayout;
+class	AView;
 
 /*
 ** Base class used to store a view in a layout

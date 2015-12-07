@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 12:56:29 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/06 11:34:23 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 14:00:49 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -20,13 +20,16 @@
 
 # include "ft_xml/XmlParser.hpp"
 
-# include "ftui/libftui.hpp"
-# include "ftui/ViewTemplate.hpp"
-
 # include "ftlua/ftlua.hpp"
+
+# include "ftui/ACanvas.hpp"
+# include "ftui/IViewHolder.hpp"
+# include "ftui/ViewTemplate.hpp"
 
 namespace ftui
 {
+
+class	Activity;
 
 /*
 ** ========================================================================== **
