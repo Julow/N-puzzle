@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/07 13:36:31 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/07 14:04:33 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -20,7 +20,9 @@
 
 # include "ft_xml/XmlParser.hpp"
 
-# include "ftui/libftui.hpp"
+# include "ftui/ACanvas.hpp"
+# include "ftui/AView.hpp"
+# include "ftui/EventTarget.hpp"
 # include "ftui/IViewHolder.hpp"
 # include "ftui/ViewTemplate.hpp"
 

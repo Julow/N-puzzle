@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:40 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/05 17:28:52 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 14:01:20 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,8 +18,6 @@
 # include "ft/Color.hpp"
 # include "ft/Rect.hpp"
 # include "ft/Vec.hpp"
-
-# include "ftui/libftui.hpp"
 
 # include "ftlua/utils.hpp" //ftlua_push
 # include "ftlua/light.hpp" //ftlua_push

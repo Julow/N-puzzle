@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 11:55:01 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/24 13:28:24 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/07 14:05:06 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -94,28 +94,6 @@ namespace ftui
 /*
 ** ========================================================================== **
 */
-
-class	Activity;
-class	EventTarget;
-template <class T, class ...Args>		class	EventTargetCpp;
-// class	IEventBox;
-// template<class T, typename... Args>	class EventBox;
-// class	IEventParams;
-// template<typename... Args>			class EventParams;
-// template<typename... Args>			class DefaultEventBox;
-
-class	ACanvas;
-
-class	AView;
-class	SliderView;
-class	TextView;
-
-class	IViewHolder;
-
-class	ALayout;
-class	AbsoluteLayout;
-class	RelativeLayout;
-class	VerticalLayout;
 
 };
 
