@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/29 14:06:13 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/07 17:45:12 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 18:25:59 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -49,7 +49,7 @@ SS::SolvingState(Main &main, OCamlBinding &ocaml)
 	auto		*bun = this->_b;
 	auto		&act = bun->act;
 	int			ret;
-// TODO: ftlua
+
 	ret = lua_getglobal(l, "SolvingState");
 	FTASSERT(ret == LUA_TTABLE);
 
@@ -58,18 +58,10 @@ SS::SolvingState(Main &main, OCamlBinding &ocaml)
 	lua_settable(l, -3);
 
 	lua_pop(l, 1);
-	// act.fireEvent("GRID_LIST_UPDATE", bun->extractGridNames()
-				  // , bun->grids.size());
-	// act.fireEvent("SELECTED_GRID_CHANGED", bun->selectedId);
-
-	// act.fireEvent("Bordel", 42, std::string("caca"));
 
 	act.queryRedrawAll();
 	ocaml.setListener(this);
 	ocaml.solve(main.grid, main.algorithmId, main.heuristicId, main.cost);
-	// std::thread		th (launch, &ocaml, &main.grid);
-
-	// th.join();
 	return ;
 }
 
@@ -91,9 +83,9 @@ void            SS::loop(std::unique_ptr<IState> &ptr, ftui::ACanvas &can)
 	_ocaml.poll_event();
 	if (this->_success)
 	{
-		std::cout << "Success!!" << std::endl;
 		can.clear();
 		ptr.reset(new PickState(_main, _ocaml));
+		return ;
 	}
 	this->_b->tiles.render();
 	this->_b->act.render(can);
@@ -101,6 +93,7 @@ void            SS::loop(std::unique_ptr<IState> &ptr, ftui::ACanvas &can)
 	{
 		can.clear();
 		ptr.reset(new PickState(_main, _ocaml));
+		return ;
 	}
 	return ;
 }
@@ -117,22 +110,19 @@ ftui::Activity  &SS::getActivity(void)
 */
 void			SS::onSuccess(report_s rep)
 {
-	std::cout << "onSuccess: " << rep << std::endl;
 	this->_success = true;
 	return ;
 }
 
 void			SS::onProgress(progress_s prog)
 {
-	std::cout << "onProgress: " << prog.str << prog.val << std::endl;
-	this->_b->act.fireEvent("PROGRESS");
-	// this->_bun->act.fireEvent("PROGRESS", std::make_tuple(prog.str, prog.val));
+	this->_b->act.fireEvent("PROGRESS", prog.str, prog.val);
 	return ;
 }
 
 void			SS::onFail(std::string const &str)
 {
-	std::cout << "onFail: " << str << std::endl;
+	this->_b->act.fireEvent("FAIL", str);
 	return ;
 }
 

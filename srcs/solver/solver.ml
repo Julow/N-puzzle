@@ -6,7 +6,7 @@
 (*   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/10/16 15:03:58 by jaguillo          #+#    #+#             *)
-(*   Updated: 2015/12/07 17:12:17 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/12/07 18:29:10 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -97,9 +97,8 @@ let solve' npuzzle (aid, hid, cost) =
   let w = Array.length abstmat in
   Grid.init_transp_tables w;
   let goalgr = Grid.goal w in
-
-  Grid.print abstgr;
-  Printf.eprintf "\n%!";
+  (* Grid.print abstgr; *)
+  (* Printf.eprintf "\n%!"; *)
 
   let (aname, afun) = algorithms.(aid) in
   let (hname, hsize, hmaker) = heuristics.(hid) in
@@ -114,8 +113,6 @@ let solve' npuzzle (aid, hid, cost) =
   let pid = Unix.fork () in
   if pid == 0
   then (launch (abstgr, goalgr, w, afun, hmaker, cost);
-		Printf.eprintf "Slave exiting\n%!";
-		Unix.sleep 2;
 		exit 0)
   else (cpid := Some pid;
 		())
@@ -123,7 +120,6 @@ let solve' npuzzle (aid, hid, cost) =
 (* ************************************************************************** *)
 (* From C api *)
 let solve : Npuzzle.t -> int -> int -> int -> unit = fun npuzzle aid hid cost ->
-  Printf.eprintf "solve ocaml\n%!";
   solve' npuzzle (aid, hid, cost);
   ()
 
@@ -132,10 +128,12 @@ let poll_event _ =
 
 let end_solver _ =
   (match !cpid with
-  | Some p	-> let (p', _) = Unix.waitpid [Unix.WNOHANG] p in
-			   if p' = 0
-			   then (Unix.kill p 9;
-					 ignore(Unix.wait ()))
+   | Some p	->
+	  let (p', _) = Unix.waitpid [Unix.WNOHANG] p in
+  	  if p' = 0
+	  then (Unix.kill p 9;
+  			ignore(Unix.wait ());
+  			())
   | _		-> failwith "No child to kill");
   cpid := None;
   EventHandler.killpipe ();

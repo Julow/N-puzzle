@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/16 15:14:38 by ngoguey           #+#    #+#             --
---   Updated: 2015/12/05 17:21:05 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/12/07 18:30:37 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -86,7 +86,6 @@ f_frame.rawat = getmetatable(f_frame).at;
 
 -- EVENT HANDLING --------------------------------------------------------------
 function f_frame:GRID_LIST_UPDATE(names, n)
-  print('f_frame:GRID_LIST_UPDATE');
   f_names = names;
   f_count = n;
   f_curHighlight = PickState:getMainGridId();
@@ -94,7 +93,6 @@ function f_frame:GRID_LIST_UPDATE(names, n)
 end
 
 function f_frame:SELECTED_GRID_CHANGED(i)
-  print('f_frame:SELECTED_GRID_CHANGED');
   local iPrev = f_curHighlight;
 
   f_curHighlight = i;

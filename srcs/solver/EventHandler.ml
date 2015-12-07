@@ -6,7 +6,7 @@
 (*   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        *)
 (*                                                +#+#+#+#+#+   +#+           *)
 (*   Created: 2015/11/02 07:50:05 by ngoguey           #+#    #+#             *)
-(*   Updated: 2015/12/07 17:16:28 by ngoguey          ###   ########.fr       *)
+(*   Updated: 2015/12/07 18:31:52 by ngoguey          ###   ########.fr       *)
 (*                                                                            *)
 (* ************************************************************************** *)
 
@@ -64,9 +64,6 @@ module Make =
 
 	(* From SlaveThread after fork *)
 	let pushq ev =
-	  Printf.eprintf "........Writing pipe:\n%!";
-	  dump_event ev;
-	  Printf.eprintf "........\n%!";
 	  let chanin = match !pipe with
 		| Some (_, _, _, chanin)	-> chanin
 		| _							-> failwith "Error pushq"
@@ -83,25 +80,13 @@ module Make =
 	  in
 	  try
 		let ev = (Marshal.from_channel chanout : t) in
-		Printf.eprintf "\nRead: %!";
-		dump_event ev;
-		(* Printf.eprintf "Test2:\n%!"; *)
-		(* let ev2 = (Marshal.from_channel chanout : t) in *)
-		(* dump_event ev2; *)
-		(* Printf.eprintf "Test2OK\n%!"; *)
-		(* Printf.eprintf "Test2:\n%!"; *)
-		(* let ev2 = (Marshal.from_channel chanout : t) in *)
-		(* dump_event ev2; *)
-		(* Printf.eprintf "Test2OK\n%!"; *)
 		ev
 	  with
 	  | _	->
-		 (* Printf.eprintf "nothing_read %!"; *)
 		 Empty
 
 	(* From MainThread before fork *)
 	let makepipe _ =
-	  Printf.eprintf "Making pipe\n%!";
 	  let ((pipeout, pipein) as p) = Unix.pipe () in
 	  Unix.set_nonblock pipeout;
 	  pipe := Some (pipeout

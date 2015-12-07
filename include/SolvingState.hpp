@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/29 14:06:17 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/07 17:17:23 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 17:49:37 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -44,8 +44,7 @@ public:
 
 	/* ISTATE LEGACY **************** */
 	void					loop(
-		std::unique_ptr<IState> &ptr
-		, ftui::ACanvas &can) override;
+		std::unique_ptr<IState> &ptr, ftui::ACanvas &can) override;
 	ftui::Activity			&getActivity(void) override;
 
 	/* ISOLVERLISTENER LEGACY ******* */

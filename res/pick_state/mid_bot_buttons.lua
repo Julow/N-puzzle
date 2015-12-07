@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 16:41:33 by ngoguey           #+#    #+#             --
---   Updated: 2015/12/05 17:20:46 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/12/07 18:30:56 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -34,10 +34,7 @@ local function refresh_genloops()
 end
 
 function randomizeButton:onClick(_, _)
-
-  print('size, , genloops', f_gensize, f_gensolvable, f_genloops);
   PickState:pushRandomGrid(f_gensize, f_gensolvable, f_genloops);
-  -- TODO: RETREIVE WIDTH AND SOLVABLE FROM SLIDER/CHECKBOXES
 end
 
 randomizeButton:setCallback('onClick', randomizeButton.onClick);
@@ -94,33 +91,6 @@ gencheckbox_no:setCallback(
 	end
 );
 f_gensolvable = true;
-
--- ************************************************************************** --
--- local fileButton = filePuzzleButton
--- assert(fileButton ~= nil);
-
--- function fileButton:onClick(_, _)
---   ft.pchildren(UIParent);
---   ft.pparents(self);
--- end
-
--- fileButton:setCallback('onClick', fileButton.onClick);
-
--- ************************************************************************** --
--- local defaultButton = defaultPuzzleButton
--- assert(defaultButton ~= nil);
-
--- function defaultButton:Bordel(...)
---   print('defaultButton:Bordel', ...);
--- end
-
--- function defaultButton:onClick(_, _)
---   PickState:useDefaultGrid();
---   puzzleFrame:reloadGrid();
---   self:registerEvent("Bordel");
--- end
-
--- defaultButton:setCallback('onClick', defaultButton.onClick);
 
 -- ************************************************************************** --
 local solveButton = solveLaunchButton
