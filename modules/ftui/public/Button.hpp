@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:26:40 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/01 19:26:11 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/07 15:46:52 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,7 +16,6 @@
 # include "ftui/AView.hpp"
 # include "ftui/ACanvas.hpp"
 
-# include <iostream>
 # include <chrono>
 
 namespace ftui

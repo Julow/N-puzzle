@@ -6,17 +6,15 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/12 18:06:30 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 11:19:58 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/07 15:54:22 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef ISTATE_HPP
 # define ISTATE_HPP
 
-// # include <iostream>
 # include <memory>
 
-# include "ftui/ACanvas.hpp"
 # include "ftui/Activity.hpp"
 
 class IState

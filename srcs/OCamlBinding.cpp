@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/05 11:51:35 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/07 10:58:10 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 15:50:36 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,6 +15,7 @@
 #include "ft/assert.hpp" // Tester d'autres prositions dans l'ordre d'include
 
 #include <stdexcept>
+#include <iostream>
 #include <stdio.h>
 #include <vector>
 #include <tuple>

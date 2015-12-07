@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:14:49 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/01 19:28:48 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/07 15:53:04 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -56,14 +56,7 @@ public:
 	static int				setTextG(lua_State *l);
 	void					setText(std::string const &str);
 
-	inline bool				onBordel(int i, std::string const &str)
-		{
-			std::cout << "onBordel !! -> (";
-			ft::variadicToString(i, str);
-			std::cout << ")" << std::endl;
-			return true;
-		}
-
+	bool					onBordel(int i, std::string const &str);
 
 	/* HOLDER *********************** */
 	class ViewHolder;

@@ -25,71 +25,72 @@ O_FILES += $(O_DIR)/ft/assert.o $(O_DIR)/ft/padformat.o \
 	$(O_DIR)/ftui/TextView.o $(O_DIR)/ftui/ViewTemplate.o \
 	$(O_DIR)/gl_canvas/GlCanvas.o $(O_DIR)/gl_canvas/GlCanvasHolder.o \
 	$(O_DIR)/tiles/Tiles.o
-PUBLIC_LINKS += $(O_DIR)/_public/ft/assert.hpp $(O_DIR)/_public/ft/Color.hpp \
-	$(O_DIR)/_public/ft/Rect.hpp $(O_DIR)/_public/ft/TupleRef.hpp \
-	$(O_DIR)/_public/ft/type_traits.hpp $(O_DIR)/_public/ft/utils.hpp \
-	$(O_DIR)/_public/ft/Vec.hpp $(O_DIR)/_public/ft/templates/Rect.tpp \
-	$(O_DIR)/_public/ft/templates/Vec2.tpp \
+PUBLIC_LINKS += $(O_DIR)/_public/ft/Vec.hpp $(O_DIR)/_public/ft/assert.hpp \
+	$(O_DIR)/_public/ft/Color.hpp $(O_DIR)/_public/ft/type_traits.hpp \
+	$(O_DIR)/_public/ft/utils.hpp $(O_DIR)/_public/ft/Rect.hpp \
+	$(O_DIR)/_public/ft/TupleRef.hpp $(O_DIR)/_public/ft/padformat.hpp \
 	$(O_DIR)/_public/ft/templates/Vec3.tpp \
+	$(O_DIR)/_public/ft/templates/Rect.tpp \
+	$(O_DIR)/_public/ft/templates/Vec2.tpp \
 	$(O_DIR)/_public/ft/templates/Vec4.tpp \
 	$(O_DIR)/_public/ft_xml/XmlParser.hpp \
 	$(O_DIR)/_public/ft_xml/XmlTokenizer.hpp $(O_DIR)/_public/ftce/Array.hpp \
-	$(O_DIR)/_public/ftce/Array.tpp $(O_DIR)/_public/ftce/math.hpp \
-	$(O_DIR)/_public/ftlua/call.hpp $(O_DIR)/_public/ftlua/conversions.hpp \
-	$(O_DIR)/_public/ftlua/ftlua.hpp $(O_DIR)/_public/ftlua/KeysWrapper.hpp \
-	$(O_DIR)/_public/ftlua/light.hpp $(O_DIR)/_public/ftlua/pop.hpp \
-	$(O_DIR)/_public/ftlua/push.hpp $(O_DIR)/_public/ftlua/set.hpp \
-	$(O_DIR)/_public/ftlua/size.hpp $(O_DIR)/_public/ftlua/stackassert.hpp \
-	$(O_DIR)/_public/ftlua/types.hpp $(O_DIR)/_public/ftlua/utils.hpp \
+	$(O_DIR)/_public/ftce/math.hpp $(O_DIR)/_public/ftce/Array.tpp \
+	$(O_DIR)/_public/ftlua/set.hpp $(O_DIR)/_public/ftlua/KeysWrapper.hpp \
+	$(O_DIR)/_public/ftlua/pop.hpp $(O_DIR)/_public/ftlua/light.hpp \
+	$(O_DIR)/_public/ftlua/types.hpp $(O_DIR)/_public/ftlua/ftlua.hpp \
+	$(O_DIR)/_public/ftlua/stackassert.hpp $(O_DIR)/_public/ftlua/utils.hpp \
+	$(O_DIR)/_public/ftlua/conversions.hpp $(O_DIR)/_public/ftlua/call.hpp \
+	$(O_DIR)/_public/ftlua/push.hpp $(O_DIR)/_public/ftlua/size.hpp \
 	$(O_DIR)/_public/ftlua/templates/ftlua_handler.tpp \
-	$(O_DIR)/_public/ftui/AbsoluteLayout.hpp $(O_DIR)/_public/ftui/ACanvas.hpp \
-	$(O_DIR)/_public/ftui/Activity.hpp $(O_DIR)/_public/ftui/ALayout.hpp \
-	$(O_DIR)/_public/ftui/ASolidView.hpp $(O_DIR)/_public/ftui/AView.hpp \
-	$(O_DIR)/_public/ftui/Button.hpp $(O_DIR)/_public/ftui/CheckBox.hpp \
-	$(O_DIR)/_public/ftui/EventTarget.hpp \
-	$(O_DIR)/_public/ftui/EventTargetCpp.hpp \
-	$(O_DIR)/_public/ftui/IViewHolder.hpp $(O_DIR)/_public/ftui/libftui.hpp \
-	$(O_DIR)/_public/ftui/LinearLayout.hpp \
+	$(O_DIR)/_public/ftui/AbsoluteLayout.hpp $(O_DIR)/_public/ftui/ALayout.hpp \
 	$(O_DIR)/_public/ftui/RelativeLayout.hpp \
 	$(O_DIR)/_public/ftui/ScrollableLayout.hpp \
+	$(O_DIR)/_public/ftui/LinearLayout.hpp $(O_DIR)/_public/ftui/libftui.hpp \
+	$(O_DIR)/_public/ftui/ACanvas.hpp $(O_DIR)/_public/ftui/Activity.hpp \
+	$(O_DIR)/_public/ftui/ViewTemplate.hpp \
+	$(O_DIR)/_public/ftui/EventTargetCpp.hpp \
 	$(O_DIR)/_public/ftui/SliderView.hpp $(O_DIR)/_public/ftui/SolidView.hpp \
-	$(O_DIR)/_public/ftui/TextView.hpp $(O_DIR)/_public/ftui/ViewTemplate.hpp \
+	$(O_DIR)/_public/ftui/CheckBox.hpp $(O_DIR)/_public/ftui/TextView.hpp \
+	$(O_DIR)/_public/ftui/ASolidView.hpp $(O_DIR)/_public/ftui/Button.hpp \
+	$(O_DIR)/_public/ftui/AView.hpp $(O_DIR)/_public/ftui/IViewHolder.hpp \
+	$(O_DIR)/_public/ftui/EventTarget.hpp \
 	$(O_DIR)/_public/ftui/templates/Activity.tpp \
 	$(O_DIR)/_public/ftui/templates/AView_callLuaCallback.tpp \
-	$(O_DIR)/_public/gl/gl.h $(O_DIR)/_public/gl/gl.hpp \
-	$(O_DIR)/_public/gl_canvas/GlCanvas.hpp \
+	$(O_DIR)/_public/gl/gl.hpp $(O_DIR)/_public/gl/gl.h \
 	$(O_DIR)/_public/gl_canvas/GlCanvasHolder.hpp \
-	$(O_DIR)/_public/liblua/lapi.c $(O_DIR)/_public/liblua/lapi.h \
-	$(O_DIR)/_public/liblua/lauxlib.c $(O_DIR)/_public/liblua/lauxlib.h \
-	$(O_DIR)/_public/liblua/lbaselib.c $(O_DIR)/_public/liblua/lbitlib.c \
-	$(O_DIR)/_public/liblua/lcode.c $(O_DIR)/_public/liblua/lcode.h \
-	$(O_DIR)/_public/liblua/lcorolib.c $(O_DIR)/_public/liblua/lctype.c \
-	$(O_DIR)/_public/liblua/lctype.h $(O_DIR)/_public/liblua/ldblib.c \
-	$(O_DIR)/_public/liblua/ldebug.c $(O_DIR)/_public/liblua/ldebug.h \
-	$(O_DIR)/_public/liblua/ldo.c $(O_DIR)/_public/liblua/ldo.h \
-	$(O_DIR)/_public/liblua/ldump.c $(O_DIR)/_public/liblua/lfunc.c \
-	$(O_DIR)/_public/liblua/lfunc.h $(O_DIR)/_public/liblua/lgc.c \
-	$(O_DIR)/_public/liblua/lgc.h $(O_DIR)/_public/liblua/linit.c \
-	$(O_DIR)/_public/liblua/liolib.c $(O_DIR)/_public/liblua/llex.c \
-	$(O_DIR)/_public/liblua/llex.h $(O_DIR)/_public/liblua/llimits.h \
-	$(O_DIR)/_public/liblua/lmathlib.c $(O_DIR)/_public/liblua/lmem.c \
-	$(O_DIR)/_public/liblua/lmem.h $(O_DIR)/_public/liblua/loadlib.c \
-	$(O_DIR)/_public/liblua/lobject.c $(O_DIR)/_public/liblua/lobject.h \
-	$(O_DIR)/_public/liblua/lopcodes.c $(O_DIR)/_public/liblua/lopcodes.h \
-	$(O_DIR)/_public/liblua/loslib.c $(O_DIR)/_public/liblua/lparser.c \
-	$(O_DIR)/_public/liblua/lparser.h $(O_DIR)/_public/liblua/lprefix.h \
-	$(O_DIR)/_public/liblua/lstate.c $(O_DIR)/_public/liblua/lstate.h \
-	$(O_DIR)/_public/liblua/lstring.c $(O_DIR)/_public/liblua/lstring.h \
-	$(O_DIR)/_public/liblua/lstrlib.c $(O_DIR)/_public/liblua/ltable.c \
-	$(O_DIR)/_public/liblua/ltable.h $(O_DIR)/_public/liblua/ltablib.c \
-	$(O_DIR)/_public/liblua/ltm.c $(O_DIR)/_public/liblua/ltm.h \
-	$(O_DIR)/_public/liblua/lua.c $(O_DIR)/_public/liblua/lua.h \
-	$(O_DIR)/_public/liblua/lua.hpp $(O_DIR)/_public/liblua/luac.c \
-	$(O_DIR)/_public/liblua/luaconf.h $(O_DIR)/_public/liblua/lualib.h \
-	$(O_DIR)/_public/liblua/lundump.c $(O_DIR)/_public/liblua/lundump.h \
-	$(O_DIR)/_public/liblua/lutf8lib.c $(O_DIR)/_public/liblua/lvm.c \
-	$(O_DIR)/_public/liblua/lvm.h $(O_DIR)/_public/liblua/lzio.c \
-	$(O_DIR)/_public/liblua/lzio.h $(O_DIR)/_public/tiles/Tiles.hpp
+	$(O_DIR)/_public/gl_canvas/GlCanvas.hpp $(O_DIR)/_public/liblua/lauxlib.c \
+	$(O_DIR)/_public/liblua/lfunc.h $(O_DIR)/_public/liblua/lgc.h \
+	$(O_DIR)/_public/liblua/lopcodes.h $(O_DIR)/_public/liblua/llex.c \
+	$(O_DIR)/_public/liblua/lbaselib.c $(O_DIR)/_public/liblua/ldump.c \
+	$(O_DIR)/_public/liblua/lobject.h $(O_DIR)/_public/liblua/lapi.c \
+	$(O_DIR)/_public/liblua/lundump.c $(O_DIR)/_public/liblua/ltm.h \
+	$(O_DIR)/_public/liblua/lgc.c $(O_DIR)/_public/liblua/lualib.h \
+	$(O_DIR)/_public/liblua/lutf8lib.c $(O_DIR)/_public/liblua/luaconf.h \
+	$(O_DIR)/_public/liblua/lctype.h $(O_DIR)/_public/liblua/lstate.h \
+	$(O_DIR)/_public/liblua/lstring.h $(O_DIR)/_public/liblua/lzio.h \
+	$(O_DIR)/_public/liblua/ltm.c $(O_DIR)/_public/liblua/lopcodes.c \
+	$(O_DIR)/_public/liblua/lvm.h $(O_DIR)/_public/liblua/lctype.c \
+	$(O_DIR)/_public/liblua/lparser.c $(O_DIR)/_public/liblua/linit.c \
+	$(O_DIR)/_public/liblua/lbitlib.c $(O_DIR)/_public/liblua/lzio.c \
+	$(O_DIR)/_public/liblua/lstrlib.c $(O_DIR)/_public/liblua/lundump.h \
+	$(O_DIR)/_public/liblua/ldebug.c $(O_DIR)/_public/liblua/llex.h \
+	$(O_DIR)/_public/liblua/ltablib.c $(O_DIR)/_public/liblua/lobject.c \
+	$(O_DIR)/_public/liblua/ldo.c $(O_DIR)/_public/liblua/luac.c \
+	$(O_DIR)/_public/liblua/lcode.h $(O_DIR)/_public/liblua/lvm.c \
+	$(O_DIR)/_public/liblua/loadlib.c $(O_DIR)/_public/liblua/lauxlib.h \
+	$(O_DIR)/_public/liblua/lcorolib.c $(O_DIR)/_public/liblua/lstate.c \
+	$(O_DIR)/_public/liblua/lparser.h $(O_DIR)/_public/liblua/llimits.h \
+	$(O_DIR)/_public/liblua/loslib.c $(O_DIR)/_public/liblua/lcode.c \
+	$(O_DIR)/_public/liblua/ldebug.h $(O_DIR)/_public/liblua/lmem.h \
+	$(O_DIR)/_public/liblua/lstring.c $(O_DIR)/_public/liblua/ldblib.c \
+	$(O_DIR)/_public/liblua/lua.h $(O_DIR)/_public/liblua/ltable.c \
+	$(O_DIR)/_public/liblua/lmem.c $(O_DIR)/_public/liblua/lprefix.h \
+	$(O_DIR)/_public/liblua/lua.hpp $(O_DIR)/_public/liblua/ldo.h \
+	$(O_DIR)/_public/liblua/lua.c $(O_DIR)/_public/liblua/lmathlib.c \
+	$(O_DIR)/_public/liblua/lapi.h $(O_DIR)/_public/liblua/liolib.c \
+	$(O_DIR)/_public/liblua/lfunc.c $(O_DIR)/_public/liblua/ltable.h \
+	$(O_DIR)/_public/tiles/Tiles.hpp
 
 # module ft::ft
 $(O_DIR)/ft/assert.o: ft/assert.cpp ft/public/Rect.hpp ft/public/Vec.hpp \
@@ -117,7 +118,7 @@ $(O_DIR)/ft_xml/srcs/XmlTokenizer.o: ft_xml/srcs/XmlTokenizer.cpp \
 
 # module ftlua::ftlua
 $(O_DIR)/ftlua/cpp_utils.o: ftlua/cpp_utils.cpp ft/public/Rect.hpp \
-	ft/public/Vec.hpp ft/public/assert.hpp ft/public/templates/Rect.tpp \
+	ft/public/Vec.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
 	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp \
 	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp \
@@ -159,7 +160,7 @@ $(O_DIR)/ftui/ACanvas.o: ftui/ACanvas.cpp ft/public/Color.hpp \
 	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
 	ftlua/public/set.hpp ftlua/public/size.hpp ftlua/public/stackassert.hpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
-	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/libftui.hpp \
+	ftlua/public/utils.hpp ftui/public/ACanvas.hpp \
 	liblua/lua-5.3.1/src/lauxlib.h liblua/lua-5.3.1/src/lua.h \
 	liblua/lua-5.3.1/src/lua.hpp liblua/lua-5.3.1/src/luaconf.h \
 	liblua/lua-5.3.1/src/lualib.h
@@ -178,7 +179,7 @@ $(O_DIR)/ftui/ALayout.o: ftui/ALayout.cpp ft/public/Color.hpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
 	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \
 	ftui/public/IViewHolder.hpp ftui/public/ViewTemplate.hpp \
-	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
+	ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
@@ -195,7 +196,7 @@ $(O_DIR)/ftui/ALayout_luaHandler.o: ftui/ALayout_luaHandler.cpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ALayout.hpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp \
-	ftui/public/ViewTemplate.hpp ftui/public/libftui.hpp \
+	ftui/public/IViewHolder.hpp ftui/public/ViewTemplate.hpp \
 	ftui/public/templates/AView_callLuaCallback.tpp \
 	liblua/lua-5.3.1/src/lauxlib.h liblua/lua-5.3.1/src/lua.h \
 	liblua/lua-5.3.1/src/lua.hpp liblua/lua-5.3.1/src/luaconf.h \
@@ -212,26 +213,27 @@ $(O_DIR)/ftui/ASolidView.o: ftui/ASolidView.cpp ft/public/Color.hpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ASolidView.hpp \
 	ftui/public/AView.hpp ftui/public/IViewHolder.hpp \
-	ftui/public/ViewTemplate.hpp ftui/public/libftui.hpp \
+	ftui/public/ViewTemplate.hpp \
 	ftui/public/templates/AView_callLuaCallback.tpp \
 	liblua/lua-5.3.1/src/lauxlib.h liblua/lua-5.3.1/src/lua.h \
 	liblua/lua-5.3.1/src/lua.hpp liblua/lua-5.3.1/src/luaconf.h \
 	liblua/lua-5.3.1/src/lualib.h
 $(O_DIR)/ftui/AView.o: ftui/AView.cpp ft/public/Color.hpp ft/public/Rect.hpp \
 	ft/public/TupleRef.hpp ft/public/Vec.hpp ft/public/assert.hpp \
-	ft/public/templates/Rect.tpp ft/public/templates/Vec2.tpp \
-	ft/public/templates/Vec3.tpp ft/public/templates/Vec4.tpp \
-	ft/public/type_traits.hpp ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
-	ft_xml/public/XmlTokenizer.hpp ftlua/public/KeysWrapper.hpp \
-	ftlua/public/call.hpp ftlua/public/conversions.hpp ftlua/public/ftlua.hpp \
-	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
-	ftlua/public/set.hpp ftlua/public/size.hpp ftlua/public/stackassert.hpp \
+	ft/public/padformat.hpp ft/public/templates/Rect.tpp \
+	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
+	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
+	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp \
+	ftlua/public/conversions.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
+	ftlua/public/pop.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
+	ftlua/public/size.hpp ftlua/public/stackassert.hpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ALayout.hpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
 	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \
 	ftui/public/IViewHolder.hpp ftui/public/ViewTemplate.hpp \
-	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
+	ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
@@ -249,7 +251,7 @@ $(O_DIR)/ftui/AView_luaHandler.o: ftui/AView_luaHandler.cpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ALayout.hpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp \
 	ftui/public/IViewHolder.hpp ftui/public/TextView.hpp \
-	ftui/public/ViewTemplate.hpp ftui/public/libftui.hpp \
+	ftui/public/ViewTemplate.hpp \
 	ftui/public/templates/AView_callLuaCallback.tpp \
 	liblua/lua-5.3.1/src/lauxlib.h liblua/lua-5.3.1/src/lua.h \
 	liblua/lua-5.3.1/src/lua.hpp liblua/lua-5.3.1/src/luaconf.h \
@@ -268,14 +270,14 @@ $(O_DIR)/ftui/Activity.o: ftui/Activity.cpp ft/public/Color.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/AView.hpp \
 	ftui/public/Activity.hpp ftui/public/EventTarget.hpp \
 	ftui/public/EventTargetCpp.hpp ftui/public/IViewHolder.hpp \
-	ftui/public/ViewTemplate.hpp ftui/public/libftui.hpp \
+	ftui/public/ViewTemplate.hpp \
 	ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
 $(O_DIR)/ftui/Activity_RootViewHolder.o: ftui/Activity_RootViewHolder.cpp \
-	ft/public/Rect.hpp ft/public/TupleRef.hpp ft/public/Vec.hpp \
-	ft/public/assert.hpp ft/public/templates/Rect.tpp \
+	ft/public/Color.hpp ft/public/Rect.hpp ft/public/TupleRef.hpp \
+	ft/public/Vec.hpp ft/public/assert.hpp ft/public/templates/Rect.tpp \
 	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
 	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
 	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
@@ -284,10 +286,11 @@ $(O_DIR)/ftui/Activity_RootViewHolder.o: ftui/Activity_RootViewHolder.cpp \
 	ftlua/public/pop.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
 	ftlua/public/size.hpp ftlua/public/stackassert.hpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
-	ftlua/public/utils.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
-	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \
-	ftui/public/IViewHolder.hpp ftui/public/ViewTemplate.hpp \
-	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
+	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/AView.hpp \
+	ftui/public/Activity.hpp ftui/public/EventTarget.hpp \
+	ftui/public/EventTargetCpp.hpp ftui/public/IViewHolder.hpp \
+	ftui/public/ViewTemplate.hpp \
+	ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
@@ -309,7 +312,7 @@ $(O_DIR)/ftui/Activity_luaDef.o: ftui/Activity_luaDef.cpp ft/public/Color.hpp \
 	ftui/public/IViewHolder.hpp ftui/public/LinearLayout.hpp \
 	ftui/public/ScrollableLayout.hpp ftui/public/SliderView.hpp \
 	ftui/public/SolidView.hpp ftui/public/TextView.hpp \
-	ftui/public/ViewTemplate.hpp ftui/public/libftui.hpp \
+	ftui/public/ViewTemplate.hpp \
 	ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
@@ -328,7 +331,7 @@ $(O_DIR)/ftui/Button.o: ftui/Button.cpp ft/public/Color.hpp ft/public/Rect.hpp \
 	ftui/public/Activity.hpp ftui/public/Button.hpp \
 	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \
 	ftui/public/IViewHolder.hpp ftui/public/ViewTemplate.hpp \
-	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
+	ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
@@ -347,16 +350,28 @@ $(O_DIR)/ftui/CheckBox.o: ftui/CheckBox.cpp ft/public/Color.hpp \
 	ftui/public/Activity.hpp ftui/public/Button.hpp ftui/public/CheckBox.hpp \
 	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \
 	ftui/public/IViewHolder.hpp ftui/public/ViewTemplate.hpp \
-	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
+	ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
-$(O_DIR)/ftui/EventTarget.o: ftui/EventTarget.cpp ft/public/Rect.hpp \
-	ft/public/TupleRef.hpp ft/public/Vec.hpp ft/public/assert.hpp \
-	ft/public/templates/Rect.tpp ft/public/templates/Vec2.tpp \
-	ft/public/templates/Vec3.tpp ft/public/templates/Vec4.tpp \
-	ft/public/type_traits.hpp ft/public/utils.hpp ftui/public/EventTarget.hpp \
-	ftui/public/libftui.hpp
+$(O_DIR)/ftui/EventTarget.o: ftui/EventTarget.cpp ft/public/Color.hpp \
+	ft/public/Rect.hpp ft/public/TupleRef.hpp ft/public/Vec.hpp \
+	ft/public/assert.hpp ft/public/templates/Rect.tpp \
+	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
+	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
+	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp \
+	ftlua/public/conversions.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
+	ftlua/public/pop.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
+	ftlua/public/size.hpp ftlua/public/stackassert.hpp \
+	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
+	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/AView.hpp \
+	ftui/public/EventTarget.hpp ftui/public/IViewHolder.hpp \
+	ftui/public/ViewTemplate.hpp \
+	ftui/public/templates/AView_callLuaCallback.tpp \
+	liblua/lua-5.3.1/src/lauxlib.h liblua/lua-5.3.1/src/lua.h \
+	liblua/lua-5.3.1/src/lua.hpp liblua/lua-5.3.1/src/luaconf.h \
+	liblua/lua-5.3.1/src/lualib.h
 $(O_DIR)/ftui/LinearLayout.o: ftui/LinearLayout.cpp ft/public/Color.hpp \
 	ft/public/Rect.hpp ft/public/TupleRef.hpp ft/public/Vec.hpp \
 	ft/public/assert.hpp ft/public/templates/Rect.tpp \
@@ -372,7 +387,7 @@ $(O_DIR)/ftui/LinearLayout.o: ftui/LinearLayout.cpp ft/public/Color.hpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
 	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \
 	ftui/public/IViewHolder.hpp ftui/public/LinearLayout.hpp \
-	ftui/public/ViewTemplate.hpp ftui/public/libftui.hpp \
+	ftui/public/ViewTemplate.hpp \
 	ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
@@ -392,7 +407,7 @@ $(O_DIR)/ftui/LinearLayout_ViewHolder.o: ftui/LinearLayout_ViewHolder.cpp \
 	ftui/public/ASolidView.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
 	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \
 	ftui/public/IViewHolder.hpp ftui/public/LinearLayout.hpp \
-	ftui/public/ViewTemplate.hpp ftui/public/libftui.hpp \
+	ftui/public/ViewTemplate.hpp \
 	ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
@@ -413,7 +428,7 @@ $(O_DIR)/ftui/ScrollableLayout.o: ftui/ScrollableLayout.cpp \
 	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \
 	ftui/public/IViewHolder.hpp ftui/public/LinearLayout.hpp \
 	ftui/public/ScrollableLayout.hpp ftui/public/ViewTemplate.hpp \
-	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
+	ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
@@ -432,7 +447,7 @@ $(O_DIR)/ftui/SliderView.o: ftui/SliderView.cpp ft/public/Color.hpp \
 	ftui/public/AView.hpp ftui/public/Activity.hpp ftui/public/EventTarget.hpp \
 	ftui/public/EventTargetCpp.hpp ftui/public/IViewHolder.hpp \
 	ftui/public/SliderView.hpp ftui/public/ViewTemplate.hpp \
-	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
+	ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
@@ -447,8 +462,8 @@ $(O_DIR)/ftui/SolidView.o: ftui/SolidView.cpp ft/public/Color.hpp \
 	ftlua/public/set.hpp ftlua/public/size.hpp ftlua/public/stackassert.hpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ASolidView.hpp \
-	ftui/public/AView.hpp ftui/public/SolidView.hpp \
-	ftui/public/ViewTemplate.hpp ftui/public/libftui.hpp \
+	ftui/public/AView.hpp ftui/public/IViewHolder.hpp \
+	ftui/public/SolidView.hpp ftui/public/ViewTemplate.hpp \
 	ftui/public/templates/AView_callLuaCallback.tpp \
 	liblua/lua-5.3.1/src/lauxlib.h liblua/lua-5.3.1/src/lua.h \
 	liblua/lua-5.3.1/src/lua.hpp liblua/lua-5.3.1/src/luaconf.h \
@@ -465,25 +480,27 @@ $(O_DIR)/ftui/TextView.o: ftui/TextView.cpp ft/public/Color.hpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
 	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/ASolidView.hpp \
 	ftui/public/AView.hpp ftui/public/IViewHolder.hpp ftui/public/TextView.hpp \
-	ftui/public/ViewTemplate.hpp ftui/public/libftui.hpp \
+	ftui/public/ViewTemplate.hpp \
 	ftui/public/templates/AView_callLuaCallback.tpp \
 	liblua/lua-5.3.1/src/lauxlib.h liblua/lua-5.3.1/src/lua.h \
 	liblua/lua-5.3.1/src/lua.hpp liblua/lua-5.3.1/src/luaconf.h \
 	liblua/lua-5.3.1/src/lualib.h
-$(O_DIR)/ftui/ViewTemplate.o: ftui/ViewTemplate.cpp ft/public/Rect.hpp \
-	ft/public/TupleRef.hpp ft/public/Vec.hpp ft/public/assert.hpp \
-	ft/public/templates/Rect.tpp ft/public/templates/Vec2.tpp \
-	ft/public/templates/Vec3.tpp ft/public/templates/Vec4.tpp \
-	ft/public/type_traits.hpp ft/public/utils.hpp ft_xml/public/XmlParser.hpp \
-	ft_xml/public/XmlTokenizer.hpp ftlua/public/KeysWrapper.hpp \
-	ftlua/public/call.hpp ftlua/public/conversions.hpp ftlua/public/ftlua.hpp \
-	ftlua/public/light.hpp ftlua/public/pop.hpp ftlua/public/push.hpp \
-	ftlua/public/set.hpp ftlua/public/size.hpp ftlua/public/stackassert.hpp \
+$(O_DIR)/ftui/ViewTemplate.o: ftui/ViewTemplate.cpp ft/public/Color.hpp \
+	ft/public/Rect.hpp ft/public/TupleRef.hpp ft/public/Vec.hpp \
+	ft/public/assert.hpp ft/public/templates/Rect.tpp \
+	ft/public/templates/Vec2.tpp ft/public/templates/Vec3.tpp \
+	ft/public/templates/Vec4.tpp ft/public/type_traits.hpp ft/public/utils.hpp \
+	ft_xml/public/XmlParser.hpp ft_xml/public/XmlTokenizer.hpp \
+	ftlua/public/KeysWrapper.hpp ftlua/public/call.hpp \
+	ftlua/public/conversions.hpp ftlua/public/ftlua.hpp ftlua/public/light.hpp \
+	ftlua/public/pop.hpp ftlua/public/push.hpp ftlua/public/set.hpp \
+	ftlua/public/size.hpp ftlua/public/stackassert.hpp \
 	ftlua/public/templates/ftlua_handler.tpp ftlua/public/types.hpp \
-	ftlua/public/utils.hpp ftui/public/AView.hpp ftui/public/Activity.hpp \
-	ftui/public/EventTarget.hpp ftui/public/EventTargetCpp.hpp \
-	ftui/public/IViewHolder.hpp ftui/public/ViewTemplate.hpp \
-	ftui/public/libftui.hpp ftui/public/templates/AView_callLuaCallback.tpp \
+	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/AView.hpp \
+	ftui/public/Activity.hpp ftui/public/EventTarget.hpp \
+	ftui/public/EventTargetCpp.hpp ftui/public/IViewHolder.hpp \
+	ftui/public/ViewTemplate.hpp \
+	ftui/public/templates/AView_callLuaCallback.tpp \
 	ftui/public/templates/Activity.tpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
@@ -516,7 +533,7 @@ $(O_DIR)/gl_canvas/GlCanvas.o: gl_canvas/GlCanvas.cpp ft/public/Color.hpp \
 	ft/public/type_traits.hpp ft/public/utils.hpp ftlua/public/KeysWrapper.hpp \
 	ftlua/public/conversions.hpp ftlua/public/light.hpp ftlua/public/push.hpp \
 	ftlua/public/size.hpp ftlua/public/stackassert.hpp ftlua/public/types.hpp \
-	ftlua/public/utils.hpp ftui/public/ACanvas.hpp ftui/public/libftui.hpp \
+	ftlua/public/utils.hpp ftui/public/ACanvas.hpp \
 	gl_canvas/public/GlCanvas.hpp liblua/lua-5.3.1/src/lauxlib.h \
 	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
 	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
@@ -528,11 +545,10 @@ $(O_DIR)/gl_canvas/GlCanvasHolder.o: gl_canvas/GlCanvasHolder.cpp \
 	ftlua/public/KeysWrapper.hpp ftlua/public/conversions.hpp \
 	ftlua/public/light.hpp ftlua/public/push.hpp ftlua/public/size.hpp \
 	ftlua/public/stackassert.hpp ftlua/public/types.hpp ftlua/public/utils.hpp \
-	ftui/public/ACanvas.hpp ftui/public/libftui.hpp gl/gl.h gl/gl.hpp \
-	gl_canvas/public/GlCanvas.hpp gl_canvas/public/GlCanvasHolder.hpp \
-	liblua/lua-5.3.1/src/lauxlib.h liblua/lua-5.3.1/src/lua.h \
-	liblua/lua-5.3.1/src/lua.hpp liblua/lua-5.3.1/src/luaconf.h \
-	liblua/lua-5.3.1/src/lualib.h
+	ftui/public/ACanvas.hpp gl/gl.h gl/gl.hpp gl_canvas/public/GlCanvas.hpp \
+	gl_canvas/public/GlCanvasHolder.hpp liblua/lua-5.3.1/src/lauxlib.h \
+	liblua/lua-5.3.1/src/lua.h liblua/lua-5.3.1/src/lua.hpp \
+	liblua/lua-5.3.1/src/luaconf.h liblua/lua-5.3.1/src/lualib.h
 
 # module liblua::liblua
 LIBLUA_DIR		:= liblua/lua-5.3.1
@@ -572,6 +588,7 @@ $(O_DIR)/_public/ft/Rect.hpp: ft/public/Rect.hpp
 $(O_DIR)/_public/ft/TupleRef.hpp: ft/public/TupleRef.hpp
 $(O_DIR)/_public/ft/Vec.hpp: ft/public/Vec.hpp
 $(O_DIR)/_public/ft/assert.hpp: ft/public/assert.hpp
+$(O_DIR)/_public/ft/padformat.hpp: ft/public/padformat.hpp
 $(O_DIR)/_public/ft/templates/Rect.tpp: ft/public/templates/Rect.tpp
 $(O_DIR)/_public/ft/templates/Vec2.tpp: ft/public/templates/Vec2.tpp
 $(O_DIR)/_public/ft/templates/Vec3.tpp: ft/public/templates/Vec3.tpp

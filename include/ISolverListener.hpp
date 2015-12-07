@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/16 15:39:19 by jaguillo          #+#    #+#             //
-//   Updated: 2015/11/07 10:14:14 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 15:36:26 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,7 +14,6 @@
 # define ISOLVERLISTENER_HPP
 
 # include "ft/Vec.hpp"
-# include "ft/utils.hpp"
 # include <vector>
 # include <string>
 # include "Grid.hpp"

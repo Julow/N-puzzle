@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/28 12:40:54 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/01 19:21:24 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/07 15:46:41 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,9 +15,6 @@
 
 # include "ftui/Button.hpp"
 # include "ftui/ACanvas.hpp"
-
-# include <iostream>
-# include <chrono>
 
 namespace ftui
 {

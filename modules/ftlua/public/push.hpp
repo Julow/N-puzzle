@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:13:36 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/06 13:23:34 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 15:37:48 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,7 +21,6 @@
 # include "ft/Vec.hpp"
 # include "ft/Rect.hpp"
 # include "ft/utils.hpp"
-# include "ft/assert.hpp" //debug
 
 # include "ftlua/types.hpp"
 # include "ftlua/conversions.hpp"

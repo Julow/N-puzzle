@@ -6,14 +6,12 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/06/01 15:50:53 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/12 14:29:34 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/07 15:46:57 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef ARRAY_CLASS_HPP
 # define ARRAY_CLASS_HPP
-
-// #include <iostream>
 
 namespace ftce //ft_ConstExpr
 {
