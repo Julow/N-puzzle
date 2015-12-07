@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:16:33 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/02 14:34:38 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/07 13:36:31 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -47,6 +47,7 @@ public:
 	// CONSTRUCTION ================= //
 	Activity(ft::Vec2<int> size);
 	void				inflate(std::istream &stream);
+	void				inflateTemplate(std::istream &stream);
 
 	virtual ~Activity(void);
 
@@ -202,6 +203,8 @@ protected:
 	ft::Vec2<int>				_cursorPos;
 
 	view_template_map_t			_viewTemplates;
+
+	void				inflateTemplate(ft::XmlParser &xml);
 
 private:
 

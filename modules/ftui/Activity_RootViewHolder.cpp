@@ -6,13 +6,15 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/25 09:38:59 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/30 16:33:03 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/07 13:51:07 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "ftui/Activity.hpp"
 #include "ftui/AView.hpp"
 #include "ft_xml/XmlParser.hpp"
+
+#include <fstream>
 
 namespace ftui
 {
@@ -85,6 +87,25 @@ void			Activity::RootViewHolder::setParam(std::string const &k
 	(void)v;
 	if (k == "activity_scripts")
 		_activity.saveScriptPath(v);
+	else if (k == "template_file")
+	{
+		std::stringstream	ss(v);
+		char				buf[64];
+
+		while (ss.getline(buf, sizeof(buf), ';'))
+		{
+			std::string			file_name(buf);
+
+			if (file_name.size() == 0)
+				continue ;
+
+			std::ifstream		is(buf);
+
+			if (!is)
+				throw std::runtime_error(ft::f("Not a valid template file: %", buf));
+			_activity.inflateTemplate(is);
+		}
+	}
 	return ;
 }
 

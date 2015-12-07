@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:27 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/05 10:29:50 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 13:49:26 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -133,7 +133,6 @@ void			Activity::inflate(std::istream &stream)
 	ft::XmlParser			xml(stream);
 	AView					*rootView;
 	ft::XmlParser::State	state;
-	ViewTemplate			*viewTemplate;
 
 	FTASSERT(_l == nullptr, "Activity.inflate called again");
 	_l = new_lua_env();
@@ -144,19 +143,7 @@ void			Activity::inflate(std::istream &stream)
 			throw std::runtime_error("Activity::inflate: lol");
 		if (xml.getMarkupName() != "template")
 			break ;
-		viewTemplate = new ViewTemplate(xml);
-		auto const &params = viewTemplate->getParams();
-		auto const &it = std::find_if(params.begin(), params.end(),
-			[](auto const &param)
-			{
-				return (param.first == "name");
-			});
-		if (it == params.end())
-			throw std::runtime_error("Activity::inflate: "
-									"<template> without 'name' param");
-		if (!_viewTemplates.insert({it->second, viewTemplate}).second)
-			throw std::runtime_error(ft::f("Activity::inflate: "
-					"Template redefinition: %", it->second));
+		inflateTemplate(xml);
 	}
 	if (state != ft::XmlParser::State::START)
 		throw std::runtime_error("Activity::inflate: "
@@ -172,6 +159,39 @@ void			Activity::inflate(std::istream &stream)
 	load_views_scripts(_l, _scriptsPaths);
 	FTASSERT(lua_gettop(_l) == 0, "Something went wrong...");
 	return ;
+}
+
+void			Activity::inflateTemplate(std::istream &stream)
+{
+	ft::XmlParser			xml(stream);
+	ft::XmlParser::State	state;
+
+	while (xml.next(state))
+	{
+		if (state != ft::XmlParser::State::START)
+			throw std::runtime_error("Activity::inflate: Unexpected token");
+		if (xml.getMarkupName() != "template")
+			throw std::domain_error(ft::f("Activity::inflate: "
+				"Not a template: %", xml.getMarkupName()));
+		inflateTemplate(xml);
+	}
+}
+
+void			Activity::inflateTemplate(ft::XmlParser &xml)
+{
+	ViewTemplate		*viewTemplate = new ViewTemplate(xml);
+	auto const &params = viewTemplate->getParams();
+	auto const &it = std::find_if(params.begin(), params.end(),
+		[](auto const &param)
+		{
+			return (param.first == "name");
+		});
+	if (it == params.end())
+		throw std::runtime_error("Activity::inflate: "
+								"<template> without 'name' param");
+	if (!_viewTemplates.insert({it->second, viewTemplate}).second)
+		throw std::runtime_error(ft::f("Activity::inflate: "
+				"Template redefinition: %", it->second));
 }
 
 void			Activity::saveScriptPath(std::string const &str)
