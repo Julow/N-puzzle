@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/15 09:15:02 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/01 19:43:25 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/07 15:53:34 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,6 +14,8 @@
 #include "ftui/ACanvas.hpp"
 #include "ftui/Activity.hpp"
 #include "ftui/Button.hpp"
+
+#include <iostream> // TODO: remove
 
 using BM = Bookmark;
 using BMVH = Bookmark::ViewHolder;
@@ -292,3 +294,11 @@ void			BMVH::setSize(ft::Vec2<int> sz)
 { this->_size = sz; }
 void			BMVH::setPos(ft::Vec2<int> pos)
 { this->_pos = pos; }
+
+bool			BM::onBordel(int i, std::string const &str)
+{
+	std::cout << "onBordel !! -> (";
+	ft::variadicToString(i, str);
+	std::cout << ")" << std::endl;
+	return true;
+}

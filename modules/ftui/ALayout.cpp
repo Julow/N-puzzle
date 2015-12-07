@@ -6,7 +6,7 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:09 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/02 17:33:55 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 15:46:29 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -17,7 +17,6 @@
 #include "ft/utils.hpp"
 
 #include <algorithm>
-#include <iostream>
 
 using std::string;
 

@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/10/09 09:10:41 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/06 13:10:05 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 15:35:01 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,8 +14,6 @@
 #include <typeinfo>
 
 #include "ft/Vec.hpp"
-#include "ft/utils.hpp"
-#include "ft/assert.hpp"
 
 #include "ftlua/push.hpp"
 #include "ftlua/pop.hpp"

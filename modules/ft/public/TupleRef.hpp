@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/24 12:59:48 by ngoguey           #+#    #+#             //
-//   Updated: 2015/11/24 18:12:35 by juloo            ###   ########.fr       //
+//   Updated: 2015/12/07 15:36:22 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,8 +14,6 @@
 # define FT_TUPLEREF_HPP
 
 # include <tuple>
-# include "ft/utils.hpp" //debug
-# include <iostream> //debug
 # include <typeinfo>
 
 namespace ft // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //

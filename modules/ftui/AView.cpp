@@ -6,15 +6,15 @@
 //   By: jaguillo <jaguillo@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/09/22 13:14:20 by jaguillo          #+#    #+#             //
-//   Updated: 2015/12/02 17:53:55 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 15:45:03 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include <exception>
 #include <cstdlib>
-#include <iostream>
 
 #include "ft/utils.hpp"
+#include "ft/padformat.hpp"
 #include "ft_xml/XmlParser.hpp"
 
 #include "ftui/AView.hpp"

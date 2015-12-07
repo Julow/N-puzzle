@@ -6,14 +6,12 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/07 12:58:38 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/07 14:32:30 by jaguillo         ###   ########.fr       //
+//   Updated: 2015/12/07 15:54:36 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef MAIN_HPP
 # define MAIN_HPP
-
-# include <iostream>
 
 # include "gl/gl.hpp"
 

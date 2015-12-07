@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/19 12:16:24 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/06 13:03:14 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/07 15:34:48 by jaguillo         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,13 +14,10 @@
 # define FTLUA_POP_HPP
 
 # include <cstdint>
-# include <string>
 
 # include "liblua/lua.hpp"
 # include "ft/Vec.hpp"
 # include "ft/Rect.hpp"
-# include "ft/utils.hpp"
-# include "ft/assert.hpp" //debug
 
 # include "ftlua/conversions.hpp"
 # include "ftlua/types.hpp"

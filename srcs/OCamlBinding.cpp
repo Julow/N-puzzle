@@ -15,6 +15,7 @@
 #include "ft/assert.hpp" // Tester d'autres prositions dans l'ordre d'include
 
 #include <stdexcept>
+#include <iostream>
 #include <stdio.h>
 #include <vector>
 #include <tuple>
