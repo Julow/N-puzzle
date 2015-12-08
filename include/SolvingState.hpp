@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/29 14:06:17 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/07 17:49:37 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/08 12:40:48 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -28,7 +28,7 @@ private:
 	Main					&_main;
 	OCamlBinding			&_ocaml;
 	Bundle *const			_b;
-	bool					_abortSolvingState;
+	bool					_leave;
 	bool					_success;
 
 	/* CONSTRUCTION ***************** */
@@ -53,8 +53,11 @@ public:
 	void					onFail(std::string const &str) override;
 
 	/* LIBFTUI INTERACTIONS ********* */
-	static int				tagForAbortG(lua_State *l);
-	void					tagForAbort(void);
+	typedef std::integral_constant<unsigned int, 1> ftlua_size;
+	static SolvingState		*ftlua_pop(lua_State *l, int i,
+									   std::function<void(std::string)> panic);
+	static int				tagForLeaveG(lua_State *l);
+	void					tagForLeave(void);
 
 };
 

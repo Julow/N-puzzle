@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/09 14:32:22 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/05 17:32:27 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/08 12:24:12 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -303,6 +303,11 @@ void                Button::setParam(
 				old.fillColor = std::stoul(str, NULL, 16);
 				v->setNormalParams(old);
 		}},
+		{"highlightFillColor", [](Button *v, std::string const &str) {
+				auto old = v->getHighlightParams();
+				old.fillColor = std::stoul(str, NULL, 16);
+				v->setHighlightParams(old);
+		}},
 		{"normalStrokeColor", [](Button *v, std::string const &str) {
 				auto old = v->getNormalParams();
 				old.strokeColor = std::stoul(str, NULL, 16);
@@ -312,6 +317,21 @@ void                Button::setParam(
 				auto old = v->getNormalParams();
 				old.lineWidth = std::stoi(str, NULL);
 				v->setNormalParams(old);
+		}},
+		{"pushedFillColor", [](Button *v, std::string const &str) {
+				auto old = v->getPushedParams();
+				old.fillColor = std::stoul(str, NULL, 16);
+				v->setPushedParams(old);
+		}},
+		{"pushedStrokeColor", [](Button *v, std::string const &str) {
+				auto old = v->getPushedParams();
+				old.strokeColor = std::stoul(str, NULL, 16);
+				v->setPushedParams(old);
+		}},
+		{"pushedBorderWidth", [](Button *v, std::string const &str) {
+				auto old = v->getPushedParams();
+				old.lineWidth = std::stoi(str, NULL);
+				v->setPushedParams(old);
 		}},
 	};
 	auto const      &it = param_map.find(k);

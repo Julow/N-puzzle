@@ -14,17 +14,15 @@
 		id="left_holder"
 		direction="vertical"
 		width="250" height="800"
-		backgroundColor="0x60BB0000" alpha="0.6"
 		>
-
-	  <SolidView id="lol" width="200" height="350" backgroundColor="0xFFFFFFFF" />
+	  <SolidView id="lol" width="200" height="1"  />
 	</LinearLayout>
 
 	<LinearLayout
 		direction="vertical"
 		id="mid-holder"
 		align="TOP"
-		backgroundColor="0xFFFF0000" alpha="0.66"
+		backgroundColor="0x10FF0000" alpha="0.66"
 		>
 	  <SolidView
 		  id="puzzleFrame"
@@ -64,23 +62,39 @@
 		  marginBottom="5"
 		  />
 
+	  <Button
+		  id="leave_button"
+		  marginTop="10"
+		  marginBottom="10"
+		  marginLeft="10"
+		  align="CENTER"
+		  width="235"
+		  height="45"
+		  highlightFillColor="0x10FFFF00"
+		  normalFillColor="0xFF001010"
+		  normalStrokeColor="0xFF003000"
+		  normalBorderWidth="3"
+		  pushedFillColor="0xFF002020"
+		  pushedStrokeColor="0xFF006000"
+		  pushedBorderWidth="2"
+		  />
+	  <TextView
+		  align="CENTER"
+		  id="progress_text3"
+		  textColor="0xffffffff"
+		  textSize="15"
+		  text="Abort"
+		  marginTop="1"
+		  marginBottom="5"
+		  />
+
 
 	</LinearLayout>
 	<LinearLayout
 		direction="vertical"
-		id="right-holder"
-		backgroundColor="0x20BB0000" alpha="0.75"
-		align="TOP"
+		width="250" height="800"
 		>
-	  <SolidView
-		  id="right-holder-dummy"
-		  marginTop="5" marginBottom="5" marginLeft="10" marginRight="10"
-		  width="230" height="25"
-		  backgroundColor="0xFFBB0000" alpha="0.75"
-		  />
+	  <SolidView id="lol" width="200" height="1"  />
 	</LinearLayout>
-
-
-
   </LinearLayout>
 </LinearLayout>
