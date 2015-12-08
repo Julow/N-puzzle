@@ -6,7 +6,7 @@
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2015/11/29 14:06:13 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/08 12:41:26 by ngoguey          ###   ########.fr       //
+//   Updated: 2015/12/08 15:07:35 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,6 +16,7 @@
 
 #include "SolvingState.hpp"
 #include "PickState.hpp"
+#include "ResultState.hpp"
 #include "config_window.hpp"
 
 using SS = SolvingState;
@@ -83,9 +84,9 @@ void            SS::loop(std::unique_ptr<IState> &ptr, ftui::ACanvas &can)
 	_ocaml.poll_event();
 	if (this->_success)
 	{
-		// can.clear();
-		// ptr.reset(new PickState(_main, _ocaml));
-		// return ;
+		can.clear();
+		ptr.reset(new ResultState(_main, _ocaml, _rep));
+		return ;
 	}
 	this->_b->tiles.render();
 	this->_b->act.render(can);
@@ -108,9 +109,11 @@ ftui::Activity  &SS::getActivity(void)
 ** ************************************************************************** **
 ** ISOLVERLISTENER LEGACY
 */
+
 void			SS::onSuccess(report_s rep)
 {
 	this->_success = true;
+	_rep = std::forward<report_s>(rep);
 	return ;
 }
 
@@ -186,8 +189,6 @@ SS::Bundle::Bundle(Main &main, OCamlBinding &)
 		[&](std::string const &fname, lua_CFunction f)
 		{ act.registerLuaCFun_table("SolvingState", fname, f); };
 	std::ifstream			is("res/layout/solving_state.xml");
-	// Grid					*gr;
-
 
 	act.inflate(is);
 	main.loadSharedScripts(act);

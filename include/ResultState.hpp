@@ -1,24 +1,23 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   SolvingState.hpp                                   :+:      :+:    :+:   //
+//   ResultState.hpp                                    :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
-//   Created: 2015/11/29 14:06:17 by ngoguey           #+#    #+#             //
-//   Updated: 2015/12/08 15:05:29 by ngoguey          ###   ########.fr       //
+//   Created: 2015/12/08 15:07:48 by ngoguey           #+#    #+#             //
+//   Updated: 2015/12/08 15:08:56 by ngoguey          ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#ifndef SOLVINGSTATE_HPP
-# define SOLVINGSTATE_HPP
+#ifndef RESULTSTATE_HPP
+# define RESULTSTATE_HPP
 
+# include "ISolverListener.hpp"
+# include "Main.hpp"
 # include "tiles/Tiles.hpp"
 
-# include "Main.hpp"
-# include "ISolverListener.hpp"
-
-class SolvingState : public IState, public ISolverListener
+class ResultState : public IState
 {
 	/* ATTRIBUTES ******************* */
 private:
@@ -29,41 +28,37 @@ private:
 	OCamlBinding			&_ocaml;
 	Bundle *const			_b;
 	bool					_leave;
-	report_s				_rep;
-	bool					_success;
 
 	/* CONSTRUCTION ***************** */
 public:
-	SolvingState(Main &main, OCamlBinding &ocaml);
-	~SolvingState();
+	ResultState(Main &main, OCamlBinding &ocaml, ISolverListener::report_s r);
+	~ResultState();
 
-	SolvingState() = delete;
-	SolvingState(SolvingState const &src) = delete;
-	SolvingState(SolvingState &&src) = delete;
-	SolvingState				&operator=(SolvingState const &rhs) = delete;
-	SolvingState				&operator=(SolvingState &&rhs) = delete;
+	ResultState() = delete;
+	ResultState(ResultState const &src) = delete;
+	ResultState(ResultState &&src) = delete;
+	ResultState				&operator=(ResultState const &rhs) = delete;
+	ResultState				&operator=(ResultState &&rhs) = delete;
 
 	/* ISTATE LEGACY **************** */
 	void					loop(
-		std::unique_ptr<IState> &ptr, ftui::ACanvas &can) override;
+		std::unique_ptr<IState> &ptr
+		, ftui::ACanvas &can) override;
 	ftui::Activity			&getActivity(void) override;
-
-	/* ISOLVERLISTENER LEGACY ******* */
-	void					onSuccess(report_s rep) override;
-	void					onProgress(progress_s prog) override;
-	void					onFail(std::string const &str) override;
 
 	/* LIBFTUI INTERACTIONS ********* */
 	typedef std::integral_constant<unsigned int, 1> ftlua_size;
-	static SolvingState		*ftlua_pop(lua_State *l, int i,
-									   std::function<void(std::string)> panic);
+	//TODO: Push application's classes too
+	static ResultState		*ftlua_pop(lua_State *l, int i,
+								std::function<void(std::string)> panic);
+
 	static int				tagForLeaveG(lua_State *l);
 	void					tagForLeave(void);
 
 };
 
 /* BUNDLE DECLARATION *************** */
-class SolvingState::Bundle : public IBundle
+class ResultState::Bundle : public IBundle
 {
 public:
 	/* CONSTRUCTION ***************** */
@@ -80,9 +75,6 @@ public:
 	Tiles const				tiles;
 	ftui::Activity			act;
 
-	/* FUNCTIONALITIES ************** */
-	std::vector<std::string const*>		extractGridNames(void);
-
 };
 
-#endif /* ************************************************** SOLVINGSTATE_HPP */
+#endif /* *************************************************** RESULTSTATE_HPP */

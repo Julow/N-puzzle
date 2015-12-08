@@ -6,7 +6,7 @@
 --   By: ngoguey <ngoguey@student.42.fr>            +#+  +:+       +#+        --
 --                                                +#+#+#+#+#+   +#+           --
 --   Created: 2015/11/11 13:01:05 by ngoguey           #+#    #+#             --
---   Updated: 2015/12/05 17:18:38 by ngoguey          ###   ########.fr       --
+--   Updated: 2015/12/08 15:03:25 by ngoguey          ###   ########.fr       --
 --                                                                            --
 -- ************************************************************************** --
 
@@ -34,6 +34,13 @@ end
 function f_frame.reloadGrid()
   f_curPuzzle = Main:getGrid();
   f_w = getPuzzleW(f_curPuzzle);
+  f_frame:queryRedraw();
+  return ;
+end
+
+function f_frame.setGrid(gr, w)
+  f_curPuzzle = gr;
+  f_w = w;
   f_frame:queryRedraw();
   return ;
 end

@@ -25,72 +25,72 @@ O_FILES += $(O_DIR)/ft/assert.o $(O_DIR)/ft/padformat.o \
 	$(O_DIR)/ftui/TextView.o $(O_DIR)/ftui/ViewTemplate.o \
 	$(O_DIR)/gl_canvas/GlCanvas.o $(O_DIR)/gl_canvas/GlCanvasHolder.o \
 	$(O_DIR)/tiles/Tiles.o
-PUBLIC_LINKS += $(O_DIR)/_public/ft/Vec.hpp $(O_DIR)/_public/ft/assert.hpp \
-	$(O_DIR)/_public/ft/Color.hpp $(O_DIR)/_public/ft/type_traits.hpp \
-	$(O_DIR)/_public/ft/utils.hpp $(O_DIR)/_public/ft/Rect.hpp \
-	$(O_DIR)/_public/ft/TupleRef.hpp $(O_DIR)/_public/ft/padformat.hpp \
-	$(O_DIR)/_public/ft/templates/Vec3.tpp \
+PUBLIC_LINKS += $(O_DIR)/_public/ft/assert.hpp $(O_DIR)/_public/ft/Color.hpp \
+	$(O_DIR)/_public/ft/padformat.hpp $(O_DIR)/_public/ft/Rect.hpp \
+	$(O_DIR)/_public/ft/TupleRef.hpp $(O_DIR)/_public/ft/type_traits.hpp \
+	$(O_DIR)/_public/ft/utils.hpp $(O_DIR)/_public/ft/Vec.hpp \
 	$(O_DIR)/_public/ft/templates/Rect.tpp \
 	$(O_DIR)/_public/ft/templates/Vec2.tpp \
+	$(O_DIR)/_public/ft/templates/Vec3.tpp \
 	$(O_DIR)/_public/ft/templates/Vec4.tpp \
 	$(O_DIR)/_public/ft_xml/XmlParser.hpp \
 	$(O_DIR)/_public/ft_xml/XmlTokenizer.hpp $(O_DIR)/_public/ftce/Array.hpp \
-	$(O_DIR)/_public/ftce/math.hpp $(O_DIR)/_public/ftce/Array.tpp \
-	$(O_DIR)/_public/ftlua/set.hpp $(O_DIR)/_public/ftlua/KeysWrapper.hpp \
-	$(O_DIR)/_public/ftlua/pop.hpp $(O_DIR)/_public/ftlua/light.hpp \
-	$(O_DIR)/_public/ftlua/types.hpp $(O_DIR)/_public/ftlua/ftlua.hpp \
-	$(O_DIR)/_public/ftlua/stackassert.hpp $(O_DIR)/_public/ftlua/utils.hpp \
-	$(O_DIR)/_public/ftlua/conversions.hpp $(O_DIR)/_public/ftlua/call.hpp \
-	$(O_DIR)/_public/ftlua/push.hpp $(O_DIR)/_public/ftlua/size.hpp \
+	$(O_DIR)/_public/ftce/Array.tpp $(O_DIR)/_public/ftce/math.hpp \
+	$(O_DIR)/_public/ftlua/call.hpp $(O_DIR)/_public/ftlua/conversions.hpp \
+	$(O_DIR)/_public/ftlua/ftlua.hpp $(O_DIR)/_public/ftlua/KeysWrapper.hpp \
+	$(O_DIR)/_public/ftlua/light.hpp $(O_DIR)/_public/ftlua/pop.hpp \
+	$(O_DIR)/_public/ftlua/push.hpp $(O_DIR)/_public/ftlua/set.hpp \
+	$(O_DIR)/_public/ftlua/size.hpp $(O_DIR)/_public/ftlua/stackassert.hpp \
+	$(O_DIR)/_public/ftlua/types.hpp $(O_DIR)/_public/ftlua/utils.hpp \
 	$(O_DIR)/_public/ftlua/templates/ftlua_handler.tpp \
-	$(O_DIR)/_public/ftui/AbsoluteLayout.hpp $(O_DIR)/_public/ftui/ALayout.hpp \
+	$(O_DIR)/_public/ftui/AbsoluteLayout.hpp $(O_DIR)/_public/ftui/ACanvas.hpp \
+	$(O_DIR)/_public/ftui/Activity.hpp $(O_DIR)/_public/ftui/ALayout.hpp \
+	$(O_DIR)/_public/ftui/ASolidView.hpp $(O_DIR)/_public/ftui/AView.hpp \
+	$(O_DIR)/_public/ftui/Button.hpp $(O_DIR)/_public/ftui/CheckBox.hpp \
+	$(O_DIR)/_public/ftui/EventTarget.hpp \
+	$(O_DIR)/_public/ftui/EventTargetCpp.hpp \
+	$(O_DIR)/_public/ftui/IViewHolder.hpp $(O_DIR)/_public/ftui/libftui.hpp \
+	$(O_DIR)/_public/ftui/LinearLayout.hpp \
 	$(O_DIR)/_public/ftui/RelativeLayout.hpp \
 	$(O_DIR)/_public/ftui/ScrollableLayout.hpp \
-	$(O_DIR)/_public/ftui/LinearLayout.hpp $(O_DIR)/_public/ftui/libftui.hpp \
-	$(O_DIR)/_public/ftui/ACanvas.hpp $(O_DIR)/_public/ftui/Activity.hpp \
-	$(O_DIR)/_public/ftui/ViewTemplate.hpp \
-	$(O_DIR)/_public/ftui/EventTargetCpp.hpp \
 	$(O_DIR)/_public/ftui/SliderView.hpp $(O_DIR)/_public/ftui/SolidView.hpp \
-	$(O_DIR)/_public/ftui/CheckBox.hpp $(O_DIR)/_public/ftui/TextView.hpp \
-	$(O_DIR)/_public/ftui/ASolidView.hpp $(O_DIR)/_public/ftui/Button.hpp \
-	$(O_DIR)/_public/ftui/AView.hpp $(O_DIR)/_public/ftui/IViewHolder.hpp \
-	$(O_DIR)/_public/ftui/EventTarget.hpp \
+	$(O_DIR)/_public/ftui/TextView.hpp $(O_DIR)/_public/ftui/ViewTemplate.hpp \
 	$(O_DIR)/_public/ftui/templates/Activity.tpp \
 	$(O_DIR)/_public/ftui/templates/AView_callLuaCallback.tpp \
-	$(O_DIR)/_public/gl/gl.hpp $(O_DIR)/_public/gl/gl.h \
+	$(O_DIR)/_public/gl/gl.h $(O_DIR)/_public/gl/gl.hpp \
+	$(O_DIR)/_public/gl_canvas/GlCanvas.hpp \
 	$(O_DIR)/_public/gl_canvas/GlCanvasHolder.hpp \
-	$(O_DIR)/_public/gl_canvas/GlCanvas.hpp $(O_DIR)/_public/liblua/lauxlib.c \
-	$(O_DIR)/_public/liblua/lfunc.h $(O_DIR)/_public/liblua/lgc.h \
-	$(O_DIR)/_public/liblua/lopcodes.h $(O_DIR)/_public/liblua/llex.c \
-	$(O_DIR)/_public/liblua/lbaselib.c $(O_DIR)/_public/liblua/ldump.c \
-	$(O_DIR)/_public/liblua/lobject.h $(O_DIR)/_public/liblua/lapi.c \
-	$(O_DIR)/_public/liblua/lundump.c $(O_DIR)/_public/liblua/ltm.h \
-	$(O_DIR)/_public/liblua/lgc.c $(O_DIR)/_public/liblua/lualib.h \
-	$(O_DIR)/_public/liblua/lutf8lib.c $(O_DIR)/_public/liblua/luaconf.h \
-	$(O_DIR)/_public/liblua/lctype.h $(O_DIR)/_public/liblua/lstate.h \
-	$(O_DIR)/_public/liblua/lstring.h $(O_DIR)/_public/liblua/lzio.h \
-	$(O_DIR)/_public/liblua/ltm.c $(O_DIR)/_public/liblua/lopcodes.c \
-	$(O_DIR)/_public/liblua/lvm.h $(O_DIR)/_public/liblua/lctype.c \
-	$(O_DIR)/_public/liblua/lparser.c $(O_DIR)/_public/liblua/linit.c \
-	$(O_DIR)/_public/liblua/lbitlib.c $(O_DIR)/_public/liblua/lzio.c \
-	$(O_DIR)/_public/liblua/lstrlib.c $(O_DIR)/_public/liblua/lundump.h \
-	$(O_DIR)/_public/liblua/ldebug.c $(O_DIR)/_public/liblua/llex.h \
-	$(O_DIR)/_public/liblua/ltablib.c $(O_DIR)/_public/liblua/lobject.c \
-	$(O_DIR)/_public/liblua/ldo.c $(O_DIR)/_public/liblua/luac.c \
-	$(O_DIR)/_public/liblua/lcode.h $(O_DIR)/_public/liblua/lvm.c \
-	$(O_DIR)/_public/liblua/loadlib.c $(O_DIR)/_public/liblua/lauxlib.h \
-	$(O_DIR)/_public/liblua/lcorolib.c $(O_DIR)/_public/liblua/lstate.c \
-	$(O_DIR)/_public/liblua/lparser.h $(O_DIR)/_public/liblua/llimits.h \
-	$(O_DIR)/_public/liblua/loslib.c $(O_DIR)/_public/liblua/lcode.c \
-	$(O_DIR)/_public/liblua/ldebug.h $(O_DIR)/_public/liblua/lmem.h \
-	$(O_DIR)/_public/liblua/lstring.c $(O_DIR)/_public/liblua/ldblib.c \
-	$(O_DIR)/_public/liblua/lua.h $(O_DIR)/_public/liblua/ltable.c \
-	$(O_DIR)/_public/liblua/lmem.c $(O_DIR)/_public/liblua/lprefix.h \
-	$(O_DIR)/_public/liblua/lua.hpp $(O_DIR)/_public/liblua/ldo.h \
-	$(O_DIR)/_public/liblua/lua.c $(O_DIR)/_public/liblua/lmathlib.c \
-	$(O_DIR)/_public/liblua/lapi.h $(O_DIR)/_public/liblua/liolib.c \
-	$(O_DIR)/_public/liblua/lfunc.c $(O_DIR)/_public/liblua/ltable.h \
-	$(O_DIR)/_public/tiles/Tiles.hpp
+	$(O_DIR)/_public/liblua/lapi.c $(O_DIR)/_public/liblua/lapi.h \
+	$(O_DIR)/_public/liblua/lauxlib.c $(O_DIR)/_public/liblua/lauxlib.h \
+	$(O_DIR)/_public/liblua/lbaselib.c $(O_DIR)/_public/liblua/lbitlib.c \
+	$(O_DIR)/_public/liblua/lcode.c $(O_DIR)/_public/liblua/lcode.h \
+	$(O_DIR)/_public/liblua/lcorolib.c $(O_DIR)/_public/liblua/lctype.c \
+	$(O_DIR)/_public/liblua/lctype.h $(O_DIR)/_public/liblua/ldblib.c \
+	$(O_DIR)/_public/liblua/ldebug.c $(O_DIR)/_public/liblua/ldebug.h \
+	$(O_DIR)/_public/liblua/ldo.c $(O_DIR)/_public/liblua/ldo.h \
+	$(O_DIR)/_public/liblua/ldump.c $(O_DIR)/_public/liblua/lfunc.c \
+	$(O_DIR)/_public/liblua/lfunc.h $(O_DIR)/_public/liblua/lgc.c \
+	$(O_DIR)/_public/liblua/lgc.h $(O_DIR)/_public/liblua/linit.c \
+	$(O_DIR)/_public/liblua/liolib.c $(O_DIR)/_public/liblua/llex.c \
+	$(O_DIR)/_public/liblua/llex.h $(O_DIR)/_public/liblua/llimits.h \
+	$(O_DIR)/_public/liblua/lmathlib.c $(O_DIR)/_public/liblua/lmem.c \
+	$(O_DIR)/_public/liblua/lmem.h $(O_DIR)/_public/liblua/loadlib.c \
+	$(O_DIR)/_public/liblua/lobject.c $(O_DIR)/_public/liblua/lobject.h \
+	$(O_DIR)/_public/liblua/lopcodes.c $(O_DIR)/_public/liblua/lopcodes.h \
+	$(O_DIR)/_public/liblua/loslib.c $(O_DIR)/_public/liblua/lparser.c \
+	$(O_DIR)/_public/liblua/lparser.h $(O_DIR)/_public/liblua/lprefix.h \
+	$(O_DIR)/_public/liblua/lstate.c $(O_DIR)/_public/liblua/lstate.h \
+	$(O_DIR)/_public/liblua/lstring.c $(O_DIR)/_public/liblua/lstring.h \
+	$(O_DIR)/_public/liblua/lstrlib.c $(O_DIR)/_public/liblua/ltable.c \
+	$(O_DIR)/_public/liblua/ltable.h $(O_DIR)/_public/liblua/ltablib.c \
+	$(O_DIR)/_public/liblua/ltm.c $(O_DIR)/_public/liblua/ltm.h \
+	$(O_DIR)/_public/liblua/lua.c $(O_DIR)/_public/liblua/lua.h \
+	$(O_DIR)/_public/liblua/lua.hpp $(O_DIR)/_public/liblua/luac.c \
+	$(O_DIR)/_public/liblua/luaconf.h $(O_DIR)/_public/liblua/lualib.h \
+	$(O_DIR)/_public/liblua/lundump.c $(O_DIR)/_public/liblua/lundump.h \
+	$(O_DIR)/_public/liblua/lutf8lib.c $(O_DIR)/_public/liblua/lvm.c \
+	$(O_DIR)/_public/liblua/lvm.h $(O_DIR)/_public/liblua/lzio.c \
+	$(O_DIR)/_public/liblua/lzio.h $(O_DIR)/_public/tiles/Tiles.hpp
 
 # module ft::ft
 $(O_DIR)/ft/assert.o: ft/assert.cpp ft/public/Rect.hpp ft/public/Vec.hpp \
