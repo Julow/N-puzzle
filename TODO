@@ -8,6 +8,7 @@ TODO LIST
 	ocaml bindings
 	try to remove -thread from linking (ocaml)
 	fix LinearConflict for w >= 10
+	Merge doubleclic and clic
 
 	multithread canvas
 	AbsoluteLayout, RelativeLayout
