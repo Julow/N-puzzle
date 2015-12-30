@@ -39,7 +39,7 @@ public:
 
 	typedef uint32_t	t;
 
-	static inline t			make(uint32_t a, uint32_t r, uint32_t g, uint32_t b)
+	static inline t			make(uint32_t a, uint32_t r, uint32_t g, uint32_t b) // TODO: check, uint8 instead of uint38 ???
 	{
 		return ((a << 24) | (r << 16) | (g << 8) | (b << 0));
 	}
