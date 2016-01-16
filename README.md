@@ -49,6 +49,8 @@ Disjoint Pattern Databases:<BR>
 Linear conflict database:<BR>
 ![Linear_conflict.png](./img/Linear_conflict.png)<BR>
 ![algo_and_heuristic_decl.png](./img/algo_and_heuristic_decl.png)<BR>
+Samples:<BR>
+Manhattan < Linear Conflict < Database 555 ~= Database 663<BR>
 ![console_sample.png](./img/console_sample.png)<BR>
 
 <BR>Useful links:<BR>
