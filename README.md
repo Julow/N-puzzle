@@ -41,6 +41,25 @@ cd .. &&
 rm -rf lua-5.3.1.tar.gz lua-5.3.1
 ```
 
+>###Useful links:
+######Pattern databases:
+- https://www.jair.org/media/1480/live-1480-2332-jair.pdf
+
+>######N-puzzle solvability:
+- https://www.cs.bham.ac.uk/~mdr/teaching/modules04/java2/TilesSolvability.html
+- https://youtu.be/NuGDkmwEObM?list=PLB7540DEDD482705B&t=861
+
+>######Misc:
+- https://heuristicswiki.wikispaces.com/N+-+Puzzle
+
+
+```
+*
+- A grade of 85 was required to validate the project.
+- A maximum grade of 125 was reachable.
+- Second sessions are organised for failed projects.
+```
+
 <BR>
 Snail solutions:<BR>
 ![representations](./img/Representations.png)<BR>
@@ -53,12 +72,3 @@ Samples:<BR>
 Manhattan < Linear Conflict < Database 555 ~= Database 663<BR>
 ![console_sample.png](./img/console_sample.png)<BR>
 
-<BR>Useful links:<BR>
-https://www.jair.org/media/1480/live-1480-2332-jair.pdf
-
-```
-*
-- A grade of 85 was required to validate the project.
-- A maximum grade of 125 was reachable.
-- Second sessions are organised for failed projects.
-```
