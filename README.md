@@ -2,7 +2,7 @@
 >>>>> ##### A* pathfinder. (group project)
 
 ##### Grade ``(tbd/100)`` ``(tbd/125)*``
---------  -----------------------
+--------------------------------------------------------------------------------
 
 Team: [jaguillo](https://github.com/Julow) / [ngoguey](https://github.com/Ngoguey42).
 <BR>
@@ -29,7 +29,9 @@ Team: [jaguillo](https://github.com/Julow) / [ngoguey](https://github.com/Ngogue
 - [X] IDA* implementation. (as extra)
 - [X] Database for linear conflict results
 
+--------------------------------------------------------------------------------
 
+### Install
 ```shell
 curl -O http://www.lua.org/ftp/lua-5.3.1.tar.gz &&
 tar -zxf lua-5.3.1.tar.gz &&
@@ -41,24 +43,18 @@ cd .. &&
 rm -rf lua-5.3.1.tar.gz lua-5.3.1
 ```
 
->###Useful links:
+--------------------------------------------------------------------------------
+
+### Useful links:
 ##### Pattern databases:
 - https://www.jair.org/media/1480/live-1480-2332-jair.pdf
 
->##### N-puzzle solvability:
+##### N-puzzle solvability:
 - https://www.cs.bham.ac.uk/~mdr/teaching/modules04/java2/TilesSolvability.html
 - https://youtu.be/NuGDkmwEObM?list=PLB7540DEDD482705B&t=861
 
->##### Misc:
+##### Misc:
 - https://heuristicswiki.wikispaces.com/N+-+Puzzle
-
-
-```
-*
-- A grade of 85 was required to validate the project.
-- A maximum grade of 125 was reachable.
-- Second sessions are organised for failed projects.
-```
 
 <BR>
 
@@ -72,4 +68,11 @@ rm -rf lua-5.3.1.tar.gz lua-5.3.1
 ##### Sample: `Manhattan` < `Linear Conflict` < `Database 555` ~= `Database 663`
 ![console_sample.png](./img/console_sample.png)<BR>
 
----
+```
+*
+- A grade of 85 was required to validate the project.
+- A maximum grade of 125 was reachable.
+- Second sessions are organised for failed projects.
+```
+
+--------------------------------------------------------------------------------
